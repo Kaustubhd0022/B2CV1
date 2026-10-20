@@ -1,0 +1,41 @@
+{
+  "kind": "connection",
+  "slug": "lotus-across-traditions",
+  "fixture": true,
+  "entities": [
+    { "id": "lotus-hindu-iconography", "role": "from" },
+    { "id": "lotus-buddhist-iconography", "role": "to" }
+  ],
+  "versions": [
+    {
+      "language": "en",
+      "body": {
+        "title": "The lotus across traditions",
+        "summary": "A shared symbol can carry different meanings across religious, artistic and historical contexts.",
+        "relationshipType": "shared_imagery",
+        "from": { "entity": "lotus-hindu-iconography", "label": "The lotus in Hindu iconography" },
+        "to": { "entity": "lotus-buddhist-iconography", "label": "The lotus in Buddhist iconography" },
+        "rationale": [
+          { "text": "The lotus plays a central role in the art of several Indian religions, including Hinduism, Buddhism, Sikhism and Jainism. The lotus throne — a stylised flower used as a seat or base — is the normal pedestal for divine figures in Buddhist and Hindu art.", "claims": ["central-role", "lotus-throne"] },
+          { "text": "Within each tradition the image is read in its own way. Hindu deities such as Vishnu and Lakshmi are often shown on a lotus; in a Pali text the Buddha compares himself to a lotus.", "claims": ["hindu-deities", "buddha-simile"] }
+        ],
+        "whyItMatters": [
+          { "text": "Following one image across traditions helps explain why similar-looking art can mean different things, and why context — the figure, the text, the period — matters when reading it.", "claims": [] }
+        ],
+        "doesNotEstablish": "Similar imagery does not prove a single shared origin, a direct line of influence, or identical meaning. The sources here describe how the lotus is used, not how the motif travelled between traditions.",
+        "uncertainty": "Interpretations of the lotus's meaning vary within each tradition, not only between them.",
+        "relatedStories": ["madurai-meenakshi-temple-city"]
+      },
+      "claims": [
+        { "key": "central-role", "text": "The lotus plays a central role in the art of Hinduism, Buddhism, Sikhism and Jainism.", "claimType": "descriptive", "epistemic": "documented",
+          "evidence": [{ "source": "wp-sacred-lotus-religious-art", "relation": "supports", "excerpt": "is an aquatic plant that plays a central role in the art of Indian religions such as Hinduism, Buddhism, Sikhism and Jainism.", "locator": "Lead section" }] },
+        { "key": "lotus-throne", "text": "The lotus throne is the normal pedestal for divine figures in Buddhist and Hindu art.", "claimType": "descriptive", "epistemic": "documented",
+          "evidence": [{ "source": "wp-sacred-lotus-religious-art", "relation": "supports", "excerpt": "It is the normal pedestal for divine figures in Buddhist art and Hindu art and is often seen in Jain art and also in Sikh art.", "locator": "Lead section" }] },
+        { "key": "hindu-deities", "text": "Vishnu and Lakshmi are often portrayed on a pink lotus.", "claimType": "descriptive", "epistemic": "documented",
+          "evidence": [{ "source": "wp-sacred-lotus-religious-art", "relation": "supports", "excerpt": "The Hindu divinities Vishnu and Lakshmi are often portrayed on a pink lotus in iconography", "locator": "Hinduism" }] },
+        { "key": "buddha-simile", "text": "In the Aṅguttara Nikāya the Buddha compares himself to a lotus.", "claimType": "belief", "epistemic": "tradition",
+          "evidence": [{ "source": "wp-sacred-lotus-religious-art", "relation": "supports", "excerpt": "In the Aṅguttara Nikāya, the Buddha compares himself to a lotus", "locator": "Buddhism" }] }
+      ]
+    }
+  ]
+}

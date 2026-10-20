@@ -1,0 +1,120 @@
+{
+  "_note": "DEVELOPMENT FIXTURE CATALOGUE. Sources are real, revision-pinned Wikipedia articles (tertiary reference works) used only to exercise the product. Editorial content must be researched against primary, official, academic and specialist sources.",
+  "sources": [
+    {
+      "id": "wp-ghats-in-varanasi",
+      "title": "Ghats in Varanasi",
+      "publisher": "Wikipedia (English)",
+      "sourceType": "reference",
+      "url": "https://en.wikipedia.org/w/index.php?oldid=1378685889",
+      "language": "en",
+      "accessedDate": "2026-10-20",
+      "assessment": "Tertiary, collaboratively edited reference work (revision 1378685889). Useful orientation; relies on cited secondary works. Not sufficient on its own for editorial publication."
+    },
+    {
+      "id": "wp-sawai-jai-singh",
+      "title": "Sawai Jai Singh",
+      "publisher": "Wikipedia (English)",
+      "sourceType": "reference",
+      "url": "https://en.wikipedia.org/w/index.php?oldid=1375891413",
+      "language": "en",
+      "accessedDate": "2026-10-20",
+      "assessment": "Tertiary reference work (revision 1375891413). Contains evaluative language about the ruler that should not be repeated as fact."
+    },
+    {
+      "id": "wp-jantar-mantar-jaipur",
+      "title": "Jantar Mantar, Jaipur",
+      "publisher": "Wikipedia (English)",
+      "sourceType": "reference",
+      "url": "https://en.wikipedia.org/w/index.php?oldid=1379115214",
+      "language": "en",
+      "accessedDate": "2026-10-20",
+      "assessment": "Tertiary reference work (revision 1379115214). Summarises UNESCO and historical literature."
+    },
+    {
+      "id": "wp-jantar-mantar",
+      "title": "Jantar Mantar",
+      "publisher": "Wikipedia (English)",
+      "sourceType": "reference",
+      "url": "https://en.wikipedia.org/w/index.php?oldid=1379411375",
+      "language": "en",
+      "accessedDate": "2026-10-20",
+      "assessment": "Tertiary reference work (revision 1379411375) giving an overview of the five observatories."
+    },
+    {
+      "id": "wp-hampi",
+      "title": "Hampi",
+      "publisher": "Wikipedia (English)",
+      "sourceType": "reference",
+      "url": "https://en.wikipedia.org/w/index.php?oldid=1380353571",
+      "language": "en",
+      "accessedDate": "2026-10-20",
+      "assessment": "Tertiary reference work (revision 1380353571). Population estimates it reports are scholarly estimates, not records."
+    },
+    {
+      "id": "wp-chinese-fishing-nets",
+      "title": "Chinese fishing nets",
+      "publisher": "Wikipedia (English)",
+      "sourceType": "reference",
+      "url": "https://en.wikipedia.org/w/index.php?oldid=1375589428",
+      "language": "en",
+      "accessedDate": "2026-10-20",
+      "assessment": "Short tertiary article (revision 1375589428) with few inline citations. Its statements about origins are inconsistent (stated as fact in one place, as possibility in another) and are treated here as unresolved."
+    },
+    {
+      "id": "wp-durga-puja-in-kolkata",
+      "title": "Durga Puja in Kolkata",
+      "publisher": "Wikipedia (English)",
+      "sourceType": "reference",
+      "url": "https://en.wikipedia.org/w/index.php?oldid=1380989004",
+      "language": "en",
+      "accessedDate": "2026-10-20",
+      "assessment": "Tertiary reference work (revision 1380989004). Dates for the earliest household pujas are hedged in the source."
+    },
+    {
+      "id": "wp-meenakshi-temple",
+      "title": "Meenakshi Temple",
+      "publisher": "Wikipedia (English)",
+      "sourceType": "reference",
+      "url": "https://en.wikipedia.org/w/index.php?oldid=1377461356",
+      "language": "en",
+      "accessedDate": "2026-10-20",
+      "assessment": "Tertiary reference work (revision 1377461356) drawing on inscriptions and temple texts such as the Thirupanimalai."
+    },
+    {
+      "id": "wp-madurai-nayak-dynasty",
+      "title": "Madurai Nayak dynasty",
+      "publisher": "Wikipedia (English)",
+      "sourceType": "reference",
+      "url": "https://en.wikipedia.org/w/index.php?oldid=1380453546",
+      "language": "en",
+      "accessedDate": "2026-10-20",
+      "assessment": "Tertiary reference work (revision 1380453546). Origins of the dynasty are discussed with competing sources."
+    },
+    {
+      "id": "wp-sacred-lotus-religious-art",
+      "title": "Sacred lotus in religious art",
+      "publisher": "Wikipedia (English)",
+      "sourceType": "reference",
+      "url": "https://en.wikipedia.org/w/index.php?oldid=1352292329",
+      "language": "en",
+      "accessedDate": "2026-10-20",
+      "assessment": "Tertiary overview (revision 1352292329) across several religions; summarises symbolism rather than documenting historical transmission."
+    }
+  ],
+  "entities": [
+    { "id": "varanasi-ghats", "type": "structure", "canonicalName": "Ghats of Varanasi", "region": "Varanasi, Uttar Pradesh" },
+    { "id": "ganges", "type": "place", "canonicalName": "Ganges (Ganga)", "aliases": ["Ganga"] },
+    { "id": "varanasi-observatory", "type": "structure", "canonicalName": "Jantar Mantar, Varanasi", "region": "Varanasi, Uttar Pradesh" },
+    { "id": "jantar-mantar-jaipur", "type": "structure", "canonicalName": "Jantar Mantar, Jaipur", "region": "Jaipur, Rajasthan" },
+    { "id": "sawai-jai-singh-ii", "type": "person", "canonicalName": "Sawai Jai Singh II" },
+    { "id": "hampi-vijayanagara", "type": "place", "canonicalName": "Hampi (Vijayanagara)", "region": "Karnataka" },
+    { "id": "vijayanagara-empire", "type": "period", "canonicalName": "Vijayanagara Empire" },
+    { "id": "kochi-fishing-nets", "type": "practice", "canonicalName": "Shore-operated lift nets of Kochi", "aliases": ["Chinese fishing nets", "Cheena vala"], "region": "Kochi, Kerala" },
+    { "id": "durga-puja-kolkata", "type": "event", "canonicalName": "Durga Puja in Kolkata", "region": "Kolkata, West Bengal" },
+    { "id": "meenakshi-temple", "type": "structure", "canonicalName": "Meenakshi Sundareswarar Temple", "region": "Madurai, Tamil Nadu" },
+    { "id": "madurai-nayaks", "type": "institution", "canonicalName": "Madurai Nayak dynasty" },
+    { "id": "lotus-hindu-iconography", "type": "concept", "canonicalName": "Lotus in Hindu iconography" },
+    { "id": "lotus-buddhist-iconography", "type": "concept", "canonicalName": "Lotus in Buddhist iconography" }
+  ]
+}

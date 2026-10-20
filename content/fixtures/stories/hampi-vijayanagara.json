@@ -1,0 +1,75 @@
+{
+  "kind": "story",
+  "slug": "hampi-a-capital-and-a-sacred-landscape",
+  "city": "hampi",
+  "fixture": true,
+  "entities": [
+    { "id": "hampi-vijayanagara", "role": "subject" },
+    { "id": "vijayanagara-empire", "role": "mentioned" }
+  ],
+  "versions": [
+    {
+      "language": "en",
+      "body": {
+        "title": "Hampi: an imperial capital and a sacred landscape",
+        "orientation": "Why Hampi is remembered both as the capital of an empire and as a religious centre that predates it.",
+        "hero": { "src": "/images/dev/hampi.jpg", "alt": "Carved stone chariot shrine with temple towers behind it at Hampi", "credit": "Placeholder from design document — usage rights not verified", "rightsCleared": false },
+        "sections": [
+          {
+            "id": "story",
+            "kind": "narrative",
+            "heading": "The story",
+            "paragraphs": [
+              { "text": "Hampi, on the Tungabhadra River in Karnataka, was the capital of the Vijayanagara Empire from 1336 until 1565, when it was abandoned.", "claims": ["capital-dates"] },
+              { "text": "Travellers from Persia and Europe, especially the Portuguese, described a prosperous city of temples, farms and markets.", "claims": ["traveller-accounts"] }
+            ]
+          },
+          {
+            "id": "sacred",
+            "kind": "context",
+            "heading": "Older than the empire",
+            "paragraphs": [
+              { "text": "Hampi was a sacred place before it was an imperial capital: it appears in the Ramayana and the Puranas as Pampa Devi Tirtha Kshetra, and it remains a religious centre today around the Virupaksha Temple.", "claims": ["predates-empire", "living-centre"] }
+            ]
+          },
+          {
+            "id": "name",
+            "kind": "perspectives",
+            "heading": "Two explanations of a name",
+            "paragraphs": [
+              { "text": "The name Hampi is traced to Pampa — but sources describe Pampa in two ways: as the old name of the Tungabhadra River, and as another name of the goddess Parvati. These explanations sit side by side rather than one replacing the other.", "claims": ["name-river", "name-goddess"] }
+            ]
+          },
+          {
+            "id": "why",
+            "kind": "significance",
+            "heading": "Why it matters",
+            "paragraphs": [
+              { "text": "Hampi shows how a single landscape can hold layers of meaning: sacred geography, royal power and commerce. Its size and wealth around 1500 are often emphasised, but figures such as its rank among world cities are scholarly estimates rather than recorded counts.", "claims": ["size-estimate"] }
+            ]
+          }
+        ],
+        "themes": ["empire", "sacred geography", "monuments"],
+        "followUpQuestions": ["What happened to Hampi after 1565?", "How did the Vijayanagara Empire shape temples elsewhere in South India?"],
+        "connections": ["vijayanagara-and-madurai"],
+        "relatedStories": ["madurai-meenakshi-temple-city"]
+      },
+      "claims": [
+        { "key": "capital-dates", "text": "Hampi was the capital of the Vijayanagara Empire from 1336 to 1565, when it was abandoned.", "claimType": "historical", "epistemic": "documented",
+          "evidence": [{ "source": "wp-hampi", "relation": "supports", "excerpt": "Hampi was the capital of the Vijayanagara (Karnata) Empire from 1336 to 1565 (as Vijayanagara), when it was abandoned.", "locator": "Lead section" }] },
+        { "key": "traveller-accounts", "text": "Persian and European travellers' chronicles describe Hampi as prosperous, with temples, farms and markets.", "claimType": "historical", "epistemic": "documented",
+          "evidence": [{ "source": "wp-hampi", "relation": "supports", "excerpt": "Chronicles left by Persian and European travellers, particularly the Portuguese, say that Hampi was a prosperous, wealthy and grand city near the Tungabhadra River, with numerous temples, farms and trading markets.", "locator": "Lead section", "limitation": "Travellers' accounts reflect their own perspectives." }] },
+        { "key": "predates-empire", "text": "Hampi predates the empire and is mentioned in the Ramayana and Puranas as Pampa Devi Tirtha Kshetra.", "claimType": "belief", "epistemic": "tradition",
+          "evidence": [{ "source": "wp-hampi", "relation": "supports", "excerpt": "Hampi predates the Vijayanagara Empire; it is mentioned in the Ramayana and the Puranas of Hinduism as Pampa Devi Tirtha Kshetra.", "locator": "Lead section" }] },
+        { "key": "living-centre", "text": "Hampi continues as a religious centre with the Virupaksha Temple.", "claimType": "descriptive", "epistemic": "documented",
+          "evidence": [{ "source": "wp-hampi", "relation": "supports", "excerpt": "Hampi continues as a religious centre, with the Virupaksha Temple, an active Adi Shankara-linked monastery and various monuments belonging to the old city.", "locator": "Lead section" }] },
+        { "key": "name-river", "text": "The name derives from Pampa, the old name of the Tungabhadra River.", "claimType": "interpretive", "epistemic": "interpretation",
+          "evidence": [{ "source": "wp-hampi", "relation": "supports", "excerpt": "The name was derived from the old name of the Tungabhadra River which was Pampa, so the name Hampi is the English version of the Kannada name Hampe.", "locator": "Etymology" }] },
+        { "key": "name-goddess", "text": "Hampi is also traced to Pampa as another name of the goddess Parvati.", "claimType": "belief", "epistemic": "tradition",
+          "evidence": [{ "source": "wp-hampi", "relation": "supports", "excerpt": "is derived from Pampa, another name of the goddess Parvati in Hindu theology.", "locator": "Location" }] },
+        { "key": "size-estimate", "text": "Hampi-Vijayanagara is estimated to have been the world's second-largest city by 1500.", "claimType": "historical", "epistemic": "uncertain", "scopeNote": "Estimate, not a census.",
+          "evidence": [{ "source": "wp-hampi", "relation": "supports", "excerpt": "Hampi-Vijayanagara is estimated to be the world's second-largest city by 1500, after Beijing", "locator": "Lead section", "limitation": "An estimate; the source does not give the method." }] }
+      ]
+    }
+  ]
+}

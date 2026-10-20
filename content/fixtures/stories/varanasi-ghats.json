@@ -1,0 +1,80 @@
+{
+  "kind": "story",
+  "slug": "varanasi-ghats-architecture-and-river",
+  "city": "varanasi",
+  "fixture": true,
+  "entities": [
+    { "id": "varanasi-ghats", "role": "subject" },
+    { "id": "ganges", "role": "mentioned" },
+    { "id": "varanasi-observatory", "role": "mentioned" }
+  ],
+  "versions": [
+    {
+      "language": "en",
+      "body": {
+        "title": "The ghats: where architecture meets the river",
+        "orientation": "An introduction to the relationships between a riverfront, public space, ritual practice and urban history in Varanasi.",
+        "hero": { "src": "/images/dev/varanasi-ghats.jpg", "alt": "Stone steps and tall riverside buildings at the ghats of Varanasi, seen from the river", "credit": "Placeholder from design document — usage rights not verified", "rightsCleared": false },
+        "sections": [
+          {
+            "id": "story",
+            "kind": "narrative",
+            "heading": "The story",
+            "paragraphs": [
+              { "text": "Along the Ganges at Varanasi, a long sequence of stone steps — the ghats — connects the city to the river. The word itself describes a landing place or embankment.", "claims": ["ghats-definition", "ghat-etymology"] },
+              { "text": "The ghats are not one kind of place. Most are used for bathing and worship, while two, Manikarnika and Harishchandra, are used as cremation grounds.", "claims": ["ghat-uses"] },
+              { "text": "Much of what stands today is relatively recent in the long history of the city: most ghats were rebuilt in the eighteenth century with Maratha patronage.", "claims": ["maratha-rebuilding"] }
+            ]
+          },
+          {
+            "id": "practice",
+            "kind": "context",
+            "heading": "Place and practice",
+            "paragraphs": [
+              { "text": "Built space and ritual are closely linked here. At Dashashwamedh Ghat an evening aarti is performed, and the ghat's name is tied to a legend about Brahma's sacrifices.", "claims": ["dashashwamedh-aarti", "dashashwamedh-legend"] },
+              { "text": "Some ghats carry several stories at once: two different legends are associated with Manikarnika Ghat.", "claims": ["manikarnika-legends"] }
+            ]
+          },
+          {
+            "id": "why",
+            "kind": "significance",
+            "heading": "Why it matters",
+            "paragraphs": [
+              { "text": "The ghats show how a city's architecture can hold sacred narrative, everyday use and patronage history together. Many ghats are associated with legends, while others have private histories and their own users — so the same riverfront carries different meanings for different people.", "claims": ["legends-and-private-histories"] }
+            ]
+          },
+          {
+            "id": "limits",
+            "kind": "limits",
+            "heading": "What we don't know",
+            "paragraphs": [
+              { "text": "This sample relies on a single tertiary reference work. The legends are presented as traditions held about these places, not as historical events, and the patronage history of individual ghats would need specialist sources before editorial publication.", "claims": [] }
+            ]
+          }
+        ],
+        "themes": ["sacred geography", "architecture", "ritual"],
+        "followUpQuestions": ["How have the uses of these riverfront spaces changed over time?", "Who patronised the rebuilding of the ghats in the eighteenth century?"],
+        "connections": ["jai-singh-observatories-jaipur-varanasi"],
+        "relatedStories": ["jaipur-jantar-mantar"]
+      },
+      "claims": [
+        { "key": "ghats-definition", "text": "The ghats of Varanasi are riverfront steps leading to the Ganges; the city counts 84 ghats.", "claimType": "descriptive", "epistemic": "documented",
+          "evidence": [{ "source": "wp-ghats-in-varanasi", "relation": "supports", "excerpt": "Ghats in Varanasi are riverfront steps leading to the banks of the Ganges river. The city has 84 ghats.", "locator": "Lead section" }] },
+        { "key": "ghat-etymology", "text": "'Ghat' derives from Sanskrit ghaṭṭa, meaning an embankment or landing place.", "claimType": "descriptive", "epistemic": "documented",
+          "evidence": [{ "source": "wp-ghats-in-varanasi", "relation": "supports", "excerpt": "It means an embankment or a landing place.", "locator": "Etymology" }] },
+        { "key": "ghat-uses", "text": "Most ghats are used for bathing and puja; Manikarnika and Harishchandra are used exclusively as cremation sites.", "claimType": "descriptive", "epistemic": "documented",
+          "evidence": [{ "source": "wp-ghats-in-varanasi", "relation": "supports", "excerpt": "Most of the ghats are bathing and puja ceremonial ghats, while two ghats, Manikarnika and Harishchandra, are used exclusively as cremation sites.", "locator": "Lead section" }] },
+        { "key": "maratha-rebuilding", "text": "Most of the ghats were rebuilt in the 18th century under Maratha patronage.", "claimType": "historical", "epistemic": "documented",
+          "evidence": [{ "source": "wp-ghats-in-varanasi", "relation": "supports", "excerpt": "Most of the ghats in Varanasi were rebuilt in the 18th century under the Maratha patronage.", "locator": "Lead section", "limitation": "Does not give dates or patrons for individual ghats." }] },
+        { "key": "dashashwamedh-aarti", "text": "An evening aarti is performed at Dashashwamedh Ghat.", "claimType": "descriptive", "epistemic": "documented",
+          "evidence": [{ "source": "wp-ghats-in-varanasi", "relation": "supports", "excerpt": "Every evening an aarti is performed at this ghat in dedication to Shiva, the goddess Ganga, Surya, Agni, as well as the whole universe.", "locator": "Dashashwamedh Ghat" }] },
+        { "key": "dashashwamedh-legend", "text": "According to legend, Brahma performed ten Ashwamedha sacrifices at Dashashwamedh Ghat.", "claimType": "belief", "epistemic": "tradition",
+          "evidence": [{ "source": "wp-ghats-in-varanasi", "relation": "supports", "excerpt": "According to legend, Brahma performed ten Ashwamedha sacrifices here.", "locator": "Dashashwamedh Ghat", "limitation": "Reports a legend; does not establish a historical event." }] },
+        { "key": "manikarnika-legends", "text": "Two different legends are associated with Manikarnika Ghat.", "claimType": "belief", "epistemic": "tradition",
+          "evidence": [{ "source": "wp-ghats-in-varanasi", "relation": "supports", "excerpt": "There are two legends which are associated with the Manikarnika Ghat.", "locator": "Manikarnika Ghat" }] },
+        { "key": "legends-and-private-histories", "text": "Many ghats are associated with legends, while others have private histories and users.", "claimType": "interpretive", "epistemic": "documented",
+          "evidence": [{ "source": "wp-ghats-in-varanasi", "relation": "supports", "excerpt": "Many ghats are associated with legends or mythologies while other ghats have private histories and users.", "locator": "Lead section" }] }
+      ]
+    }
+  ]
+}

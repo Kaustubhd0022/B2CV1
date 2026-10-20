@@ -1,0 +1,81 @@
+{
+  "kind": "story",
+  "slug": "jaipur-jantar-mantar",
+  "city": "jaipur",
+  "fixture": true,
+  "entities": [
+    { "id": "jantar-mantar-jaipur", "role": "subject" },
+    { "id": "sawai-jai-singh-ii", "role": "mentioned" }
+  ],
+  "versions": [
+    {
+      "language": "en",
+      "body": {
+        "title": "Jantar Mantar: astronomy built in stone",
+        "orientation": "How an eighteenth-century observatory in Jaipur turned astronomical calculation into architecture.",
+        "sections": [
+          {
+            "id": "story",
+            "kind": "narrative",
+            "heading": "The story",
+            "paragraphs": [
+              { "text": "In the early eighteenth century, Sawai Jai Singh — the founder of Jaipur — built an observatory of large stone instruments in his capital. The Jaipur monument brings together 19 instruments and was completed in 1734.", "claims": ["jm-collection"] },
+              { "text": "Its name describes its purpose: jantar from yantra, an instrument, and mantar from mantrana, to consult or calculate.", "claims": ["jm-name"] },
+              { "text": "The instruments were designed for observing astronomical positions with the naked eye.", "claims": ["jm-naked-eye"] }
+            ]
+          },
+          {
+            "id": "context",
+            "kind": "context",
+            "heading": "A network of observatories",
+            "paragraphs": [
+              { "text": "Jaipur was not alone. Jai Singh built five observatories in different cities — Delhi, Mathura, Varanasi, Ujjain and Jaipur — in order to produce more accurate astronomical tables.", "claims": ["five-observatories", "zij-purpose"] },
+              { "text": "The tables that resulted, the Zij-i Muhammad Shahi, remained in use in India for about a century, though they had little significance outside India.", "claims": ["zij-use"] }
+            ]
+          },
+          {
+            "id": "why",
+            "kind": "significance",
+            "heading": "Why it matters",
+            "paragraphs": [
+              { "text": "The observatory shows astronomy as a shared, cross-cultural tradition: its methods belong to Ptolemaic positional astronomy, which many civilisations shared. UNESCO describes it as the most significant and best-preserved historic observatory in India.", "claims": ["ptolemaic", "unesco-assessment"] }
+            ]
+          },
+          {
+            "id": "limits",
+            "kind": "limits",
+            "heading": "What we don't know",
+            "paragraphs": [
+              { "text": "This sample summarises a tertiary source. How the instruments were used day to day, and how Jai Singh's astronomers weighed Indian, Islamic and European methods, require specialist history-of-science sources.", "claims": [] }
+            ]
+          }
+        ],
+        "themes": ["science", "architecture", "patronage"],
+        "followUpQuestions": ["How accurate were the Jantar Mantar instruments?", "What is the Samrat Yantra?"],
+        "connections": ["jai-singh-observatories-jaipur-varanasi"],
+        "relatedStories": ["varanasi-ghats-architecture-and-river"]
+      },
+      "claims": [
+        { "key": "jm-collection", "text": "Jantar Mantar, Jaipur is a collection of 19 astronomical instruments built by Sawai Jai Singh, completed in 1734.", "claimType": "historical", "epistemic": "documented",
+          "evidence": [{ "source": "wp-jantar-mantar-jaipur", "relation": "supports", "excerpt": "The Jantar Mantar is a collection of 19 astronomical instruments built by the Rajput king Sawai Jai Singh, the founder of Jaipur, Rajasthan, India. The monument was completed in 1734.", "locator": "Lead section" }] },
+        { "key": "jm-name", "text": "The name derives from yantra (instrument) and mantrana (consult, calculate).", "claimType": "descriptive", "epistemic": "documented",
+          "evidence": [{ "source": "wp-jantar-mantar-jaipur", "relation": "supports", "excerpt": "The name jantar is derived from yantra, a Sanskrit word meaning \"instrument, machine\", and mantar from mantrana, also a Sanskrit word meaning \"consult, calculate\".", "locator": "Name" }] },
+        { "key": "jm-naked-eye", "text": "The instruments allow naked-eye observation of astronomical positions.", "claimType": "descriptive", "epistemic": "documented",
+          "evidence": [{ "source": "wp-jantar-mantar-jaipur", "relation": "supports", "excerpt": "The instruments allow the observation of astronomical positions with the naked eye.", "locator": "Lead section" }] },
+        { "key": "five-observatories", "text": "Jai Singh built five observatories: Delhi, Mathura, Varanasi, Ujjain and Jaipur.", "claimType": "historical", "epistemic": "documented",
+          "evidence": [
+            { "source": "wp-sawai-jai-singh", "relation": "supports", "excerpt": "He ordered the construction of five such buildings—at Delhi, Mathura (in his Agra province), Varanasi, Ujjain (capital of his Malwa province), and his own capital of Jaipur.", "locator": "Astronomy" },
+            { "source": "wp-jantar-mantar", "relation": "supports", "excerpt": "There were five Jantar Mantars in India, built between 1724 and 1735.", "locator": "Lead section" }
+          ] },
+        { "key": "zij-purpose", "text": "The observatories were built to create more accurate astronomical tables (a zij).", "claimType": "historical", "epistemic": "documented",
+          "evidence": [{ "source": "wp-jantar-mantar-jaipur", "relation": "supports", "excerpt": "He constructed five new observatories in different cities in order to create a more accurate Zij.", "locator": "Purpose" }] },
+        { "key": "zij-use", "text": "The Zij-i Muhammad Shahi tables were used in India for a century but had little significance outside India.", "claimType": "historical", "epistemic": "documented",
+          "evidence": [{ "source": "wp-jantar-mantar-jaipur", "relation": "supports", "excerpt": "The astronomical tables Jai Singh created, known as the Zij-i Muhammad Shahi, were continuously used in India for a century. (However, the table had little significance outside of India.)", "locator": "Purpose" }] },
+        { "key": "ptolemaic", "text": "The observatory exemplifies Ptolemaic positional astronomy, shared by many civilisations.", "claimType": "interpretive", "epistemic": "interpretation",
+          "evidence": [{ "source": "wp-jantar-mantar-jaipur", "relation": "supports", "excerpt": "The observatory is an example of the Ptolemaic positional astronomy which was shared by many civilizations.", "locator": "Lead section" }] },
+        { "key": "unesco-assessment", "text": "UNESCO describes it as the most significant and best-preserved historic observatory in India.", "claimType": "interpretive", "epistemic": "interpretation",
+          "evidence": [{ "source": "wp-jantar-mantar-jaipur", "relation": "supports", "excerpt": "UNESCO describes the observatory as the most significant and best-preserved historic observatory in India", "locator": "Lead section", "limitation": "An evaluation attributed to UNESCO, reported second-hand." }] }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,41 @@
+{
+  "kind": "connection",
+  "slug": "vijayanagara-and-madurai",
+  "fixture": true,
+  "entities": [
+    { "id": "hampi-vijayanagara", "role": "from" },
+    { "id": "meenakshi-temple", "role": "to" },
+    { "id": "madurai-nayaks", "role": "mentioned" }
+  ],
+  "versions": [
+    {
+      "language": "en",
+      "body": {
+        "title": "From Vijayanagara to Madurai: an empire and a temple city",
+        "summary": "The empire ruled from Hampi rebuilt Madurai's great temple, and Madurai's Nayak rulers began as its viceroys.",
+        "relationshipType": "historical_exchange",
+        "from": { "entity": "hampi-vijayanagara", "label": "Hampi (Vijayanagara)" },
+        "to": { "entity": "meenakshi-temple", "label": "Meenakshi Temple, Madurai" },
+        "rationale": [
+          { "text": "After the Meenakshi Temple was destroyed in the fourteenth century, it was rebuilt by the Vijayanagara Empire, whose capital was at Hampi.", "claims": ["rebuilt-by-vijayanagara", "hampi-capital"] },
+          { "text": "The Madurai Nayak dynasty was founded around 1529 as a viceroyalty under the Vijayanagara Empire, and Nayak commanders serving the empire expanded the temple.", "claims": ["nayak-viceroyalty", "nayak-expansion"] }
+        ],
+        "whyItMatters": [
+          { "text": "It shows how political authority moved across South India and how temple-building was bound up with that authority, linking a ruined capital in Karnataka to a living temple city in Tamil Nadu.", "claims": [] }
+        ],
+        "doesNotEstablish": "This political relationship does not by itself show that Madurai's architecture copies Hampi's, or that the temple's religious meaning derives from Vijayanagara. Architectural influence would need its own evidence.",
+        "relatedStories": ["hampi-a-capital-and-a-sacred-landscape", "madurai-meenakshi-temple-city"]
+      },
+      "claims": [
+        { "key": "rebuilt-by-vijayanagara", "text": "The Meenakshi Temple was rebuilt by the Vijayanagara Empire in the 14th century after its destruction.", "claimType": "historical", "epistemic": "documented",
+          "evidence": [{ "source": "wp-meenakshi-temple", "relation": "supports", "excerpt": "It was later rebuilt by the Vijayanagara Empire in the 14th century, after its destruction by the armies of the Delhi Sultanate.", "locator": "Lead section" }] },
+        { "key": "hampi-capital", "text": "Hampi was the Vijayanagara capital from 1336 to 1565.", "claimType": "historical", "epistemic": "documented",
+          "evidence": [{ "source": "wp-hampi", "relation": "supports", "excerpt": "Hampi was the capital of the Vijayanagara (Karnata) Empire from 1336 to 1565 (as Vijayanagara), when it was abandoned.", "locator": "Lead section" }] },
+        { "key": "nayak-viceroyalty", "text": "The Madurai Nayak dynasty was founded around 1529 as a viceroyalty under Vijayanagara.", "claimType": "relationship", "epistemic": "documented",
+          "evidence": [{ "source": "wp-madurai-nayak-dynasty", "relation": "supports", "excerpt": "It was founded by Nagama Nayak's son Viswanatha Nayak around 1529 as a viceroyalty under the Vijayanagara Empire.", "locator": "Lead section" }] },
+        { "key": "nayak-expansion", "text": "Nayak commanders serving the Vijayanagara empire expanded the temple.", "claimType": "relationship", "epistemic": "documented",
+          "evidence": [{ "source": "wp-meenakshi-temple", "relation": "supports", "excerpt": "The Nayak commanders, who served under the Vijayanagara empire, expanded the temple further.", "locator": "History" }] }
+      ]
+    }
+  ]
+}

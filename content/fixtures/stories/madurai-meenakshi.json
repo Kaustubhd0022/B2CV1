@@ -1,0 +1,72 @@
+{
+  "kind": "story",
+  "slug": "madurai-meenakshi-temple-city",
+  "city": "madurai",
+  "fixture": true,
+  "entities": [
+    { "id": "meenakshi-temple", "role": "subject" },
+    { "id": "madurai-nayaks", "role": "mentioned" },
+    { "id": "lotus-hindu-iconography", "role": "mentioned" }
+  ],
+  "versions": [
+    {
+      "language": "en",
+      "body": {
+        "title": "Madurai and the Meenakshi Temple: a city built around a shrine",
+        "orientation": "How a temple's long history of building and rebuilding shaped the streets and calendar of Madurai.",
+        "sections": [
+          {
+            "id": "story",
+            "kind": "narrative",
+            "heading": "The story",
+            "paragraphs": [
+              { "text": "The Meenakshi Temple in Madurai is dedicated to Meenakshi, a form of Parvati, and her consort Sundareswarar, a form of Shiva.", "claims": ["dedication"] },
+              { "text": "What stands today is the result of many rounds of building: early structures under the Pandyas, rebuilding under the Vijayanagara Empire after destruction in the fourteenth century, and extensive expansion by the Madurai Nayaks in the sixteenth and seventeenth centuries.", "claims": ["building-phases"] }
+            ]
+          },
+          {
+            "id": "city",
+            "kind": "context",
+            "heading": "Temple and city",
+            "paragraphs": [
+              { "text": "The city's layout is tied to the temple's ritual life: streets and junctions are named after months of the Tamil calendar, following the practice of starting processions from the corresponding spots.", "claims": ["streets-calendar"] },
+              { "text": "Tamil texts describe the temple as the centre of the city, with streets radiating out like the petals of a lotus.", "claims": ["lotus-city"] }
+            ]
+          },
+          {
+            "id": "why",
+            "kind": "significance",
+            "heading": "Why it matters",
+            "paragraphs": [
+              { "text": "Madurai shows how sacred architecture and urban form can grow together over centuries. The annual celebration of the marriage of Meenakshi and Sundareswarar in the month of Chithirai links the temple's narrative to the city's calendar.", "claims": ["chithirai"] }
+            ]
+          },
+          {
+            "id": "limits",
+            "kind": "limits",
+            "heading": "What we don't know",
+            "paragraphs": [
+              { "text": "This sample relies on a tertiary summary of inscriptions and temple texts. How different communities in Madurai experience and describe the temple is not represented here.", "claims": [] }
+            ]
+          }
+        ],
+        "themes": ["temple architecture", "urban form", "ritual calendar"],
+        "followUpQuestions": ["Who were the Madurai Nayaks?", "Why is the lotus used to describe Madurai's street plan?"],
+        "connections": ["vijayanagara-and-madurai", "lotus-across-traditions"],
+        "relatedStories": ["hampi-a-capital-and-a-sacred-landscape"]
+      },
+      "claims": [
+        { "key": "dedication", "text": "The temple is dedicated to Meenakshi, a form of Parvati, and her consort Sundareswarar (Shiva).", "claimType": "descriptive", "epistemic": "documented",
+          "evidence": [{ "source": "wp-meenakshi-temple", "relation": "supports", "excerpt": "It is dedicated to Meenakshi, a form of Parvati, and her consort Sundareswarar (Shiva).", "locator": "Lead section" }] },
+        { "key": "building-phases", "text": "Built under the Pandyas, rebuilt by Vijayanagara in the 14th century after destruction, and expanded by the Madurai Nayaks in the 16th–17th centuries.", "claimType": "historical", "epistemic": "documented",
+          "evidence": [{ "source": "wp-meenakshi-temple", "relation": "supports", "excerpt": "The early structures of the temple were built during the reign of the Pandyas in the 12th to 13th centuries. It was later rebuilt by the Vijayanagara Empire in the 14th century, after its destruction by the armies of the Delhi Sultanate. The temple complex was later expanded extensively by the Madurai Nayaks in the 16th and 17th centuries.", "locator": "Lead section" }] },
+        { "key": "streets-calendar", "text": "Streets and junctions are named after Tamil calendar months, from the practice of starting processions at corresponding spots.", "claimType": "descriptive", "epistemic": "documented",
+          "evidence": [{ "source": "wp-meenakshi-temple", "relation": "supports", "excerpt": "The streets and junctions are named after months of the Tamil Calendar, originating from the practice of starting the temple procession from the spots corresponding to the respective months.", "locator": "Layout and architecture" }] },
+        { "key": "lotus-city", "text": "Tamil texts describe the temple as the city's centre with streets radiating like a lotus.", "claimType": "belief", "epistemic": "tradition",
+          "evidence": [{ "source": "wp-meenakshi-temple", "relation": "supports", "excerpt": "Tamil texts mention that the temple was the centre of the city and the streets radiated out like a lotus and its petals.", "locator": "Layout and architecture", "limitation": "A textual description, not a survey of the city's plan." }] },
+        { "key": "chithirai", "text": "The marriage of Meenakshi and Sundareswarar is celebrated every year in Chithirai.", "claimType": "descriptive", "epistemic": "documented",
+          "evidence": [{ "source": "wp-meenakshi-temple", "relation": "supports", "excerpt": "the marriage of Meenakshi and Sundareswarar is celebrated every year in the month of Chithirai.", "locator": "Mandapas" }] }
+      ]
+    }
+  ]
+}

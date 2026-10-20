@@ -1,0 +1,40 @@
+{
+  "kind": "connection",
+  "slug": "jai-singh-observatories-jaipur-varanasi",
+  "fixture": true,
+  "entities": [
+    { "id": "jantar-mantar-jaipur", "role": "from" },
+    { "id": "varanasi-observatory", "role": "to" },
+    { "id": "sawai-jai-singh-ii", "role": "mentioned" }
+  ],
+  "versions": [
+    {
+      "language": "en",
+      "body": {
+        "title": "One patron, two cities: Jai Singh's observatories in Jaipur and Varanasi",
+        "summary": "The observatories in Jaipur and Varanasi were built at the command of the same ruler, as part of one astronomical project.",
+        "relationshipType": "shared_lineage",
+        "from": { "entity": "jantar-mantar-jaipur", "label": "Jantar Mantar, Jaipur" },
+        "to": { "entity": "varanasi-observatory", "label": "Jantar Mantar, Varanasi" },
+        "rationale": [
+          { "text": "Sawai Jai Singh II ordered five observatories, at Delhi, Mathura, Varanasi, Ujjain and his own capital, Jaipur. They were built between 1724 and 1735.", "claims": ["five-sites", "build-period"] },
+          { "text": "The connection is one of shared patronage and purpose: the observatories were built to produce more accurate astronomical tables.", "claims": ["shared-purpose"] }
+        ],
+        "whyItMatters": [
+          { "text": "It links a city better known for its river and ritual life to an eighteenth-century scientific project, showing that Varanasi's cultural history includes astronomy as well as pilgrimage.", "claims": [] }
+        ],
+        "doesNotEstablish": "Shared patronage does not mean the two observatories are identical, equally preserved or used in the same way today, and it says nothing about the ghats themselves. Jaipur's observatory became Jai Singh's central one; the sources here do not describe the Varanasi instruments in detail.",
+        "uncertainty": "Details of the Varanasi observatory are thin in the sources used for this sample.",
+        "relatedStories": ["jaipur-jantar-mantar", "varanasi-ghats-architecture-and-river"]
+      },
+      "claims": [
+        { "key": "five-sites", "text": "Jai Singh II ordered observatories at Delhi, Mathura, Varanasi, Ujjain and Jaipur.", "claimType": "relationship", "epistemic": "documented",
+          "evidence": [{ "source": "wp-sawai-jai-singh", "relation": "supports", "excerpt": "He ordered the construction of five such buildings—at Delhi, Mathura (in his Agra province), Varanasi, Ujjain (capital of his Malwa province), and his own capital of Jaipur.", "locator": "Astronomy" }] },
+        { "key": "build-period", "text": "The five Jantar Mantars were built between 1724 and 1735.", "claimType": "historical", "epistemic": "documented",
+          "evidence": [{ "source": "wp-jantar-mantar", "relation": "supports", "excerpt": "There were five Jantar Mantars in India, built between 1724 and 1735.", "locator": "Lead section" }] },
+        { "key": "shared-purpose", "text": "The observatories were built to create a more accurate zij (astronomical tables).", "claimType": "relationship", "epistemic": "documented",
+          "evidence": [{ "source": "wp-jantar-mantar-jaipur", "relation": "supports", "excerpt": "He constructed five new observatories in different cities in order to create a more accurate Zij.", "locator": "Purpose" }] }
+      ]
+    }
+  ]
+}

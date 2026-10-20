@@ -1,0 +1,498 @@
+"use client";
+
+import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { useCallback, useEffect, useRef, useState } from "react";
+import type { AskResult } from "@/lib/ai/types";
+import { makeClientT, type ClientT } from "@/lib/i18n/client-t";
+import { IconExternal, IconFlag, IconSend } from "@/components/icons";
+import { Button, EpistemicLabel, FixtureBadge, Notice, cx } from "@/components/ui";
+
+type Stage = "understanding" | "retrieving" | "composing" | "checking";
+type Turn = {
+  id: number;
+  question: string;
+  state: "loading" | "done" | "error";
+  stage?: Stage;
+  result?: AskResult;
+  error?: "service_failure" | "rate_limited" | "too_short" | "too_long" | "network";
+};
+
+const LANG_NAMES: Record<string, string> = {
+  en: "English", hi: "हिन्दी", kn: "ಕನ್ನಡ", ml: "മലയാളം", bn: "বাংলা", ta: "தமிழ்", mr: "मराठी", te: "తెలుగు", gu: "ગુજરાતી", pa: "ਪੰਜਾਬੀ", or: "ଓଡ଼ିଆ",
+};
+
+export function AskClient({
+  messages,
+  lang,
+  initialQuestion,
+  context,
+}: {
+  messages: Record<string, string>;
+  lang: string;
+  initialQuestion?: string;
+  context?: string;
+}) {
+  const t = makeClientT(messages);
+  const router = useRouter();
+  const [turns, setTurns] = useState<Turn[]>([]);
+  const [draft, setDraft] = useState("");
+  const [inputError, setInputError] = useState<string | null>(null);
+  const started = useRef(false);
+  const busy = turns.some((x) => x.state === "loading");
+  const bottom = useRef<HTMLDivElement>(null);
+
+  const ask = useCallback(
+    async (question: string, opts: { replaceId?: number } = {}) => {
+      const q = question.replace(/\s+/g, " ").trim();
+      if (q.length < 3) return setInputError(t("ask.tooShort"));
+      if (q.length > 500) return setInputError(t("ask.tooLong"));
+      setInputError(null);
+      const id = opts.replaceId ?? Date.now();
+      const update = (patch: Partial<Turn>) => setTurns((all) => all.map((x) => (x.id === id ? { ...x, ...patch } : x)));
+      setTurns((all) => (opts.replaceId ? all.map((x) => (x.id === id ? { id, question: q, state: "loading" } : x)) : [...all, { id, question: q, state: "loading" }]));
+      try {
+        const res = await fetch("/api/ask", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ question: q, context }),
+        });
+        if (res.status === 401) {
+          router.push(`/sign-in?next=${encodeURIComponent(window.location.pathname + window.location.search)}&reason=expired`);
+          return;
+        }
+        if (!res.ok || !res.body) {
+          const body = await res.json().catch(() => ({}));
+          return update({ state: "error", error: body.error === "rate_limited" ? "rate_limited" : body.error === "too_long" ? "too_long" : body.error === "too_short" ? "too_short" : "service_failure" });
+        }
+        const reader = res.body.getReader();
+        const dec = new TextDecoder();
+        let buf = "";
+        for (;;) {
+          const { done, value } = await reader.read();
+          if (done) break;
+          buf += dec.decode(value, { stream: true });
+          let nl;
+          while ((nl = buf.indexOf("\n")) >= 0) {
+            const line = buf.slice(0, nl);
+            buf = buf.slice(nl + 1);
+            if (!line.trim()) continue;
+            const msg = JSON.parse(line);
+            if (msg.type === "stage") update({ stage: msg.stage });
+            else if (msg.type === "result") {
+              update({ state: "done", result: msg.result });
+              try {
+                sessionStorage.setItem(`tc_answer_${msg.result.runId}`, JSON.stringify(snapshot(q, msg.result)));
+              } catch {
+                /* storage unavailable */
+              }
+            } else if (msg.type === "error") update({ state: "error", error: "service_failure" });
+          }
+        }
+      } catch {
+        update({ state: "error", error: "network" });
+      }
+    },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [context, router],
+  );
+
+  useEffect(() => {
+    if (initialQuestion && !started.current) {
+      started.current = true;
+      void ask(initialQuestion);
+    }
+  }, [initialQuestion, ask]);
+
+  useEffect(() => {
+    bottom.current?.scrollIntoView({ behavior: "smooth", block: "end" });
+  }, [turns.length]);
+
+  async function newTopic() {
+    await fetch("/api/ask", { method: "DELETE" }).catch(() => {});
+    setTurns([]);
+    setDraft("");
+  }
+
+  return (
+    <div>
+      {turns.length > 0 && (
+        <div className="mb-4 flex flex-wrap items-center justify-between gap-2">
+          <p className="text-meta text-muted">{t("ask.sessionNote")}</p>
+          <Button variant="tertiary" type="button" onClick={newTopic} disabled={busy}>
+            {t("ask.newTopic")}
+          </Button>
+        </div>
+      )}
+
+      <ol className="space-y-8">
+        {turns.map((turn) => (
+          <li key={turn.id}>
+            <p className="text-meta font-semibold uppercase tracking-[0.12em] text-muted">{t("ask.yourQuestion")}</p>
+            <p className="mt-1 font-serif text-card font-semibold">{turn.question}</p>
+            <div className="mt-4">
+              {turn.state === "loading" && <Progress stage={turn.stage} t={t} />}
+              {turn.state === "error" && (
+                <Notice tone={turn.error === "rate_limited" ? "warning" : "error"} role="alert" title={turn.error === "rate_limited" ? undefined : t("ask.failureTitle")}>
+                  <p>{turn.error === "rate_limited" ? t("ask.rateLimited") : turn.error === "too_long" ? t("ask.tooLong") : turn.error === "too_short" ? t("ask.tooShort") : t("ask.failureBody")}</p>
+                  {turn.error !== "rate_limited" && (
+                    <Button type="button" variant="secondary" className="mt-3" onClick={() => ask(turn.question, { replaceId: turn.id })}>
+                      {t("common.retry")}
+                    </Button>
+                  )}
+                </Notice>
+              )}
+              {turn.state === "done" && turn.result && (
+                <Answer result={turn.result} t={t} onRetry={() => ask(turn.question, { replaceId: turn.id })} onAsk={(q) => ask(q)} selected={lang} />
+              )}
+            </div>
+          </li>
+        ))}
+      </ol>
+
+      <div ref={bottom} />
+      <form
+        className="sticky bottom-16 mt-8 rounded-lg border border-border bg-surface p-3 shadow-sm md:bottom-4"
+        onSubmit={(e) => {
+          e.preventDefault();
+          if (busy) return;
+          void ask(draft);
+          setDraft("");
+        }}
+      >
+        <label htmlFor="ask-input" className="sr-only">
+          {turns.length ? t("ask.followUp") : t("ask.placeholder")}
+        </label>
+        <div className="flex items-end gap-2">
+          <textarea
+            id="ask-input"
+            value={draft}
+            onChange={(e) => setDraft(e.target.value)}
+            rows={2}
+            maxLength={500}
+            placeholder={turns.length ? t("ask.followUp") : t("ask.placeholder")}
+            className="block min-h-12 w-full resize-y rounded-md border border-border bg-canvas px-3 py-2 text-body"
+            aria-invalid={!!inputError}
+            aria-describedby={inputError ? "ask-error" : "ask-lang"}
+            onKeyDown={(e) => {
+              if (e.key === "Enter" && !e.shiftKey && !e.nativeEvent.isComposing) {
+                e.preventDefault();
+                e.currentTarget.form?.requestSubmit();
+              }
+            }}
+          />
+          <button type="submit" disabled={busy} className="inline-flex size-12 shrink-0 items-center justify-center rounded-md bg-forest text-on-forest hover:bg-forest-hover disabled:bg-muted/60" aria-label={t("ask.submit")}>
+            <IconSend width={20} height={20} />
+          </button>
+        </div>
+        {inputError ? (
+          <p id="ask-error" role="alert" className="mt-1 text-meta text-error">
+            {inputError}
+          </p>
+        ) : (
+          <p id="ask-lang" className="mt-1 text-meta text-muted">
+            {t("ask.responseLanguage", { language: LANG_NAMES[lang] ?? lang })}
+          </p>
+        )}
+      </form>
+    </div>
+  );
+}
+
+function snapshot(question: string, r: AskResult) {
+  const answer = [r.summary, ...r.sections.flatMap((s) => [s.heading, ...s.points.map((p) => p.text)])].filter(Boolean).join("\n");
+  return {
+    question,
+    answer: answer.slice(0, 8000),
+    sources: [...r.sources, ...r.foundSources].slice(0, 20).map((s) => ({ title: s.title, url: s.url })),
+    outcome: r.outcome,
+  };
+}
+
+function Progress({ stage, t }: { stage?: Stage; t: ClientT }) {
+  const stages: Stage[] = ["understanding", "retrieving", "composing", "checking"];
+  const idx = stage ? stages.indexOf(stage) : 0;
+  return (
+    <div className="rounded-md border border-border bg-surface p-4" role="status" aria-live="polite">
+      <div className="flex items-center gap-3">
+        <span className="size-5 animate-spin rounded-full border-2 border-forest border-r-transparent" aria-hidden="true" />
+        <span className="text-support font-semibold">{t(`ask.stage.${stages[Math.max(0, idx)]}`)}</span>
+      </div>
+      <ol className="mt-3 flex gap-1.5" aria-hidden="true">
+        {stages.map((s, i) => (
+          <li key={s} className={cx("h-1 flex-1 rounded-full", i <= idx ? "bg-forest" : "bg-border")} />
+        ))}
+      </ol>
+      <p className="mt-2 text-meta text-muted">{t("ask.progressNote")}</p>
+    </div>
+  );
+}
+
+function Markers({ nums, runId }: { nums: number[]; runId: string }) {
+  if (!nums.length) return null;
+  return (
+    <span className="ml-1 whitespace-nowrap">
+      {nums.map((n) => (
+        <a key={n} href={`#src-${runId}-${n}`} className="ml-0.5 inline-flex min-w-6 items-center justify-center rounded-sm border border-forest/40 px-1 text-meta font-semibold text-forest no-underline hover:bg-forest/10" aria-label={`Source ${n}`}>
+          {n}
+        </a>
+      ))}
+    </span>
+  );
+}
+
+function Answer({ result: r, t, onRetry, onAsk, selected }: { result: AskResult; t: ClientT; onRetry: () => void; onAsk: (q: string) => void; selected: string }) {
+  const shown = r.outcome === "routine_approved" || r.outcome === "qualified";
+
+  return (
+    <div className="space-y-4">
+      {r.detectedLanguage && (
+        <Notice>{t("ask.languageDetected", { language: LANG_NAMES[r.detectedLanguage] ?? r.detectedLanguage, selected: LANG_NAMES[selected] ?? selected })}</Notice>
+      )}
+      {r.retrievalIssues.length > 0 && <Notice tone="warning">{t("ask.retrievalLimited", { providers: r.retrievalIssues.join(", ") })}</Notice>}
+
+      {shown && (
+        <article className="rounded-lg border border-border bg-surface p-4 md:p-6" aria-label={t("ask.response")}>
+          <div className="flex flex-wrap items-center gap-2">
+            <span
+              className={cx(
+                "inline-flex items-center gap-1.5 rounded-sm border px-2 py-0.5 text-meta font-semibold",
+                r.outcome === "routine_approved" ? "border-success/40 bg-success/5 text-success" : "border-warning/50 bg-warning/10 text-warning",
+              )}
+            >
+              {r.outcome === "routine_approved" ? "✓" : "!"} {r.outcome === "routine_approved" ? t("ask.status.routine") : t("ask.status.qualified")}
+            </span>
+            <span className="text-meta text-muted">{t("ask.dynamicNote")}</span>
+          </div>
+          <p className="mt-1 text-meta text-muted">{r.outcome === "routine_approved" ? t("ask.status.routineHelp") : t("ask.status.qualifiedHelp")}</p>
+          {r.risk !== "routine" && (
+            <Notice tone="warning" className="mt-3">
+              {t("ask.sensitiveNotice")}
+            </Notice>
+          )}
+          {!r.languageValidated && r.language !== "en" && (
+            <Notice className="mt-3">{t("ask.languageUnvalidated", { language: LANG_NAMES[r.language] ?? r.language })}</Notice>
+          )}
+
+          <p className="mt-2 text-meta font-semibold uppercase tracking-[0.12em] text-terracotta-text">{t("ask.response")}</p>
+          {r.summary && (
+            <p className="mt-2 text-body">
+              {r.summary}
+              <Markers nums={r.summarySources} runId={r.runId} />
+            </p>
+          )}
+
+          {r.sections.map((s, i) => (
+            <section key={i} className="mt-5">
+              <h3 className="font-serif text-card font-semibold">{s.heading || t("ask.context")}</h3>
+              <ul className="mt-2 space-y-3">
+                {s.points.map((p, j) => (
+                  <li key={j} className="text-body">
+                    <EpistemicLabel kind={p.epistemic} label={t(`epistemic.${p.epistemic}`)} /> <span className="ml-1">{p.text}</span>
+                    <Markers nums={p.sources} runId={r.runId} />
+                  </li>
+                ))}
+              </ul>
+            </section>
+          ))}
+
+          {r.perspectives.length > 0 && (
+            <section className="mt-6">
+              <h3 className="font-serif text-card font-semibold">{t("ask.perspectives")}</h3>
+              <ul className="mt-2 grid gap-3 md:grid-cols-2">
+                {r.perspectives.map((p, i) => (
+                  <li key={i} className="rounded-md border border-border bg-canvas p-3">
+                    <p className="font-semibold">{p.label}</p>
+                    <p className="mt-1 text-support">
+                      {p.text}
+                      <Markers nums={p.sources} runId={r.runId} />
+                    </p>
+                  </li>
+                ))}
+              </ul>
+            </section>
+          )}
+
+          {r.limitations.length > 0 && (
+            <section className="mt-6 rounded-md border border-warning/40 bg-warning/5 p-3">
+              <h3 className="font-semibold">{t("ask.limits")}</h3>
+              <ul className="mt-1 list-disc pl-5 text-support">
+                {r.limitations.map((l, i) => (
+                  <li key={i}>{l}</li>
+                ))}
+              </ul>
+            </section>
+          )}
+
+          {r.outcome === "qualified" && r.failedChecks.length > 0 && (
+            <details className="mt-4 text-support">
+              <summary className="cursor-pointer font-semibold text-warning">{t("ask.checksTitle")}</summary>
+              <ul className="mt-2 list-disc pl-5">
+                {r.failedChecks.map((c) => (
+                  <li key={c.id}>{t(`check.${c.id}`)}</li>
+                ))}
+              </ul>
+            </details>
+          )}
+
+          <section className="mt-6" aria-labelledby={`sources-${r.runId}`}>
+            <h3 id={`sources-${r.runId}`} className="font-serif text-card font-semibold">
+              {t("ask.sources")}
+            </h3>
+            <ol className="mt-2 space-y-3">
+              {r.sources.map((s) => (
+                <li key={s.n} id={`src-${r.runId}-${s.n}`} className="scroll-mt-24 rounded-md border border-border bg-canvas p-3 target:ring-2 target:ring-forest">
+                  <SourceLine s={s} t={t} selected={selected} />
+                  {s.quotes.length > 0 && (
+                    <details className="mt-2">
+                      <summary className="cursor-pointer text-meta font-semibold text-forest">{t("ask.quotesLabel")}</summary>
+                      <ul className="mt-1 space-y-1">
+                        {s.quotes.map((q, i) => (
+                          <li key={i} lang={s.language} className="border-l-2 border-forest/40 pl-2 text-support">
+                            “{q}”
+                          </li>
+                        ))}
+                      </ul>
+                    </details>
+                  )}
+                </li>
+              ))}
+            </ol>
+          </section>
+        </article>
+      )}
+
+      {r.outcome === "evidence_only" && (
+        <div className="rounded-lg border border-border bg-surface p-4">
+          <Notice tone="info" title={t("ask.status.evidenceOnly")}>
+            {t("ask.status.evidenceOnlyHelp")}
+          </Notice>
+          {r.risk !== "routine" && (
+            <Notice tone="warning" className="mt-3">
+              {t("ask.sensitiveNotice")}
+            </Notice>
+          )}
+          <FoundSources r={r} t={t} selected={selected} />
+        </div>
+      )}
+
+      {r.outcome === "abstained" && (
+        <div className="rounded-lg border border-border bg-surface p-4">
+          <Notice
+            tone="warning"
+            role="status"
+            title={r.abstainReason === "sensitive" ? t("ask.sensitiveTitle") : r.abstainReason === "out_of_scope" ? t("ask.outOfScopeTitle") : t("ask.insufficientTitle")}
+          >
+            <p>{r.abstainReason === "sensitive" ? t("ask.sensitiveBody") : r.abstainReason === "out_of_scope" ? t("ask.outOfScopeBody") : t("ask.insufficientBody")}</p>
+            {r.abstainReason === "insufficient_evidence" && <p className="mt-1">{t("ask.tryNarrower")}</p>}
+          </Notice>
+          {r.foundSources.length > 0 && r.abstainReason !== "sensitive" && (
+            <>
+              <p className="mt-3 text-support text-muted">{t("ask.foundSourcesNote")}</p>
+              <FoundSources r={r} t={t} selected={selected} />
+            </>
+          )}
+        </div>
+      )}
+
+      {r.outcome === "failed" && (
+        <Notice tone="error" role="alert" title={t("ask.failureTitle")}>
+          <p>{t("ask.failureBody")}</p>
+          <Button type="button" variant="secondary" className="mt-3" onClick={onRetry}>
+            {t("common.retry")}
+          </Button>
+        </Notice>
+      )}
+
+      {r.nextDiscoveries.length > 0 && (
+        <section>
+          <h3 className="font-serif text-card font-semibold">{t("ask.nextDiscoveries")}</h3>
+          <ul className="mt-2 grid gap-2">
+            {r.nextDiscoveries.map((d) => (
+              <li key={`${d.kind}:${d.slug}`}>
+                <Link href={`/${d.kind === "story" ? "stories" : "connections"}/${d.slug}`} className="block rounded-md border border-border bg-surface p-3 hover:border-forest">
+                  <span className="font-semibold text-forest">{d.title}</span>
+                  <span className="mt-0.5 block text-meta text-muted">{t("ask.nextRationale")}</span>
+                  {d.isFixture && (
+                    <span className="mt-1 block">
+                      <FixtureBadge label={t("common.devFixture")} />
+                    </span>
+                  )}
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </section>
+      )}
+
+      {r.followUps.length > 0 && (
+        <section>
+          <h3 className="text-support font-semibold">{t("ask.followUps")}</h3>
+          <ul className="mt-2 flex flex-wrap gap-2">
+            {r.followUps.map((q) => (
+              <li key={q}>
+                <button type="button" onClick={() => onAsk(q)} className="min-h-11 rounded-full border border-border bg-surface px-3 text-left text-support text-forest hover:border-forest">
+                  {q}
+                </button>
+              </li>
+            ))}
+          </ul>
+        </section>
+      )}
+
+      <Link href={`/report?type=answer&ref=${r.runId}`} className="inline-flex min-h-11 items-center gap-2 text-support font-semibold text-forest underline-offset-4 hover:underline">
+        <IconFlag width={18} height={18} /> {t("ask.reportAnswer")}
+      </Link>
+    </div>
+  );
+}
+
+function SourceLine({ s, t, selected }: { s: AskResult["sources"][number] | AskResult["foundSources"][number]; t: ClientT; selected: string }) {
+  const internal = s.url?.startsWith("/");
+  return (
+    <div>
+      <p className="font-semibold">
+        {"n" in s ? <span className="mr-1 text-muted">{s.n}.</span> : null}
+        {s.title}
+      </p>
+      <p className="text-meta text-muted">
+        {[s.publisher, s.sourceType === "editorial" ? null : t(`source.type.${s.sourceType}`)].filter(Boolean).join(" · ")}
+        {s.language !== selected ? ` · ${t("source.languageDiffers", { language: LANG_NAMES[s.language] ?? s.language })}` : ""}
+      </p>
+      {s.internal?.isFixture && (
+        <span className="mt-1 block">
+          <FixtureBadge label={t("common.devFixture")} />
+        </span>
+      )}
+      {s.url ? (
+        internal ? (
+          <Link href={s.url} className="mt-1 inline-flex min-h-9 items-center text-meta font-semibold text-forest underline">
+            {t("ask.internalSource")}
+          </Link>
+        ) : (
+          <a href={s.url} target="_blank" rel="noopener noreferrer" className="mt-1 inline-flex min-h-9 items-center gap-1 text-meta font-semibold text-forest underline">
+            {t("ask.sourceOpen")} <IconExternal width={14} height={14} />
+          </a>
+        )
+      ) : (
+        <p className="text-meta text-muted">{t("source.noUrl")}</p>
+      )}
+    </div>
+  );
+}
+
+function FoundSources({ r, t, selected }: { r: AskResult; t: ClientT; selected: string }) {
+  return (
+    <ul className="mt-3 space-y-3">
+      {r.foundSources.map((s, i) => (
+        <li key={i} className="rounded-md border border-border bg-canvas p-3">
+          <SourceLine s={s} t={t} selected={selected} />
+          <p className="mt-2 text-meta font-semibold text-muted">{t("ask.evidencePassage")}</p>
+          <blockquote lang={s.language} className="border-l-2 border-forest/40 pl-2 text-support">
+            {s.excerpt}
+          </blockquote>
+        </li>
+      ))}
+    </ul>
+  );
+}

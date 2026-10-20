@@ -1,0 +1,67 @@
+{
+  "kind": "story",
+  "slug": "kolkata-durga-puja-from-household-to-city",
+  "city": "kolkata",
+  "fixture": true,
+  "entities": [{ "id": "durga-puja-kolkata", "role": "subject" }],
+  "versions": [
+    {
+      "language": "en",
+      "body": {
+        "title": "Durga Puja in Kolkata: from household worship to a city's festival",
+        "orientation": "How a religious festival celebrated by wealthy households became a public festival shaped by neighbourhoods across Kolkata.",
+        "sections": [
+          {
+            "id": "story",
+            "kind": "narrative",
+            "heading": "The story",
+            "paragraphs": [
+              { "text": "Durga Puja in Kolkata is an annual Bengali Hindu festival marking the worship of the goddess Durga.", "claims": ["what-it-is"] },
+              { "text": "Household pujas came first: one family has organised a puja at its residence in Barisha since 1610, which may be the oldest in the city.", "claims": ["oldest-household"] }
+            ]
+          },
+          {
+            "id": "public",
+            "kind": "context",
+            "heading": "Becoming a public festival",
+            "paragraphs": [
+              { "text": "For a long time the festival was confined to wealthy families. In the early twentieth century, community-organised 'barowari' pujas appeared — the first in 1910 in Bhowanipore — and the festival quickly became a common people's celebration.", "claims": ["barowari-1910", "barowari-spread"] }
+            ]
+          },
+          {
+            "id": "why",
+            "kind": "significance",
+            "heading": "Why it matters",
+            "paragraphs": [
+              { "text": "The festival's history shows how religious practice, urban neighbourhoods and civic life shape one another. In December 2021 it was inscribed on UNESCO's intangible cultural heritage lists.", "claims": ["unesco-2021"] }
+            ]
+          },
+          {
+            "id": "limits",
+            "kind": "limits",
+            "heading": "What we don't know",
+            "paragraphs": [
+              { "text": "The claim about the oldest household puja is hedged in the source itself. Accounts from community organisers, artisans and devotees are not represented in this sample.", "claims": [] }
+            ]
+          }
+        ],
+        "themes": ["festival", "urban history", "community"],
+        "followUpQuestions": ["What is a barowari puja?", "How did Durga Puja come to be recognised by UNESCO?"],
+        "connections": [],
+        "relatedStories": []
+      },
+      "claims": [
+        { "key": "what-it-is", "text": "Durga Puja in Kolkata is an annual Bengali Hindu festival marking the worship of Durga.", "claimType": "descriptive", "epistemic": "documented",
+          "evidence": [{ "source": "wp-durga-puja-in-kolkata", "relation": "supports", "excerpt": "is an annual Bengali Hindu festival celebrated marking the worship of the Hindu mother goddess Durga.", "locator": "Lead section" }] },
+        { "key": "oldest-household", "text": "The Sabarna Roy Choudhury family has organised Durga Puja at Barisha since 1610, probably the oldest in Kolkata.", "claimType": "historical", "epistemic": "uncertain",
+          "evidence": [{ "source": "wp-durga-puja-in-kolkata", "relation": "supports", "excerpt": "Since 1610, the Sabarna Roy Choudhury family has been organizing Durga Puja at their original residence in Barisha, Kolkata. This is probably the oldest Durga Puja festival in Kolkata.", "locator": "History — Beginning", "limitation": "The source itself says 'probably'." }] },
+        { "key": "barowari-1910", "text": "Earlier confined to wealthy families, the first barowari (community) puja in Kolkata was organised in 1910 in Bhowanipore.", "claimType": "historical", "epistemic": "documented",
+          "evidence": [{ "source": "wp-durga-puja-in-kolkata", "relation": "supports", "excerpt": "Earlier, Durga Puja in Kolkata was confined to wealthy families. In 1910, the first Barowari Durga Puja in Kolkata was organized by \"Bhowanipore Sanatan Dharmatsahini Sabha\" at Balram Basu Ghat Road, Bhowanipore.", "locator": "History — Beginning" }] },
+        { "key": "barowari-spread", "text": "Barowari puja quickly became a common people's festival.", "claimType": "historical", "epistemic": "documented",
+          "evidence": [{ "source": "wp-durga-puja-in-kolkata", "relation": "supports", "excerpt": "Barwari Durga Puja quickly became a common people's festival in Kolkata.", "locator": "History — Beginning" }] },
+        { "key": "unesco-2021", "text": "Durga Puja in Kolkata was inscribed on UNESCO's intangible cultural heritage lists in December 2021.", "claimType": "historical", "epistemic": "documented",
+          "evidence": [{ "source": "wp-durga-puja-in-kolkata", "relation": "supports", "excerpt": "Durga Puja in Kolkata has been inscribed on the list of UNESCO Intangible Cultural Heritage Lists in December 2021.", "locator": "Lead section" }] }
+      ]
+    }
+  ]
+}

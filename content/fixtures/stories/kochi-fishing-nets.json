@@ -1,0 +1,74 @@
+{
+  "kind": "story",
+  "slug": "kochi-shore-operated-fishing-nets",
+  "city": "kochi",
+  "fixture": true,
+  "entities": [{ "id": "kochi-fishing-nets", "role": "subject" }],
+  "versions": [
+    {
+      "language": "en",
+      "body": {
+        "title": "Kochi's shore-operated fishing nets: a practice and its contested origins",
+        "orientation": "How a working fishing technique became a symbol of maritime exchange — and why its origin story should be read carefully.",
+        "hero": { "src": "/images/dev/kochi.jpg", "alt": "Silhouettes of large shore-operated fishing nets against an orange sky at Kochi", "credit": "Placeholder from design document — usage rights not verified", "rightsCleared": false },
+        "sections": [
+          {
+            "id": "story",
+            "kind": "narrative",
+            "heading": "The story",
+            "paragraphs": [
+              { "text": "On the shore at Kochi stand large lift nets: cantilevered frames that lower a net over the water and raise it again, balanced by suspended stones. Each installation is worked by a team of up to six people.", "claims": ["how-it-works"] },
+              { "text": "The balance is fine enough that a person walking along the main beam can lower the net. In India such nets are found mostly in Kochi and Kollam.", "claims": ["balance", "where-found"] }
+            ]
+          },
+          {
+            "id": "origins",
+            "kind": "perspectives",
+            "heading": "Where did they come from?",
+            "paragraphs": [
+              { "text": "The nets are widely called 'Chinese fishing nets', and are linked to Chinese contact with the Malabar coast. But the same reference work states this origin as fact in one place and as only a possibility — perhaps via the explorer Zheng He — in another.", "claims": ["origin-14th-century", "origin-zheng-he"] },
+              { "text": "A popular explanation of the name Kochi as 'co-chin', 'like China', is described only as one interpretation.", "claims": ["kochi-name"] }
+            ]
+          },
+          {
+            "id": "why",
+            "kind": "significance",
+            "heading": "Why it matters",
+            "paragraphs": [
+              { "text": "The nets are a living practice rather than only a monument, and their story is often used to talk about Kochi as a place of maritime encounter. That makes it important to separate what is documented about how the nets work from what is believed about where they came from.", "claims": [] }
+            ]
+          },
+          {
+            "id": "limits",
+            "kind": "limits",
+            "heading": "What we don't know",
+            "paragraphs": [
+              { "text": "This sample relies on one short tertiary article with few citations. The date and route by which the technique reached Kochi are treated here as unresolved; specialist maritime-history and community sources are needed.", "claims": [] }
+            ]
+          }
+        ],
+        "themes": ["maritime exchange", "living practice", "contested origins"],
+        "followUpQuestions": ["What evidence is there for Chinese contact with the Malabar coast?", "How are the nets maintained today?"],
+        "connections": [],
+        "relatedStories": []
+      },
+      "claims": [
+        { "key": "how-it-works", "text": "Each net is a cantilevered installation with stone counterweights, operated by a team of up to six fishermen.", "claimType": "descriptive", "epistemic": "documented",
+          "evidence": [
+            { "source": "wp-chinese-fishing-nets", "relation": "supports", "excerpt": "Each structure is at least 10 m high and comprises a cantilever with an outstretched net suspended over the sea and large stones suspended from ropes as counterweights at the other end.", "locator": "Lead section" },
+            { "source": "wp-chinese-fishing-nets", "relation": "supports", "excerpt": "Each installation is operated by a team of up to six fishermen.", "locator": "Lead section" }
+          ] },
+        { "key": "balance", "text": "A person walking along the main beam can make the net descend.", "claimType": "descriptive", "epistemic": "documented",
+          "evidence": [{ "source": "wp-chinese-fishing-nets", "relation": "supports", "excerpt": "The system is sufficiently balanced that the weight of a man walking along the main beam is sufficient to cause the net to descend into the sea.", "locator": "Operation" }] },
+        { "key": "where-found", "text": "In India these nets are mostly found in Kochi and Kollam.", "claimType": "descriptive", "epistemic": "documented",
+          "evidence": [{ "source": "wp-chinese-fishing-nets", "relation": "supports", "excerpt": "in India they are mostly found in the Indian cities of Kochi and Kollam", "locator": "Lead section" }] },
+        { "key": "origin-14th-century", "text": "The technique is said to have been introduced by Chinese explorers in the 14th century.", "claimType": "historical", "epistemic": "contested", "scopeNote": "The same source elsewhere presents the origin only as a possibility.",
+          "evidence": [{ "source": "wp-chinese-fishing-nets", "relation": "supports", "excerpt": "it was introduced by Chinese explorers who landed there in the 14th century", "locator": "Lead section", "limitation": "Uncited in the source and inconsistent with its own later hedging." }] },
+        { "key": "origin-zheng-he", "text": "The nets may have been introduced by Zheng He.", "claimType": "historical", "epistemic": "uncertain",
+          "evidence": [{ "source": "wp-chinese-fishing-nets", "relation": "supports", "excerpt": "The nets may have been introduced by the Chinese explorer Zheng He.", "locator": "Operation" }] },
+        { "key": "kochi-name", "text": "One interpretation reads the name Kochi as 'co-chin', meaning 'like China'.", "claimType": "interpretive", "epistemic": "interpretation",
+          "evidence": [{ "source": "wp-chinese-fishing-nets", "relation": "supports", "excerpt": "one interpretation of the city name Kochi is ‘co-chin', meaning ‘like China.’", "locator": "Lead section", "limitation": "Presented as one interpretation only; other etymologies exist but are not covered by this source." }] }
+      ]
+    }
+  ]
+}

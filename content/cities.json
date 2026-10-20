@@ -1,0 +1,50 @@
+[
+  {
+    "slug": "varanasi",
+    "sortOrder": 1,
+    "names": { "en": "Varanasi", "hi": "वाराणसी", "mr": "वाराणसी", "bn": "বারাণসী", "ta": "வாரணாசி", "te": "వారణాసి", "kn": "ವಾರಾಣಸಿ", "ml": "വാരാണസി", "gu": "વારાણસી", "pa": "ਵਾਰਾਣਸੀ", "or": "ବାରାଣସୀ" },
+    "taglines": { "en": "River traditions, ritual and sacred geography" },
+    "taglineReviewed": false,
+    "image": { "src": "/images/dev/varanasi-card.jpg", "alt": "Riverfront steps and buildings along the Ganges at Varanasi at sunrise", "credit": "Placeholder from design document — usage rights not verified", "rightsCleared": false }
+  },
+  {
+    "slug": "jaipur",
+    "sortOrder": 2,
+    "names": { "en": "Jaipur", "hi": "जयपुर", "mr": "जयपूर", "bn": "জয়পুর", "ta": "ஜெய்ப்பூர்", "te": "జైపూర్", "kn": "ಜೈಪುರ", "ml": "ജയ്പൂർ", "gu": "જયપુર", "pa": "ਜੈਪੁਰ", "or": "ଜୟପୁର" },
+    "taglines": { "en": "Architecture, crafts and courtly histories" },
+    "taglineReviewed": false,
+    "image": { "src": "/images/dev/jaipur.jpg", "alt": "Pink sandstone façade with many small windows in Jaipur", "credit": "Placeholder from design document — usage rights not verified", "rightsCleared": false }
+  },
+  {
+    "slug": "hampi",
+    "sortOrder": 3,
+    "names": { "en": "Hampi", "hi": "हम्पी", "mr": "हंपी", "bn": "হাম্পি", "ta": "ஹம்பி", "te": "హంపి", "kn": "ಹಂಪಿ", "ml": "ഹംപി", "gu": "હમ્પી", "pa": "ਹੰਪੀ", "or": "ହମ୍ପି" },
+    "taglines": { "en": "Monuments, empire and material culture" },
+    "taglineReviewed": false,
+    "image": { "src": "/images/dev/hampi.jpg", "alt": "Carved stone chariot shrine with temple towers behind it at Hampi", "credit": "Placeholder from design document — usage rights not verified", "rightsCleared": false }
+  },
+  {
+    "slug": "kochi",
+    "sortOrder": 4,
+    "names": { "en": "Kochi", "hi": "कोच्चि", "mr": "कोची", "bn": "কোচি", "ta": "கொச்சி", "te": "కొచ్చి", "kn": "ಕೊಚ್ಚಿ", "ml": "കൊച്ചി", "gu": "કોચી", "pa": "ਕੋਚੀ", "or": "କୋଚି" },
+    "taglines": { "en": "Maritime exchange and cultural encounters" },
+    "taglineReviewed": false,
+    "image": { "src": "/images/dev/kochi.jpg", "alt": "Silhouettes of large shore-operated fishing nets against an orange sky at Kochi", "credit": "Placeholder from design document — usage rights not verified", "rightsCleared": false }
+  },
+  {
+    "slug": "kolkata",
+    "sortOrder": 5,
+    "names": { "en": "Kolkata", "hi": "कोलकाता", "mr": "कोलकाता", "bn": "কলকাতা", "ta": "கொல்கத்தா", "te": "కోల్‌కతా", "kn": "ಕೋಲ್ಕತ್ತಾ", "ml": "കൊൽക്കത്ത", "gu": "કોલકાતા", "pa": "ਕੋਲਕਾਤਾ", "or": "କୋଲକାତା" },
+    "taglines": { "en": "Literature, art and intellectual movements" },
+    "taglineReviewed": false,
+    "image": null
+  },
+  {
+    "slug": "madurai",
+    "sortOrder": 6,
+    "names": { "en": "Madurai", "hi": "मदुरै", "mr": "मदुराई", "bn": "মাদুরাই", "ta": "மதுரை", "te": "మదురై", "kn": "ಮಧುರೈ", "ml": "മധുര", "gu": "મદુરાઈ", "pa": "ਮਦੁਰਈ", "or": "ମଦୁରାଇ" },
+    "taglines": { "en": "Temple traditions, poetry and urban history" },
+    "taglineReviewed": false,
+    "image": null
+  }
+]
