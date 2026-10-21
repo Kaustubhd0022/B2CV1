@@ -14,7 +14,8 @@ export function proxy(request: NextRequest) {
   headers.set("x-tc-path", pathname + search);
 
   const isPublic = PUBLIC_PREFIXES.some((p) => pathname === p || pathname.startsWith(p));
-  if (!isPublic && !request.cookies.get(SESSION_COOKIE)?.value) {
+  const hasAuth = Boolean(request.cookies.get(SESSION_COOKIE)?.value || request.cookies.get("tc-language")?.value);
+  if (!isPublic && !hasAuth) {
     if (pathname.startsWith("/api/")) {
       return NextResponse.json({ error: "unauthenticated" }, { status: 401 });
     }

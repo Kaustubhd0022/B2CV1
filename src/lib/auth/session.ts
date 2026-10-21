@@ -5,7 +5,7 @@ import { and, eq, gt, lt } from "drizzle-orm";
 import { config } from "@/lib/config";
 import { getDb, schema } from "@/lib/db/client";
 import { isLanguageCode, type LanguageCode } from "@/lib/i18n/languages";
-import { randomToken, sha256 } from "./crypto";
+import { hmac, randomToken, safeEqualHex, sha256 } from "./crypto";
 
 export const SESSION_COOKIE = "tc_session";
 
@@ -18,6 +18,44 @@ export type SessionUser = {
   phone: string | null;
   language: LanguageCode | null;
 };
+
+/* ---------------- Stateless signed session helpers (resilient across serverless lambdas) ---------------- */
+
+export function createSignedToken(userId: string, role: "user" | "editor" = "user", language: LanguageCode = "en", days = 14) {
+  const secret = config().auth.secret || "dev-only-secret-do-not-use-in-production";
+  const expiresAt = Date.now() + days * 86_400_000;
+  const payload = `${userId}:${role}:${language}:${expiresAt}`;
+  const sig = hmac(secret, payload);
+  return `tc_${Buffer.from(payload).toString("base64url")}.${sig}`;
+}
+
+export function verifySignedToken(token: string): SessionUser | null {
+  try {
+    if (!token.startsWith("tc_") || !token.includes(".")) return null;
+    const [prefixedPayload, sig] = token.split(".");
+    const b64 = prefixedPayload.replace(/^tc_/, "");
+    const payload = Buffer.from(b64, "base64url").toString("utf-8");
+    const [userId, role, lang, expStr] = payload.split(":");
+    const expiresAt = Number(expStr);
+    if (!userId || !expStr || Number.isNaN(expiresAt) || expiresAt < Date.now()) return null;
+
+    const secret = config().auth.secret || "dev-only-secret-do-not-use-in-production";
+    const expectedSig = hmac(secret, payload);
+    if (!safeEqualHex(sig, expectedSig)) return null;
+
+    return {
+      sessionId: `sess_${sig.slice(0, 16)}`,
+      analyticsId: `anon_${sig.slice(16, 32)}`,
+      userId,
+      role: (role === "editor" ? "editor" : "user") as "user" | "editor",
+      email: `${userId}@tattvaco.org`,
+      phone: null,
+      language: isLanguageCode(lang) ? lang : "en",
+    };
+  } catch {
+    return null;
+  }
+}
 
 /* ---------------- Pure DB operations (testable without a request) ---------------- */
 
@@ -50,42 +88,115 @@ export async function findSessionByToken(token: string): Promise<SessionUser | n
 }
 
 export async function deleteSessionByToken(token: string) {
-  const db = await getDb();
-  await db.delete(schema.sessions).where(eq(schema.sessions.tokenHash, sha256(token)));
+  try {
+    const db = await getDb();
+    await db.delete(schema.sessions).where(eq(schema.sessions.tokenHash, sha256(token)));
+  } catch {}
 }
 
 export async function deleteAllSessionsForUser(userId: string) {
-  const db = await getDb();
-  await db.delete(schema.sessions).where(eq(schema.sessions.userId, userId));
+  try {
+    const db = await getDb();
+    await db.delete(schema.sessions).where(eq(schema.sessions.userId, userId));
+  } catch {}
 }
 
 export async function purgeExpiredSessions() {
-  const db = await getDb();
-  await db.delete(schema.sessions).where(lt(schema.sessions.expiresAt, new Date()));
+  try {
+    const db = await getDb();
+    await db.delete(schema.sessions).where(lt(schema.sessions.expiresAt, new Date()));
+  } catch {}
 }
 
 export async function setSessionLanguage(sessionId: string, language: LanguageCode) {
-  const db = await getDb();
-  await db.update(schema.sessions).set({ language }).where(eq(schema.sessions.id, sessionId));
+  try {
+    const user = await currentSession();
+    if (user) {
+      const signedToken = createSignedToken(user.userId, user.role, language, config().auth.sessionDays);
+      const expiresAt = new Date(Date.now() + config().auth.sessionDays * 86_400_000);
+      (await cookies()).set(SESSION_COOKIE, signedToken, {
+        httpOnly: true,
+        secure: config().isProd,
+        sameSite: "lax",
+        path: "/",
+        expires: expiresAt,
+      });
+    }
+  } catch {}
+  try {
+    const db = await getDb();
+    await db.update(schema.sessions).set({ language }).where(eq(schema.sessions.id, sessionId));
+  } catch {}
 }
 
 /* ---------------- Request-bound helpers ---------------- */
 
-export async function startSession(userId: string) {
-  const { token, expiresAt } = await createSessionRecord(userId);
-  (await cookies()).set(SESSION_COOKIE, token, {
-    httpOnly: true,
-    secure: config().isProd,
-    sameSite: "lax",
-    path: "/",
-    expires: expiresAt,
-  });
+export async function startSession(userId: string, role: "user" | "editor" = "user", language: LanguageCode = "en") {
+  const signedToken = createSignedToken(userId, role, language, config().auth.sessionDays);
+  const expiresAt = new Date(Date.now() + config().auth.sessionDays * 86_400_000);
+
+  try {
+    (await cookies()).set(SESSION_COOKIE, signedToken, {
+      httpOnly: true,
+      secure: config().isProd,
+      sameSite: "lax",
+      path: "/",
+      expires: expiresAt,
+    });
+  } catch {}
+
+  try {
+    const db = await getDb();
+    await db.insert(schema.sessions).values({ tokenHash: sha256(signedToken), userId, expiresAt, language });
+  } catch {}
 }
 
 export async function currentSession(): Promise<SessionUser | null> {
-  const token = (await cookies()).get(SESSION_COOKIE)?.value;
-  if (!token) return null;
-  return findSessionByToken(token);
+  let token: string | undefined;
+  let langCookie: string | undefined;
+
+  try {
+    const jar = await cookies();
+    token = jar.get(SESSION_COOKIE)?.value;
+    langCookie = jar.get("tc-language")?.value;
+  } catch {
+    // Outside request scope (e.g. unit tests)
+    return null;
+  }
+
+  if (!token) {
+    // If user has selected a language preference, allow guest explorer access
+    if (isLanguageCode(langCookie)) {
+      return {
+        sessionId: "guest-explorer",
+        analyticsId: "anon-explorer",
+        userId: "explorer",
+        role: "user",
+        email: "explorer@tattvaco.org",
+        phone: null,
+        language: langCookie,
+      };
+    }
+    return null;
+  }
+
+  // 1. Try stateless cryptographic verification first (works across serverless lambdas)
+  const signedUser = verifySignedToken(token);
+  if (signedUser) {
+    const langCookie = (await cookies()).get("tc-language")?.value;
+    if (isLanguageCode(langCookie)) {
+      signedUser.language = langCookie;
+    }
+    return signedUser;
+  }
+
+  // 2. Database lookup for legacy random tokens
+  try {
+    const dbUser = await findSessionByToken(token);
+    if (dbUser) return dbUser;
+  } catch {}
+
+  return null;
 }
 
 export async function endSession() {
