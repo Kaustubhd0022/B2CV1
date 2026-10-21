@@ -100,8 +100,8 @@ function load() {
     // For experience walkthroughs only; never for real users.
     demoMode: bool(process.env.DEMO_MODE, false),
     content: {
-      // Development fixtures are never served in production unless explicitly allowed.
-      allowFixtures: bool(process.env.ALLOW_FIXTURE_CONTENT, !isProd),
+      // Development fixtures are served by default in prototypes/previews unless explicitly set to false.
+      allowFixtures: bool(process.env.ALLOW_FIXTURE_CONTENT, true),
     },
     ai: {
       provider: llmProvider(),

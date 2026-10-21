@@ -18,7 +18,7 @@ export function CityMapPanel({
   const hasMapsKey = !!googleMapsApiKey;
 
   return (
-    <section className="rounded-lg border border-border bg-surface p-5 md:p-6" aria-labelledby="city-map-title">
+    <section className="overflow-hidden rounded-2xl border border-border/80 bg-surface p-5 md:p-6 shadow-2xs" aria-labelledby="city-map-title">
       <div className="flex flex-wrap items-baseline justify-between gap-2 border-b border-border pb-4">
         <div>
           <div className="flex items-center gap-2">
@@ -35,15 +35,15 @@ export function CityMapPanel({
           href={`https://www.google.com/maps/search/?api=1&query=${city.coordinates.lat},${city.coordinates.lng}`}
           target="_blank"
           rel="noopener noreferrer"
-          className="inline-flex min-h-10 items-center gap-1.5 rounded-full border border-border px-3.5 text-meta font-semibold text-charcoal hover:bg-surface-2"
+          className="inline-flex min-h-10 items-center gap-1.5 rounded-full border border-border px-3.5 text-meta font-semibold text-charcoal hover:bg-surface-2 transition-colors"
         >
           Open in Google Maps <IconExternal width={14} height={14} />
         </a>
       </div>
 
-      <div className="mt-6 grid gap-6 lg:grid-cols-[1fr_22rem]">
+      <div className="mt-6 grid gap-6 md:grid-cols-[minmax(0,1fr)_20rem] min-w-0">
         {/* Map View / Fallback Visualizer */}
-        <div className="relative min-h-[320px] overflow-hidden rounded-md border border-border bg-stone">
+        <div className="relative min-h-[340px] md:min-h-[420px] min-w-0 overflow-hidden rounded-xl border border-border bg-stone">
           {hasMapsKey ? (
             <iframe
               title={`Map of ${cityName}`}
@@ -59,7 +59,7 @@ export function CityMapPanel({
             />
           ) : (
             // Honest degraded state (Master Spec Section 8.2 & Screen 10)
-            <div className="relative flex h-full min-h-[320px] flex-col justify-between p-5">
+            <div className="relative flex h-full min-h-[340px] md:min-h-[420px] flex-col justify-between p-5">
               <div className="flex items-start justify-between gap-4">
                 <span className="rounded-full bg-canvas/80 px-3 py-1 text-meta font-medium text-muted backdrop-blur-sm">
                   Topographic Cultural Atlas Fallback
@@ -106,26 +106,26 @@ export function CityMapPanel({
         </div>
 
         {/* Landmark Selector List */}
-        <div>
+        <div className="min-w-0 flex flex-col">
           <h3 className="text-support font-semibold uppercase tracking-wider text-muted">Key Heritage Sites ({city.landmarks.length})</h3>
-          <ul className="mt-3 space-y-2">
+          <ul className="mt-3 space-y-2 max-h-[380px] md:max-h-[420px] overflow-y-auto pr-1">
             {city.landmarks.map((landmark) => {
               const isSelected = activeLandmark.id === landmark.id;
               return (
-                <li key={landmark.id}>
+                <li key={landmark.id} className="min-w-0">
                   <button
                     type="button"
                     onClick={() => setActiveLandmark(landmark)}
                     className={cx(
-                      "w-full rounded-md border p-3 text-left transition-colors",
+                      "w-full rounded-xl border p-3 text-left transition-colors min-w-0",
                       isSelected
                         ? "border-forest bg-forest/10 ring-1 ring-forest/30 shadow-xs"
                         : "border-border bg-surface hover:border-forest/40 hover:bg-surface-2",
                     )}
                   >
-                    <div className="flex items-baseline justify-between gap-2">
-                      <span className="text-support font-semibold text-charcoal">{landmark.name}</span>
-                      <span className="text-[11px] uppercase tracking-wider text-muted">
+                    <div className="flex items-baseline justify-between gap-2 min-w-0">
+                      <span className="text-support font-semibold text-charcoal truncate">{landmark.name}</span>
+                      <span className="shrink-0 text-[10px] uppercase tracking-wider text-muted font-mono">
                         {landmark.type.replace("_", " ")}
                       </span>
                     </div>

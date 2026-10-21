@@ -66,6 +66,7 @@ export type PublishedRow = {
 };
 
 function loadFilesFallback(kind: "story" | "connection"): PublishedRow[] {
+  if (!config().content.allowFixtures) return [];
   const dir = path.join(process.cwd(), "content/fixtures", kind === "story" ? "stories" : "connections");
   try {
     const files = readdirSync(dir).filter((f) => f.endsWith(".json"));
@@ -99,7 +100,7 @@ function loadFilesFallback(kind: "story" | "connection"): PublishedRow[] {
 async function published(kind: "story" | "connection", where?: SQL): Promise<PublishedRow[]> {
   try {
     const db = await getDb();
-    return await db
+    const rows = await db
       .select({
         versionId: schema.contentVersions.id,
         itemId: schema.contentItems.id,
@@ -116,9 +117,19 @@ async function published(kind: "story" | "connection", where?: SQL): Promise<Pub
       .innerJoin(schema.contentItems, eq(schema.contentItems.id, schema.contentVersions.itemId))
       .where(and(publishedOf(kind), where))
       .orderBy(asc(schema.contentItems.createdAt));
-  } catch {
-    return loadFilesFallback(kind);
-  }
+    if (rows && rows.length > 0) return rows;
+
+    // If the database has 0 items of this kind at all (e.g. unseeded/cold DB), fallback to files
+    const [count] = await db
+      .select({ c: sql<number>`count(*)::int` })
+      .from(schema.contentItems)
+      .where(eq(schema.contentItems.kind, kind));
+    if ((count?.c ?? 0) === 0) {
+      return loadFilesFallback(kind);
+    }
+    return rows;
+  } catch {}
+  return loadFilesFallback(kind);
 }
 
 /** Story counts per city: in the selected language, and in any language. */

@@ -11,6 +11,7 @@ import { ConnectionCard, StoryCard } from "@/components/cards";
 import { CityMapPanel } from "@/components/city-map";
 import { Notice, Page, SectionTitle } from "@/components/ui";
 import { PhotoHero } from "@/components/hero";
+import { IconExternal } from "@/components/icons";
 
 export async function generateMetadata({ params }: { params: Promise<{ city: string }> }): Promise<Metadata> {
   const c = await getCity((await params).city);
@@ -31,7 +32,7 @@ export default async function CityPage({
 
   const showOther = (await searchParams).all === "1";
   const [stories, storiesAny] = await Promise.all([cityStories(slug, lang), cityStories(slug, lang, true)]);
-  const list = showOther ? storiesAny : stories;
+  const list = showOther || stories.length === 0 ? storiesAny : stories;
   const name = localName(city.names, lang);
   const culturalData = getCityCulturalData(slug);
   await track("city_view", { city: slug }, session.analyticsId);
@@ -355,18 +356,37 @@ export default async function CityPage({
           </section>
         </div>
 
-        {/* Right Column: Cultural Map Panel, Must-Explore Landmarks & AI Prompt */}
-        <aside className="mt-14 space-y-6 lg:mt-0" aria-label="City discovery tools">
-          {/* Map Section */}
-          <div id="map-section">
-            {culturalData && (
-              <CityMapPanel
-                city={culturalData}
-                cityName={name}
-                googleMapsApiKey={process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY}
-              />
-            )}
-          </div>
+        {/* Right Column: Spatial Orientation, Must-Explore Sites & AI Prompt */}
+        <aside className="mt-14 space-y-6 lg:mt-0 min-w-0" aria-label="City discovery tools">
+          {/* Spatial Geography Quickcard */}
+          {culturalData && (
+            <div className="rounded-2xl border border-border/80 bg-surface p-6 shadow-2xs">
+              <div className="flex items-center gap-2">
+                <span className="inline-block size-2 rounded-full bg-terracotta" aria-hidden="true" />
+                <span className="text-meta font-semibold uppercase tracking-wider text-muted">Geography & Spatial Hub</span>
+              </div>
+              <h3 className="mt-2 font-serif text-card font-semibold text-charcoal">{name}</h3>
+              <p className="mt-1 text-meta text-muted leading-relaxed">
+                {culturalData.region} · {culturalData.coordinates.lat.toFixed(4)}° N, {culturalData.coordinates.lng.toFixed(4)}° E
+              </p>
+              <div className="mt-4 flex flex-col gap-2.5">
+                <a
+                  href="#map-section"
+                  className="inline-flex min-h-10 items-center justify-center rounded-xl bg-forest/10 border border-forest/20 px-4 text-support font-semibold text-forest hover:bg-forest/15 transition-colors"
+                >
+                  View on Interactive Map ↓
+                </a>
+                <a
+                  href={`https://www.google.com/maps/search/?api=1&query=${culturalData.coordinates.lat},${culturalData.coordinates.lng}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex min-h-10 items-center justify-center gap-1.5 rounded-xl border border-border px-4 text-meta font-semibold text-charcoal hover:bg-surface-2 transition-colors"
+                >
+                  Open in Google Maps <IconExternal width={13} height={13} />
+                </a>
+              </div>
+            </div>
+          )}
 
           {/* Must-Explore Landmarks */}
           {culturalData && culturalData.landmarks.length > 0 && (
@@ -418,7 +438,18 @@ export default async function CityPage({
         </aside>
       </div>
 
-      {/* 5. Other Pilot Cities Strip */}
+      {/* 5. Full-Width Interactive Cultural Map Section */}
+      {culturalData && (
+        <section id="map-section" className="mt-16 scroll-mt-6" aria-labelledby="city-map-title">
+          <CityMapPanel
+            city={culturalData}
+            cityName={name}
+            googleMapsApiKey={process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY}
+          />
+        </section>
+      )}
+
+      {/* 6. Other Pilot Cities Strip */}
       <section className="mt-16 border-t border-border pt-10" aria-labelledby="other-cities-title">
         <div className="flex items-baseline justify-between gap-3">
           <div>
