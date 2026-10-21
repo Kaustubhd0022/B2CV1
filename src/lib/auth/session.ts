@@ -4,6 +4,7 @@ import { notFound, redirect } from "next/navigation";
 import { and, eq, gt, lt } from "drizzle-orm";
 import { config } from "@/lib/config";
 import { getDb, schema } from "@/lib/db/client";
+import { createHash } from "node:crypto";
 import { isLanguageCode, type LanguageCode } from "@/lib/i18n/languages";
 import { hmac, randomToken, safeEqualHex, sha256 } from "./crypto";
 
@@ -18,6 +19,11 @@ export type SessionUser = {
   phone: string | null;
   language: LanguageCode | null;
 };
+
+function toDeterministicUuid(str: string): string {
+  const hex = createHash("md5").update(str).digest("hex");
+  return `${hex.slice(0, 8)}-${hex.slice(8, 12)}-4${hex.slice(13, 16)}-a${hex.slice(17, 20)}-${hex.slice(20, 32)}`;
+}
 
 /* ---------------- Stateless signed session helpers (resilient across serverless lambdas) ---------------- */
 
@@ -43,10 +49,14 @@ export function verifySignedToken(token: string): SessionUser | null {
     const expectedSig = hmac(secret, payload);
     if (!safeEqualHex(sig, expectedSig)) return null;
 
+    const finalUserId = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(userId)
+      ? userId
+      : toDeterministicUuid(`user:${userId}`);
+
     return {
-      sessionId: `sess_${sig.slice(0, 16)}`,
+      sessionId: toDeterministicUuid(`sess:${sig}`),
       analyticsId: `anon_${sig.slice(16, 32)}`,
-      userId,
+      userId: finalUserId,
       role: (role === "editor" ? "editor" : "user") as "user" | "editor",
       email: `${userId}@tattvaco.org`,
       phone: null,
@@ -168,9 +178,9 @@ export async function currentSession(): Promise<SessionUser | null> {
     // If user has selected a language preference, allow guest explorer access
     if (isLanguageCode(langCookie)) {
       return {
-        sessionId: "guest-explorer",
+        sessionId: toDeterministicUuid("guest-explorer-session"),
         analyticsId: "anon-explorer",
-        userId: "explorer",
+        userId: toDeterministicUuid("guest-explorer-user"),
         role: "user",
         email: "explorer@tattvaco.org",
         phone: null,

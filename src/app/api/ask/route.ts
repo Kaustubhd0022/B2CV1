@@ -32,8 +32,16 @@ export async function POST(request: NextRequest) {
   if (!minute.ok || !day.ok) return NextResponse.json({ error: "rate_limited" }, { status: 429 });
 
   const db = await getDb();
-  const [row] = await db.select({ ctx: schema.sessions.askContext }).from(schema.sessions).where(eq(schema.sessions.id, session.sessionId));
-  const context = body?.newTopic === true ? [] : (row?.ctx ?? []).slice(-c.sessionContextTurns);
+  let context: typeof schema.sessions.$inferSelect.askContext = [];
+  const isUuid = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(session.sessionId);
+  if (isUuid && body?.newTopic !== true) {
+    try {
+      const [row] = await db.select({ ctx: schema.sessions.askContext }).from(schema.sessions).where(eq(schema.sessions.id, session.sessionId));
+      if (row?.ctx) context = row.ctx.slice(-c.sessionContextTurns);
+    } catch {
+      // In stateless or ephemeral mode, sessions table might not have this row
+    }
+  }
 
   let focus: string | undefined;
   const m = typeof body?.context === "string" ? /^(story|connection):([a-z0-9-]{1,120})$/.exec(body.context) : null;
@@ -51,8 +59,14 @@ export async function POST(request: NextRequest) {
       try {
         const { result, contextTurn } = await runAsk({ question: v.question, lang, context, focus, onStage: (stage) => send({ type: "stage", stage }) });
         // Session-only AI context (FR-17): stored on the session row, deleted with the session.
-        const next = contextTurn ? [...context, contextTurn].slice(-c.sessionContextTurns) : context;
-        await db.update(schema.sessions).set({ askContext: next }).where(eq(schema.sessions.id, session.sessionId));
+        if (isUuid) {
+          try {
+            const next = contextTurn ? [...context, contextTurn].slice(-c.sessionContextTurns) : context;
+            await db.update(schema.sessions).set({ askContext: next }).where(eq(schema.sessions.id, session.sessionId));
+          } catch {
+            // DB session update non-blocking
+          }
+        }
         await track("answer_outcome", { outcome: result.outcome, risk: result.risk, language: lang }, session.analyticsId);
         send({ type: "result", result });
       } catch (err) {
@@ -70,7 +84,12 @@ export async function POST(request: NextRequest) {
 export async function DELETE() {
   const session = await currentSession();
   if (!session) return NextResponse.json({ error: "unauthenticated" }, { status: 401 });
-  const db = await getDb();
-  await db.update(schema.sessions).set({ askContext: [] }).where(eq(schema.sessions.id, session.sessionId));
+  const isUuid = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(session.sessionId);
+  if (isUuid) {
+    try {
+      const db = await getDb();
+      await db.update(schema.sessions).set({ askContext: [] }).where(eq(schema.sessions.id, session.sessionId));
+    } catch {}
+  }
   return NextResponse.json({ ok: true });
 }
