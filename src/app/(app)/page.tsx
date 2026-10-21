@@ -76,7 +76,7 @@ export default async function HomePage() {
                   <Link
                     key={sq}
                     href={`/ask?q=${encodeURIComponent(sq)}`}
-                    className="inline-flex items-center rounded-full border border-white/25 bg-black/40 px-3 py-1 text-meta text-white/90 backdrop-blur-xs transition-colors hover:border-gold hover:bg-black/60"
+                    className="inline-flex items-center rounded-full border border-border/80 bg-surface/80 px-3.5 py-1 text-meta text-white/90 backdrop-blur-md transition-colors hover:border-gold hover:text-gold"
                   >
                     {sq}
                   </Link>
@@ -99,7 +99,7 @@ export default async function HomePage() {
               Discover contextual relationships across geography, craft, philosophy and art
             </p>
           </div>
-          <Link href="/explore" className="inline-flex min-h-11 items-center text-support font-medium text-forest hover:underline">
+          <Link href="/explore" className="inline-flex min-h-11 items-center text-support font-medium text-gold hover:underline">
             View all 9 themes →
           </Link>
         </div>
@@ -142,7 +142,7 @@ export default async function HomePage() {
             <SectionTitle id="cities-title">Start with a city</SectionTitle>
             <p className="mt-1 text-support text-muted">Six pilot cultural ecosystems across India</p>
           </div>
-          <Link href="/explore" className="inline-flex min-h-11 items-center text-support text-muted hover:text-charcoal">
+          <Link href="/explore" className="inline-flex min-h-11 items-center text-support text-gold hover:text-gold-hover hover:underline">
             {t("home.viewAll", { count: cities.length })}
           </Link>
         </div>
@@ -153,7 +153,7 @@ export default async function HomePage() {
             <li>
               <Link
                 href="/explore"
-                className="inline-flex min-h-11 items-center rounded-full bg-forest px-5 text-support font-semibold text-on-forest"
+                className="inline-flex min-h-11 items-center rounded-full bg-forest px-5 text-support font-semibold text-on-forest shadow-xs"
               >
                 {t("home.allCities")}
               </Link>
@@ -162,7 +162,7 @@ export default async function HomePage() {
               <li key={c.slug}>
                 <Link
                   href={`/cities/${c.slug}`}
-                  className="glass inline-flex min-h-11 items-center rounded-full px-5 text-support text-charcoal hover:bg-surface-2"
+                  className="glass inline-flex min-h-11 items-center rounded-full px-5 text-support text-charcoal hover:bg-elevated hover:border-gold/50 transition-colors"
                 >
                   {localName(c.names, lang)}
                 </Link>

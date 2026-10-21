@@ -71,9 +71,9 @@ export function CityMapPanel({
 
               {/* Cultural Landmarks Schematic Overlay */}
               <div className="my-auto py-6">
-                <div className="mx-auto max-w-sm rounded-lg border border-border/80 bg-canvas/90 p-4 shadow-sm backdrop-blur-md">
+                <div className="mx-auto max-w-sm rounded-xl border border-border bg-surface p-5 shadow-lg backdrop-blur-md">
                   <div className="flex items-center justify-between">
-                    <span className="rounded-full bg-forest/20 px-2.5 py-0.5 text-meta font-semibold text-gold">
+                    <span className="rounded-full bg-gold/15 border border-gold/30 px-2.5 py-0.5 text-meta font-semibold text-gold">
                       {activeLandmark.type.replace("_", " ").toUpperCase()}
                     </span>
                     <span className="font-mono text-meta text-muted">
@@ -81,7 +81,7 @@ export function CityMapPanel({
                     </span>
                   </div>
                   <h3 className="mt-2 text-section font-semibold text-charcoal">{activeLandmark.name}</h3>
-                  <p className="mt-1 text-support text-muted">{activeLandmark.description}</p>
+                  <p className="mt-1 text-support text-muted leading-relaxed">{activeLandmark.description}</p>
                   <div className="mt-3">
                     <a
                       href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(
@@ -89,7 +89,7 @@ export function CityMapPanel({
                       )}`}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="inline-flex items-center gap-1 text-meta font-semibold text-terracotta-text hover:underline"
+                      className="inline-flex items-center gap-1 text-meta font-semibold text-gold hover:underline"
                     >
                       Get directions for this landmark <IconExternal width={13} height={13} />
                     </a>
@@ -119,8 +119,8 @@ export function CityMapPanel({
                     className={cx(
                       "w-full rounded-md border p-3 text-left transition-colors",
                       isSelected
-                        ? "border-gold bg-surface-2 ring-1 ring-gold"
-                        : "border-border bg-canvas hover:bg-surface-2",
+                        ? "border-gold bg-[#221e17] ring-1 ring-gold shadow-xs"
+                        : "border-border bg-surface hover:border-gold/40 hover:bg-surface-2",
                     )}
                   >
                     <div className="flex items-baseline justify-between gap-2">

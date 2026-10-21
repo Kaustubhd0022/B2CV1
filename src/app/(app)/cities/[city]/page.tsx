@@ -373,14 +373,14 @@ export default async function CityPage({
             <div className="rounded-xl border border-border bg-surface p-5 shadow-xs">
               <div className="flex items-center justify-between">
                 <h3 className="font-serif text-card font-semibold text-charcoal">Must-Explore Sites</h3>
-                <span className="text-[11px] font-semibold text-forest">{culturalData.landmarks.length} sites</span>
+                <span className="text-[11px] font-semibold text-gold">{culturalData.landmarks.length} sites</span>
               </div>
               <ul className="mt-4 space-y-3">
                 {culturalData.landmarks.slice(0, 5).map((lm) => (
                   <li key={lm.id} className="border-t border-border/60 pt-2.5 first:border-0 first:pt-0">
                     <div className="flex items-baseline justify-between gap-2">
                       <p className="text-support font-semibold text-charcoal">{lm.name}</p>
-                      <span className="rounded-xs bg-surface-2 px-1.5 py-0.5 text-[10px] uppercase font-semibold text-muted">
+                      <span className="rounded-xs bg-elevated border border-border/70 px-1.5 py-0.5 text-[10px] uppercase font-semibold text-muted">
                         {lm.type}
                       </span>
                     </div>
@@ -392,8 +392,8 @@ export default async function CityPage({
           )}
 
           {/* Ask TattvaCo Prompt Card */}
-          <div className="rounded-xl border border-forest/30 bg-gradient-to-br from-[#f2f7f3] to-[#e7f0e9] p-5 shadow-xs">
-            <span className="text-meta font-semibold uppercase tracking-wider text-forest">✦ Ask TattvaCo</span>
+          <div className="rounded-xl border border-gold/30 bg-gradient-to-br from-[#1b1916] via-[#161513] to-[#111110] p-5 shadow-md">
+            <span className="text-meta font-semibold uppercase tracking-wider text-gold">✦ Ask TattvaCo</span>
             <h3 className="mt-1 font-serif text-card font-semibold text-charcoal">
               Curious about {name}?
             </h3>
@@ -408,7 +408,7 @@ export default async function CityPage({
                 <Link
                   key={qText}
                   href={`/ask?q=${encodeURIComponent(qText)}`}
-                  className="block rounded-lg border border-border bg-surface p-2.5 text-meta font-medium text-charcoal hover:border-forest hover:text-forest transition-colors shadow-2xs"
+                  className="block rounded-lg border border-border bg-surface p-2.5 text-meta font-medium text-charcoal hover:border-gold hover:text-gold transition-colors shadow-2xs"
                 >
                   “{qText}” →
                 </Link>
@@ -425,7 +425,7 @@ export default async function CityPage({
             <SectionTitle id="other-cities-title">Explore Other Pilot Cities</SectionTitle>
             <p className="mt-1 text-support text-muted">Continue discovering India&apos;s diverse cultural ecosystems</p>
           </div>
-          <Link href="/explore" className="text-support font-semibold text-forest hover:underline">
+          <Link href="/explore" className="text-support font-semibold text-gold hover:underline">
             View all 6 cities →
           </Link>
         </div>

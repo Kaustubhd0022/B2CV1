@@ -34,7 +34,7 @@ export function PhotoHero({
       <div className="flex min-h-[440px] flex-col justify-between p-5 md:min-h-[480px] md:p-8">
         <div className="flex items-start justify-between gap-3">
           {back ? (
-            <Link href={back.href} aria-label={back.label} title={back.label} className="glass flex size-12 items-center justify-center rounded-full text-white hover:bg-white/10">
+            <Link href={back.href} aria-label={back.label} title={back.label} className="glass flex size-12 items-center justify-center rounded-full text-gold hover:text-white hover:bg-elevated transition-colors shadow-md">
               <IconBack width={22} height={22} />
             </Link>
           ) : (
@@ -43,7 +43,7 @@ export function PhotoHero({
           {image && !image.rightsCleared && <p className="max-w-48 text-right text-[11px] leading-snug text-white/55">{image.credit}</p>}
         </div>
         <div lang={lang}>
-          {eyebrow && <p className="text-meta font-semibold uppercase tracking-[0.14em] text-white/75">{eyebrow}</p>}
+          {eyebrow && <p className="text-meta font-semibold uppercase tracking-[0.16em] text-gold">{eyebrow}</p>}
           <h1 className="mt-2 max-w-2xl text-page font-semibold leading-tight text-white md:text-display">{title}</h1>
           {children && <div className="mt-3 max-w-xl text-support text-white/80">{children}</div>}
         </div>
@@ -57,9 +57,9 @@ export function FactPills({ items }: { items: { label: string; value: string | n
   return (
     <ul className="no-scrollbar -mx-4 mt-5 flex gap-2 overflow-x-auto px-4">
       {items.map((i) => (
-        <li key={i.label} className="shrink-0 rounded-md border border-border bg-surface px-4 py-2.5">
+        <li key={i.label} className="shrink-0 rounded-md border border-border bg-surface px-4 py-2.5 shadow-xs">
           <p className="text-meta text-muted">{i.label}</p>
-          <p className="mt-0.5 inline-block rounded-full bg-surface-2 px-2.5 py-0.5 text-meta font-semibold text-charcoal">{i.value}</p>
+          <p className="mt-0.5 inline-block rounded-full bg-elevated border border-border/70 px-2.5 py-0.5 text-meta font-semibold text-gold">{i.value}</p>
         </li>
       ))}
     </ul>

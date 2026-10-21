@@ -274,8 +274,8 @@ export default async function StoryPage({ params, searchParams }: { params: Prom
 
           {/* Historical Timeline (Master Spec §12 Screen 6 / Reference Page 2) */}
           {timeline && (
-            <section id="timeline-section" className="mt-14 rounded-2xl border border-border bg-[#FAF9F5] p-6 shadow-xs">
-              <div className="flex items-center gap-2 text-meta font-semibold uppercase tracking-wider text-terracotta">
+            <section id="timeline-section" className="mt-14 rounded-2xl border border-border bg-surface p-6 shadow-md">
+              <div className="flex items-center gap-2 text-meta font-semibold uppercase tracking-wider text-gold">
                 <span>✦</span>
                 <span>A River Through Time</span>
               </div>
@@ -286,7 +286,7 @@ export default async function StoryPage({ params, searchParams }: { params: Prom
                 {timeline.map((m, idx) => (
                   <div key={m.era} className="relative flex gap-4 pl-2">
                     <div className="flex flex-col items-center">
-                      <span className="flex size-7 items-center justify-center rounded-full bg-forest text-[11px] font-bold text-white shadow-xs">
+                      <span className="flex size-7 items-center justify-center rounded-full bg-forest text-[11px] font-bold text-on-forest shadow-xs">
                         {idx + 1}
                       </span>
                       {idx < timeline.length - 1 && <span className="h-full w-0.5 bg-border my-1" />}
@@ -294,7 +294,7 @@ export default async function StoryPage({ params, searchParams }: { params: Prom
                     <div className="pb-4">
                       <div className="flex items-baseline gap-2">
                         <h3 className="font-serif text-support font-semibold text-charcoal">{m.era}</h3>
-                        <span className="text-[11px] font-mono text-terracotta font-medium">({m.period})</span>
+                        <span className="text-[11px] font-mono text-gold font-medium">({m.period})</span>
                       </div>
                       <p className="mt-1 text-support text-muted leading-relaxed">{m.desc}</p>
                     </div>
@@ -314,7 +314,7 @@ export default async function StoryPage({ params, searchParams }: { params: Prom
                     key={th}
                     className="inline-flex items-center gap-1.5 rounded-full border border-border bg-surface px-4 py-1.5 text-support font-medium text-charcoal shadow-2xs"
                   >
-                    <span className="text-terracotta">✦</span>
+                    <span className="text-gold">✦</span>
                     {th}
                   </span>
                 ))}
@@ -347,8 +347,8 @@ export default async function StoryPage({ params, searchParams }: { params: Prom
           </section>
 
           {/* Go Deeper / Follow-up Questions */}
-          <section className="mt-12 rounded-2xl border border-border bg-[#F4F7F4] p-6 shadow-xs" aria-labelledby="deeper-title">
-            <div className="flex items-center gap-2 text-meta font-semibold uppercase tracking-wider text-forest">
+          <section className="mt-12 rounded-2xl border border-gold/30 bg-gradient-to-br from-[#1b1916] via-[#161513] to-[#111110] p-6 shadow-md" aria-labelledby="deeper-title">
+            <div className="flex items-center gap-2 text-meta font-semibold uppercase tracking-wider text-gold">
               <span>✦</span>
               <span>Curiosity-Led Exploration</span>
             </div>
@@ -372,7 +372,7 @@ export default async function StoryPage({ params, searchParams }: { params: Prom
                     <li key={q}>
                       <Link
                         href={`/ask?q=${encodeURIComponent(q)}&context=${encodeURIComponent(from)}`}
-                        className="inline-flex min-h-10 items-center rounded-full border border-border bg-surface px-3.5 py-1 text-meta text-forest hover:border-forest transition-colors shadow-2xs"
+                        className="inline-flex min-h-10 items-center rounded-full border border-border bg-elevated px-3.5 py-1 text-meta text-charcoal hover:border-gold hover:text-gold transition-colors shadow-2xs"
                       >
                         {q} →
                       </Link>
@@ -405,7 +405,7 @@ export default async function StoryPage({ params, searchParams }: { params: Prom
               />
               <Link
                 href={`/report?type=story&ref=${encodeURIComponent(slug)}`}
-                className="inline-flex min-h-11 items-center gap-2 px-1 text-support font-semibold text-forest underline-offset-4 hover:underline"
+                className="inline-flex min-h-11 items-center gap-2 px-1 text-support font-semibold text-gold underline-offset-4 hover:underline"
               >
                 <IconFlag width={18} height={18} /> {t("story.report")}
               </Link>
@@ -424,12 +424,12 @@ export default async function StoryPage({ params, searchParams }: { params: Prom
           {/* City / Geography Pin */}
           {city && (
             <div className="rounded-xl border border-border bg-surface p-5 shadow-xs">
-              <span className="text-meta font-semibold uppercase tracking-wider text-terracotta">Location</span>
+              <span className="text-meta font-semibold uppercase tracking-wider text-gold">Location</span>
               <h3 className="mt-1 font-serif text-card font-semibold text-charcoal">{cityName}</h3>
               <p className="mt-1 text-support text-muted leading-snug">{city.taglines[lang] ?? city.taglines.en}</p>
               <Link
                 href={`/cities/${city.slug}`}
-                className="mt-3 inline-flex items-center text-support font-semibold text-forest hover:underline"
+                className="mt-3 inline-flex items-center text-support font-semibold text-gold hover:underline"
               >
                 Explore City Ecosystem →
               </Link>
@@ -442,7 +442,7 @@ export default async function StoryPage({ params, searchParams }: { params: Prom
               <h2 id="sources-title" className="font-serif text-card font-semibold text-charcoal">
                 {t("story.sources")}
               </h2>
-              <span className="rounded-full bg-forest/10 px-2 py-0.5 text-[11px] font-semibold text-forest">
+              <span className="rounded-full bg-gold/15 px-2 py-0.5 text-[11px] font-semibold text-gold">
                 {sourceCount} Grounded
               </span>
             </div>
@@ -462,7 +462,7 @@ export default async function StoryPage({ params, searchParams }: { params: Prom
                 {related.map((s) => (
                   <li key={s.slug} className="border-t border-border/60 pt-2.5 first:border-0 first:pt-0">
                     <Link href={`/stories/${s.slug}`} className="group block">
-                      <p className="text-support font-semibold text-charcoal group-hover:text-forest transition-colors">
+                      <p className="text-support font-semibold text-charcoal group-hover:text-gold transition-colors">
                         {s.title}
                       </p>
                       <p className="mt-0.5 text-meta text-muted line-clamp-2">{s.summary}</p>

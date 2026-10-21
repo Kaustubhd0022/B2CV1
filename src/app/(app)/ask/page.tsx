@@ -16,15 +16,15 @@ export default async function AskPage({ searchParams }: { searchParams: Promise<
 
   return (
     <Page className="max-w-6xl pt-2">
-      <div className="rounded-2xl border border-border bg-gradient-to-br from-[#faf6f0] via-[#f5ede2] to-[#ede3d4] p-6 sm:p-8 shadow-xs">
-        <div className="flex items-center gap-2 text-meta font-semibold uppercase tracking-wider text-forest">
+      <div className="rounded-2xl border border-border bg-gradient-to-br from-[#1b1916] via-[#161513] to-[#111110] p-6 sm:p-8 shadow-lg">
+        <div className="flex items-center gap-2 text-meta font-semibold uppercase tracking-wider text-gold">
           <span>✦</span>
           <span>AI Cultural Assistant</span>
         </div>
         <h1 className="mt-2 font-serif text-page font-semibold text-charcoal md:text-page-lg">
           {t("ask.title")}
         </h1>
-        <p className="mt-1 max-w-2xl text-body text-muted leading-relaxed">
+        <p className="mt-1 max-w-2xl text-body text-secondary-text leading-relaxed">
           {t("ask.subtitle")} Every response is synthesized exclusively from statutory archives, research repositories and verified source material.
         </p>
       </div>

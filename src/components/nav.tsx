@@ -29,8 +29,8 @@ export function MainNav({ labels, variant }: { labels: Labels; variant: "bottom"
                   href={href}
                   aria-current={active ? "page" : undefined}
                   className={cx(
-                    "inline-flex min-h-11 items-center rounded-full px-4 text-support font-semibold",
-                    active ? "bg-forest text-on-forest" : "text-muted hover:text-charcoal",
+                    "inline-flex min-h-11 items-center rounded-full px-4 text-support font-semibold transition-colors",
+                    active ? "bg-forest text-on-forest shadow-xs" : "text-muted hover:text-charcoal hover:bg-surface/60",
                   )}
                 >
                   {labels[key]}
@@ -45,7 +45,7 @@ export function MainNav({ labels, variant }: { labels: Labels; variant: "bottom"
   // Floating pill of circular buttons (editorial mobile navigation). Labels stay available to assistive tech.
   return (
     <nav aria-label={labels.main} className="fixed inset-x-0 bottom-4 z-40 flex justify-center pb-[env(safe-area-inset-bottom)] md:hidden">
-      <ul className="flex items-center gap-2 rounded-full border border-border bg-surface/95 p-1.5 shadow-lg backdrop-blur-md">
+      <ul className="flex items-center gap-2 rounded-full border border-border bg-surface/95 p-1.5 shadow-2xl backdrop-blur-md">
         {ITEMS.map(({ href, key, Icon, match }) => {
           const active = match(pathname);
           return (
@@ -57,7 +57,7 @@ export function MainNav({ labels, variant }: { labels: Labels; variant: "bottom"
                 title={labels[key]}
                 className={cx(
                   "flex size-12 items-center justify-center rounded-full transition-all",
-                  active ? "bg-forest text-on-forest shadow-xs" : "text-muted hover:bg-surface-2 hover:text-charcoal",
+                  active ? "bg-forest text-on-forest shadow-xs" : "text-muted hover:bg-elevated hover:text-charcoal",
                 )}
               >
                 <Icon width={20} height={20} />
@@ -76,10 +76,10 @@ export function LanguageLink({ lang, native, label }: { lang: string; native: st
   return (
     <Link
       href={`/language?next=${encodeURIComponent(pathname)}`}
-      className="inline-flex min-h-10 items-center gap-1.5 rounded-full border border-border bg-surface px-3.5 py-1 text-meta font-medium text-charcoal shadow-2xs hover:border-forest/40 hover:bg-surface-2 transition-colors"
+      className="inline-flex min-h-10 items-center gap-1.5 rounded-full border border-border bg-surface px-3.5 py-1 text-meta font-medium text-charcoal shadow-xs hover:border-gold/50 hover:bg-elevated transition-colors"
       aria-label={`${label}: ${native}`}
     >
-      <span className="text-terracotta text-xs" aria-hidden="true">●</span>
+      <span className="text-gold text-xs" aria-hidden="true">●</span>
       <span lang={lang}>{native}</span>
     </Link>
   );

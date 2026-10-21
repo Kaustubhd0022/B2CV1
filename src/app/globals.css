@@ -1,41 +1,51 @@
 @import "tailwindcss";
 
 /*
- * TattvaCo Visual System — Living Cultural Editorial Atlas
- * Approved palette matching master UI specifications:
- *   canvas          = #F7F5EF (warm ivory / paper canvas)
- *   surface         = #FFFFFF (primary paper surface)
- *   surface-2       = #EEECE4 (secondary tinted paper surface)
- *   forest          = #245746 (primary action deep forest green)
- *   forest-hover    = #1B4437 (hover forest green)
- *   on-forest       = #FFFFFF (pure white text on forest green)
- *   terracotta      = #B85E43 (cultural terracotta accent)
- *   terracotta-text = #B85E43 (readable terracotta highlight)
- *   charcoal        = #2B3030 (primary editorial text, AAA contrast)
- *   muted           = #5E6662 (secondary text, AA contrast)
- *   border          = #DCDDD4 (restrained editorial border)
- *   gold            = #D5B66F (antique gold accent)
- *   stone           = #EFECE5 (neutral background card)
+ * TattvaCo Visual System — Cinematic Black Editorial Atlas
+ * Master Cinematic Black Theme tokens:
+ *   canvas          = #090909 (App canvas background)
+ *   surface         = #171717 (Cards and primary panels)
+ *   surface-2       = #111111 (Secondary background / inner sections)
+ *   elevated        = #202020 (Dialogs, menus and elevated panels)
+ *   forest          = #D6B36A (Primary action: Antique Gold)
+ *   forest-hover    = #E7C985 (Primary action hover state)
+ *   on-forest       = #111111 (Text on gold buttons)
+ *   gold            = #D6B36A (Antique Gold accent)
+ *   gold-hover      = #E7C985 (Antique Gold hover)
+ *   terracotta      = #D6B36A (Cultural highlight)
+ *   terracotta-text = #E7C985 (Readable gold highlight)
+ *   charcoal        = #F5F0E8 (Primary text: Warm Ivory)
+ *   secondary-text  = #B7B0A5 (Secondary text / descriptions)
+ *   muted           = #89847C (Metadata and secondary labels)
+ *   border          = #302C25 (Subtle bronze/charcoal borders)
+ *   stone           = #1A1A1A (Subtle neutral card surface)
+ *   success         = #65B88A (Success feedback)
+ *   warning         = #E3B765 (Warnings)
+ *   error           = #F07878 (Errors)
+ *   info            = #76A9C7 (Information)
  */
 @theme {
-  --color-canvas: #f7f5ef;
-  --color-surface: #ffffff;
-  --color-surface-2: #eeece4;
-  --color-forest: #245746;
-  --color-forest-hover: #1b4437;
-  --color-on-forest: #ffffff;
-  --color-terracotta: #b85e43;
-  --color-terracotta-text: #b85e43;
-  --color-charcoal: #2b3030;
-  --color-muted: #5e6662;
-  --color-border: #dcddd4;
-  --color-gold: #d5b66f;
-  --color-stone: #efece5;
+  --color-canvas: #090909;
+  --color-surface: #171717;
+  --color-surface-2: #111111;
+  --color-elevated: #202020;
+  --color-forest: #d6b36a;
+  --color-forest-hover: #e7c985;
+  --color-on-forest: #111111;
+  --color-terracotta: #d6b36a;
+  --color-terracotta-text: #e7c985;
+  --color-charcoal: #f5f0e8;
+  --color-secondary-text: #b7b0a5;
+  --color-muted: #89847c;
+  --color-border: #302c25;
+  --color-gold: #d6b36a;
+  --color-gold-hover: #e7c985;
+  --color-stone: #1a1a1a;
 
-  --color-success: #1e7046;
-  --color-warning: #b2680f;
-  --color-error: #c53030;
-  --color-info: #1f628c;
+  --color-success: #65b88a;
+  --color-warning: #e3b765;
+  --color-error: #f07878;
+  --color-info: #76a9c7;
 
   --radius-sm: 6px;
   --radius-md: 12px;
@@ -46,7 +56,7 @@
     var(--font-orya), var(--font-taml), var(--font-telu), var(--font-knda), var(--font-mlym), system-ui, sans-serif;
   --font-serif: var(--font-noto-serif), Georgia, serif;
 
-  /* Type scale matching Section 5 Typography hierarchy */
+  /* Type scale matching Section 3 Typography hierarchy */
   --text-display: 2.25rem; /* 36px */
   --text-display--line-height: 1.15;
   --text-display-lg: 3.25rem; /* 52px */
@@ -69,7 +79,7 @@
 
 html {
   -webkit-text-size-adjust: 100%;
-  color-scheme: light;
+  color-scheme: dark;
 }
 
 body {
@@ -96,7 +106,7 @@ body {
 }
 
 :focus-visible {
-  outline: 3px solid var(--color-gold);
+  outline: 2px solid var(--color-gold);
   outline-offset: 2px;
   border-radius: 4px;
 }
@@ -116,7 +126,7 @@ dd {
 }
 
 .prose-reading {
-  max-width: 44rem; /* ~700px: Design §4 680–760px reading width */
+  max-width: 44rem; /* ~700px reading width */
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -129,43 +139,43 @@ dd {
   }
 }
 
-/* Frosted ivory panel used over imagery (hero search, badges, round buttons). */
+/* Frosted dark charcoal panel used over imagery (hero search, badges, round buttons). */
 .glass {
-  background: rgba(255, 255, 255, 0.85);
-  backdrop-filter: blur(14px) saturate(1.2);
-  -webkit-backdrop-filter: blur(14px) saturate(1.2);
-  border: 1px solid rgba(220, 221, 212, 0.8);
+  background: rgba(23, 23, 23, 0.78);
+  backdrop-filter: blur(16px) saturate(1.2);
+  -webkit-backdrop-filter: blur(16px) saturate(1.2);
+  border: 1px solid rgba(48, 44, 37, 0.85);
   color: var(--color-charcoal);
 }
 
 .glass-dark {
-  background: rgba(20, 28, 24, 0.65);
-  backdrop-filter: blur(14px) saturate(1.2);
-  -webkit-backdrop-filter: blur(14px) saturate(1.2);
-  border: 1px solid rgba(255, 255, 255, 0.18);
-  color: #ffffff;
+  background: rgba(9, 9, 9, 0.85);
+  backdrop-filter: blur(16px) saturate(1.2);
+  -webkit-backdrop-filter: blur(16px) saturate(1.2);
+  border: 1px solid rgba(48, 44, 37, 0.9);
+  color: var(--color-charcoal);
 }
 
-/* Photo gradient overlays so text over photographs stays readable (≥ 4.5:1). */
+/* Photo gradient overlays so text over photographs stays cinematic and readable (≥ 4.5:1). */
 .scrim {
   background: linear-gradient(
     180deg,
-    rgba(20, 30, 25, 0.75) 0%,
-    rgba(20, 30, 25, 0.2) 30%,
-    rgba(20, 30, 25, 0.35) 55%,
-    rgba(20, 30, 25, 0.85) 80%,
-    rgba(20, 30, 25, 0.96) 100%
+    rgba(9, 9, 9, 0.7) 0%,
+    rgba(9, 9, 9, 0.2) 28%,
+    rgba(9, 9, 9, 0.45) 55%,
+    rgba(9, 9, 9, 0.88) 80%,
+    rgba(9, 9, 9, 0.98) 100%
   );
 }
 
 .scrim-bottom {
-  background: linear-gradient(180deg, rgba(0, 0, 0, 0) 35%, rgba(20, 30, 25, 0.88) 100%);
+  background: linear-gradient(180deg, rgba(9, 9, 9, 0) 35%, rgba(9, 9, 9, 0.92) 100%);
 }
 
 .card-editorial {
   background: var(--color-surface);
   border: 1px solid var(--color-border);
-  box-shadow: 0 1px 3px rgba(43, 48, 48, 0.04), 0 4px 12px rgba(43, 48, 48, 0.03);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
 }
 
 .no-scrollbar {

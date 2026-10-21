@@ -167,7 +167,7 @@ export function AskClient({
                       type="button"
                       onClick={() => void ask(qText)}
                       disabled={busy}
-                      className="block w-full text-left rounded-lg border border-border/80 bg-canvas p-2.5 text-meta text-charcoal hover:border-forest/60 hover:bg-surface-2 transition-all shadow-2xs"
+                      className="block w-full text-left rounded-lg border border-border/80 bg-surface-2 p-2.5 text-meta text-charcoal hover:border-gold/60 hover:bg-elevated transition-all shadow-xs"
                     >
                       “{qText}”
                     </button>
@@ -179,9 +179,9 @@ export function AskClient({
         </div>
 
         {/* Source Grounding Assurance Panel */}
-        <div className="rounded-xl border border-forest/20 bg-[#F1F6F2] p-4 text-meta text-muted shadow-2xs">
-          <p className="font-semibold text-forest">✦ Real-time Source Grounding</p>
-          <p className="mt-1 leading-relaxed">
+        <div className="rounded-xl border border-gold/20 bg-gradient-to-br from-[#1b1916] to-[#121110] p-4 text-meta text-muted shadow-sm">
+          <p className="font-semibold text-gold">✦ Real-time Source Grounding</p>
+          <p className="mt-1 leading-relaxed text-secondary-text">
             Every answer is verified against statutory archives, academic repositories and primary gazetteers before rendering.
           </p>
         </div>
@@ -202,8 +202,8 @@ export function AskClient({
           {turns.map((turn) => (
             <li key={turn.id} className="space-y-4">
               {/* User Question Bubble */}
-              <div className="rounded-xl border border-border bg-[#FBF9F4] p-4 shadow-2xs">
-                <p className="text-[11px] font-semibold uppercase tracking-[0.14em] text-terracotta">
+              <div className="rounded-xl border border-border bg-elevated p-4 shadow-sm">
+                <p className="text-[11px] font-semibold uppercase tracking-[0.14em] text-gold">
                   {t("ask.yourQuestion")}
                 </p>
                 <p className="mt-1 font-serif text-section font-semibold text-charcoal">{turn.question}</p>
@@ -276,7 +276,7 @@ export function AskClient({
               rows={2}
               maxLength={500}
               placeholder={turns.length ? t("ask.followUp") : t("ask.placeholder")}
-              className="block min-h-12 w-full resize-y rounded-xl border border-border bg-canvas px-3.5 py-2.5 text-body text-charcoal placeholder:text-muted focus:border-forest focus:outline-none"
+              className="block min-h-12 w-full resize-y rounded-xl border border-border bg-surface-2 px-3.5 py-2.5 text-body text-charcoal placeholder:text-muted focus:border-gold focus:outline-none"
               aria-invalid={!!inputError}
               aria-describedby={inputError ? "ask-error" : "ask-lang"}
               onKeyDown={(e) => {
@@ -521,8 +521,8 @@ function Answer({ result: r, t, onRetry, onAsk, selected }: { result: AskResult;
           <ul className="mt-2 grid gap-2">
             {r.nextDiscoveries.map((d) => (
               <li key={`${d.kind}:${d.slug}`}>
-                <Link href={`/${d.kind === "story" ? "stories" : "connections"}/${d.slug}`} className="block rounded-md border border-border bg-surface p-3 hover:border-forest">
-                  <span className="font-semibold text-forest">{d.title}</span>
+                <Link href={`/${d.kind === "story" ? "stories" : "connections"}/${d.slug}`} className="block rounded-md border border-border bg-surface p-3 hover:border-gold transition-colors">
+                  <span className="font-semibold text-gold">{d.title}</span>
                   <span className="mt-0.5 block text-meta text-muted">{t("ask.nextRationale")}</span>
                   {d.isFixture && (
                     <span className="mt-1 block">
@@ -538,11 +538,11 @@ function Answer({ result: r, t, onRetry, onAsk, selected }: { result: AskResult;
 
       {r.followUps.length > 0 && (
         <section>
-          <h3 className="text-support font-semibold">{t("ask.followUps")}</h3>
+          <h3 className="text-support font-semibold text-charcoal">{t("ask.followUps")}</h3>
           <ul className="mt-2 flex flex-wrap gap-2">
             {r.followUps.map((q) => (
               <li key={q}>
-                <button type="button" onClick={() => onAsk(q)} className="min-h-11 rounded-full border border-border bg-surface px-3 text-left text-support text-forest hover:border-forest">
+                <button type="button" onClick={() => onAsk(q)} className="min-h-11 rounded-full border border-border bg-elevated px-4 text-left text-support text-charcoal hover:border-gold hover:text-gold transition-colors">
                   {q}
                 </button>
               </li>
@@ -551,7 +551,7 @@ function Answer({ result: r, t, onRetry, onAsk, selected }: { result: AskResult;
         </section>
       )}
 
-      <Link href={`/report?type=answer&ref=${r.runId}`} className="inline-flex min-h-11 items-center gap-2 text-support font-semibold text-forest underline-offset-4 hover:underline">
+      <Link href={`/report?type=answer&ref=${r.runId}`} className="inline-flex min-h-11 items-center gap-2 text-support font-semibold text-gold underline-offset-4 hover:underline">
         <IconFlag width={18} height={18} /> {t("ask.reportAnswer")}
       </Link>
     </div>

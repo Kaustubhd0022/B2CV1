@@ -121,8 +121,8 @@ export default async function LanguagePage({ searchParams }: { searchParams: Pro
                 TattvaCo
               </Link>
               <div className="flex items-center gap-2">
-                <span className="flex size-2 rounded-full bg-forest" />
-                <span className="text-meta font-semibold uppercase tracking-wider text-terracotta">
+                <span className="flex size-2 rounded-full bg-gold" />
+                <span className="text-meta font-semibold uppercase tracking-wider text-gold">
                   Step 1 of 3: Language
                 </span>
               </div>
@@ -154,7 +154,7 @@ export default async function LanguagePage({ searchParams }: { searchParams: Pro
                 <ul className="grid grid-cols-2 gap-3 sm:gap-4">
                   {FIVE_LANGUAGES.map((l, index) => (
                     <li key={l.code} className={index === 4 ? "col-span-2 sm:col-span-1" : ""}>
-                      <label className="group relative flex aspect-[16/10] cursor-pointer flex-col justify-between overflow-hidden rounded-xl border border-border/80 bg-surface-2 p-3.5 shadow-sm transition-all hover:scale-[1.02] hover:shadow-lg has-[:checked]:border-forest has-[:checked]:ring-2 has-[:checked]:ring-forest">
+                      <label className="group relative flex aspect-[16/10] cursor-pointer flex-col justify-between overflow-hidden rounded-xl border border-border/80 bg-surface-2 p-3.5 shadow-sm transition-all hover:scale-[1.02] hover:shadow-lg has-[:checked]:border-gold has-[:checked]:ring-2 has-[:checked]:ring-gold">
                         {/* Cultural Landmark Background Image */}
                         <Image
                           src={l.img}
@@ -177,7 +177,7 @@ export default async function LanguagePage({ searchParams }: { searchParams: Pro
                             required
                           />
                           {/* Selected checkmark circle */}
-                          <div className="hidden peer-checked:flex size-6 items-center justify-center rounded-full bg-white text-forest shadow-md">
+                          <div className="hidden peer-checked:flex size-6 items-center justify-center rounded-full bg-gold text-[#111111] shadow-md font-bold">
                             <svg className="size-3.5" viewBox="0 0 20 20" fill="currentColor">
                               <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd"/>
                             </svg>
@@ -202,7 +202,7 @@ export default async function LanguagePage({ searchParams }: { searchParams: Pro
               </fieldset>
 
               <div className="mt-8 flex flex-col gap-3">
-                <SubmitButton className="w-full !min-h-12 !rounded-xl !bg-forest hover:!bg-forest-hover text-white font-semibold text-base shadow-sm">
+                <SubmitButton className="w-full !min-h-12 !rounded-xl !bg-forest hover:!bg-forest-hover !text-on-forest font-semibold text-base shadow-md">
                   Continue →
                 </SubmitButton>
               </div>

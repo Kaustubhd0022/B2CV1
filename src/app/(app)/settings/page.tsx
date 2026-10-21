@@ -22,19 +22,19 @@ export default async function SettingsPage() {
   return (
     <Page className="max-w-2xl pt-2">
       {/* Explorer Profile Banner (Master Spec §12 Screen 10 / Reference Page 9) */}
-      <div className="rounded-2xl border border-border bg-gradient-to-br from-[#faf6f0] via-[#f5ede2] to-[#ede3d4] p-6 sm:p-8 shadow-xs">
+      <div className="rounded-2xl border border-border bg-gradient-to-br from-[#1b1916] via-[#161513] to-[#111110] p-6 sm:p-8 shadow-lg">
         <div className="flex items-center justify-between">
-          <div className="flex items-center gap-2 text-meta font-semibold uppercase tracking-wider text-forest">
+          <div className="flex items-center gap-2 text-meta font-semibold uppercase tracking-wider text-gold">
             <span>✦</span>
             <span>My Cultural Journey</span>
           </div>
-          <span className="rounded-full bg-forest/10 px-3 py-1 text-meta font-semibold text-forest">
+          <span className="rounded-full bg-gold/15 border border-gold/30 px-3 py-1 text-meta font-semibold text-gold">
             Explorer Profile
           </span>
         </div>
 
         <div className="mt-4 flex items-center gap-4">
-          <span className="flex size-14 items-center justify-center rounded-full bg-forest font-serif text-section font-semibold text-white shadow-xs">
+          <span className="flex size-14 items-center justify-center rounded-full bg-forest font-serif text-section font-semibold text-on-forest shadow-md">
             {(session.email ?? "T").slice(0, 1).toUpperCase()}
           </span>
           <div>
@@ -44,7 +44,7 @@ export default async function SettingsPage() {
             <div className="mt-1 flex flex-wrap items-center gap-2 text-meta text-muted">
               <span>Language: <strong className="text-charcoal font-semibold">{languageInfo(lang).native}</strong></span>
               <span>·</span>
-              <span>Role: <strong className="text-forest capitalize">{session.role}</strong></span>
+              <span>Role: <strong className="text-gold capitalize">{session.role}</strong></span>
             </div>
           </div>
         </div>

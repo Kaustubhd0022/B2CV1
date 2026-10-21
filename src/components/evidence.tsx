@@ -41,8 +41,8 @@ export function ClaimedParagraph({
 export function ClaimDisclosure({ claim, t, from }: { claim: ClaimWithEvidence; t: Translate; from: string }) {
   const supports = claim.evidence.filter((e) => e.relation === "supports");
   return (
-    <details className="group rounded-md border border-border bg-surface open:w-full open:shadow-sm">
-      <summary className="flex min-h-9 cursor-pointer list-none items-center gap-2 px-2.5 py-1 text-meta font-semibold text-forest [&::-webkit-details-marker]:hidden">
+    <details className="group rounded-md border border-border bg-surface open:w-full open:shadow-md">
+      <summary className="flex min-h-9 cursor-pointer list-none items-center gap-2 px-2.5 py-1 text-meta font-semibold text-gold [&::-webkit-details-marker]:hidden">
         <EpistemicLabel kind={claim.epistemic} label={t(`epistemic.${claim.epistemic}`)} />
         <span>
           {t("story.claimSources")} ({supports.length})
@@ -53,7 +53,7 @@ export function ClaimDisclosure({ claim, t, from }: { claim: ClaimWithEvidence; 
         {claim.scopeNote && <p className="mt-1 text-muted">{claim.scopeNote}</p>}
         <ul className="mt-2 space-y-3">
           {claim.evidence.map((e, i) => (
-            <li key={i} className="border-l-2 border-forest/40 pl-3">
+            <li key={i} className="border-l-2 border-gold/40 pl-3">
               <blockquote className="text-charcoal" lang={e.source.language}>
                 “{e.excerpt}”
               </blockquote>
@@ -69,7 +69,7 @@ export function ClaimDisclosure({ claim, t, from }: { claim: ClaimWithEvidence; 
               )}
               <Link
                 href={`/sources/${e.source.id}?from=${encodeURIComponent(from)}`}
-                className="mt-1 inline-flex min-h-9 items-center text-meta font-semibold text-forest underline underline-offset-4"
+                className="mt-1 inline-flex min-h-9 items-center text-meta font-semibold text-gold underline underline-offset-4 hover:text-gold-hover"
               >
                 {t("source.title")} →
               </Link>
@@ -91,7 +91,7 @@ export function SourceList({ claims, t, from, uiLang }: { claims: Map<string, Cl
       {[...sources.values()].map((s, i) => (
         <li key={s.id} className="text-support">
           <span className="mr-1 text-meta font-semibold text-muted">{i + 1}.</span>
-          <Link href={`/sources/${s.id}?from=${encodeURIComponent(from)}`} className="font-semibold text-forest underline-offset-4 hover:underline">
+          <Link href={`/sources/${s.id}?from=${encodeURIComponent(from)}`} className="font-semibold text-gold underline-offset-4 hover:underline">
             {s.title}
           </Link>
           <span className="block text-meta text-muted">
@@ -106,8 +106,8 @@ export function SourceList({ claims, t, from, uiLang }: { claims: Map<string, Cl
 
 export function EpistemicLegend({ t }: { t: Translate }) {
   return (
-    <details className="rounded-md border border-border bg-surface-2/60 px-3 py-2 text-support">
-      <summary className="cursor-pointer font-semibold text-forest">{t("epistemic.help")}</summary>
+    <details className="rounded-md border border-border bg-surface-2 px-3 py-2 text-support">
+      <summary className="cursor-pointer font-semibold text-gold">{t("epistemic.help")}</summary>
       <div className="mt-2 flex flex-wrap gap-2">
         {(["documented", "tradition", "interpretation", "contested", "uncertain"] as const).map((k) => (
           <EpistemicLabel key={k} kind={k} label={t(`epistemic.${k}`)} />

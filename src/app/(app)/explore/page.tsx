@@ -91,15 +91,15 @@ export default async function ExplorePage({
   return (
     <Page className="pt-2">
       {/* Editorial Theme Hero (Master Spec §12 Screen 4) */}
-      <section className="rounded-2xl border border-border bg-gradient-to-br from-[#faf6f0] via-[#f5ede2] to-[#ede3d4] p-6 sm:p-10 md:p-12 shadow-xs">
+      <section className="rounded-2xl border border-border bg-gradient-to-br from-[#1b1916] via-[#161513] to-[#111110] p-6 sm:p-10 md:p-12 shadow-lg">
         <div className="max-w-2xl">
-          <p className="text-meta font-semibold uppercase tracking-[0.16em] text-terracotta">
+          <p className="text-meta font-semibold uppercase tracking-[0.16em] text-gold">
             Explore by Theme
           </p>
           <h1 className="mt-2 font-serif text-display leading-tight text-charcoal md:text-display-lg">
             India&apos;s Culture, Many Dimensions
           </h1>
-          <p className="mt-3 text-body text-muted leading-relaxed">
+          <p className="mt-3 text-body text-secondary-text leading-relaxed">
             Step beyond geography. Discover how craft, philosophy, ritual, architecture and living lineages form a single interconnected universe.
           </p>
 
@@ -119,7 +119,7 @@ export default async function ExplorePage({
                 name="q"
                 defaultValue={q}
                 placeholder="Search stories, traditions, places or crafts…"
-                className="block w-full min-h-12 rounded-full border border-border bg-surface py-2 pl-10 pr-4 text-charcoal placeholder:text-muted shadow-xs focus:border-forest focus:outline-none"
+                className="block w-full min-h-12 rounded-full border border-border bg-surface py-2 pl-10 pr-4 text-charcoal placeholder:text-muted shadow-xs focus:border-gold focus:outline-none"
               />
               {activeCategory !== "all" && <input type="hidden" name="category" value={activeCategory} />}
             </div>
@@ -143,7 +143,7 @@ export default async function ExplorePage({
             </p>
           </div>
           {activeCategory !== "all" && (
-            <Link href="/explore" className="text-support font-medium text-forest hover:underline">
+            <Link href="/explore" className="text-support font-medium text-gold hover:underline">
               Reset filter (show all)
             </Link>
           )}
@@ -158,24 +158,24 @@ export default async function ExplorePage({
                   href={isSelected ? "/explore" : `/explore?category=${cat.id}${q ? `&q=${encodeURIComponent(q)}` : ""}`}
                   className={`group relative flex h-full flex-col justify-between rounded-xl border p-5 transition-all ${
                     isSelected
-                      ? "border-forest bg-[#f0f6f2] ring-2 ring-forest/30 shadow-xs"
-                      : "border-border bg-surface hover:border-forest/40 hover:bg-surface-2 hover:shadow-xs"
+                      ? "border-gold bg-[#221e17] ring-1 ring-gold/40 shadow-md"
+                      : "border-border bg-surface hover:border-gold/50 hover:bg-surface-2 hover:shadow-xs"
                   }`}
                 >
                   <div>
                     <div className="flex items-center justify-between">
                       <span className="text-2xl" aria-hidden="true">{cat.icon}</span>
-                      <span className="rounded-full bg-surface-2 px-2.5 py-0.5 text-[11px] font-medium text-muted">
+                      <span className="rounded-full bg-elevated border border-border/70 px-2.5 py-0.5 text-[11px] font-medium text-muted">
                         {cat.count}
                       </span>
                     </div>
-                    <h3 className="mt-3 font-serif text-card font-semibold text-charcoal group-hover:text-forest transition-colors">
+                    <h3 className="mt-3 font-serif text-card font-semibold text-charcoal group-hover:text-gold transition-colors">
                       {cat.label}
                     </h3>
                     <p className="mt-1 text-support text-muted leading-snug">{cat.desc}</p>
                   </div>
                   <div className="mt-4 flex items-center justify-between text-meta font-medium">
-                    <span className={isSelected ? "text-forest font-semibold" : "text-muted group-hover:text-forest"}>
+                    <span className={isSelected ? "text-gold font-semibold" : "text-muted group-hover:text-gold"}>
                       {isSelected ? "Active Filter ✓" : "Explore →"}
                     </span>
                   </div>
@@ -236,7 +236,7 @@ export default async function ExplorePage({
           {FEATURED_COLLECTIONS.map((col) => (
             <div
               key={col.title}
-              className="group relative flex flex-col justify-between overflow-hidden rounded-xl border border-border bg-surface transition-all hover:border-forest/50 hover:shadow-xs"
+              className="group relative flex flex-col justify-between overflow-hidden rounded-xl border border-border bg-surface transition-all hover:border-gold/50 hover:shadow-md"
             >
               <div className="relative aspect-[16/10] overflow-hidden bg-surface-2">
                 <Image
@@ -247,19 +247,19 @@ export default async function ExplorePage({
                   className="object-cover transition-transform duration-500 group-hover:scale-105"
                 />
                 <div className="scrim-bottom absolute inset-0" />
-                <span className="absolute bottom-2 left-3 rounded-full bg-black/60 px-2.5 py-0.5 text-[11px] font-medium text-white backdrop-blur-xs">
+                <span className="absolute bottom-2 left-3 rounded-full bg-black/70 border border-white/20 px-2.5 py-0.5 text-[11px] font-medium text-white backdrop-blur-xs">
                   {col.count}
                 </span>
               </div>
               <div className="p-4">
-                <h3 className="font-serif text-card font-semibold text-charcoal group-hover:text-forest transition-colors">
+                <h3 className="font-serif text-card font-semibold text-charcoal group-hover:text-gold transition-colors">
                   {col.title}
                 </h3>
                 <p className="mt-1 text-support text-muted leading-snug">{col.desc}</p>
                 <div className="mt-4">
                   <Link
                     href={`/explore?q=${encodeURIComponent(col.title)}`}
-                    className="inline-flex items-center text-support font-semibold text-forest hover:underline"
+                    className="inline-flex items-center text-support font-semibold text-gold hover:underline"
                   >
                     View Stories →
                   </Link>
@@ -285,13 +285,13 @@ export default async function ExplorePage({
           {REGIONS.map((reg) => (
             <div
               key={reg.name}
-              className="rounded-xl border border-border bg-surface p-4 transition-all hover:border-terracotta/40 hover:bg-surface-2 hover:shadow-xs"
+              className="rounded-xl border border-border bg-surface p-4 transition-all hover:border-gold/40 hover:bg-surface-2 hover:shadow-xs"
             >
               <div className="flex items-center justify-between">
                 <h3 className="font-serif text-card font-semibold text-charcoal">{reg.name}</h3>
-                <span className="text-terracotta text-sm">✦</span>
+                <span className="text-gold text-sm">✦</span>
               </div>
-              <p className="mt-1 text-meta font-medium text-terracotta">{reg.states}</p>
+              <p className="mt-1 text-meta font-medium text-gold">{reg.states}</p>
               <p className="mt-1.5 text-support text-muted leading-snug">{reg.desc}</p>
             </div>
           ))}

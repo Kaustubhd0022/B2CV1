@@ -51,7 +51,7 @@ export function PlacesClient({
         <div className="flex flex-wrap items-center justify-between gap-4">
           {/* City selector pills */}
           <div className="flex flex-wrap items-center gap-2">
-            <span className="text-meta font-semibold uppercase tracking-wider text-terracotta mr-1">
+            <span className="text-meta font-semibold uppercase tracking-wider text-gold mr-1">
               City:
             </span>
             {Object.keys(CITIES_CULTURAL_DATA).map((slug) => {
@@ -64,7 +64,7 @@ export function PlacesClient({
                   className={`rounded-full px-4 py-1.5 text-support font-semibold capitalize transition-all ${
                     active
                       ? "bg-forest text-on-forest shadow-xs"
-                      : "bg-surface-2 text-charcoal hover:bg-surface hover:border hover:border-forest/40"
+                      : "bg-elevated border border-border text-secondary-text hover:bg-surface hover:border-gold/40 hover:text-charcoal"
                   }`}
                 >
                   {slug}
@@ -85,7 +85,7 @@ export function PlacesClient({
               placeholder="Search places..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full rounded-full border border-border bg-canvas py-1.5 pl-9 pr-3 text-meta text-charcoal placeholder:text-muted focus:border-forest focus:outline-none"
+              className="w-full rounded-full border border-border bg-surface-2 py-1.5 pl-9 pr-3 text-meta text-charcoal placeholder:text-muted focus:border-gold focus:outline-none"
             />
           </div>
         </div>
@@ -110,8 +110,8 @@ export function PlacesClient({
                 onClick={() => setCategoryFilter(cat.id)}
                 className={`rounded-md px-3 py-1 text-meta font-medium transition-colors ${
                   active
-                    ? "bg-forest/10 border border-forest/40 text-forest font-semibold"
-                    : "border border-border bg-surface text-muted hover:text-charcoal"
+                    ? "bg-gold/15 border border-gold/40 text-gold font-semibold"
+                    : "border border-border bg-elevated text-muted hover:text-charcoal hover:bg-surface"
                 }`}
               >
                 {cat.label}
@@ -145,15 +145,15 @@ export function PlacesClient({
                       onClick={() => setSelectedLandmark(lm)}
                       className={`w-full text-left rounded-lg p-3 transition-all ${
                         isSelected
-                          ? "border border-forest bg-[#f0f6f2] ring-1 ring-forest/30 shadow-2xs"
-                          : "border border-border/70 bg-canvas hover:border-forest/40 hover:bg-surface-2"
+                          ? "border border-gold bg-[#221e17] ring-1 ring-gold/40 shadow-xs"
+                          : "border border-border/70 bg-surface hover:border-gold/40 hover:bg-surface-2"
                       }`}
                     >
                       <div className="flex items-baseline justify-between gap-1">
                         <p className="font-serif text-support font-semibold text-charcoal leading-snug">
                           {lm.name}
                         </p>
-                        <span className="rounded-xs bg-surface-2 px-1.5 py-0.5 text-[10px] uppercase font-semibold text-muted">
+                        <span className="rounded-xs bg-elevated border border-border/70 px-1.5 py-0.5 text-[10px] uppercase font-semibold text-muted">
                           {lm.type.replace("_", " ")}
                         </span>
                       </div>
