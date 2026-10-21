@@ -11,9 +11,9 @@ export function cx(...c: (string | false | null | undefined)[]) {
 type Variant = "primary" | "secondary" | "tertiary";
 const btn: Record<Variant, string> = {
   primary:
-    "bg-forest text-on-forest hover:bg-forest-hover active:bg-forest-hover disabled:bg-muted/60 disabled:cursor-not-allowed",
+    "bg-forest text-on-forest hover:bg-forest-hover active:bg-forest-hover disabled:bg-muted/50 disabled:cursor-not-allowed shadow-xs",
   secondary:
-    "glass text-charcoal hover:bg-surface-2 disabled:opacity-60 disabled:cursor-not-allowed",
+    "border border-border bg-surface text-charcoal hover:bg-surface-2 active:bg-surface-2 disabled:opacity-60 disabled:cursor-not-allowed shadow-xs",
   tertiary: "text-forest underline-offset-4 hover:underline px-1",
 };
 const btnBase =

@@ -234,3 +234,50 @@ export async function publishedStoryCountsByLanguage() {
     .groupBy(schema.contentVersions.language);
   return new Map(rows.map((r) => [r.language, r.n]));
 }
+
+export async function featuredStories(lang: string, limit = 4) {
+  const rows = await published("story");
+  const byItem = new Map<string, PublishedRow>();
+  for (const r of rows) {
+    const cur = byItem.get(r.itemId);
+    if (r.language === lang) byItem.set(r.itemId, r);
+    else if (!cur || (cur.language !== lang && r.language === "en")) byItem.set(r.itemId, r);
+  }
+  return [...byItem.values()].slice(0, limit).map((r) => {
+    const b = r.body as StoryBody;
+    return {
+      slug: r.slug,
+      title: b.title,
+      orientation: b.orientation,
+      language: r.language,
+      citySlug: r.citySlug,
+      isFixture: r.isFixture,
+      hero: b.hero,
+      themes: b.themes,
+    };
+  });
+}
+
+export async function listAllPublishedStories(lang: string) {
+  const rows = await published("story");
+  const byItem = new Map<string, PublishedRow>();
+  for (const r of rows) {
+    const cur = byItem.get(r.itemId);
+    if (r.language === lang) byItem.set(r.itemId, r);
+    else if (!cur || (cur.language !== lang && r.language === "en")) byItem.set(r.itemId, r);
+  }
+  return [...byItem.values()].map((r) => {
+    const b = r.body as StoryBody;
+    return {
+      slug: r.slug,
+      title: b.title,
+      orientation: b.orientation,
+      language: r.language,
+      citySlug: r.citySlug,
+      isFixture: r.isFixture,
+      hero: b.hero,
+      themes: b.themes,
+    };
+  });
+}
+

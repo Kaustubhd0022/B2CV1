@@ -100,18 +100,25 @@ export function ConnectionCard({
     <Link
       href={href}
       className={cx(
-        "group relative block overflow-hidden rounded-lg border border-border p-5 transition-colors md:p-6",
-        featured ? "bg-[radial-gradient(120%_120%_at_0%_0%,#3b3024_0%,#161819_55%)]" : "bg-surface hover:bg-surface-2",
+        "group relative block overflow-hidden rounded-lg border p-5 transition-all md:p-6",
+        featured
+          ? "border-terracotta/40 bg-gradient-to-br from-[#faf6f0] via-[#f5ede2] to-[#ece1d2] shadow-sm hover:border-terracotta"
+          : "border-border bg-surface hover:border-forest/40 hover:bg-surface-2 shadow-xs",
       )}
     >
-      <div className="flex items-center gap-2 text-meta font-semibold text-gold">
+      <div className="flex items-center gap-2 text-meta font-semibold text-terracotta">
         <IconConnect width={18} height={18} />
         {typeLabel}
       </div>
-      <h3 className="mt-2 text-card font-semibold text-charcoal md:text-section">{title}</h3>
-      <p className="mt-1.5 text-support text-muted">{summary}</p>
+      <h3 className="mt-2 font-serif text-card font-semibold text-charcoal md:text-section">{title}</h3>
+      <p className="mt-1.5 text-support text-muted leading-relaxed">{summary}</p>
       <div className="mt-4 flex flex-wrap items-center gap-3">
-        <span className={cx("inline-flex min-h-10 items-center gap-1 rounded-full px-4 text-support font-semibold", featured ? "bg-forest text-on-forest" : "text-charcoal")}>
+        <span
+          className={cx(
+            "inline-flex min-h-10 items-center gap-1.5 rounded-full px-4 text-support font-semibold transition-colors",
+            featured ? "bg-forest text-on-forest group-hover:bg-forest-hover" : "bg-surface-2 text-charcoal group-hover:bg-forest group-hover:text-on-forest",
+          )}
+        >
           {cta} <IconArrow width={16} height={16} />
         </span>
         {fixtureLabel && <FixtureBadge label={fixtureLabel} />}
@@ -119,3 +126,40 @@ export function ConnectionCard({
     </Link>
   );
 }
+
+export function ThematicCard({
+  href,
+  title,
+  subtitle,
+  category,
+  count,
+  imageSrc,
+}: {
+  href: string;
+  title: string;
+  subtitle: string;
+  category: string;
+  count?: string;
+  imageSrc?: string;
+}) {
+  return (
+    <Link
+      href={href}
+      className="group relative flex flex-col justify-between overflow-hidden rounded-lg border border-border bg-surface p-5 transition-all hover:border-forest/50 hover:bg-surface-2 hover:shadow-sm"
+    >
+      <div>
+        <div className="flex items-center justify-between text-meta font-semibold uppercase tracking-wider text-terracotta">
+          <span>{category}</span>
+          {count && <span className="rounded-full bg-surface-2 px-2.5 py-0.5 text-[11px] text-muted">{count}</span>}
+        </div>
+        <h3 className="mt-2 font-serif text-section font-semibold text-charcoal group-hover:text-forest transition-colors">{title}</h3>
+        <p className="mt-1.5 text-support text-muted leading-snug">{subtitle}</p>
+      </div>
+      <div className="mt-5 flex items-center gap-1 text-meta font-semibold text-forest">
+        <span>Explore theme</span>
+        <IconArrow width={14} height={14} className="transition-transform group-hover:translate-x-1" />
+      </div>
+    </Link>
+  );
+}
+

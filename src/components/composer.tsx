@@ -39,10 +39,10 @@ export function QuestionComposer({
     return (
       <form ref={form} action="/ask" method="get">
         {context && <input type="hidden" name="context" value={context} />}
-        <div className="glass flex items-center gap-3 rounded-full py-2 pl-5 pr-2">
-          <IconSearch width={22} height={22} className="shrink-0 text-white/80" />
+        <div className="glass flex items-center gap-3 rounded-full py-2.5 pl-5 pr-2.5 shadow-xl">
+          <IconSearch width={22} height={22} className="shrink-0 text-forest" />
           <div className="min-w-0 flex-1">
-            <label htmlFor="composer-q" className="block text-support font-semibold text-white">
+            <label htmlFor="composer-q" className="block text-[11px] font-semibold uppercase tracking-wider text-forest">
               {label}
             </label>
             <textarea
@@ -54,15 +54,19 @@ export function QuestionComposer({
               required
               defaultValue={defaultValue}
               placeholder={placeholder}
-              className="block w-full resize-none overflow-hidden bg-transparent text-meta text-white/90 placeholder:text-white/60 focus:outline-none"
+              className="block w-full resize-none overflow-hidden bg-transparent text-body font-medium text-charcoal placeholder:text-muted focus:outline-none"
               onKeyDown={onKeyDown}
             />
           </div>
-          <button type="submit" className="inline-flex size-12 shrink-0 items-center justify-center rounded-full bg-forest text-on-forest hover:bg-forest-hover" aria-label={submitLabel}>
-            <IconSend width={20} height={20} />
+          <button
+            type="submit"
+            className="inline-flex size-11 shrink-0 items-center justify-center rounded-full bg-forest text-on-forest hover:bg-forest-hover shadow-xs transition-colors"
+            aria-label={submitLabel}
+          >
+            <IconSend width={18} height={18} />
           </button>
         </div>
-        <p className="mt-2 pl-5 text-meta text-white/70">{languageNote}</p>
+        <p className="mt-2 pl-5 text-meta text-white/85 font-medium">{languageNote}</p>
       </form>
     );
   }

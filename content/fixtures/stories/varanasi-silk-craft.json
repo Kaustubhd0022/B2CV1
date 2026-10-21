@@ -1,0 +1,197 @@
+{
+  "kind": "story",
+  "slug": "varanasi-silk-weaving-craft-and-living-tradition",
+  "city": "varanasi",
+  "fixture": true,
+  "entities": [
+    { "id": "banarasi-silk-weaving", "role": "subject" },
+    { "id": "ganges", "role": "mentioned" },
+    { "id": "kabir-das", "role": "mentioned" },
+    { "id": "varanasi-ghats", "role": "mentioned" }
+  ],
+  "versions": [
+    {
+      "language": "en",
+      "body": {
+        "title": "Banarasi silk: the loom, the river and the living guild",
+        "orientation": "How six centuries of artisanal guilds, Jacquard master-weavers and the sacred riverfront shaped one of India's most celebrated textile traditions.",
+        "hero": {
+          "src": "/images/dev/varanasi-hero.jpg",
+          "alt": "Intricately woven gold zari brocade silk fabric being crafted on a traditional handloom in Varanasi",
+          "credit": "National Mission on Cultural Mapping archive · Ministry of Culture",
+          "rightsCleared": false
+        },
+        "sections": [
+          {
+            "id": "story",
+            "kind": "narrative",
+            "heading": "The living craft of the ancient city",
+            "paragraphs": [
+              {
+                "text": "In the labyrinthine lanes of Madanpura, Peeli Kothi and Alaipura, the rhythmic clack of the handloom has echoed across centuries. Banarasi brocade is defined by gold and silver zari metallic thread woven into mulberry silk.",
+                "claims": ["silk-neighbourhoods", "zari-definition"]
+              },
+              {
+                "text": "The craft reached unprecedented refinement between the fourteenth and seventeenth centuries when master weavers (Nakshabandis) blended Persian brocade motifs with classical Indian floral and mythological imagery.",
+                "claims": ["persian-indian-synthesis"]
+              },
+              {
+                "text": "The fifteenth-century mystic poet Sant Kabir Das was himself a weaver (Julaha) of Varanasi, weaving metaphysical philosophy into the tangible metaphor of the warp and weft (Tana-Bana).",
+                "claims": ["kabir-weaver-tradition"]
+              }
+            ]
+          },
+          {
+            "id": "practice",
+            "kind": "context",
+            "heading": "Technique: Kadhwa and the hand-drawn pattern",
+            "paragraphs": [
+              {
+                "text": "Traditional Banarasi brocades employ the celebrated 'Kadhwa' technique, where each motif is individually engraved and woven onto the fabric by hand without floating threads at the back.",
+                "claims": ["kadhwa-technique"]
+              },
+              {
+                "text": "In 2009, Banaras Brocades and Sarees received Geographical Indication (GI) protection under Application No. 99, officially certifying the craft across six eastern Uttar Pradesh districts.",
+                "claims": ["banaras-gi-protection"]
+              }
+            ]
+          },
+          {
+            "id": "significance",
+            "kind": "significance",
+            "heading": "Why it matters",
+            "paragraphs": [
+              {
+                "text": "Banarasi silk is not an isolated luxury export; it is a living economic and cultural ecosystem. It links Hindu pilgrimage and ritual attire with generations of Muslim master weavers, representing Varanasi's profound Ganga-Jamuni syncretic ethos.",
+                "claims": ["syncretic-heritage"]
+              }
+            ]
+          },
+          {
+            "id": "limits",
+            "kind": "limits",
+            "heading": "What we don't know and contemporary challenges",
+            "paragraphs": [
+              {
+                "text": "While ancient Buddhist texts (Jatakas) mention Kashi kauseyya (silk from Kashi), the exact technical continuum from early hand-spun wild silks to fourteenth-century draw-loom brocades remains an ongoing scholarly investigation. Modern power-loom imitations also pose verified economic pressure on handloom cooperatives.",
+                "claims": []
+              }
+            ]
+          }
+        ],
+        "themes": ["crafts and living culture", "textiles", "sacred geography", "artisanal guilds"],
+        "followUpQuestions": [
+          "How did Mughal court patronage transform Banaras brocade motifs?",
+          "What is the difference between Kadhwa and Fekwa weaving techniques?",
+          "How are the riverfront ritual economies and the weaver mohallas interconnected?"
+        ],
+        "connections": [
+          "varanasi-river-to-loom"
+        ],
+        "relatedStories": [
+          "varanasi-ghats-architecture-and-river"
+        ]
+      },
+      "claims": [
+        {
+          "key": "silk-neighbourhoods",
+          "text": "Varanasi's silk weaving is concentrated in historic mohallas such as Madanpura, Peeli Kothi and Alaipura.",
+          "claimType": "descriptive",
+          "epistemic": "documented",
+          "evidence": [
+            {
+              "source": "org-sahapedia-varanasi-weavers",
+              "relation": "supports",
+              "excerpt": "The historic weaver settlements of Varanasi are primarily concentrated in neighbourhoods like Madanpura, Peeli Kothi, and Alaipura, where handloom weaving remains a multi-generational livelihood.",
+              "locator": "Section: Urban Topography of Weaving"
+            }
+          ]
+        },
+        {
+          "key": "zari-definition",
+          "text": "Banarasi brocade is defined by gold and silver zari metallic thread woven into fine mulberry silk.",
+          "claimType": "descriptive",
+          "epistemic": "documented",
+          "evidence": [
+            {
+              "source": "gov-textiles-banaras-gi",
+              "relation": "supports",
+              "excerpt": "Banaras Brocades and Sarees are characterised by heavy gold or silver zari work, compact weaving, figures with small details, metallic visual effects, and jal (a net like pattern).",
+              "locator": "GI Application Specification §4"
+            }
+          ]
+        },
+        {
+          "key": "persian-indian-synthesis",
+          "text": "Weaver lineages blended Persian brocade motifs with classical Indian floral and mythological design traditions.",
+          "claimType": "historical",
+          "epistemic": "documented",
+          "evidence": [
+            {
+              "source": "gov-indian-culture-banaras-brocade",
+              "relation": "supports",
+              "excerpt": "During the medieval period, Persian master-designers (Nakshabandis) settled in Kashi, synthesizing Islamic geometrical floral motifs with indigenous motifs such as the bel, kalga, and ashrafi.",
+              "locator": "Historical Lineage & Guilds"
+            }
+          ]
+        },
+        {
+          "key": "kabir-weaver-tradition",
+          "text": "Sant Kabir Das lived and worked as a Julaha weaver in Varanasi, using the loom as an allegory for human existence.",
+          "claimType": "historical",
+          "epistemic": "documented",
+          "evidence": [
+            {
+              "source": "gov-ignca-kashi-sacred-geography",
+              "relation": "supports",
+              "excerpt": "Sant Kabir, the 15th-century mystic poet of Kashi, identified as a weaver (Julaha), continuously employing loom metaphors like 'Jhini Jhini Bini Chadariya' to articulate transcendental truths.",
+              "locator": "Poets & Mystics of Kashi"
+            }
+          ]
+        },
+        {
+          "key": "kadhwa-technique",
+          "text": "The Kadhwa technique requires each motif to be individually engraved and woven onto the fabric by hand without floating threads at the back.",
+          "claimType": "descriptive",
+          "epistemic": "documented",
+          "evidence": [
+            {
+              "source": "gov-indian-culture-banaras-brocade",
+              "relation": "supports",
+              "excerpt": "In the authentic Kadhwa technique, every motif is individually woven onto the warp without any loose float threads at the reverse, requiring hundreds of painstaking hours for a single saree.",
+              "locator": "Weaving Techniques"
+            }
+          ]
+        },
+        {
+          "key": "banaras-gi-protection",
+          "text": "Banaras Brocades and Sarees received Geographical Indication (GI) protection under Application No. 99 in 2009.",
+          "claimType": "historical",
+          "epistemic": "documented",
+          "evidence": [
+            {
+              "source": "gov-textiles-banaras-gi",
+              "relation": "supports",
+              "excerpt": "Geographical Indication No. 99 was granted to Banaras Brocades and Sarees, certifying the unique geographical and technical origin across Varanasi and adjoining districts.",
+              "locator": "Certificate of Registration"
+            }
+          ]
+        },
+        {
+          "key": "syncretic-heritage",
+          "text": "The craft links Hindu pilgrimage attire with Muslim master weavers, representing a quintessential syncretic cultural heritage.",
+          "claimType": "interpretive",
+          "epistemic": "documented",
+          "evidence": [
+            {
+              "source": "org-sahapedia-varanasi-weavers",
+              "relation": "supports",
+              "excerpt": "The Banaras silk ecosystem is an enduring example of Ganga-Jamuni tehzeeb, where predominantly Muslim weaver guilds craft ceremonial fabrics indispensable for Hindu weddings and sacred pilgrimage rites.",
+              "locator": "Socio-Cultural Synthesis"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

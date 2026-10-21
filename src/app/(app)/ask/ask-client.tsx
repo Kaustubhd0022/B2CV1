@@ -114,87 +114,198 @@ export function AskClient({
     setDraft("");
   }
 
+  const SUGGESTED_TOPICS = [
+    {
+      category: "Sacred Geography & Rivers",
+      questions: [
+        "How are the Ganga, Kashi and pilgrimage connected?",
+        "Why does Varanasi have 84 distinct ghats along the riverfront?",
+      ],
+    },
+    {
+      category: "Living Crafts & Master Guilds",
+      questions: [
+        "How are the riverfront rituals of Varanasi connected to Banarasi silk weavers?",
+        "What makes traditional Indian handloom guilds historically syncretic?",
+      ],
+    },
+    {
+      category: "Monumental Architecture & Astronomy",
+      questions: [
+        "Why did Sawai Jai Singh build five stone observatories across India?",
+        "What connects Vijayanagara architecture in Hampi to Madurai's Nayak dynasty?",
+      ],
+    },
+    {
+      category: "Philosophy & Epistemic Traditions",
+      questions: [
+        "What is the distinction between documented historical evidence and living tradition in Kashi?",
+      ],
+    },
+  ];
+
   return (
-    <div>
-      {turns.length > 0 && (
-        <div className="mb-4 flex flex-wrap items-center justify-between gap-2">
-          <p className="text-meta text-muted">{t("ask.sessionNote")}</p>
-          <Button variant="tertiary" type="button" onClick={newTopic} disabled={busy}>
-            {t("ask.newTopic")}
-          </Button>
-        </div>
-      )}
+    <div className="lg:grid lg:grid-cols-[19rem_minmax(0,1fr)] lg:gap-8 items-start">
+      {/* Left Sidebar: Suggested Inquiries & Grounding Info (Screen 9 Reference) */}
+      <aside className="mb-8 lg:mb-0 space-y-6 lg:sticky lg:top-4">
+        <div className="rounded-xl border border-border bg-surface p-5 shadow-xs">
+          <div className="flex items-center justify-between border-b border-border pb-3">
+            <h2 className="font-serif text-support font-semibold text-charcoal">Suggested Inquiries</h2>
+            <span className="text-[11px] font-semibold text-forest">Phase 1 Pilot</span>
+          </div>
 
-      <ol className="space-y-8">
-        {turns.map((turn) => (
-          <li key={turn.id}>
-            <p className="text-meta font-semibold uppercase tracking-[0.12em] text-muted">{t("ask.yourQuestion")}</p>
-            <p className="mt-1 font-serif text-card font-semibold">{turn.question}</p>
-            <div className="mt-4">
-              {turn.state === "loading" && <Progress stage={turn.stage} t={t} />}
-              {turn.state === "error" && (
-                <Notice tone={turn.error === "rate_limited" ? "warning" : "error"} role="alert" title={turn.error === "rate_limited" ? undefined : t("ask.failureTitle")}>
-                  <p>{turn.error === "rate_limited" ? t("ask.rateLimited") : turn.error === "too_long" ? t("ask.tooLong") : turn.error === "too_short" ? t("ask.tooShort") : t("ask.failureBody")}</p>
-                  {turn.error !== "rate_limited" && (
-                    <Button type="button" variant="secondary" className="mt-3" onClick={() => ask(turn.question, { replaceId: turn.id })}>
-                      {t("common.retry")}
-                    </Button>
-                  )}
-                </Notice>
-              )}
-              {turn.state === "done" && turn.result && (
-                <Answer result={turn.result} t={t} onRetry={() => ask(turn.question, { replaceId: turn.id })} onAsk={(q) => ask(q)} selected={lang} />
-              )}
-            </div>
-          </li>
-        ))}
-      </ol>
-
-      <div ref={bottom} />
-      <form
-        className="sticky bottom-16 mt-8 rounded-lg border border-border bg-surface p-3 shadow-sm md:bottom-4"
-        onSubmit={(e) => {
-          e.preventDefault();
-          if (busy) return;
-          void ask(draft);
-          setDraft("");
-        }}
-      >
-        <label htmlFor="ask-input" className="sr-only">
-          {turns.length ? t("ask.followUp") : t("ask.placeholder")}
-        </label>
-        <div className="flex items-end gap-2">
-          <textarea
-            id="ask-input"
-            value={draft}
-            onChange={(e) => setDraft(e.target.value)}
-            rows={2}
-            maxLength={500}
-            placeholder={turns.length ? t("ask.followUp") : t("ask.placeholder")}
-            className="block min-h-12 w-full resize-y rounded-md border border-border bg-canvas px-3 py-2 text-body"
-            aria-invalid={!!inputError}
-            aria-describedby={inputError ? "ask-error" : "ask-lang"}
-            onKeyDown={(e) => {
-              if (e.key === "Enter" && !e.shiftKey && !e.nativeEvent.isComposing) {
-                e.preventDefault();
-                e.currentTarget.form?.requestSubmit();
-              }
-            }}
-          />
-          <button type="submit" disabled={busy} className="inline-flex size-12 shrink-0 items-center justify-center rounded-md bg-forest text-on-forest hover:bg-forest-hover disabled:bg-muted/60" aria-label={t("ask.submit")}>
-            <IconSend width={20} height={20} />
-          </button>
+          <div className="mt-4 space-y-5">
+            {SUGGESTED_TOPICS.map((topic) => (
+              <div key={topic.category}>
+                <p className="text-[11px] font-semibold uppercase tracking-wider text-terracotta">
+                  {topic.category}
+                </p>
+                <div className="mt-2 space-y-1.5">
+                  {topic.questions.map((qText) => (
+                    <button
+                      key={qText}
+                      type="button"
+                      onClick={() => void ask(qText)}
+                      disabled={busy}
+                      className="block w-full text-left rounded-lg border border-border/80 bg-canvas p-2.5 text-meta text-charcoal hover:border-forest/60 hover:bg-surface-2 transition-all shadow-2xs"
+                    >
+                      “{qText}”
+                    </button>
+                  ))}
+                </div>
+              </div>
+            ))}
+          </div>
         </div>
-        {inputError ? (
-          <p id="ask-error" role="alert" className="mt-1 text-meta text-error">
-            {inputError}
+
+        {/* Source Grounding Assurance Panel */}
+        <div className="rounded-xl border border-forest/20 bg-[#F1F6F2] p-4 text-meta text-muted shadow-2xs">
+          <p className="font-semibold text-forest">✦ Real-time Source Grounding</p>
+          <p className="mt-1 leading-relaxed">
+            Every answer is verified against statutory archives, academic repositories and primary gazetteers before rendering.
           </p>
-        ) : (
-          <p id="ask-lang" className="mt-1 text-meta text-muted">
-            {t("ask.responseLanguage", { language: LANG_NAMES[lang] ?? lang })}
-          </p>
+        </div>
+      </aside>
+
+      {/* Right Column: Chat Timeline and Input Composer */}
+      <div className="min-w-0">
+        {turns.length > 0 && (
+          <div className="mb-4 flex flex-wrap items-center justify-between gap-2 border-b border-border pb-3">
+            <p className="text-meta text-muted">{t("ask.sessionNote")}</p>
+            <Button variant="secondary" type="button" onClick={newTopic} disabled={busy} className="h-9 px-4 text-meta">
+              {t("ask.newTopic")}
+            </Button>
+          </div>
         )}
-      </form>
+
+        <ol className="space-y-8">
+          {turns.map((turn) => (
+            <li key={turn.id} className="space-y-4">
+              {/* User Question Bubble */}
+              <div className="rounded-xl border border-border bg-[#FBF9F4] p-4 shadow-2xs">
+                <p className="text-[11px] font-semibold uppercase tracking-[0.14em] text-terracotta">
+                  {t("ask.yourQuestion")}
+                </p>
+                <p className="mt-1 font-serif text-section font-semibold text-charcoal">{turn.question}</p>
+              </div>
+
+              {/* Assistant Answer Stream */}
+              <div>
+                {turn.state === "loading" && <Progress stage={turn.stage} t={t} />}
+                {turn.state === "error" && (
+                  <Notice
+                    tone={turn.error === "rate_limited" ? "warning" : "error"}
+                    role="alert"
+                    title={turn.error === "rate_limited" ? undefined : t("ask.failureTitle")}
+                  >
+                    <p>
+                      {turn.error === "rate_limited"
+                        ? t("ask.rateLimited")
+                        : turn.error === "too_long"
+                        ? t("ask.tooLong")
+                        : turn.error === "too_short"
+                        ? t("ask.tooShort")
+                        : t("ask.failureBody")}
+                    </p>
+                    {turn.error !== "rate_limited" && (
+                      <Button
+                        type="button"
+                        variant="secondary"
+                        className="mt-3"
+                        onClick={() => ask(turn.question, { replaceId: turn.id })}
+                      >
+                        {t("common.retry")}
+                      </Button>
+                    )}
+                  </Notice>
+                )}
+                {turn.state === "done" && turn.result && (
+                  <Answer
+                    result={turn.result}
+                    t={t}
+                    onRetry={() => ask(turn.question, { replaceId: turn.id })}
+                    onAsk={(q) => ask(q)}
+                    selected={lang}
+                  />
+                )}
+              </div>
+            </li>
+          ))}
+        </ol>
+
+        <div ref={bottom} />
+
+        {/* Floating Input Composer */}
+        <form
+          className="sticky bottom-16 mt-8 rounded-2xl border border-border bg-surface p-3.5 shadow-md md:bottom-4"
+          onSubmit={(e) => {
+            e.preventDefault();
+            if (busy) return;
+            void ask(draft);
+            setDraft("");
+          }}
+        >
+          <label htmlFor="ask-input" className="sr-only">
+            {turns.length ? t("ask.followUp") : t("ask.placeholder")}
+          </label>
+          <div className="flex items-end gap-2.5">
+            <textarea
+              id="ask-input"
+              value={draft}
+              onChange={(e) => setDraft(e.target.value)}
+              rows={2}
+              maxLength={500}
+              placeholder={turns.length ? t("ask.followUp") : t("ask.placeholder")}
+              className="block min-h-12 w-full resize-y rounded-xl border border-border bg-canvas px-3.5 py-2.5 text-body text-charcoal placeholder:text-muted focus:border-forest focus:outline-none"
+              aria-invalid={!!inputError}
+              aria-describedby={inputError ? "ask-error" : "ask-lang"}
+              onKeyDown={(e) => {
+                if (e.key === "Enter" && !e.shiftKey && !e.nativeEvent.isComposing) {
+                  e.preventDefault();
+                  e.currentTarget.form?.requestSubmit();
+                }
+              }}
+            />
+            <button
+              type="submit"
+              disabled={busy}
+              className="inline-flex size-12 shrink-0 items-center justify-center rounded-xl bg-forest text-on-forest hover:bg-forest-hover disabled:bg-muted/50 transition-colors shadow-xs"
+              aria-label={t("ask.submit")}
+            >
+              <IconSend width={20} height={20} />
+            </button>
+          </div>
+          {inputError ? (
+            <p id="ask-error" role="alert" className="mt-1 text-meta text-error font-medium">
+              {inputError}
+            </p>
+          ) : (
+            <p id="ask-lang" className="mt-1.5 text-meta text-muted">
+              {t("ask.responseLanguage", { language: LANG_NAMES[lang] ?? lang })}
+            </p>
+          )}
+        </form>
+      </div>
     </div>
   );
 }

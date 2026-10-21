@@ -1,0 +1,74 @@
+{
+  "kind": "connection",
+  "slug": "varanasi-river-to-loom",
+  "fixture": true,
+  "entities": [
+    { "id": "varanasi-ghats", "role": "from" },
+    { "id": "banarasi-silk-weaving", "role": "to" },
+    { "id": "kabir-das", "role": "mentioned" }
+  ],
+  "versions": [
+    {
+      "language": "en",
+      "body": {
+        "title": "The sacred river and the loom: how pilgrimage shaped Banaras silk",
+        "summary": "The relationship between Varanasi's riverfront pilgrimage economy and the centuries-old silk weaving guilds of Madanpura and Peeli Kothi.",
+        "relationshipType": "place_and_practice",
+        "from": { "entity": "varanasi-ghats", "label": "The Ghats of Varanasi" },
+        "to": { "entity": "banarasi-silk-weaving", "label": "Banarasi Silk & Brocade" },
+        "rationale": [
+          {
+            "text": "For centuries, pilgrims arriving at the sacred ghats created an enduring demand for ceremonial ritual garments, pitambari dhotis and bridal brocades, prompting master-weavers to settle directly in the adjoining urban quarters.",
+            "claims": ["pilgrimage-craft-demand"]
+          },
+          {
+            "text": "The geography of Varanasi reflects this intimate relationship: the weaver mohallas sit just behind the riverfront ridge, relying on the same urban water and merchant networks established around the ghats.",
+            "claims": ["urban-proximity"]
+          }
+        ],
+        "whyItMatters": [
+          {
+            "text": "This connection shows that Varanasi's sacred identity is inseparable from its artisanal material culture. The river is not merely a backdrop for ritual, but the physical axis around which guilds, trade networks and philosophical poets like Sant Kabir flourished.",
+            "claims": []
+          }
+        ],
+        "doesNotEstablish": "This relationship does not imply that every weaver guild was founded exclusively for pilgrimage trade; commercial export to imperial Mughal and Awadh courts was equally central to the craft's evolution.",
+        "uncertainty": "The precise dates when specific weaver colonies settled in Madanpura relative to early ghat constructions are drawn from community genealogies and regional surveys rather than continuous written municipal records.",
+        "relatedStories": [
+          "varanasi-ghats-architecture-and-river",
+          "varanasi-silk-weaving-craft-and-living-tradition"
+        ]
+      },
+      "claims": [
+        {
+          "key": "pilgrimage-craft-demand",
+          "text": "Pilgrim flow along the ghats spurred economic demand for consecrated silk garments, establishing a direct link between temple rituals and weaver guilds.",
+          "claimType": "relationship",
+          "epistemic": "documented",
+          "evidence": [
+            {
+              "source": "gov-indian-culture-banaras-brocade",
+              "relation": "supports",
+              "excerpt": "The perpetual influx of pilgrims to the Kashi Vishwanath corridor and ghats created sustained patronage for specialized sacred silks, establishing a vital symbiotic trade link.",
+              "locator": "Socio-Economic Dimensions"
+            }
+          ]
+        },
+        {
+          "key": "urban-proximity",
+          "text": "The historic weaver mohallas of Varanasi developed immediately behind the riverfront ghat ridge.",
+          "claimType": "relationship",
+          "epistemic": "documented",
+          "evidence": [
+            {
+              "source": "org-sahapedia-varanasi-weavers",
+              "relation": "supports",
+              "excerpt": "The historical topography shows weaver clusters strategically positioned within walking distance of the riverfront ghat markets, where merchants negotiated yarn and finished sarees.",
+              "locator": "Urban Setting & Trade"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

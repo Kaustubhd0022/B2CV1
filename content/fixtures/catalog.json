@@ -100,21 +100,193 @@
       "language": "en",
       "accessedDate": "2026-10-20",
       "assessment": "Tertiary overview (revision 1352292329) across several religions; summarises symbolism rather than documenting historical transmission."
+    },
+    {
+      "id": "gov-asi-varanasi-ghats",
+      "title": "Archaeological & Architectural Documentation of Varanasi Riverfront",
+      "creator": "Archaeological Survey of India",
+      "publisher": "Archaeological Survey of India (ASI), Ministry of Culture",
+      "sourceType": "official",
+      "url": "https://asi.nic.in/monuments-in-uttar-pradesh/",
+      "language": "en",
+      "accessedDate": "2026-10-21",
+      "assessment": "Tier-1 Official Government Archive. Documents protected stone embankments, Maratha-period masonry, and ghat structural surveys."
+    },
+    {
+      "id": "gov-indian-culture-banaras-brocade",
+      "title": "Banaras Brocades and Zari: Traditional Craft & GI Heritage",
+      "creator": "National Mission on Cultural Mapping",
+      "publisher": "Indian Culture Portal, Ministry of Culture, Govt. of India",
+      "sourceType": "official",
+      "url": "https://indianculture.gov.in/intangible-cultural-heritage/traditional-craftsmanship/banaras-brocade",
+      "language": "en",
+      "accessedDate": "2026-10-21",
+      "assessment": "Tier-1 Official National Cultural Repository. Details living weaver guilds, kadhwa and fekwa techniques, and historical guild migration."
+    },
+    {
+      "id": "gov-ignca-kashi-sacred-geography",
+      "title": "Kashi Tirtha: Sacred Geography, Panchakroshi and Living Rituals",
+      "creator": "Prof. Rana P.B. Singh",
+      "publisher": "Indira Gandhi National Centre for the Arts (IGNCA)",
+      "sourceType": "academic",
+      "url": "http://ignca.gov.in/divisions/kalanidhi/sacred-geography-varanasi/",
+      "language": "en",
+      "accessedDate": "2026-10-21",
+      "assessment": "Tier-1 Autonomous Cultural Research Institution. Peer-reviewed spatial and scriptural survey of river-city ritual geography."
+    },
+    {
+      "id": "gov-textiles-banaras-gi",
+      "title": "Geographical Indications Registry: Banaras Brocades and Sarees (GI Application No. 99)",
+      "creator": "Controller General of Patents, Designs and Trademarks",
+      "publisher": "Geographical Indications Registry, Government of India",
+      "sourceType": "official",
+      "url": "https://search.ipindia.gov.in/GIRPublic/Application/Details/99",
+      "language": "en",
+      "accessedDate": "2026-10-21",
+      "assessment": "Tier-1 Statutory Record. Establishes legal definitions, 6-district geography, handloom criteria, and historical origins."
+    },
+    {
+      "id": "org-sahapedia-varanasi-weavers",
+      "title": "The Loom and the Sacred City: Silk Weavers of Madanpura and Peeli Kothi",
+      "creator": "Sucharita Sengupta",
+      "publisher": "Sahapedia Open Cultural Heritage Archive",
+      "sourceType": "specialist",
+      "url": "https://www.sahapedia.org/the-weavers-of-banaras-living-traditions",
+      "language": "en",
+      "accessedDate": "2026-10-21",
+      "assessment": "Tier-1 Specialist Cultural Heritage Documentation. Field interviews with master weavers, Nakshaband lineage, and syncretic guild history."
+    },
+    {
+      "id": "org-sahapedia-ghats-varanasi",
+      "title": "The Ghats of Banaras: Cultural Geography, Architecture and Daily Ritual",
+      "creator": "V.N. Mishra & Editorial Collective",
+      "publisher": "Sahapedia Open Cultural Heritage Archive",
+      "sourceType": "specialist",
+      "url": "https://www.sahapedia.org/ghats-of-varanasi-an-overview",
+      "language": "en",
+      "accessedDate": "2026-10-21",
+      "assessment": "Tier-1 Specialist Field Documentation. In-depth architectural profiles of 84 ghats, cremation rites at Manikarnika, and seasonal ritual calendars."
     }
   ],
   "entities": [
-    { "id": "varanasi-ghats", "type": "structure", "canonicalName": "Ghats of Varanasi", "region": "Varanasi, Uttar Pradesh" },
-    { "id": "ganges", "type": "place", "canonicalName": "Ganges (Ganga)", "aliases": ["Ganga"] },
-    { "id": "varanasi-observatory", "type": "structure", "canonicalName": "Jantar Mantar, Varanasi", "region": "Varanasi, Uttar Pradesh" },
-    { "id": "jantar-mantar-jaipur", "type": "structure", "canonicalName": "Jantar Mantar, Jaipur", "region": "Jaipur, Rajasthan" },
-    { "id": "sawai-jai-singh-ii", "type": "person", "canonicalName": "Sawai Jai Singh II" },
-    { "id": "hampi-vijayanagara", "type": "place", "canonicalName": "Hampi (Vijayanagara)", "region": "Karnataka" },
-    { "id": "vijayanagara-empire", "type": "period", "canonicalName": "Vijayanagara Empire" },
-    { "id": "kochi-fishing-nets", "type": "practice", "canonicalName": "Shore-operated lift nets of Kochi", "aliases": ["Chinese fishing nets", "Cheena vala"], "region": "Kochi, Kerala" },
-    { "id": "durga-puja-kolkata", "type": "event", "canonicalName": "Durga Puja in Kolkata", "region": "Kolkata, West Bengal" },
-    { "id": "meenakshi-temple", "type": "structure", "canonicalName": "Meenakshi Sundareswarar Temple", "region": "Madurai, Tamil Nadu" },
-    { "id": "madurai-nayaks", "type": "institution", "canonicalName": "Madurai Nayak dynasty" },
-    { "id": "lotus-hindu-iconography", "type": "concept", "canonicalName": "Lotus in Hindu iconography" },
-    { "id": "lotus-buddhist-iconography", "type": "concept", "canonicalName": "Lotus in Buddhist iconography" }
+    {
+      "id": "varanasi-ghats",
+      "type": "structure",
+      "canonicalName": "Ghats of Varanasi",
+      "region": "Varanasi, Uttar Pradesh"
+    },
+    {
+      "id": "ganges",
+      "type": "place",
+      "canonicalName": "Ganges (Ganga)",
+      "aliases": [
+        "Ganga"
+      ]
+    },
+    {
+      "id": "varanasi-observatory",
+      "type": "structure",
+      "canonicalName": "Jantar Mantar, Varanasi",
+      "region": "Varanasi, Uttar Pradesh"
+    },
+    {
+      "id": "jantar-mantar-jaipur",
+      "type": "structure",
+      "canonicalName": "Jantar Mantar, Jaipur",
+      "region": "Jaipur, Rajasthan"
+    },
+    {
+      "id": "sawai-jai-singh-ii",
+      "type": "person",
+      "canonicalName": "Sawai Jai Singh II"
+    },
+    {
+      "id": "hampi-vijayanagara",
+      "type": "place",
+      "canonicalName": "Hampi (Vijayanagara)",
+      "region": "Karnataka"
+    },
+    {
+      "id": "vijayanagara-empire",
+      "type": "period",
+      "canonicalName": "Vijayanagara Empire"
+    },
+    {
+      "id": "kochi-fishing-nets",
+      "type": "practice",
+      "canonicalName": "Shore-operated lift nets of Kochi",
+      "aliases": [
+        "Chinese fishing nets",
+        "Cheena vala"
+      ],
+      "region": "Kochi, Kerala"
+    },
+    {
+      "id": "durga-puja-kolkata",
+      "type": "event",
+      "canonicalName": "Durga Puja in Kolkata",
+      "region": "Kolkata, West Bengal"
+    },
+    {
+      "id": "meenakshi-temple",
+      "type": "structure",
+      "canonicalName": "Meenakshi Sundareswarar Temple",
+      "region": "Madurai, Tamil Nadu"
+    },
+    {
+      "id": "madurai-nayaks",
+      "type": "institution",
+      "canonicalName": "Madurai Nayak dynasty"
+    },
+    {
+      "id": "lotus-hindu-iconography",
+      "type": "concept",
+      "canonicalName": "Lotus in Hindu iconography"
+    },
+    {
+      "id": "lotus-buddhist-iconography",
+      "type": "concept",
+      "canonicalName": "Lotus in Buddhist iconography"
+    },
+    {
+      "id": "banarasi-silk-weaving",
+      "type": "practice",
+      "canonicalName": "Banarasi Silk Weaving and Brocades",
+      "aliases": [
+        "Banarasi Zari",
+        "Kadhwa Weaving"
+      ],
+      "region": "Varanasi, Uttar Pradesh"
+    },
+    {
+      "id": "kashi-sacred-geography",
+      "type": "concept",
+      "canonicalName": "Sacred Geography of Kashi",
+      "region": "Varanasi, Uttar Pradesh"
+    },
+    {
+      "id": "kabir-das",
+      "type": "person",
+      "canonicalName": "Sant Kabir Das",
+      "region": "Varanasi, Uttar Pradesh"
+    },
+    {
+      "id": "manikarnika-ghat",
+      "type": "place",
+      "canonicalName": "Manikarnika Ghat",
+      "region": "Varanasi, Uttar Pradesh"
+    },
+    {
+      "id": "dashashwamedh-ghat",
+      "type": "place",
+      "canonicalName": "Dashashwamedh Ghat",
+      "region": "Varanasi, Uttar Pradesh"
+    },
+    {
+      "id": "banaras-gharana",
+      "type": "tradition",
+      "canonicalName": "Banaras Gharana (Hindustani Classical Music)",
+      "region": "Varanasi, Uttar Pradesh"
+    }
   ]
 }

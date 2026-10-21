@@ -42,10 +42,10 @@ export function MainNav({ labels, variant }: { labels: Labels; variant: "bottom"
       </nav>
     );
   }
-  // Floating pill of circular buttons (cinematic reference). Labels stay available to assistive tech.
+  // Floating pill of circular buttons (editorial mobile navigation). Labels stay available to assistive tech.
   return (
     <nav aria-label={labels.main} className="fixed inset-x-0 bottom-4 z-40 flex justify-center pb-[env(safe-area-inset-bottom)] md:hidden">
-      <ul className="glass flex gap-2 rounded-full p-1.5 shadow-2xl shadow-black/60">
+      <ul className="flex items-center gap-2 rounded-full border border-border bg-surface/95 p-1.5 shadow-lg backdrop-blur-md">
         {ITEMS.map(({ href, key, Icon, match }) => {
           const active = match(pathname);
           return (
@@ -56,11 +56,11 @@ export function MainNav({ labels, variant }: { labels: Labels; variant: "bottom"
                 aria-label={labels[key]}
                 title={labels[key]}
                 className={cx(
-                  "flex size-14 items-center justify-center rounded-full transition-colors",
-                  active ? "bg-forest text-on-forest" : "bg-black/60 text-charcoal hover:bg-black/80",
+                  "flex size-12 items-center justify-center rounded-full transition-all",
+                  active ? "bg-forest text-on-forest shadow-xs" : "text-muted hover:bg-surface-2 hover:text-charcoal",
                 )}
               >
-                <Icon width={22} height={22} />
+                <Icon width={20} height={20} />
               </Link>
             </li>
           );
@@ -76,9 +76,10 @@ export function LanguageLink({ lang, native, label }: { lang: string; native: st
   return (
     <Link
       href={`/language?next=${encodeURIComponent(pathname)}`}
-      className="glass inline-flex min-h-11 items-center rounded-full px-4 text-meta font-semibold text-charcoal hover:bg-surface-2"
+      className="inline-flex min-h-10 items-center gap-1.5 rounded-full border border-border bg-surface px-3.5 py-1 text-meta font-medium text-charcoal shadow-2xs hover:border-forest/40 hover:bg-surface-2 transition-colors"
       aria-label={`${label}: ${native}`}
     >
+      <span className="text-terracotta text-xs" aria-hidden="true">●</span>
       <span lang={lang}>{native}</span>
     </Link>
   );
