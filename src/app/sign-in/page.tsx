@@ -25,7 +25,7 @@ const ERRORS: Record<string, MessageKey> = {
 };
 
 const input =
-  "mt-1 block w-full min-h-12 rounded-full border border-border bg-surface px-5 py-2 text-body text-charcoal placeholder:text-muted/80 disabled:opacity-60";
+  "mt-1 block w-full min-h-10 rounded-full border border-border bg-surface px-4 py-1.5 text-sm text-charcoal placeholder:text-muted/70 disabled:opacity-60";
 
 export default async function SignInPage({ searchParams }: { searchParams: Promise<Record<string, string | undefined>> }) {
   const sp = await searchParams;
@@ -39,7 +39,6 @@ export default async function SignInPage({ searchParams }: { searchParams: Promi
   const email = emailConfigured();
   const phone = smsConfigured();
   const devOutbox = !config().isProd && (config().auth.email.provider === "dev-outbox" || config().auth.sms.provider === "dev-outbox");
-  const onScreenCodes = config().auth.email.provider === "screen" || config().auth.sms.provider === "screen";
   const q = `?next=${encodeURIComponent(next)}`;
 
   const pilotCities = [
@@ -79,7 +78,7 @@ export default async function SignInPage({ searchParams }: { searchParams: Promi
           className="absolute inset-0 -z-10 bg-gradient-to-r from-[#141d18]/90 via-[#1b2620]/80 to-[#141d18]/85 md:from-[#141d18]/92 md:via-[#18231e]/75 md:to-transparent"
         />
 
-        <div className="mx-auto flex min-h-dvh max-w-7xl flex-col justify-between px-4 py-6 sm:px-6 md:px-10 lg:flex-row lg:items-center lg:gap-12 lg:py-10">
+        <div className="mx-auto flex min-h-dvh max-w-7xl flex-col justify-between px-4 py-6 sm:px-6 md:px-10 lg:flex-row lg:items-center lg:gap-10 lg:py-8">
           {/* Left Column: Cultural editorial headline, categories & pilot cities */}
           <div className="flex max-w-2xl flex-col justify-center py-6 text-white lg:py-0">
             {/* Brand Logo & Emblem */}
@@ -117,7 +116,7 @@ export default async function SignInPage({ searchParams }: { searchParams: Promi
             </div>
 
             {/* Pilot Cities Showcase */}
-            <div className="mt-10 hidden sm:block">
+            <div className="mt-8 hidden sm:block">
               <div className="flex items-center justify-between">
                 <p className="text-meta font-medium uppercase tracking-wider text-white/70">6 Pilot Cities</p>
                 <span className="text-meta text-gold">Phase 1 Discovery</span>
@@ -146,34 +145,32 @@ export default async function SignInPage({ searchParams }: { searchParams: Promi
             </div>
           </div>
 
-          {/* Right Column: Floating Ivory Authentication Card (Screen 1 Master Spec) */}
-          <div className="w-full max-w-md lg:shrink-0">
-            <div className="rounded-2xl border border-border bg-[#FAF9F5] p-6 shadow-2xl backdrop-blur-md sm:p-8">
+          {/* Right Column: Floating Ivory Authentication Card (Compact Desktop Size) */}
+          <div className="w-full max-w-[370px] lg:shrink-0">
+            <div className="rounded-2xl border border-border bg-[#FAF9F5] p-5 shadow-2xl backdrop-blur-md">
               <div className="text-left">
-                <span className="inline-block rounded-full bg-forest/10 px-3 py-1 text-meta font-semibold text-forest">
+                <span className="inline-block rounded-full bg-forest/10 px-2.5 py-0.5 text-xs font-semibold text-forest">
                   Welcome to TattvaCo
                 </span>
-                <h2 className="mt-2 font-serif text-page font-semibold text-charcoal">{t("auth.title")}</h2>
-                <p className="mt-1 text-support text-muted leading-snug">{t("auth.subtitle")}</p>
+                <h2 className="mt-1.5 font-serif text-2xl font-semibold text-charcoal">{t("auth.title")}</h2>
+                <p className="mt-0.5 text-xs text-muted leading-snug">{t("auth.subtitle")}</p>
               </div>
 
-              {/* Status and Error Notices */}
-              <div className="mt-5 space-y-2.5" aria-live="polite">
-                {onScreenCodes && <Notice tone="warning">{t("auth.demoNotice")}</Notice>}
-                {sp.reason === "expired" && <Notice tone="info">{t("auth.expired")}</Notice>}
-                {error && (
+              {/* Status and Error Notices (removed demo and expired notices as requested) */}
+              {error && (
+                <div className="mt-3" aria-live="polite">
                   <Notice tone="error" role="alert">
                     {t(error)}
                   </Notice>
-                )}
-              </div>
+                </div>
+              )}
 
               {/* OAuth Providers */}
-              <div className="mt-6 grid gap-2.5">
+              <div className="mt-4 grid gap-2">
                 {google ? (
                   <a
                     href={`/auth/google${q}`}
-                    className="flex min-h-12 items-center justify-center gap-2.5 rounded-full bg-forest px-4 font-semibold text-on-forest shadow-xs transition-colors hover:bg-forest-hover"
+                    className="flex min-h-10 items-center justify-center gap-2 rounded-full bg-forest px-4 text-sm font-semibold text-on-forest shadow-xs transition-colors hover:bg-forest-hover"
                   >
                     <svg className="size-4" viewBox="0 0 24 24" fill="currentColor">
                       <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/>
@@ -189,7 +186,7 @@ export default async function SignInPage({ searchParams }: { searchParams: Promi
                 {apple ? (
                   <a
                     href={`/auth/apple${q}`}
-                    className="flex min-h-12 items-center justify-center gap-2 rounded-full border border-border bg-surface px-4 font-semibold text-charcoal shadow-xs transition-colors hover:bg-surface-2"
+                    className="flex min-h-10 items-center justify-center gap-2 rounded-full border border-border bg-surface px-4 text-sm font-semibold text-charcoal shadow-xs transition-colors hover:bg-surface-2"
                   >
                     <span></span>
                     <span>{t("auth.apple")}</span>
@@ -200,16 +197,16 @@ export default async function SignInPage({ searchParams }: { searchParams: Promi
               </div>
 
               {/* Divider */}
-              <div className="my-5 flex items-center gap-3 text-meta text-muted" aria-hidden="true">
+              <div className="my-3 flex items-center gap-3 text-xs text-muted" aria-hidden="true">
                 <span className="h-px flex-1 bg-border" />
                 <span>{t("auth.or")}</span>
                 <span className="h-px flex-1 bg-border" />
               </div>
 
               {/* Email Login Form */}
-              <form action={startEmail} className="space-y-3" noValidate>
+              <form action={startEmail} className="space-y-2.5" noValidate>
                 <input type="hidden" name="next" value={next} />
-                <label className="block text-support font-medium text-charcoal">
+                <label className="block text-xs font-medium text-charcoal">
                   {t("auth.email")}
                   <input
                     name="email"
@@ -222,16 +219,16 @@ export default async function SignInPage({ searchParams }: { searchParams: Promi
                     disabled={!email}
                   />
                 </label>
-                <SubmitButton className="w-full" disabled={!email}>
+                <SubmitButton className="w-full !min-h-10 !py-2 text-sm" disabled={!email}>
                   {t("auth.emailContinue")}
                 </SubmitButton>
-                {!email && <p className="text-meta text-muted">{t("auth.providerUnavailable", { provider: "Email" })}</p>}
+                {!email && <p className="text-xs text-muted">{t("auth.providerUnavailable", { provider: "Email" })}</p>}
               </form>
 
               {/* Phone Login Form */}
-              <form action={startPhone} className="mt-5 space-y-3" noValidate>
+              <form action={startPhone} className="mt-3.5 space-y-2.5" noValidate>
                 <input type="hidden" name="next" value={next} />
-                <label className="block text-support font-medium text-charcoal">
+                <label className="block text-xs font-medium text-charcoal">
                   {t("auth.phone")}
                   <input
                     name="phone"
@@ -245,34 +242,33 @@ export default async function SignInPage({ searchParams }: { searchParams: Promi
                     disabled={!phone}
                   />
                 </label>
-                <p id="phone-hint" className="text-meta text-muted">
+                <p id="phone-hint" className="text-[11px] text-muted">
                   {t("auth.phoneHint")}
                 </p>
-                <SubmitButton variant="secondary" className="w-full" disabled={!phone}>
+                <SubmitButton variant="secondary" className="w-full !min-h-10 !py-2 text-sm" disabled={!phone}>
                   {t("auth.phoneContinue")}
                 </SubmitButton>
-                {!phone && <p className="text-meta text-muted">{t("auth.providerUnavailable", { provider: "SMS" })}</p>}
+                {!phone && <p className="text-xs text-muted">{t("auth.providerUnavailable", { provider: "SMS" })}</p>}
               </form>
 
               {/* Recovery & Legal Note */}
-              <div className="mt-6 border-t border-border pt-4 text-center">
-                <p className="text-meta text-muted">{t("auth.recoveryNote")}</p>
-                <p className="mt-1 text-meta text-muted">
+              <div className="mt-3.5 border-t border-border pt-2.5 text-center">
+                <p className="text-[11px] text-muted">
                   {t("auth.terms")}{" "}
                   <Link href="/policies" className="text-forest underline font-medium">
                     {t("settings.terms")}
                   </Link>
                 </p>
                 {devOutbox && (
-                  <Notice tone="warning" className="mt-3 text-left">
+                  <Notice tone="warning" className="mt-2 text-left text-xs">
                     {t("auth.devOutbox")}
                   </Notice>
                 )}
               </div>
 
               {/* Language Switcher Bar */}
-              <div className="mt-5 border-t border-border pt-3">
-                <p className="text-center text-[11px] font-medium uppercase tracking-wider text-muted">
+              <div className="mt-3 border-t border-border pt-2">
+                <p className="text-center text-[10px] font-medium uppercase tracking-wider text-muted">
                   Preview in Your Language
                 </p>
                 <nav aria-label={t("lang.change")} className="mt-2 flex flex-wrap justify-center gap-x-2.5 gap-y-1 text-meta">

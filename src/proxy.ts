@@ -1,7 +1,7 @@
 import { NextResponse, type NextRequest } from "next/server";
 
 const SESSION_COOKIE = "tc_session";
-const PUBLIC_PREFIXES = ["/sign-in", "/auth/", "/api/health", "/policies"];
+const PUBLIC_PREFIXES = ["/sign-in", "/auth/", "/api/health", "/policies", "/language"];
 
 /**
  * First line of FR-01: requests without a session cookie are sent to sign-in with the

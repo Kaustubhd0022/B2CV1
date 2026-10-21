@@ -6,6 +6,12 @@ import type { NextConfig } from "next";
 const nextConfig: NextConfig = {
   serverExternalPackages: ["@electric-sql/pglite", "pg"],
   poweredByHeader: false,
+  images: {
+    remotePatterns: [
+      { protocol: "https", hostname: "images.unsplash.com" },
+      { protocol: "https", hostname: "upload.wikimedia.org" },
+    ],
+  },
   turbopack: {
     root: import.meta.dirname,
     rules: {

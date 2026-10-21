@@ -1,88 +1,142 @@
 import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
-import { requireUser } from "@/lib/auth/session";
+import { cookies } from "next/headers";
+import { currentSession } from "@/lib/auth/session";
 import { safeNext } from "@/lib/auth/normalize";
-import { languageReadiness } from "@/lib/i18n/readiness";
+import { isLanguageCode } from "@/lib/i18n/languages";
 import { translator } from "@/lib/i18n/t";
 import { SubmitButton } from "@/components/submit-button";
 import { Notice } from "@/components/ui";
 
 export const metadata: Metadata = { title: "Select Language" };
 
+const FIVE_LANGUAGES = [
+  {
+    code: "en",
+    native: "English",
+    english: "English",
+    img: "https://images.unsplash.com/photo-1587474260584-136574528ed5?auto=format&fit=crop&w=600&q=80",
+    place: "India Gate, New Delhi",
+  },
+  {
+    code: "hi",
+    native: "हिन्दी",
+    english: "Hindi",
+    img: "https://images.unsplash.com/photo-1598324789736-4861f89564a0?auto=format&fit=crop&w=600&q=80",
+    place: "Varanasi Ghats, Uttar Pradesh",
+  },
+  {
+    code: "mr",
+    native: "मराठी",
+    english: "Marathi",
+    img: "https://images.unsplash.com/photo-1570168007204-dfb528c6958f?auto=format&fit=crop&w=600&q=80",
+    place: "Gateway of India, Maharashtra",
+  },
+  {
+    code: "gu",
+    native: "ગુજરાતી",
+    english: "Gujarati",
+    img: "https://images.unsplash.com/photo-1609137144813-7d9921338f24?auto=format&fit=crop&w=600&q=80",
+    place: "Somnath Temple, Gujarat",
+  },
+  {
+    code: "bn",
+    native: "বাংলা",
+    english: "Bengali",
+    img: "https://images.unsplash.com/photo-1558431382-27e303142255?auto=format&fit=crop&w=600&q=80",
+    place: "Victoria Memorial, Kolkata",
+  },
+];
+
 export default async function LanguagePage({ searchParams }: { searchParams: Promise<{ next?: string; error?: string }> }) {
   const sp = await searchParams;
-  const s = await requireUser();
-  const current = s.language ?? "en";
+  const s = await currentSession();
+  const jar = await cookies();
+  const rawLang = s?.language ?? jar.get("tc-language")?.value ?? "en";
+  const current = isLanguageCode(rawLang) ? rawLang : "en";
   const t = translator(current);
-  const langs = await languageReadiness();
-  const next = safeNext(sp.next);
+  const rawNext = safeNext(sp.next);
+  const next = (!rawNext || rawNext === "/language" || rawNext.startsWith("/language?") || rawNext.startsWith("/language/")) ? "/" : rawNext;
 
   return (
     <div className="min-h-dvh bg-canvas text-charcoal">
       <div className="mx-auto flex min-h-dvh max-w-7xl flex-col lg:flex-row">
-        {/* Left Column: Temple arch photographic quote panel (Desktop) */}
-        <aside className="relative hidden w-full lg:flex lg:w-5/12 xl:w-1/2 flex-col justify-between overflow-hidden p-10 text-white">
+        {/* Left Column: Temple arch photographic quote panel (Screen 2 Reference) */}
+        <aside className="relative hidden w-full lg:flex lg:w-5/12 xl:w-5/12 flex-col justify-between overflow-hidden bg-[#141f1a] p-8 lg:p-10 text-white min-h-dvh">
           <Image
             src="/images/dev/hampi.jpg"
-            alt="Stone carved temple pavilion at Hampi"
+            alt="Ancient stone carved temple pavilion"
             fill
             priority
             sizes="50vw"
-            className="-z-20 object-cover object-center"
+            className="object-cover object-center"
           />
-          <div className="absolute inset-0 -z-10 bg-gradient-to-t from-[#141d18]/95 via-[#141d18]/60 to-[#141d18]/80" />
+          <div className="absolute inset-0 bg-gradient-to-t from-[#0d1612]/95 via-[#13221b]/70 to-[#192b23]/85" />
 
-          {/* Brand header */}
-          <div className="flex items-center gap-2.5">
-            <span className="flex size-8 items-center justify-center rounded-full border border-gold/40 bg-forest/80 text-gold text-sm shadow-xs">
-              ✦
-            </span>
-            <span className="font-serif text-card font-semibold tracking-wider text-white">TATTVACO</span>
-          </div>
-
-          {/* Cultural Quote */}
-          <div className="my-auto max-w-md py-12">
-            <span className="text-meta font-semibold uppercase tracking-[0.16em] text-gold">
-              Living Languages of India
-            </span>
-            <blockquote className="mt-4 font-serif text-display leading-tight text-white">
-              “Culture speaks best in the mother tongue.”
-            </blockquote>
-            <p className="mt-4 text-body text-white/85 leading-relaxed">
-              Explore interconnected stories, ancient sacred geographies, classical arts and living crafts in the language you think in.
-            </p>
-            <div className="mt-8 flex items-center gap-3 text-meta text-white/70">
-              <span className="size-2 rounded-full bg-gold" />
-              <span>11 Scheduled Launch Languages</span>
+          <div className="relative z-10 flex flex-col justify-between h-full">
+            {/* Brand header */}
+            <div className="flex items-center gap-2.5">
+              <span className="flex size-8 items-center justify-center rounded-full border border-gold/40 bg-forest text-gold text-sm shadow-xs">
+                ✦
+              </span>
+              <span className="font-serif text-card font-semibold tracking-wider text-white">TATTVACO</span>
             </div>
-          </div>
 
-          {/* Footer note */}
-          <p className="text-[11px] text-white/50">
-            Hampi, Karnataka · Vijayanagara Architecture
-          </p>
+            {/* Cultural Quote - perfectly contrasted against dark scrim */}
+            <div className="my-auto max-w-md py-8">
+              <span className="text-meta font-semibold uppercase tracking-[0.18em] text-gold">
+                ONE COUNTRY · MANY STORIES · YOUR LANGUAGE
+              </span>
+              <h2 className="mt-4 font-serif text-3xl xl:text-4xl font-semibold leading-tight text-white">
+                Choose Your Language
+              </h2>
+              <p className="mt-4 text-sm text-white/85 leading-relaxed">
+                Experience India&apos;s cultural stories in your language. You can always change this later.
+              </p>
+
+              {/* Dark green quote box matching page 10 reference */}
+              <div className="mt-8 rounded-xl border border-white/10 bg-[#162920]/85 p-4 backdrop-blur-xs">
+                <span className="font-serif text-2xl text-gold leading-none">“</span>
+                <p className="mt-1 text-sm font-medium text-white italic leading-relaxed">
+                  Different languages, one shared heritage.
+                </p>
+                <span className="mt-2 block text-xs text-white/60">— TattvaCo</span>
+              </div>
+            </div>
+
+            {/* Footer note */}
+            <p className="text-xs text-white/50">
+              Hampi, Karnataka · Vijayanagara Architecture
+            </p>
+          </div>
         </aside>
 
-        {/* Right Column: Language Selection Flow */}
-        <main className="flex-1 px-4 py-8 sm:px-8 md:px-12 lg:py-12">
-          <div className="mx-auto max-w-2xl">
+        {/* Right Column: Language Selection Flow matching page 10 reference */}
+        <main className="flex-1 px-4 py-8 sm:px-8 md:px-12 lg:py-10">
+          <div className="mx-auto max-w-xl">
             {/* Step header */}
             <div className="flex items-center justify-between border-b border-border pb-4">
               <Link href="/" className="font-serif text-card font-semibold text-forest lg:hidden">
                 TattvaCo
               </Link>
-              <span className="rounded-full bg-surface-2 px-3 py-1 text-meta font-semibold text-terracotta">
-                Step 1 of 3: Language
-              </span>
+              <div className="flex items-center gap-2">
+                <span className="flex size-2 rounded-full bg-forest" />
+                <span className="text-meta font-semibold uppercase tracking-wider text-terracotta">
+                  Step 1 of 3: Language
+                </span>
+              </div>
+              <Link href="/sign-in" className="text-meta font-medium text-muted hover:text-charcoal flex items-center gap-1">
+                Sign in <span>→</span>
+              </Link>
             </div>
 
             <div className="mt-6">
               <h1 className="font-serif text-page font-semibold md:text-page-lg text-charcoal">
-                {t("lang.title")}
+                Choose your language
               </h1>
               <p className="mt-1.5 text-support text-muted leading-relaxed">
-                {t("lang.subtitle")}
+                Explore places, people, traditions and ideas in your preferred language.
               </p>
             </div>
 
@@ -92,47 +146,54 @@ export default async function LanguagePage({ searchParams }: { searchParams: Pro
               </Notice>
             )}
 
-            {/* Language card selection form */}
+            {/* 5 Photographic Language Cards matching page 10 reference */}
             <form action="/language/select" method="post" className="mt-6">
               <input type="hidden" name="next" value={next} />
               <fieldset>
-                <legend className="sr-only">{t("lang.title")}</legend>
-                <ul className="grid gap-3 sm:grid-cols-2">
-                  {langs.map((l) => (
-                    <li key={l.code}>
-                      <label className="group relative flex min-h-[82px] cursor-pointer items-start justify-between rounded-lg border border-border bg-surface p-4 transition-all hover:border-forest hover:bg-surface-2 hover:shadow-xs has-[:checked]:border-forest has-[:checked]:bg-[#f4f7f4] has-[:checked]:ring-2 has-[:checked]:ring-forest/30">
-                        <div className="min-w-0 flex-1">
-                          <div className="flex items-baseline gap-2">
-                            <span lang={l.code} className="font-serif text-card font-semibold text-charcoal">
-                              {l.native}
-                            </span>
-                            <span className="text-meta text-muted font-medium">({l.english})</span>
-                          </div>
-                          <div className="mt-1 flex flex-wrap items-center gap-1.5 text-[11px] text-muted">
-                            <span
-                              className={`inline-block rounded-xs px-1.5 py-0.5 font-medium ${
-                                l.gatePassed ? "bg-forest/10 text-forest" : "bg-warning/10 text-warning"
-                              }`}
-                            >
-                              {l.gatePassed ? t("lang.statusValidated") : t("lang.statusPreview")}
-                            </span>
-                            <span>·</span>
-                            <span>{t("lang.uiCoverage", { percent: Math.round(l.uiCoverage * 100) })}</span>
-                            <span>·</span>
-                            <span>{t("lang.storiesAvailable", { count: l.publishedStories })}</span>
-                          </div>
-                        </div>
+                <legend className="sr-only">Choose your language</legend>
+                <ul className="grid grid-cols-2 gap-3 sm:gap-4">
+                  {FIVE_LANGUAGES.map((l, index) => (
+                    <li key={l.code} className={index === 4 ? "col-span-2 sm:col-span-1" : ""}>
+                      <label className="group relative flex aspect-[16/10] cursor-pointer flex-col justify-between overflow-hidden rounded-xl border border-border/80 bg-surface-2 p-3.5 shadow-sm transition-all hover:scale-[1.02] hover:shadow-lg has-[:checked]:border-forest has-[:checked]:ring-2 has-[:checked]:ring-forest">
+                        {/* Cultural Landmark Background Image */}
+                        <Image
+                          src={l.img}
+                          alt={l.place}
+                          fill
+                          sizes="(max-width: 640px) 50vw, 300px"
+                          className="object-cover object-center transition-transform duration-500 group-hover:scale-105"
+                        />
+                        {/* Gradient scrim for readable text and checkmark */}
+                        <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/45 to-black/20" />
 
-                        {/* Visible Radio indicator */}
-                        <div className="ml-3 mt-1 shrink-0">
+                        {/* Top bar with indicator badge */}
+                        <div className="relative z-10 flex items-center justify-end">
                           <input
                             type="radio"
                             name="language"
                             value={l.code}
                             defaultChecked={l.code === current}
-                            className="size-4 accent-forest"
+                            className="peer sr-only"
                             required
                           />
+                          {/* Selected checkmark circle */}
+                          <div className="hidden peer-checked:flex size-6 items-center justify-center rounded-full bg-white text-forest shadow-md">
+                            <svg className="size-3.5" viewBox="0 0 20 20" fill="currentColor">
+                              <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd"/>
+                            </svg>
+                          </div>
+                          {/* Unselected empty circle */}
+                          <div className="size-5 rounded-full border border-white/60 bg-black/25 peer-checked:hidden transition-opacity group-hover:border-white" />
+                        </div>
+
+                        {/* Bottom metadata */}
+                        <div className="relative z-10 mt-auto">
+                          <span lang={l.code} className="block font-serif text-lg sm:text-xl font-bold text-white drop-shadow-md">
+                            {l.native}
+                          </span>
+                          <span className="block text-xs font-medium text-white/80">
+                            {l.english}
+                          </span>
                         </div>
                       </label>
                     </li>
@@ -140,22 +201,17 @@ export default async function LanguagePage({ searchParams }: { searchParams: Pro
                 </ul>
               </fieldset>
 
-              <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-                <SubmitButton className="w-full sm:w-auto px-8 min-h-12 shadow-xs">
-                  {t("lang.continue")} →
+              <div className="mt-8 flex flex-col gap-3">
+                <SubmitButton className="w-full !min-h-12 !rounded-xl !bg-forest hover:!bg-forest-hover text-white font-semibold text-base shadow-sm">
+                  Continue →
                 </SubmitButton>
-                <Link
-                  href={next || "/"}
-                  className="text-center text-support font-medium text-muted hover:text-charcoal"
-                >
-                  Skip for now
-                </Link>
               </div>
             </form>
 
-            <div className="mt-8 border-t border-border pt-4">
-              <p className="text-meta text-muted">{t("lang.note")}</p>
-              <p className="mt-1 text-meta text-muted">{t("lang.sessionOnly")}</p>
+            <div className="mt-8 border-t border-border pt-4 text-center">
+              <p className="text-xs text-muted">
+                🌐 You can change your language anytime in Settings.
+              </p>
             </div>
           </div>
         </main>

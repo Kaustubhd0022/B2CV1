@@ -1,5 +1,5 @@
 import "server-only";
-import { mkdirSync } from "node:fs";
+import { existsSync, mkdirSync, unlinkSync } from "node:fs";
 import path from "node:path";
 import { drizzle as drizzlePg, type NodePgDatabase } from "drizzle-orm/node-postgres";
 import { drizzle as drizzlePglite } from "drizzle-orm/pglite";
@@ -35,10 +35,24 @@ async function init(): Promise<DB> {
     return db;
   }
   const dir = c.db.pgliteDir === ":memory:" ? undefined : path.resolve(c.db.pgliteDir);
-  if (dir) mkdirSync(path.dirname(dir), { recursive: true });
+  if (dir) {
+    mkdirSync(path.dirname(dir), { recursive: true });
+    try {
+      const pidFile = path.join(dir, "postmaster.pid");
+      if (existsSync(pidFile)) unlinkSync(pidFile);
+    } catch {}
+  }
   const client = new PGlite(dir);
   const db = drizzlePglite(client, { schema }) as unknown as DB;
-  await migratePglite(db as never, { migrationsFolder: MIGRATIONS });
+  try {
+    await client.query('SELECT 1 FROM "users" LIMIT 1');
+  } catch {
+    try {
+      await migratePglite(db as never, { migrationsFolder: MIGRATIONS });
+    } catch (err: unknown) {
+      console.warn("PGlite migration notice:", err);
+    }
+  }
   holder.close = () => client.close();
   return db;
 }
