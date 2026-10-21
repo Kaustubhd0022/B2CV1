@@ -22,7 +22,7 @@ const num = (v: string | undefined, fallback: number) => {
 
 const EnvSchema = z.object({
   NODE_ENV: z.enum(["development", "production", "test"]).default("development"),
-  APP_URL: z.string().url().default("http://localhost:3000"),
+  APP_URL: z.string().default("http://localhost:3000"),
   DATABASE_URL: z.string().optional(),
   PGLITE_DIR: z.string().default(".data/pglite"),
 });
@@ -37,7 +37,16 @@ function llmProvider(): "anthropic" | "groq" | "none" | "scripted" {
 }
 
 function load() {
-  const env = EnvSchema.parse(process.env);
+  const isVercel = Boolean(process.env.VERCEL);
+  const rawUrl = process.env.APP_URL || (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : "http://localhost:3000");
+  const normalizedUrl = rawUrl.startsWith("http") ? rawUrl : `https://${rawUrl}`;
+  const rawPglite = process.env.PGLITE_DIR || (isVercel ? "/tmp/pglite" : ".data/pglite");
+
+  const env = EnvSchema.parse({
+    ...process.env,
+    APP_URL: normalizedUrl,
+    PGLITE_DIR: rawPglite,
+  });
   const isProd = env.NODE_ENV === "production";
   return {
     env: env.NODE_ENV,
@@ -140,10 +149,10 @@ export function resetConfigForTests() {
 export function assertProductionSafety(c: AppConfig = config()) {
   if (!c.isProd) return;
   const problems: string[] = [];
-  if (!c.db.url) problems.push("DATABASE_URL is required in production");
+  if (!c.db.url && !c.demoMode) problems.push("DATABASE_URL is required in production (or set DEMO_MODE=true for prototype deployment)");
   if (!c.auth.secret || c.auth.secret.length < 32) problems.push("AUTH_SECRET (>=32 chars) is required");
-  if (c.auth.email.provider === "dev-outbox") problems.push("EMAIL_PROVIDER=dev-outbox is not allowed in production");
-  if (c.auth.sms.provider === "dev-outbox") problems.push("SMS_PROVIDER=dev-outbox is not allowed in production");
+  if (!c.demoMode && c.auth.email.provider === "dev-outbox") problems.push("EMAIL_PROVIDER=dev-outbox is not allowed in production");
+  if (!c.demoMode && c.auth.sms.provider === "dev-outbox") problems.push("SMS_PROVIDER=dev-outbox is not allowed in production");
   if (c.ai.provider === "scripted") problems.push("LLM_PROVIDER=scripted is test-only");
   if (!c.demoMode && (c.auth.email.provider === "screen" || c.auth.sms.provider === "screen"))
     problems.push("On-screen codes (EMAIL_PROVIDER/SMS_PROVIDER=screen) require DEMO_MODE=true");
