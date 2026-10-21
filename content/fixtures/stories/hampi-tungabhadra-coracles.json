@@ -1,0 +1,151 @@
+{
+  "kind": "story",
+  "slug": "hampi-tungabhadra-coracles",
+  "city": "hampi",
+  "fixture": true,
+  "entities": [
+    {
+      "id": "tungabhadra-river-axis",
+      "role": "subject"
+    },
+    {
+      "id": "hampi-vijayanagara",
+      "role": "mentioned"
+    }
+  ],
+  "versions": [
+    {
+      "language": "en",
+      "body": {
+        "title": "Sacred Boulders and River Coracles: The Kishkindha Landscape Across Millennia",
+        "orientation": "How woven bamboo coracles and ancient granite outcrops preserved the sacred river boundary of the Vijayanagara Empire.",
+        "hero": {
+          "src": "/images/dev/hampi.jpg",
+          "alt": "Circular woven coracles floating on the Tungabhadra River near ancient Hampi boulders",
+          "credit": "TattvaCo Cultural Archives",
+          "rightsCleared": true
+        },
+        "sections": [
+          {
+            "id": "story",
+            "kind": "narrative",
+            "heading": "The river and the stone",
+            "paragraphs": [
+              {
+                "text": "The Tungabhadra River cuts through one of the oldest exposed granite landscapes on earth, dividing the ancient monkey kingdom of Kishkindha from the imperial capital of Vijayanagara.",
+                "claims": [
+                  "geological-setting"
+                ]
+              },
+              {
+                "text": "For centuries, local boatmen have navigated its treacherous rapids using circular woven coracles (harigolu), made from split bamboo waterproofed with leather or tar.",
+                "claims": [
+                  "coracle-craft"
+                ]
+              }
+            ]
+          },
+          {
+            "id": "context",
+            "kind": "context",
+            "heading": "Travellers across the centuries",
+            "paragraphs": [
+              {
+                "text": "Sixteenth-century Portuguese chronicler Domingo Paes documented these very basket-boats transporting warriors, horses, and temple supplies across the river.",
+                "claims": [
+                  "portuguese-records"
+                ]
+              }
+            ]
+          },
+          {
+            "id": "why",
+            "kind": "significance",
+            "heading": "Why it matters",
+            "paragraphs": [
+              {
+                "text": "Coracle navigation on the Tungabhadra represents an unbroken living watercraft technology, linking modern travellers directly to medieval river life.",
+                "claims": [
+                  "living-watercraft"
+                ]
+              }
+            ]
+          }
+        ],
+        "themes": [
+          "places",
+          "crafts",
+          "history"
+        ],
+        "followUpQuestions": [
+          "How does the coracle's circular shape prevent it from tipping in river whirlpools?",
+          "What mythological sites in Kishkindha are reachable only by river crossing?"
+        ],
+        "connections": [
+          "sacred-rivers-ganga-tungabhadra-vaigai"
+        ],
+        "relatedStories": [
+          "hampi-a-capital-and-a-sacred-landscape"
+        ]
+      },
+      "claims": [
+        {
+          "key": "geological-setting",
+          "text": "The Tungabhadra river passes through Precambrian granite boulder hills associated with the Kishkindha of epic tradition.",
+          "claimType": "historical",
+          "epistemic": "documented",
+          "evidence": [
+            {
+              "source": "wp-tungabhadra-river",
+              "relation": "supports",
+              "excerpt": "The Tungabhadra River flows past Hampi through steep granite gorges traditionally identified with Kishkindha.",
+              "locator": "Geography"
+            }
+          ]
+        },
+        {
+          "key": "coracle-craft",
+          "text": "Coracles are circular woven wickercraft vessels constructed for navigating turbulent river waters.",
+          "claimType": "descriptive",
+          "epistemic": "documented",
+          "evidence": [
+            {
+              "source": "wp-tungabhadra-river",
+              "relation": "supports",
+              "excerpt": "Coracles made of woven bamboo reeds and waterproofed hide have been used as ferries across the Tungabhadra for centuries.",
+              "locator": "Navigation"
+            }
+          ]
+        },
+        {
+          "key": "portuguese-records",
+          "text": "Domingo Paes and other early European visitors recorded the widespread use of coracles in Vijayanagara.",
+          "claimType": "historical",
+          "epistemic": "documented",
+          "evidence": [
+            {
+              "source": "wp-hampi",
+              "relation": "supports",
+              "excerpt": "Portuguese traveler Domingo Paes noted that people crossed the river in round basket-boats that could carry ten men and horses.",
+              "locator": "Accounts of Vijayanagara"
+            }
+          ]
+        },
+        {
+          "key": "living-watercraft",
+          "text": "Coracle ferrying continues today as an active community tradition at Anegundi and Hampi.",
+          "claimType": "descriptive",
+          "epistemic": "documented",
+          "evidence": [
+            {
+              "source": "wp-tungabhadra-river",
+              "relation": "supports",
+              "excerpt": "Modern travelers and pilgrims continue to use coracles to cross the river between Hampi and Anegundi.",
+              "locator": "Modern Times"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

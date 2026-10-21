@@ -1,0 +1,147 @@
+{
+  "kind": "story",
+  "slug": "kochi-spice-route-jew-town",
+  "city": "kochi",
+  "fixture": true,
+  "entities": [
+    {
+      "id": "paradesi-synagogue-jewtown",
+      "role": "subject"
+    }
+  ],
+  "versions": [
+    {
+      "language": "en",
+      "body": {
+        "title": "Malabar Black Gold: The Mattancherry Spice Bazaars and Paradesi Synagogue",
+        "orientation": "How ginger, cardamom, and black pepper drew maritime traders from across the globe to create Mattancherry's pluralistic cultural quarter.",
+        "hero": {
+          "src": "/images/dev/kochi.jpg",
+          "alt": "Antique wooden warehouses and spice merchants along the narrow alleys of Jew Town in Kochi",
+          "credit": "TattvaCo Cultural Archives",
+          "rightsCleared": true
+        },
+        "sections": [
+          {
+            "id": "story",
+            "kind": "narrative",
+            "heading": "The port of pepper",
+            "paragraphs": [
+              {
+                "text": "Following the historic flood of the Periyar River in 1341 that silted up ancient Muziris, Kochi emerged as the premier natural harbour of the Malabar coast for the international spice trade.",
+                "claims": [
+                  "muziris-flood"
+                ]
+              },
+              {
+                "text": "Jewish merchants, welcomed by the Hindu Raja of Cochin who granted them land adjacent to his palace, built Jew Town and the Paradesi Synagogue in 1568.",
+                "claims": [
+                  "jew-town-synagogue"
+                ]
+              }
+            ]
+          },
+          {
+            "id": "context",
+            "kind": "context",
+            "heading": "Porcelain tiles and Belgian glass",
+            "paragraphs": [
+              {
+                "text": "The Paradesi Synagogue contains hand-painted willow-pattern porcelain tiles imported from Canton in 1762, Belgian glass chandeliers, and copper plate charters granted by ancient Chera kings.",
+                "claims": [
+                  "synagogue-artifacts"
+                ]
+              }
+            ]
+          },
+          {
+            "id": "why",
+            "kind": "significance",
+            "heading": "Why it matters",
+            "paragraphs": [
+              {
+                "text": "Jew Town stands as living testimony to India's historic tradition of religious asylum and maritime cosmopolitanism where communities lived peacefully for centuries.",
+                "claims": [
+                  "cosmopolitan-tolerance"
+                ]
+              }
+            ]
+          }
+        ],
+        "themes": [
+          "history",
+          "communities",
+          "places"
+        ],
+        "followUpQuestions": [
+          "What rights were inscribed on the Jewish copper plates granted by Bhaskara Ravi Varman?",
+          "How did Cochin Jewish culinary traditions blend Malabar coconut and spice with kosher laws?"
+        ],
+        "connections": [
+          "sacred-rivers-ganga-tungabhadra-vaigai"
+        ],
+        "relatedStories": [
+          "kochi-cantilevered-fishing-nets"
+        ]
+      },
+      "claims": [
+        {
+          "key": "muziris-flood",
+          "text": "The 1341 flood of the Periyar opened Kochi's harbour and altered Malabar's spice geography.",
+          "claimType": "historical",
+          "epistemic": "documented",
+          "evidence": [
+            {
+              "source": "wp-chinese-fishing-nets",
+              "relation": "supports",
+              "excerpt": "The great flood of the Periyar River in 1341 silted up the port of Muziris and created the natural harbour at Kochi.",
+              "locator": "History of Kochi Port"
+            }
+          ]
+        },
+        {
+          "key": "jew-town-synagogue",
+          "text": "The Paradesi Synagogue was built in 1568 on land granted by the Raja of Cochin.",
+          "claimType": "historical",
+          "epistemic": "documented",
+          "evidence": [
+            {
+              "source": "wp-paradesi-synagogue",
+              "relation": "supports",
+              "excerpt": "The Paradesi Synagogue was built in 1568 by Spanish-speaking Jews on land adjacent to the Mattancherry Palace granted by Rama Varma.",
+              "locator": "History"
+            }
+          ]
+        },
+        {
+          "key": "synagogue-artifacts",
+          "text": "The synagogue features 18th-century Chinese porcelain floor tiles and copper charters.",
+          "claimType": "descriptive",
+          "epistemic": "documented",
+          "evidence": [
+            {
+              "source": "wp-paradesi-synagogue",
+              "relation": "supports",
+              "excerpt": "The floor is paved with hundreds of unique hand-painted Chinese porcelain tiles, lit by antique Belgian glass chandeliers.",
+              "locator": "Architecture and Interior"
+            }
+          ]
+        },
+        {
+          "key": "cosmopolitan-tolerance",
+          "text": "Mattancherry represents multi-century coexistence between Jewish, Christian, Muslim and Hindu merchants.",
+          "claimType": "descriptive",
+          "epistemic": "documented",
+          "evidence": [
+            {
+              "source": "wp-paradesi-synagogue",
+              "relation": "supports",
+              "excerpt": "The Cochin Jewish community flourished with freedom of worship and full civil rights granted by local rulers.",
+              "locator": "Community Life"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

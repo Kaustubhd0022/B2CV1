@@ -1,0 +1,86 @@
+{
+  "kind": "connection",
+  "slug": "handloom-guilds-banaras-sanganer-sungudi",
+  "fixture": true,
+  "entities": [
+    {
+      "id": "banarasi-silk-weaving",
+      "role": "from"
+    },
+    {
+      "id": "sanganer-block-craft",
+      "role": "to"
+    }
+  ],
+  "versions": [
+    {
+      "language": "en",
+      "body": {
+        "title": "Living Looms: Silk Brocade, Hand-Block Wood and Sungudi Knot-Dye Guilds",
+        "summary": "Comparing the master guild structures, natural mordants, and oral transmission systems of Banaras, Sanganer, and Madurai.",
+        "relationshipType": "comparable_practice",
+        "from": {
+          "entity": "banarasi-silk-weaving",
+          "label": "Banarasi Kadhwa Brocade"
+        },
+        "to": {
+          "entity": "sanganer-block-craft",
+          "label": "Sanganer Hand-Block Printing"
+        },
+        "rationale": [
+          {
+            "text": "All three traditions depend on close-knit artisanal communities (Julahas/Ansaris in Varanasi, Chhipas in Rajasthan, Saurashtrians in Madurai) who preserved complex chemical and tactile knowledge through family lineages.",
+            "claims": [
+              "guild-lineages"
+            ]
+          }
+        ],
+        "whyItMatters": [
+          {
+            "text": "India's surviving handloom diversity is unique globally; these artisanal guilds constitute a living repository of sustainable craft and community self-reliance.",
+            "claims": [
+              "handloom-resilience"
+            ]
+          }
+        ],
+        "doesNotEstablish": "This comparative lineage does not claim historical migration between the three specific craft communities, but examines their parallel guild preservation models under royal and temple patronage.",
+        "uncertainty": "Pre-colonial guild regulations were preserved through oral lineage contracts and master-disciple oaths rather than state registry archives.",
+        "relatedStories": [
+          "varanasi-silk-weaving-craft-and-living-tradition",
+          "jaipur-sanganer-block-printing",
+          "madurai-sungudi-cotton-weavers"
+        ]
+      },
+      "claims": [
+        {
+          "key": "guild-lineages",
+          "text": "Distinct artisanal communities passed down specialized textile knowledge through family workshops.",
+          "claimType": "relationship",
+          "epistemic": "documented",
+          "evidence": [
+            {
+              "source": "gov-indian-culture-banaras-brocade",
+              "relation": "supports",
+              "excerpt": "Weaving techniques and motif drawing were transmitted orally across master-apprentice and father-son lines in guild workshops.",
+              "locator": "Guild Systems"
+            }
+          ]
+        },
+        {
+          "key": "handloom-resilience",
+          "text": "Geographical Indication protections help sustain artisanal handloom economies against factory imitation.",
+          "claimType": "interpretive",
+          "epistemic": "documented",
+          "evidence": [
+            {
+              "source": "gov-textiles-banaras-gi",
+              "relation": "supports",
+              "excerpt": "GI registration protects the authentic handloom heritage and guarantees consumer traceability.",
+              "locator": "Legal Framework"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

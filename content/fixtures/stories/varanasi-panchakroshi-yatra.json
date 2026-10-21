@@ -1,0 +1,151 @@
+{
+  "kind": "story",
+  "slug": "varanasi-panchakroshi-yatra",
+  "city": "varanasi",
+  "fixture": true,
+  "entities": [
+    {
+      "id": "panchakroshi-parikrama",
+      "role": "subject"
+    },
+    {
+      "id": "kashi-sacred-geography",
+      "role": "mentioned"
+    }
+  ],
+  "versions": [
+    {
+      "language": "en",
+      "body": {
+        "title": "Panchakroshi Yatra: The 50-Mile Sacred Circumambulation of Kashi",
+        "orientation": "How an ancient circular pilgrimage route traces the cosmic perimeter of Varanasi and preserves its sacred mandala.",
+        "hero": {
+          "src": "/images/dev/varanasi-card.jpg",
+          "alt": "Pilgrims circumambulating sacred shrines in the Varanasi hinterland",
+          "credit": "TattvaCo Cultural Archives",
+          "rightsCleared": true
+        },
+        "sections": [
+          {
+            "id": "story",
+            "kind": "narrative",
+            "heading": "The sacred boundary",
+            "paragraphs": [
+              {
+                "text": "The Panchakroshi Yatra is a traditional pilgrimage covering a perimeter of approximately 50 miles (5 kroshas radius) encompassing the sacred field of Kashi.",
+                "claims": [
+                  "panchakroshi-radius"
+                ]
+              },
+              {
+                "text": "The pilgrimage typically takes five days on foot, visiting 108 principal shrines located in five major halting camps before concluding at Manikarnika Ghat.",
+                "claims": [
+                  "pilgrim-stages"
+                ]
+              }
+            ]
+          },
+          {
+            "id": "context",
+            "kind": "context",
+            "heading": "Spatial and scriptural order",
+            "paragraphs": [
+              {
+                "text": "Described in the medieval Kashi Khanda text, the route transforms the physical countryside into a living mandala where every step earns the spiritual merit of traversing the universe.",
+                "claims": [
+                  "mandala-concept"
+                ]
+              }
+            ]
+          },
+          {
+            "id": "why",
+            "kind": "significance",
+            "heading": "Why it matters",
+            "paragraphs": [
+              {
+                "text": "Panchakroshi illustrates how sacred geography in India integrates rural landscape, temple architecture, and walking ritual into an unbroken living practice.",
+                "claims": [
+                  "landscape-integration"
+                ]
+              }
+            ]
+          }
+        ],
+        "themes": [
+          "beliefs",
+          "places",
+          "history"
+        ],
+        "followUpQuestions": [
+          "What are the five principal resting stations of the Panchakroshi route?",
+          "How does the Panchakroshi route link rural shrines to the urban riverfront?"
+        ],
+        "connections": [
+          "sacred-rivers-ganga-tungabhadra-vaigai"
+        ],
+        "relatedStories": [
+          "varanasi-ghats-architecture-and-river"
+        ]
+      },
+      "claims": [
+        {
+          "key": "panchakroshi-radius",
+          "text": "The Panchakroshi route covers a circumambulation of roughly 50 miles around Varanasi.",
+          "claimType": "descriptive",
+          "epistemic": "documented",
+          "evidence": [
+            {
+              "source": "wp-panchakroshi-yatra",
+              "relation": "supports",
+              "excerpt": "The Panchakroshi Yatra is a five-day circumambulation pilgrimage covering roughly 50 miles around the sacred city of Varanasi.",
+              "locator": "Route Overview"
+            }
+          ]
+        },
+        {
+          "key": "pilgrim-stages",
+          "text": "Pilgrims visit designated sacred halts and shrines beginning and ending at the riverfront.",
+          "claimType": "descriptive",
+          "epistemic": "tradition",
+          "evidence": [
+            {
+              "source": "wp-panchakroshi-yatra",
+              "relation": "supports",
+              "excerpt": "The pilgrimage stops at five designated overnight halts and includes 108 shrines, traditionally beginning and ending at Manikarnika Ghat.",
+              "locator": "Itinerary"
+            }
+          ]
+        },
+        {
+          "key": "mandala-concept",
+          "text": "Scriptural traditions depict the route as a sacred cosmic mandala protecting the holy territory.",
+          "claimType": "belief",
+          "epistemic": "tradition",
+          "evidence": [
+            {
+              "source": "gov-ignca-kashi-sacred-geography",
+              "relation": "supports",
+              "excerpt": "The Panchakroshi circuit forms the outer cosmic boundary of Kashi, embodying the sacred geometry of the mandala.",
+              "locator": "Spatial Structure"
+            }
+          ]
+        },
+        {
+          "key": "landscape-integration",
+          "text": "The yatra links water tanks, sacred trees, and rural temples into a continuous ritual ecology.",
+          "claimType": "interpretive",
+          "epistemic": "interpretation",
+          "evidence": [
+            {
+              "source": "gov-ignca-kashi-sacred-geography",
+              "relation": "supports",
+              "excerpt": "The pilgrimage integrates rural agrarian ponds, groves, and centuries-old rest houses into an unbroken spiritual continuum.",
+              "locator": "Ecology and Ritual"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

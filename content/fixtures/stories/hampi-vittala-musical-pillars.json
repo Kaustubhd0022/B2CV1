@@ -1,0 +1,152 @@
+{
+  "kind": "story",
+  "slug": "hampi-vittala-musical-pillars",
+  "city": "hampi",
+  "fixture": true,
+  "entities": [
+    {
+      "id": "vittala-musical-pillars",
+      "role": "subject"
+    },
+    {
+      "id": "hampi-vijayanagara",
+      "role": "mentioned"
+    }
+  ],
+  "versions": [
+    {
+      "language": "en",
+      "body": {
+        "title": "Acoustic Granite: The 56 Resonant Pillars of Vijaya Vittala",
+        "orientation": "How Vijayanagara sculptors cut monolithic granite columns that ring with musical notes, turning stone into sacred sound.",
+        "hero": {
+          "src": "/images/dev/hampi.jpg",
+          "alt": "Intricately carved stone pillars of Vijaya Vittala temple hall at Hampi",
+          "credit": "TattvaCo Cultural Archives",
+          "rightsCleared": true
+        },
+        "sections": [
+          {
+            "id": "story",
+            "kind": "narrative",
+            "heading": "Columns that sing",
+            "paragraphs": [
+              {
+                "text": "The Vijaya Vittala Temple, begun in the 15th century and expanded during Emperor Krishnadevaraya's reign, houses the famed Ranga Mandapa with 56 musical pillars (SaReGaMa pillars).",
+                "claims": [
+                  "vittala-pillars-dates"
+                ]
+              },
+              {
+                "text": "Each main pillar is surrounded by seven slender micro-pillars carved out of a single monolithic block of resonant granite that produce distinct bell-like tones when tapped.",
+                "claims": [
+                  "monolith-acoustics"
+                ]
+              }
+            ]
+          },
+          {
+            "id": "context",
+            "kind": "context",
+            "heading": "Sacred dance and liturgical performance",
+            "paragraphs": [
+              {
+                "text": "Scholars suggest these pillars served as acoustic accompaniment to temple dancers and liturgical chants during sacred nocturnal festivals.",
+                "claims": [
+                  "dance-liturgy"
+                ]
+              }
+            ]
+          },
+          {
+            "id": "why",
+            "kind": "significance",
+            "heading": "Why it matters",
+            "paragraphs": [
+              {
+                "text": "The musical pillars represent the apex of Dravidian stone craftsmanship, proving that medieval artisans understood stone density, sonic vibration, and architectural resonance.",
+                "claims": [
+                  "stone-apex"
+                ]
+              }
+            ]
+          }
+        ],
+        "themes": [
+          "art-music",
+          "architecture",
+          "history"
+        ],
+        "followUpQuestions": [
+          "How do acoustic properties vary between different pillars in the hall?",
+          "What links exist between the Hampi musical pillars and Madurai's Thousand Pillar Hall?"
+        ],
+        "connections": [
+          "temple-acoustics-hampi-madurai"
+        ],
+        "relatedStories": [
+          "hampi-a-capital-and-a-sacred-landscape",
+          "madurai-meenakshi-temple-city"
+        ]
+      },
+      "claims": [
+        {
+          "key": "vittala-pillars-dates",
+          "text": "The Vittala temple mandapa featuring musical pillars was built during the 15th–16th centuries of Vijayanagara rule.",
+          "claimType": "historical",
+          "epistemic": "documented",
+          "evidence": [
+            {
+              "source": "wp-vittala-temple",
+              "relation": "supports",
+              "excerpt": "The Vijaya Vittala temple dates to the 15th century, with substantial additions made by King Krishnadevaraya in the 16th century.",
+              "locator": "History"
+            }
+          ]
+        },
+        {
+          "key": "monolith-acoustics",
+          "text": "Clusters of slender colonnettes carved from a single granite block emit musical pitches.",
+          "claimType": "descriptive",
+          "epistemic": "documented",
+          "evidence": [
+            {
+              "source": "wp-vittala-temple",
+              "relation": "supports",
+              "excerpt": "The pillars are carved out of single pieces of granite; when struck gently, each colonnette produces a clear musical note.",
+              "locator": "Musical Pillars"
+            }
+          ]
+        },
+        {
+          "key": "dance-liturgy",
+          "text": "Acoustic resonance supported liturgical dance and musical ceremonies in the Ranga Mandapa.",
+          "claimType": "interpretive",
+          "epistemic": "interpretation",
+          "evidence": [
+            {
+              "source": "wp-vittala-temple",
+              "relation": "supports",
+              "excerpt": "Tradition holds that the pillars provided acoustic accompaniment to religious dances and temple celebrations.",
+              "locator": "Religious Use"
+            }
+          ]
+        },
+        {
+          "key": "stone-apex",
+          "text": "The pillars demonstrate advanced metallurgical and mineralogical knowledge of granite resonance.",
+          "claimType": "interpretive",
+          "epistemic": "interpretation",
+          "evidence": [
+            {
+              "source": "wp-vittala-temple",
+              "relation": "supports",
+              "excerpt": "Studies note varying mineral compositions and densities in the granite chosen specifically for acoustic performance.",
+              "locator": "Acoustic Studies"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

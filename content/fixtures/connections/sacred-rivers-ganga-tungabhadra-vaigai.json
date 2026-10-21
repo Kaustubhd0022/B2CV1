@@ -1,0 +1,86 @@
+{
+  "kind": "connection",
+  "slug": "sacred-rivers-ganga-tungabhadra-vaigai",
+  "fixture": true,
+  "entities": [
+    {
+      "id": "ganges",
+      "role": "from"
+    },
+    {
+      "id": "tungabhadra-river-axis",
+      "role": "to"
+    }
+  ],
+  "versions": [
+    {
+      "language": "en",
+      "body": {
+        "title": "Sacred Hydrology: How Ganga, Tungabhadra and Vaigai Shaped India's Cultural Ecosystems",
+        "summary": "Across three distinct geographic zones, sacred rivers functioned not merely as water sources but as moral boundaries, architectural axes, and liturgical centers.",
+        "relationshipType": "place_and_practice",
+        "from": {
+          "entity": "ganges",
+          "label": "The Ganga at Varanasi"
+        },
+        "to": {
+          "entity": "tungabhadra-river-axis",
+          "label": "The Tungabhadra at Hampi"
+        },
+        "rationale": [
+          {
+            "text": "In Varanasi, the north-flowing Ganga defines the 84 crescent ghats; in Hampi, the turbulent Tungabhadra forms the natural moat of an imperial citadel; in Madurai, the Vaigai hosts the divine reconciliation of Chithirai.",
+            "claims": [
+              "sacred-hydrology-rationale"
+            ]
+          }
+        ],
+        "whyItMatters": [
+          {
+            "text": "Understanding Indian civilization requires recognizing that urbanism, temple geometry, and living festivals were conceived as dialogues with river ecosystems rather than conquest over them.",
+            "claims": [
+              "river-ecosystem-significance"
+            ]
+          }
+        ],
+        "doesNotEstablish": "This comparison does not establish that all three river traditions share a single continuous liturgical origin, but rather that hydrological veneration emerged as a pan-Indian urban planning principle.",
+        "uncertainty": "Comparative timelines between early Gangetic settlement dates and peninsular river basin occupations rely on ongoing archaeological stratification surveys.",
+        "relatedStories": [
+          "varanasi-ghats-architecture-and-river",
+          "hampi-tungabhadra-coracles",
+          "madurai-chithirai-festival"
+        ]
+      },
+      "claims": [
+        {
+          "key": "sacred-hydrology-rationale",
+          "text": "Major Indian cultural centers were deliberately planned along rivers that served as symbolic and practical centers.",
+          "claimType": "relationship",
+          "epistemic": "interpretation",
+          "evidence": [
+            {
+              "source": "gov-ignca-kashi-sacred-geography",
+              "relation": "supports",
+              "excerpt": "Sacred hydrology connects the ritual and spatial structure of pilgrimage cities across India.",
+              "locator": "Comparative Hydrology"
+            }
+          ]
+        },
+        {
+          "key": "river-ecosystem-significance",
+          "text": "River conservation and sacred geography were inextricably linked in traditional Indian town planning.",
+          "claimType": "interpretive",
+          "epistemic": "interpretation",
+          "evidence": [
+            {
+              "source": "gov-ignca-kashi-sacred-geography",
+              "relation": "supports",
+              "excerpt": "Rivers were worshipped as mother figures to inculcate deep ecological preservation through ritual taboos.",
+              "locator": "Sacred Ecology"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

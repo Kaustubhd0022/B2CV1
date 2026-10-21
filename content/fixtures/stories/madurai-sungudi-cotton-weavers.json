@@ -1,0 +1,148 @@
+{
+  "kind": "story",
+  "slug": "madurai-sungudi-cotton-weavers",
+  "city": "madurai",
+  "fixture": true,
+  "entities": [
+    {
+      "id": "madurai-sungudi-craft",
+      "role": "subject"
+    }
+  ],
+  "versions": [
+    {
+      "language": "en",
+      "body": {
+        "title": "Saurashtrian Migrants and Vaigai Silt: The Sungudi Knot-and-Dye Handloom Heritage",
+        "orientation": "How skilled migrant weavers from Gujarat settled in Madurai, fusing tie-and-dye techniques with South Indian temple cotton borders.",
+        "hero": {
+          "src": "/images/dev/madurai.jpg",
+          "alt": "Artisan tying thousands of tiny knots on Madurai Sungudi cotton fabric before dyeing",
+          "credit": "TattvaCo Cultural Archives",
+          "rightsCleared": true
+        },
+        "sections": [
+          {
+            "id": "story",
+            "kind": "narrative",
+            "heading": "The journey of the Saurashtrians",
+            "paragraphs": [
+              {
+                "text": "During the 16th century, master weavers from Saurashtra migrated south to escape political upheavals, receiving asylum and royal patronage from the Nayak rulers of Madurai.",
+                "claims": [
+                  "saurashtra-migration"
+                ]
+              },
+              {
+                "text": "In Madurai, they developed Sungudi (from the Sanskrit 'Sunnam', meaning round spot): fine combed cotton fabric patterned by tying thousands of tiny knots by hand using fingernails and thread.",
+                "claims": [
+                  "sungudi-knot-technique"
+                ]
+              }
+            ]
+          },
+          {
+            "id": "context",
+            "kind": "context",
+            "heading": "Natural dyes and the Vaigai River",
+            "paragraphs": [
+              {
+                "text": "The cloth was traditionally washed and treated in the mineral-rich waters of the Vaigai River, which bonded the natural madder red and indigo dyes permanently to the cotton fibers.",
+                "claims": [
+                  "vaigai-dyeing"
+                ]
+              }
+            ]
+          },
+          {
+            "id": "why",
+            "kind": "significance",
+            "heading": "Why it matters",
+            "paragraphs": [
+              {
+                "text": "Sungudi represents a magnificent synthesis of Western Indian Bandhani tie-dye with Tamil temple borders (zari karai), awarded Geographical Indication protection.",
+                "claims": [
+                  "sungudi-gi"
+                ]
+              }
+            ]
+          }
+        ],
+        "themes": [
+          "crafts",
+          "communities",
+          "history"
+        ],
+        "followUpQuestions": [
+          "How do Saurashtrian Tamils maintain their unique language and culinary traditions in Madurai?",
+          "What distinguishes authentic Sungudi knot-dyeing from screen-printed imitations?"
+        ],
+        "connections": [
+          "handloom-guilds-banaras-sanganer-sungudi"
+        ],
+        "relatedStories": [
+          "madurai-meenakshi-temple-city",
+          "varanasi-silk-weaving-craft-and-living-tradition"
+        ]
+      },
+      "claims": [
+        {
+          "key": "saurashtra-migration",
+          "text": "Saurashtrian weavers migrated to Madurai under Nayak patronage in the 16th and 17th centuries.",
+          "claimType": "historical",
+          "epistemic": "documented",
+          "evidence": [
+            {
+              "source": "wp-sungudi-saree",
+              "relation": "supports",
+              "excerpt": "The craft was brought to Madurai by Saurashtrian weavers who migrated to the Tamil region upon invitation by King Thirumalai Nayak.",
+              "locator": "History"
+            }
+          ]
+        },
+        {
+          "key": "sungudi-knot-technique",
+          "text": "Sungudi textiles are characterized by minute hand-tied knots producing circular dot patterns.",
+          "claimType": "descriptive",
+          "epistemic": "documented",
+          "evidence": [
+            {
+              "source": "wp-sungudi-saree",
+              "relation": "supports",
+              "excerpt": "The fabric is pinch-tied with thread thousands of times by hand before being immersed in dye baths.",
+              "locator": "Craft Process"
+            }
+          ]
+        },
+        {
+          "key": "vaigai-dyeing",
+          "text": "Washing the tied cotton in the Vaigai River water helped fix natural mineral dyes.",
+          "claimType": "descriptive",
+          "epistemic": "documented",
+          "evidence": [
+            {
+              "source": "wp-sungudi-saree",
+              "relation": "supports",
+              "excerpt": "The waters of the Vaigai River were traditionally used to rinse and fix the dyes onto the combed cotton yarn.",
+              "locator": "Dyeing Process"
+            }
+          ]
+        },
+        {
+          "key": "sungudi-gi",
+          "text": "Madurai Sungudi possesses Geographical Indication (GI) status under Indian law.",
+          "claimType": "historical",
+          "epistemic": "documented",
+          "evidence": [
+            {
+              "source": "wp-sungudi-saree",
+              "relation": "supports",
+              "excerpt": "Madurai Sungudi has been registered under the Geographical Indications of Goods Act.",
+              "locator": "GI Registration"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

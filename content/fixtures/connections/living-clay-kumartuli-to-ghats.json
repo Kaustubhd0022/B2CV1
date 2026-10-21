@@ -1,0 +1,85 @@
+{
+  "kind": "connection",
+  "slug": "living-clay-kumartuli-to-ghats",
+  "fixture": true,
+  "entities": [
+    {
+      "id": "kumartuli-clay-craft",
+      "role": "from"
+    },
+    {
+      "id": "varanasi-ghats",
+      "role": "to"
+    }
+  ],
+  "versions": [
+    {
+      "language": "en",
+      "body": {
+        "title": "Sacred Earth and River Silt: Kumartuli Clay to Gangetic Immersion",
+        "summary": "Tracing the philosophical and ecological continuum of ephemeral clay ritual from Hooghly silt to Gangetic Visarjan.",
+        "relationshipType": "comparable_practice",
+        "from": {
+          "entity": "kumartuli-clay-craft",
+          "label": "Kumartuli Clay Idol Workshops"
+        },
+        "to": {
+          "entity": "varanasi-ghats",
+          "label": "Ganges Riverfront Rituals"
+        },
+        "rationale": [
+          {
+            "text": "Both traditions celebrate transience: divinity is given tangible form in clay harvested from the sacred river, worshipped with seasonal ecstasy, and surrendered back into the flowing water without permanent monuments.",
+            "claims": [
+              "ephemeral-theology"
+            ]
+          }
+        ],
+        "whyItMatters": [
+          {
+            "text": "This philosophy of deliberate transience contrasts with Western monumental permanence, offering a profound indigenous ecological framework for art and worship.",
+            "claims": [
+              "ecological-impermanence"
+            ]
+          }
+        ],
+        "doesNotEstablish": "This relationship does not suggest that idol sculpting in Bengal and cremation rituals in Varanasi follow identical liturgical manuals, but reveals a shared philosophical worldview concerning elemental return.",
+        "uncertainty": "Local theological interpretations of clay dissolution differ between regional Tantric and Puranic traditions.",
+        "relatedStories": [
+          "kolkata-kumartuli-clay-sculptors",
+          "varanasi-ghats-architecture-and-river"
+        ]
+      },
+      "claims": [
+        {
+          "key": "ephemeral-theology",
+          "text": "Indian river traditions emphasize that clay forms are temporary vessels for eternal spiritual principles.",
+          "claimType": "relationship",
+          "epistemic": "tradition",
+          "evidence": [
+            {
+              "source": "wp-durga-puja-in-kolkata",
+              "relation": "supports",
+              "excerpt": "The immersion reinforces the philosophical notion that all forms return to their primordial elemental state.",
+              "locator": "Philosophy"
+            }
+          ]
+        },
+        {
+          "key": "ecological-impermanence",
+          "text": "Traditional clay sculpting was designed to leave no trace, dissolving harmlessly into the river ecosystem.",
+          "claimType": "interpretive",
+          "epistemic": "interpretation",
+          "evidence": [
+            {
+              "source": "wp-kumartuli",
+              "relation": "supports",
+              "excerpt": "Unbaked clay and vegetable colors historically ensured natural ecological degradation in the river.",
+              "locator": "Materials and Ecology"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

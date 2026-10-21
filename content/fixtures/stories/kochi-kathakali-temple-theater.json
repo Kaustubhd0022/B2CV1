@@ -1,0 +1,147 @@
+{
+  "kind": "story",
+  "slug": "kochi-kathakali-temple-theater",
+  "city": "kochi",
+  "fixture": true,
+  "entities": [
+    {
+      "id": "kathakali-dance-drama",
+      "role": "subject"
+    }
+  ],
+  "versions": [
+    {
+      "language": "en",
+      "body": {
+        "title": "Veshams, Mudras and the Green Room: The Living Tradition of Kathakali",
+        "orientation": "How hours of intricate mineral facial makeup and a codified language of eye movements bring epic mythology to life on the Malabar coast.",
+        "hero": {
+          "src": "/images/dev/kochi.jpg",
+          "alt": "Kathakali artist in green Paccha makeup and elaborate headdress performing in Kochi",
+          "credit": "TattvaCo Cultural Archives",
+          "rightsCleared": true
+        },
+        "sections": [
+          {
+            "id": "story",
+            "kind": "narrative",
+            "heading": "The ritual transformation",
+            "paragraphs": [
+              {
+                "text": "Kathakali originated in 17th-century Kerala under the patronage of the Zamorins and royal courts, blending Ramanattam dance with Kalaripayattu martial footwork.",
+                "claims": [
+                  "kathakali-origins"
+                ]
+              },
+              {
+                "text": "The preparation takes up to four hours in the green room (Aniyara), where artists lie motionless as specialized makeup artists apply natural pigments and the Chutti (layered rice paste border).",
+                "claims": [
+                  "chutti-makeup"
+                ]
+              }
+            ]
+          },
+          {
+            "id": "context",
+            "kind": "context",
+            "heading": "The codified language of emotion",
+            "paragraphs": [
+              {
+                "text": "Without uttering a single spoken word, the actor-dancer conveys complex narratives through 24 primary root mudras (hand gestures) and precise micro-movements of eyes and brows.",
+                "claims": [
+                  "mudra-system"
+                ]
+              }
+            ]
+          },
+          {
+            "id": "why",
+            "kind": "significance",
+            "heading": "Why it matters",
+            "paragraphs": [
+              {
+                "text": "Kathakali demonstrates how total theater combines visual portraiture, percussion rhythm (Chenda and Maddalam), and physical discipline into a sacred dramatic literature.",
+                "claims": [
+                  "total-theater"
+                ]
+              }
+            ]
+          }
+        ],
+        "themes": [
+          "art-music",
+          "beliefs",
+          "communities"
+        ],
+        "followUpQuestions": [
+          "What do the five primary character types (Paccha, Kathi, Thadi, Kari, Minukku) symbolize?",
+          "How did poet Vallathol Narayana Menon revive Kathakali at Kerala Kalamandalam?"
+        ],
+        "connections": [
+          "temple-acoustics-hampi-madurai"
+        ],
+        "relatedStories": [
+          "kochi-cantilevered-fishing-nets"
+        ]
+      },
+      "claims": [
+        {
+          "key": "kathakali-origins",
+          "text": "Kathakali developed in Kerala during the 17th century from courtly and temple theatrical lineages.",
+          "claimType": "historical",
+          "epistemic": "documented",
+          "evidence": [
+            {
+              "source": "wp-kathakali",
+              "relation": "supports",
+              "excerpt": "Kathakali is a major form of classical Indian dance that originated in the 17th century in Kerala.",
+              "locator": "Lead section"
+            }
+          ]
+        },
+        {
+          "key": "chutti-makeup",
+          "text": "The facial makeup requires hours of preparation using natural mineral pigments and rice-paste ridges.",
+          "claimType": "descriptive",
+          "epistemic": "documented",
+          "evidence": [
+            {
+              "source": "wp-kathakali",
+              "relation": "supports",
+              "excerpt": "The makeup process is elaborate and can take several hours, utilizing rice flour and lime for the white chutti frame.",
+              "locator": "Makeup and Costumes"
+            }
+          ]
+        },
+        {
+          "key": "mudra-system",
+          "text": "Actors communicate complex stories using 24 basic mudras accompanied by facial bhavas.",
+          "claimType": "descriptive",
+          "epistemic": "documented",
+          "evidence": [
+            {
+              "source": "wp-kathakali",
+              "relation": "supports",
+              "excerpt": "Kathakali incorporates 24 primary root hand gestures (mudras) codified from the Hastha Lakshana Deepika.",
+              "locator": "Gestures and Mudras"
+            }
+          ]
+        },
+        {
+          "key": "total-theater",
+          "text": "The art form integrates live vocals, heavy percussion, and symbolic dance into an immersive narrative.",
+          "claimType": "interpretive",
+          "epistemic": "interpretation",
+          "evidence": [
+            {
+              "source": "wp-kathakali",
+              "relation": "supports",
+              "excerpt": "Kathakali is celebrated worldwide as a form of total theatre synthesizing dance, music, painting, and literature.",
+              "locator": "Significance"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

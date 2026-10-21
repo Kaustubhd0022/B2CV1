@@ -78,6 +78,33 @@ export default async function CityPage({
     ],
   };
 
+  const cityPromptQuestions: Record<string, string[]> = {
+    varanasi: [
+      "Why does Varanasi have 84 ghats along the riverfront?",
+      "How is Banarasi silk weaving tied to the Ganga?",
+    ],
+    jaipur: [
+      "Why did Sawai Jai Singh build stone instruments at Jantar Mantar?",
+      "How do Sanganer block printers use river minerals for natural dyes?",
+    ],
+    hampi: [
+      "Why do the stone pillars of Vijaya Vittala temple ring with musical notes?",
+      "How did the Tungabhadra River shape the defense and sacred topography of Vijayanagara?",
+    ],
+    kochi: [
+      "How did maritime trade shape the cantilevered fishing nets of Kochi?",
+      "What historical artifacts are preserved in Mattancherry's Paradesi Synagogue?",
+    ],
+    kolkata: [
+      "How do the clay sculptors of Kumartuli use Hooghly river silt for Durga Puja?",
+      "What role did College Street Coffee House addas play in the Bengal Renaissance?",
+    ],
+    madurai: [
+      "How does the Chithirai Festival unite Shaivite and Vaishnavite traditions along the Vaigai?",
+      "How did Saurashtrian migrant weavers develop the Sungudi tie-and-dye craft in Madurai?",
+    ],
+  };
+
   const currentStats = cityStats[slug] ?? [
     { val: "Historic", label: "Cultural Ecosystem" },
     { val: "Pilot", label: "Phase 1 Geography" },
@@ -371,21 +398,21 @@ export default async function CityPage({
               Curious about {name}?
             </h3>
             <p className="mt-1 text-meta text-muted leading-relaxed">
-              Ask any source-grounded question about monuments, weaving techniques, or philosophy.
+              Ask any source-grounded question about monuments, weaving techniques, or living traditions.
             </p>
             <div className="mt-4 space-y-2">
-              <Link
-                href={`/ask?q=${encodeURIComponent(`Why does Varanasi have 84 ghats?`)}`}
-                className="block rounded-lg border border-border bg-surface p-2.5 text-meta font-medium text-charcoal hover:border-forest hover:text-forest transition-colors shadow-2xs"
-              >
-                “Why does Varanasi have 84 ghats?” →
-              </Link>
-              <Link
-                href={`/ask?q=${encodeURIComponent(`How is silk weaving tied to the Ganga in Varanasi?`)}`}
-                className="block rounded-lg border border-border bg-surface p-2.5 text-meta font-medium text-charcoal hover:border-forest hover:text-forest transition-colors shadow-2xs"
-              >
-                “How is silk weaving tied to the Ganga?” →
-              </Link>
+              {((cityPromptQuestions[slug] ?? [
+                `What is the cultural significance of ${name}?`,
+                `What historical traditions are preserved in ${name}?`,
+              ])).map((qText) => (
+                <Link
+                  key={qText}
+                  href={`/ask?q=${encodeURIComponent(qText)}`}
+                  className="block rounded-lg border border-border bg-surface p-2.5 text-meta font-medium text-charcoal hover:border-forest hover:text-forest transition-colors shadow-2xs"
+                >
+                  “{qText}” →
+                </Link>
+              ))}
             </div>
           </div>
         </aside>

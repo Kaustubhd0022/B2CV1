@@ -1,0 +1,148 @@
+{
+  "kind": "story",
+  "slug": "jaipur-sanganer-block-printing",
+  "city": "jaipur",
+  "fixture": true,
+  "entities": [
+    {
+      "id": "sanganer-block-craft",
+      "role": "subject"
+    }
+  ],
+  "versions": [
+    {
+      "language": "en",
+      "body": {
+        "title": "Chhipa Artisans and the River Dyes: The Sanganer Block-Printing Lineage",
+        "orientation": "How skilled hand-carved teak blocks and mineral dyes turned a village outside Jaipur into a global textile heritage center.",
+        "hero": {
+          "src": "/images/dev/jaipur.jpg",
+          "alt": "Artisan carving intricate wooden printing blocks in Jaipur",
+          "credit": "TattvaCo Cultural Archives",
+          "rightsCleared": true
+        },
+        "sections": [
+          {
+            "id": "story",
+            "kind": "narrative",
+            "heading": "The craft of the Chhipas",
+            "paragraphs": [
+              {
+                "text": "Sanganer, located south of Jaipur, has been home to the Chhipa community of textile printers since royal patronage flourished in the 17th century under the Kachwaha rulers.",
+                "claims": [
+                  "chhipa-history"
+                ]
+              },
+              {
+                "text": "The craft relies on hand-carved sheesham and teak blocks dipped in vegetable and mineral mordants to print precise floral and paisley motifs on natural cotton cloth.",
+                "claims": [
+                  "wood-block-technique"
+                ]
+              }
+            ]
+          },
+          {
+            "id": "context",
+            "kind": "context",
+            "heading": "Water, sand and sun",
+            "paragraphs": [
+              {
+                "text": "The mineral-rich waters of the local Sanjaria River and the arid Rajasthani sun were essential in giving Sanganer prints their characteristic crisp white backgrounds and fast natural colors.",
+                "claims": [
+                  "ecological-setting"
+                ]
+              }
+            ]
+          },
+          {
+            "id": "why",
+            "kind": "significance",
+            "heading": "Why it matters",
+            "paragraphs": [
+              {
+                "text": "Recognized with a Geographical Indication (GI) tag, Sanganer block printing preserves an unbroken guild knowledge system resistant to mechanized mass production.",
+                "claims": [
+                  "gi-recognition"
+                ]
+              }
+            ]
+          }
+        ],
+        "themes": [
+          "crafts",
+          "communities",
+          "history"
+        ],
+        "followUpQuestions": [
+          "How do Sanganeri prints differ from Bagru mud-resist (Dabu) prints?",
+          "What natural ingredients are used to create red and black dyes?"
+        ],
+        "connections": [
+          "handloom-guilds-banaras-sanganer-sungudi"
+        ],
+        "relatedStories": [
+          "jaipur-jantar-mantar-astronomy-in-stone",
+          "varanasi-silk-weaving-craft-and-living-tradition"
+        ]
+      },
+      "claims": [
+        {
+          "key": "chhipa-history",
+          "text": "The Chhipa community in Sanganer received royal patronage under the Kachwaha dynasty.",
+          "claimType": "historical",
+          "epistemic": "documented",
+          "evidence": [
+            {
+              "source": "wp-sanganer-block-print",
+              "relation": "supports",
+              "excerpt": "Sanganer printing gained prominence in the 17th century when the rulers of Jaipur encouraged craft communities to settle in the region.",
+              "locator": "History"
+            }
+          ]
+        },
+        {
+          "key": "wood-block-technique",
+          "text": "Artisans use multiple carved wooden blocks to layer intricate floral patterns on cotton.",
+          "claimType": "descriptive",
+          "epistemic": "documented",
+          "evidence": [
+            {
+              "source": "wp-sanganer-block-print",
+              "relation": "supports",
+              "excerpt": "Hand-carved wooden blocks made of teak or sheesham are used to apply patterns in successive color layers.",
+              "locator": "Technique"
+            }
+          ]
+        },
+        {
+          "key": "ecological-setting",
+          "text": "Local water chemistry and sunlight were vital factors in developing the print's color fastness.",
+          "claimType": "descriptive",
+          "epistemic": "documented",
+          "evidence": [
+            {
+              "source": "wp-sanganer-block-print",
+              "relation": "supports",
+              "excerpt": "The water of the local river was credited with imparting brightness and luster to the dyed cloth during washing and drying.",
+              "locator": "Water and Environment"
+            }
+          ]
+        },
+        {
+          "key": "gi-recognition",
+          "text": "Sanganer hand block printing holds statutory Geographical Indication protection.",
+          "claimType": "historical",
+          "epistemic": "documented",
+          "evidence": [
+            {
+              "source": "wp-sanganer-block-print",
+              "relation": "supports",
+              "excerpt": "Sanganeri hand block printing has received Geographical Indication (GI) status under Indian intellectual property law.",
+              "locator": "GI Tag"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

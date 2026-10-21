@@ -1,0 +1,152 @@
+{
+  "kind": "story",
+  "slug": "kolkata-kumartuli-clay-sculptors",
+  "city": "kolkata",
+  "fixture": true,
+  "entities": [
+    {
+      "id": "kumartuli-clay-craft",
+      "role": "subject"
+    },
+    {
+      "id": "durga-puja-kolkata",
+      "role": "mentioned"
+    }
+  ],
+  "versions": [
+    {
+      "language": "en",
+      "body": {
+        "title": "River Silt and Sacred Straw: The Master Idol Artisans of Kumartuli",
+        "orientation": "How generational potters along the Hooghly mold river clay and sacred earth into the divine icons of Durga Puja.",
+        "hero": {
+          "src": "/images/dev/kolkata.jpg",
+          "alt": "Artisan hands sculpting clay face of Goddess Durga in Kumartuli workshop",
+          "credit": "TattvaCo Cultural Archives",
+          "rightsCleared": true
+        },
+        "sections": [
+          {
+            "id": "story",
+            "kind": "narrative",
+            "heading": "The potter's quarter",
+            "paragraphs": [
+              {
+                "text": "Kumartuli, located in North Kolkata along the Hooghly River, is a centuries-old artisanal enclave where hundreds of master potters sculpt thousands of clay idols annually for Durga Puja.",
+                "claims": [
+                  "kumartuli-settlement"
+                ]
+              },
+              {
+                "text": "The sculpting process follows an ancient sequence: a bamboo and straw framework (Kathamo), coated in alluvial river silt (entel mati), and finished with smooth fine silt (bele mati).",
+                "claims": [
+                  "clay-technique"
+                ]
+              }
+            ]
+          },
+          {
+            "id": "context",
+            "kind": "context",
+            "heading": "Sacred soil and the Chakshu Daan ritual",
+            "paragraphs": [
+              {
+                "text": "Tradition requires incorporating a pinch of soil from the threshold of a courtesan's dwelling (punya mati), followed on Mahalaya by the solemn ritual of painting the goddess's eyes (Chakshu Daan).",
+                "claims": [
+                  "chakshu-daan-ritual"
+                ]
+              }
+            ]
+          },
+          {
+            "id": "why",
+            "kind": "significance",
+            "heading": "Why it matters",
+            "paragraphs": [
+              {
+                "text": "Kumartuli embodies an ephemeral cycle of devotion: born from river silt, brought to life through community worship, and dissolved back into the river during immersion (Visarjan).",
+                "claims": [
+                  "ephemeral-cycle"
+                ]
+              }
+            ]
+          }
+        ],
+        "themes": [
+          "crafts",
+          "festivals",
+          "beliefs",
+          "communities"
+        ],
+        "followUpQuestions": [
+          "Why is immersion of clay idols into the Hooghly designed to be ecologically biodegradable?",
+          "How do women clay sculptors like China Pal challenge traditional patriarchal workshop boundaries?"
+        ],
+        "connections": [
+          "living-clay-kumartuli-to-ghats"
+        ],
+        "relatedStories": [
+          "kolkata-durga-puja-living-art"
+        ]
+      },
+      "claims": [
+        {
+          "key": "kumartuli-settlement",
+          "text": "Kumartuli was founded along the riverfront by potters who migrated to supply clay vessels and idols to Kolkata.",
+          "claimType": "historical",
+          "epistemic": "documented",
+          "evidence": [
+            {
+              "source": "wp-kumartuli",
+              "relation": "supports",
+              "excerpt": "Kumartuli is a traditional potters' quarter in northern Kolkata known for sculpting clay idols for Durga Puja.",
+              "locator": "Lead section"
+            }
+          ]
+        },
+        {
+          "key": "clay-technique",
+          "text": "Idols are sculpted around straw armatures using successive layers of Hooghly river clay.",
+          "claimType": "descriptive",
+          "epistemic": "documented",
+          "evidence": [
+            {
+              "source": "wp-kumartuli",
+              "relation": "supports",
+              "excerpt": "Artisans build the image around a bamboo frame using straw and clay gathered from the banks of the river Hooghly.",
+              "locator": "Idol Making Process"
+            }
+          ]
+        },
+        {
+          "key": "chakshu-daan-ritual",
+          "text": "The final ritual act of bestowing sight on the idol occurs on Mahalaya morning.",
+          "claimType": "belief",
+          "epistemic": "tradition",
+          "evidence": [
+            {
+              "source": "wp-kumartuli",
+              "relation": "supports",
+              "excerpt": "The sacred act of painting the eyes of Goddess Durga, known as Chokhhu Daan, is traditionally performed on Mahalaya.",
+              "locator": "Rituals"
+            }
+          ]
+        },
+        {
+          "key": "ephemeral-cycle",
+          "text": "The clay returns to the river upon immersion, completing an ecological and spiritual circle.",
+          "claimType": "interpretive",
+          "epistemic": "interpretation",
+          "evidence": [
+            {
+              "source": "wp-durga-puja-in-kolkata",
+              "relation": "supports",
+              "excerpt": "The celebration concludes with the immersion of the clay idols into the river waters from which their clay was drawn.",
+              "locator": "Immersion"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

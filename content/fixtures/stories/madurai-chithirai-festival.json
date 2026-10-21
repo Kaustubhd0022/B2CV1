@@ -1,0 +1,153 @@
+{
+  "kind": "story",
+  "slug": "madurai-chithirai-festival",
+  "city": "madurai",
+  "fixture": true,
+  "entities": [
+    {
+      "id": "chithirai-thiruvizha",
+      "role": "subject"
+    },
+    {
+      "id": "meenakshi-temple",
+      "role": "mentioned"
+    }
+  ],
+  "versions": [
+    {
+      "language": "en",
+      "body": {
+        "title": "The Celestial Wedding and the River Crossing: Chithirai Thiruvizha and Regional Harmony",
+        "orientation": "How a month-long temple festival brought Shaivite and Vaishnavite traditions together in the sacred riverbed of the Vaigai.",
+        "hero": {
+          "src": "/images/dev/madurai.jpg",
+          "alt": "Grand wooden temple chariot of Meenakshi Temple pulled by thousands of devotees in Madurai",
+          "credit": "TattvaCo Cultural Archives",
+          "rightsCleared": true
+        },
+        "sections": [
+          {
+            "id": "story",
+            "kind": "narrative",
+            "heading": "A festival of reconciliation",
+            "paragraphs": [
+              {
+                "text": "The Chithirai Festival of Madurai, celebrated in the Tamil month of Chithirai (April–May), is one of the world's longest continuously observed temple festivals, spanning nearly a month.",
+                "claims": [
+                  "chithirai-duration"
+                ]
+              },
+              {
+                "text": "King Thirumalai Nayak in the 17th century politically united two previously separate festivals: the celestial wedding of Meenakshi and Sundareswarar, and Lord Alagar's journey from Alagar Koyil into the Vaigai River.",
+                "claims": [
+                  "thirumalai-unification"
+                ]
+              }
+            ]
+          },
+          {
+            "id": "context",
+            "kind": "context",
+            "heading": "The golden horse in the riverbed",
+            "paragraphs": [
+              {
+                "text": "The dramatic climax occurs when Lord Alagar enters the Vaigai River mounted on a golden horse, greeted by over a million pilgrims in the dry summer riverbed.",
+                "claims": [
+                  "river-entry"
+                ]
+              }
+            ]
+          },
+          {
+            "id": "why",
+            "kind": "significance",
+            "heading": "Why it matters",
+            "paragraphs": [
+              {
+                "text": "Chithirai Thiruvizha demonstrates how enlightened statesmanship utilized sacred ritual and riverfront topography to forge enduring peace between rival religious communities.",
+                "claims": [
+                  "peace-reconciliation"
+                ]
+              }
+            ]
+          }
+        ],
+        "themes": [
+          "festivals",
+          "beliefs",
+          "history",
+          "places"
+        ],
+        "followUpQuestions": [
+          "Why does Lord Alagar turn back without attending the wedding ceremony?",
+          "How do agricultural communities around Madurai participate in pulling the giant temple car (Ther)?"
+        ],
+        "connections": [
+          "sacred-rivers-ganga-tungabhadra-vaigai",
+          "vijayanagara-and-madurai"
+        ],
+        "relatedStories": [
+          "madurai-meenakshi-temple-city"
+        ]
+      },
+      "claims": [
+        {
+          "key": "chithirai-duration",
+          "text": "Chithirai Festival spans nearly an entire month of rituals across Madurai and the Vaigai River.",
+          "claimType": "descriptive",
+          "epistemic": "documented",
+          "evidence": [
+            {
+              "source": "wp-chithirai-festival",
+              "relation": "supports",
+              "excerpt": "The Chithirai festival is one of the biggest celebrations in Madurai, lasting for nearly a month during the Tamil month of Chithirai.",
+              "locator": "Overview"
+            }
+          ]
+        },
+        {
+          "key": "thirumalai-unification",
+          "text": "King Thirumalai Nayak combined the Shaivite Meenakshi wedding with the Vaishnavite Alagar festival.",
+          "claimType": "historical",
+          "epistemic": "documented",
+          "evidence": [
+            {
+              "source": "wp-chithirai-festival",
+              "relation": "supports",
+              "excerpt": "Ruler Thirumalai Nayak merged the two separate festivals into a single grand celebration to unite Shaivites and Vaishnavites.",
+              "locator": "History"
+            }
+          ]
+        },
+        {
+          "key": "river-entry",
+          "text": "Lord Alagar enters the Vaigai River mounted on a golden horse, observed by massive crowds.",
+          "claimType": "belief",
+          "epistemic": "tradition",
+          "evidence": [
+            {
+              "source": "wp-chithirai-festival",
+              "relation": "supports",
+              "excerpt": "The highlight of the festival is Lord Alagar's grand entry into the Vaigai River riding his golden horse.",
+              "locator": "Key Events"
+            }
+          ]
+        },
+        {
+          "key": "peace-reconciliation",
+          "text": "The festival served as a social mechanism for communal harmony across regional caste and sectarian lines.",
+          "claimType": "interpretive",
+          "epistemic": "interpretation",
+          "evidence": [
+            {
+              "source": "wp-chithirai-festival",
+              "relation": "supports",
+              "excerpt": "Scholars emphasize the role of the festival in promoting sectarian solidarity across diverse communities of the region.",
+              "locator": "Social Impact"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -21,7 +21,7 @@ describe("content ingestion", () => {
     const report = await ingestContent();
     expect(report.errors).toEqual([]);
     expect(report.cities).toBe(6);
-    expect(report.created.length).toBe(11);
+    expect(report.created.length).toBe(27);
     expect(report.publishedFixtures).toEqual([]);
     const db = await getDb();
     const published = await db.select().from(schema.contentVersions).where(eq(schema.contentVersions.status, "published"));
@@ -31,7 +31,7 @@ describe("content ingestion", () => {
   it("is idempotent: re-running creates no new versions", async () => {
     const report = await ingestContent();
     expect(report.created).toEqual([]);
-    expect(report.unchanged).toBe(11);
+    expect(report.unchanged).toBe(27);
   });
 });
 

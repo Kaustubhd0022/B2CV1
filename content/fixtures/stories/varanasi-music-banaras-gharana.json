@@ -1,0 +1,166 @@
+{
+  "kind": "story",
+  "slug": "varanasi-music-banaras-gharana",
+  "city": "varanasi",
+  "fixture": true,
+  "entities": [
+    {
+      "id": "banaras-gharana",
+      "role": "subject"
+    },
+    {
+      "id": "varanasi-ghats",
+      "role": "mentioned"
+    }
+  ],
+  "versions": [
+    {
+      "language": "en",
+      "body": {
+        "title": "The Banaras Gharana: Tabla, Shehnai and the Acoustics of the Riverfront",
+        "orientation": "How the open stone steps of Varanasi's riverfront shaped one of Hindustani music's most expressive instrumental and vocal lineages.",
+        "hero": {
+          "src": "/images/dev/varanasi-hero.jpg",
+          "alt": "Classical musicians and morning prayers along the Varanasi ghats at sunrise",
+          "credit": "TattvaCo Cultural Archives",
+          "rightsCleared": true
+        },
+        "sections": [
+          {
+            "id": "story",
+            "kind": "narrative",
+            "heading": "The sound of the riverfront",
+            "paragraphs": [
+              {
+                "text": "The Banaras Gharana of Hindustani classical music developed in the 18th and 19th centuries, strongly influenced by the daily ritual sounds and acoustic spaces of Kashi's riverfront temples.",
+                "claims": [
+                  "gharana-origins"
+                ]
+              },
+              {
+                "text": "Unlike court-centered gharanas of Delhi or Lucknow, Banaras musicians practiced outdoors along the river steps, developing an open, powerful, and deeply vocalized style of tabla and shehnai playing.",
+                "claims": [
+                  "acoustic-setting"
+                ]
+              }
+            ]
+          },
+          {
+            "id": "context",
+            "kind": "context",
+            "heading": "Instruments and master lineages",
+            "paragraphs": [
+              {
+                "text": "Legendary masters such as Pandit Ram Sahai created the distinct Banaras tabla style, while Ustad Bismillah Khan brought the temple shehnai from religious ceremonies onto the international concert stage.",
+                "claims": [
+                  "master-lineage"
+                ]
+              }
+            ]
+          },
+          {
+            "id": "why",
+            "kind": "significance",
+            "heading": "Why it matters",
+            "paragraphs": [
+              {
+                "text": "The Banaras Gharana exemplifies the syncretic soul of Varanasi, where Muslim shehnai players and Hindu temple vocalists shared deep devotion to musical expression and the river.",
+                "claims": [
+                  "syncretic-heritage"
+                ]
+              }
+            ]
+          },
+          {
+            "id": "limits",
+            "kind": "limits",
+            "heading": "What we don't know",
+            "paragraphs": [
+              {
+                "text": "Oral traditions recount distinct early lineage dates, but written chronicles prior to the late 18th century remain sparse, relying on master-disciple memories.",
+                "claims": []
+              }
+            ]
+          }
+        ],
+        "themes": [
+          "art-music",
+          "communities",
+          "beliefs",
+          "places"
+        ],
+        "followUpQuestions": [
+          "How does the Banaras tabla style differ from the Delhi gharana?",
+          "What was Ustad Bismillah Khan's spiritual connection to the Ganga?",
+          "Which temples in Varanasi host annual all-night classical music festivals?"
+        ],
+        "connections": [
+          "temple-acoustics-hampi-madurai",
+          "varanasi-river-to-loom"
+        ],
+        "relatedStories": [
+          "varanasi-ghats-architecture-and-river",
+          "varanasi-silk-weaving-craft-and-living-tradition"
+        ]
+      },
+      "claims": [
+        {
+          "key": "gharana-origins",
+          "text": "The Banaras Gharana developed in Varanasi with a distinctive aesthetic influenced by ritual practices.",
+          "claimType": "historical",
+          "epistemic": "documented",
+          "evidence": [
+            {
+              "source": "wp-banaras-gharana",
+              "relation": "supports",
+              "excerpt": "The Banaras gharana of Hindustani classical music is one of the six most prominent styles of playing the tabla and shehnai.",
+              "locator": "Lead section"
+            }
+          ]
+        },
+        {
+          "key": "acoustic-setting",
+          "text": "The open acoustic spaces of Varanasi's stone ghats fostered a resonant performance technique.",
+          "claimType": "descriptive",
+          "epistemic": "interpretation",
+          "evidence": [
+            {
+              "source": "wp-banaras-gharana",
+              "relation": "supports",
+              "excerpt": "Musicians often practiced on the open banks of the Ganges, which influenced the sonorous, ringing tone characteristic of the Banaras style.",
+              "locator": "Style and Technique"
+            }
+          ]
+        },
+        {
+          "key": "master-lineage",
+          "text": "Pandit Ram Sahai and Ustad Bismillah Khan were seminal figures in establishing the gharana's international acclaim.",
+          "claimType": "historical",
+          "epistemic": "documented",
+          "evidence": [
+            {
+              "source": "wp-banaras-gharana",
+              "relation": "supports",
+              "excerpt": "Pandit Ram Sahai developed the unique Banaras baj, while Ustad Bismillah Khan achieved world renown playing the shehnai at the ghats and temples.",
+              "locator": "History"
+            }
+          ]
+        },
+        {
+          "key": "syncretic-heritage",
+          "text": "The music tradition demonstrates communal and cultural syncretism across community boundaries.",
+          "claimType": "descriptive",
+          "epistemic": "documented",
+          "evidence": [
+            {
+              "source": "wp-banaras-gharana",
+              "relation": "supports",
+              "excerpt": "The tradition brings together both Hindu and Muslim performers in a shared reverence for Kashi's cultural and spiritual environment.",
+              "locator": "Cultural Significance"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

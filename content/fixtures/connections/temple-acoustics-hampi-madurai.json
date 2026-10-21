@@ -1,0 +1,85 @@
+{
+  "kind": "connection",
+  "slug": "temple-acoustics-hampi-madurai",
+  "fixture": true,
+  "entities": [
+    {
+      "id": "vittala-musical-pillars",
+      "role": "from"
+    },
+    {
+      "id": "meenakshi-temple",
+      "role": "to"
+    }
+  ],
+  "versions": [
+    {
+      "language": "en",
+      "body": {
+        "title": "Resonant Granite: Acoustic Pillars of Vijayanagara and Sculpted Nayak Halls",
+        "summary": "How the Vijayanagara empire's metallurgical and stone acoustic mastery was inherited, refined, and magnified by the Nayak rulers in Madurai.",
+        "relationshipType": "shared_lineage",
+        "from": {
+          "entity": "vittala-musical-pillars",
+          "label": "Vijaya Vittala Musical Pillars (Hampi)"
+        },
+        "to": {
+          "entity": "meenakshi-temple",
+          "label": "Thousand Pillar Hall (Madurai)"
+        },
+        "rationale": [
+          {
+            "text": "Following the fall of Hampi in 1565, master stone carvers took refuge in the Nayak kingdom of Madurai, where they recreated musical pillars in the Meenakshi Temple's Thousand Pillar Hall.",
+            "claims": [
+              "artisan-migration-lineage"
+            ]
+          }
+        ],
+        "whyItMatters": [
+          {
+            "text": "This connection proves that monumental temple architecture in South India was not static, but an evolving technological and acoustic tradition carried by migrating master guilds.",
+            "claims": [
+              "living-architectural-lineage"
+            ]
+          }
+        ],
+        "doesNotEstablish": "This relationship does not prove that every acoustic pillar in Madurai was sculpted by the exact same artisans who worked at Vittala, but confirms the historical continuity of the architectural school.",
+        "uncertainty": "Exact mason marks linking individual carver guilds across Karnataka and Tamil Nadu remain subject to ongoing epigraphical survey.",
+        "relatedStories": [
+          "hampi-vittala-musical-pillars",
+          "madurai-meenakshi-temple-city"
+        ]
+      },
+      "claims": [
+        {
+          "key": "artisan-migration-lineage",
+          "text": "Nayak rulers welcomed Vijayanagara artisans who continued their stone acoustic traditions in Tamil Nadu.",
+          "claimType": "relationship",
+          "epistemic": "documented",
+          "evidence": [
+            {
+              "source": "wp-madurai-nayak-dynasty",
+              "relation": "supports",
+              "excerpt": "The Nayaks of Madurai were patrons of artisans displaced after the battle of Talikota, incorporating Vijayanagara architectural idioms.",
+              "locator": "Architecture and Patronage"
+            }
+          ]
+        },
+        {
+          "key": "living-architectural-lineage",
+          "text": "The musical pillars at both sites represent a shared mathematical and geological mastery of stone resonance.",
+          "claimType": "interpretive",
+          "epistemic": "interpretation",
+          "evidence": [
+            {
+              "source": "wp-meenakshi-temple",
+              "relation": "supports",
+              "excerpt": "The musical stone pillars in Madurai produce different musical notes when tapped, directly echoing the earlier Vittala temple style.",
+              "locator": "Thousand Pillar Hall"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

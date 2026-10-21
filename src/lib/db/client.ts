@@ -1,5 +1,5 @@
 import "server-only";
-import { existsSync, mkdirSync, unlinkSync } from "node:fs";
+import { existsSync, mkdirSync, unlinkSync, readFileSync } from "node:fs";
 import path from "node:path";
 import { drizzle as drizzlePg, type NodePgDatabase } from "drizzle-orm/node-postgres";
 import { drizzle as drizzlePglite } from "drizzle-orm/pglite";
@@ -50,7 +50,22 @@ async function init(): Promise<DB> {
     try {
       await migratePglite(db as never, { migrationsFolder: MIGRATIONS });
     } catch (err: unknown) {
-      console.warn("PGlite migration notice:", err);
+      console.warn("PGlite migration notice, falling back to 0000_init.sql:", err);
+      try {
+        const initSqlPath = path.join(MIGRATIONS, "0000_init.sql");
+        if (existsSync(initSqlPath)) {
+          const sql = readFileSync(initSqlPath, "utf-8");
+          const statements = sql.split("--> statement-breakpoint");
+          for (const stmt of statements) {
+            const trimmed = stmt.trim();
+            if (trimmed) {
+              await client.exec(trimmed);
+            }
+          }
+        }
+      } catch (execErr) {
+        console.warn("PGlite init sql fallback notice:", execErr);
+      }
     }
   }
   holder.close = () => client.close();

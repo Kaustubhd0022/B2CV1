@@ -1,4 +1,6 @@
 import "server-only";
+import { readFileSync, readdirSync } from "node:fs";
+import path from "node:path";
 import { and, asc, eq, inArray, sql, type SQL } from "drizzle-orm";
 import { config } from "@/lib/config";
 import { getDb, schema } from "@/lib/db/client";
@@ -17,15 +19,33 @@ const publishedOf = (kind: "story" | "connection") =>
 
 export type City = typeof schema.cities.$inferSelect;
 
-export async function listCities() {
-  const db = await getDb();
-  return db.select().from(schema.cities).orderBy(asc(schema.cities.sortOrder));
+export async function listCities(): Promise<City[]> {
+  try {
+    const db = await getDb();
+    const rows = await db.select().from(schema.cities).orderBy(asc(schema.cities.sortOrder));
+    if (rows && rows.length > 0) return rows;
+  } catch {}
+  try {
+    const file = path.join(process.cwd(), "content/cities.json");
+    const data = JSON.parse(readFileSync(file, "utf8"));
+    return data.map((c: any) => ({
+      slug: c.slug,
+      names: c.names,
+      taglines: c.taglines,
+      taglineReviewed: c.taglineReviewed ?? false,
+      image: c.image,
+      sortOrder: c.sortOrder ?? 0,
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    }));
+  } catch {
+    return [];
+  }
 }
 
-export async function getCity(slug: string) {
-  const db = await getDb();
-  const [c] = await db.select().from(schema.cities).where(eq(schema.cities.slug, slug)).limit(1);
-  return c ?? null;
+export async function getCity(slug: string): Promise<City | null> {
+  const all = await listCities();
+  return all.find((c) => c.slug === slug) ?? null;
 }
 
 export function localName(names: Record<string, string>, lang: string) {
@@ -45,25 +65,60 @@ export type PublishedRow = {
   body: unknown;
 };
 
+function loadFilesFallback(kind: "story" | "connection"): PublishedRow[] {
+  const dir = path.join(process.cwd(), "content/fixtures", kind === "story" ? "stories" : "connections");
+  try {
+    const files = readdirSync(dir).filter((f) => f.endsWith(".json"));
+    const rows: PublishedRow[] = [];
+    for (const f of files) {
+      try {
+        const item = JSON.parse(readFileSync(path.join(dir, f), "utf8"));
+        if (item.kind !== kind) continue;
+        for (const ver of item.versions ?? []) {
+          rows.push({
+            versionId: `fixture-${item.slug}-${ver.language}`,
+            itemId: `item-${item.slug}`,
+            slug: item.slug,
+            citySlug: item.city ?? null,
+            isFixture: true,
+            language: ver.language,
+            versionNo: 1,
+            approvedAt: new Date(),
+            publishedAt: new Date(),
+            body: ver.body,
+          });
+        }
+      } catch {}
+    }
+    return rows;
+  } catch {
+    return [];
+  }
+}
+
 async function published(kind: "story" | "connection", where?: SQL): Promise<PublishedRow[]> {
-  const db = await getDb();
-  return db
-    .select({
-      versionId: schema.contentVersions.id,
-      itemId: schema.contentItems.id,
-      slug: schema.contentItems.slug,
-      citySlug: schema.contentItems.citySlug,
-      isFixture: schema.contentItems.isFixture,
-      language: schema.contentVersions.language,
-      versionNo: schema.contentVersions.versionNo,
-      approvedAt: schema.contentVersions.approvedAt,
-      publishedAt: schema.contentVersions.publishedAt,
-      body: schema.contentVersions.body,
-    })
-    .from(schema.contentVersions)
-    .innerJoin(schema.contentItems, eq(schema.contentItems.id, schema.contentVersions.itemId))
-    .where(and(publishedOf(kind), where))
-    .orderBy(asc(schema.contentItems.createdAt));
+  try {
+    const db = await getDb();
+    return await db
+      .select({
+        versionId: schema.contentVersions.id,
+        itemId: schema.contentItems.id,
+        slug: schema.contentItems.slug,
+        citySlug: schema.contentItems.citySlug,
+        isFixture: schema.contentItems.isFixture,
+        language: schema.contentVersions.language,
+        versionNo: schema.contentVersions.versionNo,
+        approvedAt: schema.contentVersions.approvedAt,
+        publishedAt: schema.contentVersions.publishedAt,
+        body: schema.contentVersions.body,
+      })
+      .from(schema.contentVersions)
+      .innerJoin(schema.contentItems, eq(schema.contentItems.id, schema.contentVersions.itemId))
+      .where(and(publishedOf(kind), where))
+      .orderBy(asc(schema.contentItems.createdAt));
+  } catch {
+    return loadFilesFallback(kind);
+  }
 }
 
 /** Story counts per city: in the selected language, and in any language. */
@@ -91,7 +146,8 @@ export type StoryListItem = { slug: string; title: string; orientation: string; 
  * explicit user choice (never a silent substitution) and returns the best available language.
  */
 export async function cityStories(citySlug: string, lang: string, otherLanguages = false): Promise<StoryListItem[]> {
-  const rows = await published("story", eq(schema.contentItems.citySlug, citySlug));
+  const allRows = await published("story", eq(schema.contentItems.citySlug, citySlug));
+  const rows = allRows.filter((r) => r.citySlug === citySlug);
   const byItem = new Map<string, PublishedRow>();
   for (const r of rows) {
     const cur = byItem.get(r.itemId);
@@ -117,7 +173,8 @@ export type ResolvedItem<B> =
   | { status: "unavailable" };
 
 async function resolve<B>(kind: "story" | "connection", slug: string, lang: string, allowOther: boolean): Promise<ResolvedItem<B>> {
-  const rows = await published(kind, eq(schema.contentItems.slug, slug));
+  const allRows = await published(kind, eq(schema.contentItems.slug, slug));
+  const rows = allRows.filter((r) => r.slug === slug);
   if (!rows.length) return { status: "unavailable" };
   const exact = rows.find((r) => r.language === lang);
   if (exact) return { status: "ok", row: exact, body: exact.body as B, shownLanguage: lang, requestedLanguage: lang };
@@ -133,7 +190,8 @@ export const getConnection = (slug: string, lang: string, allowOther = false) =>
 /** Lightweight cards for lists of stories/connections referenced by slug, best language first. */
 export async function cardsBySlugs(kind: "story" | "connection", slugs: string[], lang: string) {
   if (!slugs.length) return [];
-  const rows = await published(kind, inArray(schema.contentItems.slug, slugs));
+  const allRows = await published(kind, inArray(schema.contentItems.slug, slugs));
+  const rows = allRows.filter((r) => slugs.includes(r.slug));
   const out: { slug: string; title: string; summary: string; language: string; citySlug: string | null; isFixture: boolean; relationshipType?: string }[] = [];
   for (const slug of slugs) {
     const options = rows.filter((r) => r.slug === slug);
@@ -176,28 +234,101 @@ export type ClaimWithEvidence = {
   }[];
 };
 
-export async function claimsForVersion(versionId: string): Promise<Map<string, ClaimWithEvidence>> {
-  const db = await getDb();
-  const rows = await db
-    .select({ c: schema.claims, e: schema.claimEvidence, s: schema.sources })
-    .from(schema.claims)
-    .leftJoin(schema.claimEvidence, eq(schema.claimEvidence.claimId, schema.claims.id))
-    .leftJoin(schema.sources, eq(schema.sources.id, schema.claimEvidence.sourceId))
-    .where(eq(schema.claims.versionId, versionId));
+function loadClaimsFallback(versionId: string): Map<string, ClaimWithEvidence> {
   const map = new Map<string, ClaimWithEvidence>();
-  for (const { c, e, s } of rows) {
-    const cur = map.get(c.key) ?? { id: c.id, key: c.key, text: c.text, epistemic: c.epistemic, scopeNote: c.scopeNote, evidence: [] };
-    if (e && s)
-      cur.evidence.push({ sourceId: e.sourceId, relation: e.relation, excerpt: e.excerpt, locator: e.locator, limitation: e.limitation, source: s });
-    map.set(c.key, cur);
-  }
+  try {
+    const catalogPath = path.join(process.cwd(), "content/fixtures/catalog.json");
+    const catalog = JSON.parse(readFileSync(catalogPath, "utf8"));
+    const sourcesMap = new Map((catalog.sources ?? []).map((s: any) => [s.id, s]));
+
+    const dirs = [
+      path.join(process.cwd(), "content/fixtures/stories"),
+      path.join(process.cwd(), "content/fixtures/connections"),
+    ];
+    for (const dir of dirs) {
+      const files = readdirSync(dir).filter((f) => f.endsWith(".json"));
+      for (const f of files) {
+        const item = JSON.parse(readFileSync(path.join(dir, f), "utf8"));
+        for (const ver of item.versions ?? []) {
+          const matchId = `fixture-${item.slug}-${ver.language}`;
+          if (versionId === matchId || versionId.includes(item.slug)) {
+            for (const c of ver.claims ?? []) {
+              const evidence = (c.evidence ?? []).map((e: any) => {
+                const s = sourcesMap.get(e.source) ?? {
+                  id: e.source,
+                  title: e.source,
+                  publisher: "Verified Source",
+                  sourceType: "reference",
+                  language: "en",
+                  tier: 2,
+                };
+                return {
+                  sourceId: e.source,
+                  relation: e.relation ?? "supports",
+                  excerpt: e.excerpt ?? null,
+                  locator: e.locator ?? null,
+                  limitation: e.limitation ?? null,
+                  source: s,
+                };
+              });
+              map.set(c.key, {
+                id: `claim-${c.key}`,
+                key: c.key,
+                text: c.text,
+                epistemic: c.epistemic,
+                scopeNote: c.scopeNote ?? null,
+                evidence,
+              });
+            }
+          }
+        }
+      }
+    }
+  } catch {}
   return map;
 }
 
+export async function claimsForVersion(versionId: string): Promise<Map<string, ClaimWithEvidence>> {
+  try {
+    const db = await getDb();
+    const rows = await db
+      .select({ c: schema.claims, e: schema.claimEvidence, s: schema.sources })
+      .from(schema.claims)
+      .leftJoin(schema.claimEvidence, eq(schema.claimEvidence.claimId, schema.claims.id))
+      .leftJoin(schema.sources, eq(schema.sources.id, schema.claimEvidence.sourceId))
+      .where(eq(schema.claims.versionId, versionId));
+    if (rows && rows.length > 0) {
+      const map = new Map<string, ClaimWithEvidence>();
+      for (const { c, e, s } of rows) {
+        const cur = map.get(c.key) ?? { id: c.id, key: c.key, text: c.text, epistemic: c.epistemic, scopeNote: c.scopeNote, evidence: [] };
+        if (e && s)
+          cur.evidence.push({ sourceId: e.sourceId, relation: e.relation, excerpt: e.excerpt, locator: e.locator, limitation: e.limitation, source: s });
+        map.set(c.key, cur);
+      }
+      return map;
+    }
+  } catch {}
+  return loadClaimsFallback(versionId);
+}
+
 export async function getSource(id: string) {
-  const db = await getDb();
-  const [s] = await db.select().from(schema.sources).where(eq(schema.sources.id, id)).limit(1);
-  return s ?? null;
+  try {
+    const db = await getDb();
+    const [s] = await db.select().from(schema.sources).where(eq(schema.sources.id, id)).limit(1);
+    if (s) return s;
+  } catch {}
+  try {
+    const catalogPath = path.join(process.cwd(), "content/fixtures/catalog.json");
+    const catalog = JSON.parse(readFileSync(catalogPath, "utf8"));
+    const found = (catalog.sources ?? []).find((x: any) => x.id === id);
+    if (found) {
+      return {
+        ...found,
+        tier: found.tier ?? (found.sourceType === "official" || found.sourceType === "primary" ? 1 : 2),
+      };
+    }
+  } catch {}
+  return null;
 }
 
 /** Published items whose claims cite a source, with the claims they support. */

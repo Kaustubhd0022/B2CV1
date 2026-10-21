@@ -1,0 +1,147 @@
+{
+  "kind": "story",
+  "slug": "jaipur-amer-fort-water-systems",
+  "city": "jaipur",
+  "fixture": true,
+  "entities": [
+    {
+      "id": "amer-fort-citadel",
+      "role": "subject"
+    }
+  ],
+  "versions": [
+    {
+      "language": "en",
+      "body": {
+        "title": "Rajput Stone Citadel Hydraulics: Maota Lake and the Water Lifts of Amer",
+        "orientation": "How engineering genius lifted water hundreds of feet up rocky cliffs to nourish gardens and palaces in the arid desert hills.",
+        "hero": {
+          "src": "/images/dev/jaipur.jpg",
+          "alt": "Amer Fort ramparts reflected in the waters of Maota Lake",
+          "credit": "TattvaCo Cultural Archives",
+          "rightsCleared": true
+        },
+        "sections": [
+          {
+            "id": "story",
+            "kind": "narrative",
+            "heading": "Fortress on the ridge",
+            "paragraphs": [
+              {
+                "text": "Amer Fort, constructed primarily of red sandstone and marble by Raja Man Singh I beginning in 1592, served as the royal seat of the Kachwaha dynasty before the founding of Jaipur.",
+                "claims": [
+                  "amer-construction"
+                ]
+              },
+              {
+                "text": "The greatest architectural feat of the citadel was its multi-stage Persian wheel hydraulic system that lifted water from Maota Lake up nearly 400 feet into the fort's storage tanks.",
+                "claims": [
+                  "hydraulic-system"
+                ]
+              }
+            ]
+          },
+          {
+            "id": "context",
+            "kind": "context",
+            "heading": "Cooling courtyards and pleasure gardens",
+            "paragraphs": [
+              {
+                "text": "The lifted water powered fountains in the Sheesh Mahal and cascaded through marble channels into the Kesar Kyari saffron garden laid out in the middle of Maota Lake.",
+                "claims": [
+                  "kesar-kyari-garden"
+                ]
+              }
+            ]
+          },
+          {
+            "id": "why",
+            "kind": "significance",
+            "heading": "Why it matters",
+            "paragraphs": [
+              {
+                "text": "Amer's water architecture demonstrates that medieval Indian hill citadels were sophisticated ecological habitats harmonizing defence, water harvesting, and microclimate regulation.",
+                "claims": [
+                  "ecological-habitat"
+                ]
+              }
+            ]
+          }
+        ],
+        "themes": [
+          "history",
+          "places",
+          "architecture"
+        ],
+        "followUpQuestions": [
+          "How did the underground clay pipelines prevent water loss from evaporation?",
+          "What connection exists between Amer Fort and the Jaigarh cannon foundry?"
+        ],
+        "connections": [
+          "sacred-rivers-ganga-tungabhadra-vaigai"
+        ],
+        "relatedStories": [
+          "jaipur-jantar-mantar-astronomy-in-stone"
+        ]
+      },
+      "claims": [
+        {
+          "key": "amer-construction",
+          "text": "Amer Fort was constructed by Raja Man Singh I as the fortified capital of the Kachwaha Rajputs.",
+          "claimType": "historical",
+          "epistemic": "documented",
+          "evidence": [
+            {
+              "source": "wp-amer-fort",
+              "relation": "supports",
+              "excerpt": "Amer Fort was built by Raja Man Singh I in the late 16th century, situated high on a hill overlooking Maota Lake.",
+              "locator": "History"
+            }
+          ]
+        },
+        {
+          "key": "hydraulic-system",
+          "text": "Water was lifted from the lake to the summit fort through multi-tiered pulley and aqueduct systems.",
+          "claimType": "descriptive",
+          "epistemic": "documented",
+          "evidence": [
+            {
+              "source": "wp-amer-fort",
+              "relation": "supports",
+              "excerpt": "A complex system of Persian wheels (rehats) lifted water from Maota Lake across multiple terrace levels into the upper citadel reservoirs.",
+              "locator": "Water Architecture"
+            }
+          ]
+        },
+        {
+          "key": "kesar-kyari-garden",
+          "text": "The lake water irrigated the geometrically designed Kesar Kyari island garden.",
+          "claimType": "descriptive",
+          "epistemic": "documented",
+          "evidence": [
+            {
+              "source": "wp-amer-fort",
+              "relation": "supports",
+              "excerpt": "In the center of Maota Lake lies the Kesar Kyari garden, created with star-shaped sunken flower beds.",
+              "locator": "Gardens and Lake"
+            }
+          ]
+        },
+        {
+          "key": "ecological-habitat",
+          "text": "The water system moderated desert summer temperatures inside the residential pavilions.",
+          "claimType": "interpretive",
+          "epistemic": "interpretation",
+          "evidence": [
+            {
+              "source": "wp-amer-fort",
+              "relation": "supports",
+              "excerpt": "Circulating water through hidden wall channels and cooling screens allowed inhabitants to withstand intense summer heat.",
+              "locator": "Architecture and Climate"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

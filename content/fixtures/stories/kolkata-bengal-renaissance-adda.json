@@ -1,0 +1,147 @@
+{
+  "kind": "story",
+  "slug": "kolkata-bengal-renaissance-adda",
+  "city": "kolkata",
+  "fixture": true,
+  "entities": [
+    {
+      "id": "bengal-adda-tradition",
+      "role": "subject"
+    }
+  ],
+  "versions": [
+    {
+      "language": "en",
+      "body": {
+        "title": "Coffee House and the Spoken Word: Adda, Literature and Intellectual Awakening",
+        "orientation": "How informal, passionate conversation in Kolkata's heritage cafes nurtured the Bengal Renaissance and shaped modern Indian literature.",
+        "hero": {
+          "src": "/images/dev/kolkata.jpg",
+          "alt": "Scholars, poets, and students gathered for literary discussion at Kolkata Coffee House",
+          "credit": "TattvaCo Cultural Archives",
+          "rightsCleared": true
+        },
+        "sections": [
+          {
+            "id": "story",
+            "kind": "narrative",
+            "heading": "The art of conversation",
+            "paragraphs": [
+              {
+                "text": "In Bengali culture, 'adda' is neither idle gossip nor formal debate; it is an unhurried, spontaneous intellectual communion where literature, philosophy, politics, and art are dissected across generations.",
+                "claims": [
+                  "adda-definition"
+                ]
+              },
+              {
+                "text": "During the 19th and 20th centuries, venues like College Street's Coffee House and neighbourhood rock-sitting (parar roak) became fertile incubators for literary magazines and revolutionary ideas.",
+                "claims": [
+                  "coffee-house-hub"
+                ]
+              }
+            ]
+          },
+          {
+            "id": "context",
+            "kind": "context",
+            "heading": "From Tagore to Satyajit Ray",
+            "paragraphs": [
+              {
+                "text": "Figures from Rabindranath Tagore and Michael Madhusudan Dutt to filmmaker Satyajit Ray drew direct inspiration from the egalitarian spontaneity of these literary salons.",
+                "claims": [
+                  "renaissance-figures"
+                ]
+              }
+            ]
+          },
+          {
+            "id": "why",
+            "kind": "significance",
+            "heading": "Why it matters",
+            "paragraphs": [
+              {
+                "text": "Adda demonstrates how intellectual culture in India thrives outside formal institutional walls, grounded in public spaces, shared tea, and a collective passion for ideas.",
+                "claims": [
+                  "public-culture"
+                ]
+              }
+            ]
+          }
+        ],
+        "themes": [
+          "history",
+          "communities",
+          "places"
+        ],
+        "followUpQuestions": [
+          "How did the Hungry Generation literary movement emerge out of Coffee House addas?",
+          "What role did College Street bookstalls play in democratizing vernacular reading?"
+        ],
+        "connections": [
+          "varanasi-river-to-loom"
+        ],
+        "relatedStories": [
+          "kolkata-durga-puja-living-art"
+        ]
+      },
+      "claims": [
+        {
+          "key": "adda-definition",
+          "text": "Adda is a cherished social practice of freewheeling intellectual discourse distinctive to Bengali urban culture.",
+          "claimType": "descriptive",
+          "epistemic": "documented",
+          "evidence": [
+            {
+              "source": "wp-adda-kolkata",
+              "relation": "supports",
+              "excerpt": "Adda is a form of intellectual and social gathering characterized by informal, open-ended conversation among peers in Bengal.",
+              "locator": "Sociological Meaning"
+            }
+          ]
+        },
+        {
+          "key": "coffee-house-hub",
+          "text": "The Indian Coffee House on College Street became the epicenter for literary and political debate.",
+          "claimType": "historical",
+          "epistemic": "documented",
+          "evidence": [
+            {
+              "source": "wp-adda-kolkata",
+              "relation": "supports",
+              "excerpt": "The Indian Coffee House at College Street is historically renowned as the meeting place of poets, artists, and academics.",
+              "locator": "Famous Adda Hubs"
+            }
+          ]
+        },
+        {
+          "key": "renaissance-figures",
+          "text": "Seminal artists, filmmakers, and poets actively participated in and drew creative energy from adda gatherings.",
+          "claimType": "historical",
+          "epistemic": "documented",
+          "evidence": [
+            {
+              "source": "wp-adda-kolkata",
+              "relation": "supports",
+              "excerpt": "Prominent intellectuals including Satyajit Ray, Amartya Sen, and Sunil Gangopadhyay frequently engaged in Coffee House discussions.",
+              "locator": "Historical Figures"
+            }
+          ]
+        },
+        {
+          "key": "public-culture",
+          "text": "The practice highlights the role of democratic public spaces in cultivating intellectual freedom.",
+          "claimType": "interpretive",
+          "epistemic": "interpretation",
+          "evidence": [
+            {
+              "source": "wp-adda-kolkata",
+              "relation": "supports",
+              "excerpt": "Sociologists consider adda an essential democratic space that broke down rigid social hierarchies through egalitarian exchange.",
+              "locator": "Cultural Value"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
