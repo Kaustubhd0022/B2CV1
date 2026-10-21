@@ -27,12 +27,13 @@ const EnvSchema = z.object({
   PGLITE_DIR: z.string().default(".data/pglite"),
 });
 
-/** Explicit LLM_PROVIDER wins; otherwise the first provider with a key (Anthropic, then Groq). */
-function llmProvider(): "anthropic" | "groq" | "none" | "scripted" {
+/** Explicit LLM_PROVIDER wins; otherwise the first provider with a key (Gemini, Groq, Anthropic). */
+function llmProvider(): "anthropic" | "groq" | "gemini" | "auto" | "none" | "scripted" {
   const p = process.env.LLM_PROVIDER;
-  if (p === "anthropic" || p === "groq" || p === "none" || p === "scripted") return p;
-  if (process.env.ANTHROPIC_API_KEY) return "anthropic";
+  if (p === "anthropic" || p === "groq" || p === "gemini" || p === "auto" || p === "none" || p === "scripted") return p;
+  if (process.env.GEMINI_API_KEY || process.env.GOOGLE_AI_API_KEY) return "auto";
   if (process.env.GROQ_API_KEY) return "groq";
+  if (process.env.ANTHROPIC_API_KEY) return "anthropic";
   return "none";
 }
 
@@ -105,7 +106,13 @@ function load() {
     ai: {
       provider: llmProvider(),
       // Default model per provider; override with LLM_MODEL.
-      model: process.env.LLM_MODEL || (llmProvider() === "groq" ? "openai/gpt-oss-120b" : "claude-opus-5-5"),
+      model:
+        process.env.LLM_MODEL ||
+        (llmProvider() === "gemini" || llmProvider() === "auto"
+          ? "gemini-3.5-flash-lite"
+          : llmProvider() === "groq"
+          ? "openai/gpt-oss-120b"
+          : "claude-opus-5-5"),
       effort: (process.env.LLM_EFFORT ?? "medium") as "low" | "medium" | "high",
       timeoutMs: num(process.env.LLM_TIMEOUT_MS, 90_000),
       judge: bool(process.env.ANSWER_JUDGE, true),
