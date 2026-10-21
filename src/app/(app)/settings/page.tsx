@@ -22,13 +22,13 @@ export default async function SettingsPage() {
   return (
     <Page className="max-w-2xl pt-2">
       {/* Explorer Profile Banner (Master Spec §12 Screen 10 / Reference Page 9) */}
-      <div className="rounded-2xl border border-border bg-gradient-to-br from-[#1b1916] via-[#161513] to-[#111110] p-6 sm:p-8 shadow-lg">
+      <div className="rounded-3xl border border-border bg-gradient-to-br from-[#EFE9DC] via-[#E7DDCA] to-[#DFD7C7] p-6 sm:p-8 shadow-xs">
         <div className="flex items-center justify-between">
-          <div className="flex items-center gap-2 text-meta font-semibold uppercase tracking-wider text-gold">
+          <div className="flex items-center gap-2 text-meta font-semibold uppercase tracking-wider text-terracotta">
             <span>✦</span>
             <span>My Cultural Journey</span>
           </div>
-          <span className="rounded-full bg-gold/15 border border-gold/30 px-3 py-1 text-meta font-semibold text-gold">
+          <span className="rounded-full bg-forest/10 border border-forest/20 px-3 py-1 text-meta font-semibold text-forest">
             Explorer Profile
           </span>
         </div>
@@ -44,7 +44,7 @@ export default async function SettingsPage() {
             <div className="mt-1 flex flex-wrap items-center gap-2 text-meta text-muted">
               <span>Language: <strong className="text-charcoal font-semibold">{languageInfo(lang).native}</strong></span>
               <span>·</span>
-              <span>Role: <strong className="text-gold capitalize">{session.role}</strong></span>
+              <span>Role: <strong className="text-terracotta capitalize font-semibold">{session.role}</strong></span>
             </div>
           </div>
         </div>

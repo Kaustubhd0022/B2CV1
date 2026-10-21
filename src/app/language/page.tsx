@@ -6,6 +6,7 @@ import { currentSession } from "@/lib/auth/session";
 import { safeNext } from "@/lib/auth/normalize";
 import { isLanguageCode } from "@/lib/i18n/languages";
 import { translator } from "@/lib/i18n/t";
+import { FadeIn, MotionCard, StaggerContainer, StaggerItem } from "@/components/motion";
 import { SubmitButton } from "@/components/submit-button";
 import { Notice } from "@/components/ui";
 
@@ -151,54 +152,56 @@ export default async function LanguagePage({ searchParams }: { searchParams: Pro
               <input type="hidden" name="next" value={next} />
               <fieldset>
                 <legend className="sr-only">Choose your language</legend>
-                <ul className="grid grid-cols-2 gap-3 sm:gap-4">
+                <StaggerContainer className="grid grid-cols-2 gap-3 sm:gap-4" staggerDelay={0.06}>
                   {FIVE_LANGUAGES.map((l, index) => (
-                    <li key={l.code} className={index === 4 ? "col-span-2 sm:col-span-1" : ""}>
-                      <label className="group relative flex aspect-[16/10] cursor-pointer flex-col justify-between overflow-hidden rounded-xl border border-border/80 bg-surface-2 p-3.5 shadow-sm transition-all hover:scale-[1.02] hover:shadow-lg has-[:checked]:border-gold has-[:checked]:ring-2 has-[:checked]:ring-gold">
-                        {/* Cultural Landmark Background Image */}
-                        <Image
-                          src={l.img}
-                          alt={l.place}
-                          fill
-                          sizes="(max-width: 640px) 50vw, 300px"
-                          className="object-cover object-center transition-transform duration-500 group-hover:scale-105"
-                        />
-                        {/* Gradient scrim for readable text and checkmark */}
-                        <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/45 to-black/20" />
-
-                        {/* Top bar with indicator badge */}
-                        <div className="relative z-10 flex items-center justify-end">
-                          <input
-                            type="radio"
-                            name="language"
-                            value={l.code}
-                            defaultChecked={l.code === current}
-                            className="peer sr-only"
-                            required
+                    <StaggerItem key={l.code} className={index === 4 ? "col-span-2 sm:col-span-1" : ""}>
+                      <MotionCard hoverScale={1.025} hoverY={-3}>
+                        <label className="group relative flex aspect-[16/10] cursor-pointer flex-col justify-between overflow-hidden rounded-xl border border-border/80 bg-surface-2 p-3.5 shadow-sm transition-all hover:shadow-lg has-[:checked]:border-gold has-[:checked]:ring-2 has-[:checked]:ring-gold">
+                          {/* Cultural Landmark Background Image */}
+                          <Image
+                            src={l.img}
+                            alt={l.place}
+                            fill
+                            sizes="(max-width: 640px) 50vw, 300px"
+                            className="object-cover object-center transition-transform duration-500 group-hover:scale-105"
                           />
-                          {/* Selected checkmark circle */}
-                          <div className="hidden peer-checked:flex size-6 items-center justify-center rounded-full bg-gold text-[#111111] shadow-md font-bold">
-                            <svg className="size-3.5" viewBox="0 0 20 20" fill="currentColor">
-                              <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd"/>
-                            </svg>
-                          </div>
-                          {/* Unselected empty circle */}
-                          <div className="size-5 rounded-full border border-white/60 bg-black/25 peer-checked:hidden transition-opacity group-hover:border-white" />
-                        </div>
+                          {/* Gradient scrim for readable text and checkmark */}
+                          <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/45 to-black/20" />
 
-                        {/* Bottom metadata */}
-                        <div className="relative z-10 mt-auto">
-                          <span lang={l.code} className="block font-serif text-lg sm:text-xl font-bold text-white drop-shadow-md">
-                            {l.native}
-                          </span>
-                          <span className="block text-xs font-medium text-white/80">
-                            {l.english}
-                          </span>
-                        </div>
-                      </label>
-                    </li>
+                          {/* Top bar with indicator badge */}
+                          <div className="relative z-10 flex items-center justify-end">
+                            <input
+                              type="radio"
+                              name="language"
+                              value={l.code}
+                              defaultChecked={l.code === current}
+                              className="peer sr-only"
+                              required
+                            />
+                            {/* Selected checkmark circle */}
+                            <div className="hidden peer-checked:flex size-6 items-center justify-center rounded-full bg-gold text-[#111111] shadow-md font-bold">
+                              <svg className="size-3.5" viewBox="0 0 20 20" fill="currentColor">
+                                <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd"/>
+                              </svg>
+                            </div>
+                            {/* Unselected empty circle */}
+                            <div className="size-5 rounded-full border border-white/60 bg-black/25 peer-checked:hidden transition-opacity group-hover:border-white" />
+                          </div>
+
+                          {/* Bottom metadata */}
+                          <div className="relative z-10 mt-auto">
+                            <span lang={l.code} className="block font-serif text-lg sm:text-xl font-bold text-white drop-shadow-md">
+                              {l.native}
+                            </span>
+                            <span className="block text-xs font-medium text-white/80">
+                              {l.english}
+                            </span>
+                          </div>
+                        </label>
+                      </MotionCard>
+                    </StaggerItem>
                   ))}
-                </ul>
+                </StaggerContainer>
               </fieldset>
 
               <div className="mt-8 flex flex-col gap-3">

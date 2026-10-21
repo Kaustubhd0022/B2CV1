@@ -6,6 +6,7 @@ import { languageInfo } from "@/lib/i18n/languages";
 import { track } from "@/lib/analytics";
 import { CityCard, ConnectionCard, StoryCard, ThematicCard } from "@/components/cards";
 import { QuestionComposer } from "@/components/composer";
+import { FadeIn, StaggerContainer, StaggerItem } from "@/components/motion";
 import { IconExplore } from "@/components/icons";
 import { Page, SectionTitle } from "@/components/ui";
 
@@ -27,47 +28,51 @@ export default async function HomePage() {
 
   return (
     <Page className="pt-2">
-      {/* Hero: Where will your curiosity take you? (Master Spec §12 Screen 3) */}
-      <section className="relative isolate overflow-hidden rounded-lg">
+      {/* Hero: Where will your curiosity take you? */}
+      <section className="relative isolate overflow-hidden rounded-3xl border border-border/70 shadow-sm">
         <Image
           src={HERO.src}
           alt={HERO.alt}
           fill
           priority
-          sizes="(min-width: 1024px) 960px, 100vw"
-          className="-z-10 object-cover"
+          sizes="(min-width: 1200px) 1152px, 100vw"
+          className="-z-10 object-cover object-center transition-transform duration-1000 ease-out hover:scale-[1.02]"
         />
         <div className="scrim absolute inset-0 -z-10" aria-hidden="true" />
-        <div className="flex min-h-[520px] flex-col justify-between p-5 md:min-h-[560px] md:p-8">
-          <div className="flex items-center gap-3">
-            <span
-              className="glass flex size-11 items-center justify-center rounded-full font-semibold text-white"
-              aria-hidden="true"
-            >
-              {(session.email ?? "T").slice(0, 1).toUpperCase()}
-            </span>
-            <p className="text-support text-white/85">{t("home.greeting")}</p>
-          </div>
+        <div className="flex min-h-[540px] flex-col justify-between p-6 sm:p-8 md:min-h-[580px] md:p-12">
+          <FadeIn delay={0.05}>
+            <div className="flex items-center gap-3">
+              <span
+                className="glass-white flex size-10 items-center justify-center rounded-full font-serif text-sm font-semibold text-forest shadow-xs"
+                aria-hidden="true"
+              >
+                {(session.email ?? "T").slice(0, 1).toUpperCase()}
+              </span>
+              <p className="text-support font-medium text-white/90">{t("home.greeting")}</p>
+            </div>
+          </FadeIn>
           <div>
-            <p className="flex items-center gap-2 text-support text-white/85">
-              <IconExplore width={18} height={18} /> {t("brand.tagline")}
-            </p>
-            <h1 className="mt-2 max-w-xl text-display font-semibold leading-[1.08] text-white md:text-display-lg">
-              Where will your curiosity take you?
-            </h1>
-            <p className="mt-3 max-w-lg text-support text-white/80">
-              Start with a place, a tradition, a person—or a question.
-            </p>
-            <div className="mt-6 max-w-2xl">
+            <FadeIn delay={0.1}>
+              <p className="flex items-center gap-2 text-meta font-semibold uppercase tracking-[0.18em] text-sandstone">
+                <IconExplore width={16} height={16} className="text-sandstone" /> {t("brand.tagline")}
+              </p>
+              <h1 className="mt-3 max-w-2xl font-serif text-display font-semibold leading-[1.08] text-white md:text-display-lg tracking-tight drop-shadow-xs">
+                Where will your curiosity take you?
+              </h1>
+              <p className="mt-3 max-w-xl text-body-lead text-white/90 leading-relaxed">
+                Start with a place, a living craft, a philosopher—or a question.
+              </p>
+            </FadeIn>
+            <FadeIn delay={0.18} className="mt-8 max-w-2xl">
               <QuestionComposer
                 variant="hero"
                 label={t("home.askTitle")}
-                placeholder="Ask anything about Indian culture, sacred geography, crafts or music…"
+                placeholder="Ask anything about sacred geography, craft guilds, temple acoustic shrines…"
                 languageNote={`${t("home.askLanguage")} · ${languageInfo(lang).native}`}
                 submitLabel={t("ask.submit")}
               />
-              <div className="mt-3 flex flex-wrap items-center gap-2">
-                <span className="text-meta font-medium text-white/70">Try asking:</span>
+              <div className="mt-4 flex flex-wrap items-center gap-2">
+                <span className="text-meta font-medium text-sandstone">Try asking:</span>
                 {[
                   "Why does Varanasi have 84 ghats?",
                   "How are Banarasi silks tied to the Ganga?",
@@ -76,84 +81,92 @@ export default async function HomePage() {
                   <Link
                     key={sq}
                     href={`/ask?q=${encodeURIComponent(sq)}`}
-                    className="inline-flex items-center rounded-full border border-border/80 bg-surface/80 px-3.5 py-1 text-meta text-white/90 backdrop-blur-md transition-colors hover:border-gold hover:text-gold"
+                    className="inline-flex min-h-9 items-center rounded-full border border-white/25 bg-black/25 px-4 py-1.5 text-meta font-medium text-white backdrop-blur-md transition-all hover:bg-white/20 hover:border-white/50"
                   >
                     {sq}
                   </Link>
                 ))}
               </div>
-            </div>
+            </FadeIn>
           </div>
         </div>
-        <p className="absolute right-4 top-4 hidden max-w-48 text-right text-[11px] leading-snug text-white/55 sm:block">
+        <p className="absolute right-6 top-6 hidden max-w-48 text-right text-[11px] leading-snug text-white/60 sm:block">
           {HERO.credit}
         </p>
       </section>
 
-      {/* Explore India's Cultural Universe (Master Spec §12 Screen 3) */}
-      <section className="mt-12" aria-labelledby="thematic-universe-title">
-        <div className="flex items-baseline justify-between gap-3">
+      {/* Explore India's Cultural Universe */}
+      <section className="mt-16 md:mt-20" aria-labelledby="thematic-universe-title">
+        <div className="flex items-baseline justify-between gap-4">
           <div>
             <SectionTitle id="thematic-universe-title">Explore India&apos;s Cultural Universe</SectionTitle>
-            <p className="mt-1 text-support text-muted">
+            <p className="mt-1 text-support text-secondary-text">
               Discover contextual relationships across geography, craft, philosophy and art
             </p>
           </div>
-          <Link href="/explore" className="inline-flex min-h-11 items-center text-support font-medium text-gold hover:underline">
+          <Link href="/explore" className="inline-flex min-h-10 items-center text-support font-semibold text-forest hover:text-forest-hover hover:underline">
             View all 9 themes →
           </Link>
         </div>
-        <div className="mt-4 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-          <ThematicCard
-            href="/explore?theme=places"
-            category="Geography & Heritage"
-            title="Places"
-            subtitle="Cities, riverfronts, ancient landscapes and sacred geography"
-            count="6 Cities"
-          />
-          <ThematicCard
-            href="/explore?theme=crafts"
-            category="Living Culture"
-            title="Crafts & Guilds"
-            subtitle="Materials, master weavers, stone carvers and living traditions"
-            count="Handloom & Art"
-          />
-          <ThematicCard
-            href="/explore?theme=traditions"
-            category="Belief & Ritual"
-            title="Traditions"
-            subtitle="Pilgrimage circuits, sacred mandalas and philosophical thought"
-            count="Living Rituals"
-          />
-          <ThematicCard
-            href="/explore?theme=arts"
-            category="Acoustic & Built"
-            title="Arts & Music"
-            subtitle="Hindustani & Carnatic gharanas, temple dance and acoustic shrines"
-            count="Performing Arts"
-          />
-        </div>
+        <StaggerContainer className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-4" staggerDelay={0.06}>
+          <StaggerItem>
+            <ThematicCard
+              href="/explore?theme=places"
+              category="Geography & Heritage"
+              title="Places"
+              subtitle="Cities, riverfronts, ancient landscapes and sacred geography"
+              count="6 Cities"
+            />
+          </StaggerItem>
+          <StaggerItem>
+            <ThematicCard
+              href="/explore?theme=crafts"
+              category="Living Culture"
+              title="Crafts & Guilds"
+              subtitle="Materials, master weavers, stone carvers and living traditions"
+              count="Handloom & Art"
+            />
+          </StaggerItem>
+          <StaggerItem>
+            <ThematicCard
+              href="/explore?theme=traditions"
+              category="Belief & Ritual"
+              title="Traditions"
+              subtitle="Pilgrimage circuits, sacred mandalas and philosophical thought"
+              count="Living Rituals"
+            />
+          </StaggerItem>
+          <StaggerItem>
+            <ThematicCard
+              href="/explore?theme=arts"
+              category="Acoustic & Built"
+              title="Arts & Music"
+              subtitle="Hindustani & Carnatic gharanas, temple dance and acoustic shrines"
+              count="Performing Arts"
+            />
+          </StaggerItem>
+        </StaggerContainer>
       </section>
 
       {/* Start with a City (Pilot Cities) */}
-      <section className="mt-10" aria-labelledby="cities-title">
-        <div className="flex items-baseline justify-between gap-3">
+      <section className="mt-16 md:mt-20" aria-labelledby="cities-title">
+        <div className="flex items-baseline justify-between gap-4">
           <div>
             <SectionTitle id="cities-title">Start with a city</SectionTitle>
-            <p className="mt-1 text-support text-muted">Six pilot cultural ecosystems across India</p>
+            <p className="mt-1 text-support text-secondary-text">Six pilot cultural ecosystems across India</p>
           </div>
-          <Link href="/explore" className="inline-flex min-h-11 items-center text-support text-gold hover:text-gold-hover hover:underline">
+          <Link href="/explore" className="inline-flex min-h-10 items-center text-support font-semibold text-forest hover:text-forest-hover hover:underline">
             {t("home.viewAll", { count: cities.length })}
           </Link>
         </div>
 
         {/* City shortcut chips */}
-        <nav aria-label={t("home.cities")} className="no-scrollbar -mx-4 mt-4 overflow-x-auto px-4">
-          <ul className="flex w-max gap-2">
+        <nav aria-label={t("home.cities")} className="no-scrollbar -mx-4 mt-5 overflow-x-auto px-4">
+          <ul className="flex w-max items-center gap-2">
             <li>
               <Link
                 href="/explore"
-                className="inline-flex min-h-11 items-center rounded-full bg-forest px-5 text-support font-semibold text-on-forest shadow-xs"
+                className="inline-flex min-h-10 items-center rounded-full bg-forest px-5 text-support font-semibold text-on-forest shadow-xs hover:bg-forest-hover transition-colors"
               >
                 {t("home.allCities")}
               </Link>
@@ -162,7 +175,7 @@ export default async function HomePage() {
               <li key={c.slug}>
                 <Link
                   href={`/cities/${c.slug}`}
-                  className="glass inline-flex min-h-11 items-center rounded-full px-5 text-support text-charcoal hover:bg-elevated hover:border-gold/50 transition-colors"
+                  className="inline-flex min-h-10 items-center rounded-full border border-border bg-surface px-5 text-support font-medium text-charcoal shadow-2xs hover:bg-surface-2 hover:border-forest/40 transition-all duration-200"
                 >
                   {localName(c.names, lang)}
                 </Link>
@@ -171,11 +184,11 @@ export default async function HomePage() {
           </ul>
         </nav>
 
-        <ul className="no-scrollbar -mx-4 mt-4 flex snap-x snap-mandatory gap-3 overflow-x-auto px-4 pb-2">
+        <StaggerContainer className="no-scrollbar -mx-4 mt-5 flex snap-x snap-mandatory gap-4 overflow-x-auto px-4 pb-2" staggerDelay={0.06}>
           {cities.map((c, i) => {
             const n = counts.get(c.slug);
             return (
-              <li key={c.slug} className="w-[68%] shrink-0 snap-start sm:w-[42%] lg:w-[23.5%]">
+              <StaggerItem key={c.slug} className="w-[72%] shrink-0 snap-start sm:w-[44%] lg:w-[23.5%]">
                 <CityCard
                   href={`/cities/${c.slug}`}
                   name={localName(c.names, lang)}
@@ -186,51 +199,53 @@ export default async function HomePage() {
                   meta={n?.inLang ? t("lang.storiesAvailable", { count: n.inLang }) : undefined}
                   priority={i < 2}
                 />
-              </li>
+              </StaggerItem>
             );
           })}
-        </ul>
+        </StaggerContainer>
       </section>
 
-      {/* Featured Flagship Stories (Master Spec §12 Screen 3) */}
+      {/* Featured Flagship Stories */}
       {stories.length > 0 && (
-        <section className="mt-10" aria-labelledby="flagship-title">
-          <div className="flex items-baseline justify-between gap-3">
+        <section className="mt-16 md:mt-20" aria-labelledby="flagship-title">
+          <div className="flex items-baseline justify-between gap-4">
             <div>
               <SectionTitle id="flagship-title">Stories of the Day</SectionTitle>
-              <p className="mt-1 text-support text-muted">Curated, source-grounded cultural narratives</p>
+              <p className="mt-1 text-support text-secondary-text">Curated, source-grounded cultural narratives</p>
             </div>
-            <Link href="/explore" className="inline-flex min-h-11 items-center text-support text-muted hover:text-charcoal">
-              Explore stories
+            <Link href="/explore" className="inline-flex min-h-10 items-center text-support font-semibold text-forest hover:text-forest-hover hover:underline">
+              Explore stories →
             </Link>
           </div>
-          <div className="mt-4 grid gap-4 md:grid-cols-2">
+          <StaggerContainer className="mt-6 grid gap-5 md:grid-cols-2" staggerDelay={0.08}>
             {stories.slice(0, 2).map((s) => (
-              <StoryCard
-                key={s.slug}
-                href={`/stories/${s.slug}`}
-                eyebrow={s.citySlug ? s.citySlug.toUpperCase() : "FLAGSHIP STORY"}
-                title={s.title}
-                summary={s.orientation}
-                meta="Approved Narrative · Verified Sources"
-                fixtureLabel={s.isFixture ? t("common.devFixture") : undefined}
-              />
+              <StaggerItem key={s.slug}>
+                <StoryCard
+                  key={s.slug}
+                  href={`/stories/${s.slug}`}
+                  eyebrow={s.citySlug ? s.citySlug.toUpperCase() : "FLAGSHIP STORY"}
+                  title={s.title}
+                  summary={s.orientation}
+                  meta="Approved Narrative · Verified Sources"
+                  fixtureLabel={s.isFixture ? t("common.devFixture") : undefined}
+                />
+              </StaggerItem>
             ))}
-          </div>
+          </StaggerContainer>
         </section>
       )}
 
-      {/* Meaningful Connections (Master Spec §12 Screen 3) */}
-      <section className="mt-10" aria-labelledby="connection-title">
-        <div className="flex items-baseline justify-between gap-3">
+      {/* Meaningful Connections */}
+      <section className="mt-16 md:mt-20" aria-labelledby="connection-title">
+        <div className="flex items-baseline justify-between gap-4">
           <div>
             <SectionTitle id="connection-title">Follow an unexpected connection</SectionTitle>
-            <p className="mt-1 text-support text-muted">
+            <p className="mt-1 text-support text-secondary-text">
               Discover how places, craft guilds, astronomy and ritual cross paths
             </p>
           </div>
         </div>
-        <div className="mt-4 max-w-2xl">
+        <FadeIn delay={0.08} className="mt-6 max-w-2xl">
           {featured ? (
             <ConnectionCard
               featured
@@ -242,42 +257,44 @@ export default async function HomePage() {
               fixtureLabel={featured.isFixture ? t("common.devFixture") : undefined}
             />
           ) : (
-            <p className="rounded-md border border-dashed border-border p-4 text-support text-muted">
+            <p className="rounded-2xl border border-dashed border-border bg-surface p-5 text-support text-muted">
               {t("home.noConnection")}
             </p>
           )}
-        </div>
+        </FadeIn>
       </section>
 
-      {/* Prominent Ask TattvaCo Callout Module (Master Spec §12 Screen 3 Item 9) */}
-      <section className="mt-14 rounded-2xl border border-forest/30 bg-gradient-to-br from-[#f1f6f2] via-[#eaf2ec] to-[#e1ede4] p-6 sm:p-8 md:p-10 shadow-xs">
-        <div className="max-w-2xl">
-          <div className="flex items-center gap-2 text-meta font-semibold uppercase tracking-wider text-forest">
-            <span>✦</span>
-            <span>AI Cultural Discovery</span>
+      {/* Prominent Ask TattvaCo Callout Module */}
+      <FadeIn delay={0.12}>
+        <section className="mt-16 md:mt-24 rounded-3xl border border-border bg-gradient-to-br from-[#EFE9DC] via-[#E7DDCA] to-[#DFD7C7] p-8 sm:p-10 md:p-12 shadow-xs">
+          <div className="max-w-2xl">
+            <div className="flex items-center gap-2 text-meta font-semibold uppercase tracking-[0.16em] text-terracotta">
+              <span>✦</span>
+              <span>AI Cultural Discovery</span>
+            </div>
+            <h2 className="mt-2.5 font-serif text-page font-semibold text-charcoal md:text-page-lg tracking-tight">
+              Have a question about India&apos;s living heritage?
+            </h2>
+            <p className="mt-3 text-body text-secondary-text leading-relaxed">
+              Ask open-ended questions about sacred geography, craft guilds, temple architecture or classical music. Every answer is grounded in statutory archives, academic research and verified sources.
+            </p>
+            <div className="mt-7 flex flex-wrap items-center gap-3.5">
+              <Link
+                href="/ask"
+                className="inline-flex min-h-12 items-center justify-center rounded-full bg-forest px-6 text-support font-semibold text-on-forest transition-all hover:bg-forest-hover shadow-xs active:scale-[0.985]"
+              >
+                Ask TattvaCo a Question →
+              </Link>
+              <Link
+                href="/explore"
+                className="inline-flex min-h-12 items-center justify-center rounded-full border border-border bg-surface px-6 text-support font-semibold text-charcoal shadow-2xs hover:bg-surface-2 transition-all active:scale-[0.985]"
+              >
+                Browse Pilot Collections
+              </Link>
+            </div>
           </div>
-          <h2 className="mt-2 font-serif text-page font-semibold text-charcoal md:text-page-lg">
-            Have a question about India&apos;s living heritage?
-          </h2>
-          <p className="mt-2 text-body text-muted leading-relaxed">
-            Ask open-ended questions about sacred geography, craft guilds, temple architecture or classical music. Every answer is grounded in statutory archives, academic research and verified sources.
-          </p>
-          <div className="mt-6 flex flex-wrap items-center gap-3">
-            <Link
-              href="/ask"
-              className="inline-flex min-h-12 items-center justify-center rounded-full bg-forest px-6 text-support font-semibold text-on-forest transition-colors hover:bg-forest-hover shadow-xs"
-            >
-              Ask TattvaCo a Question →
-            </Link>
-            <Link
-              href="/explore"
-              className="inline-flex min-h-12 items-center justify-center rounded-full border border-border bg-surface px-6 text-support font-semibold text-charcoal hover:bg-surface-2 transition-colors"
-            >
-              Browse Pilot Collections
-            </Link>
-          </div>
-        </div>
-      </section>
+        </section>
+      </FadeIn>
     </Page>
   );
 }

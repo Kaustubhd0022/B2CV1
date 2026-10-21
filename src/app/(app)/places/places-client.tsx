@@ -3,6 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import { CITIES_CULTURAL_DATA, type CityCulturalData } from "@/lib/content/city-data";
+import { FadeIn, PulsingDot } from "@/components/motion";
 import { IconExternal, IconSearch } from "@/components/icons";
 
 type CategoryFilter = "all" | "worship" | "craft" | "monument" | "public_space";
@@ -145,8 +146,8 @@ export function PlacesClient({
                       onClick={() => setSelectedLandmark(lm)}
                       className={`w-full text-left rounded-lg p-3 transition-all ${
                         isSelected
-                          ? "border border-gold bg-[#221e17] ring-1 ring-gold/40 shadow-xs"
-                          : "border border-border/70 bg-surface hover:border-gold/40 hover:bg-surface-2"
+                          ? "border border-forest bg-forest/10 ring-1 ring-forest/30 shadow-xs"
+                          : "border border-border/70 bg-surface hover:border-forest/40 hover:bg-surface-2"
                       }`}
                     >
                       <div className="flex items-baseline justify-between gap-1">
@@ -197,35 +198,39 @@ export function PlacesClient({
 
               {/* Geographic Schematic Card */}
               <div className="my-auto py-8 text-center max-w-md mx-auto">
-                <div className="rounded-2xl border border-border bg-surface/95 p-6 shadow-sm backdrop-blur-md">
-                  <span className="inline-block size-3 rounded-full bg-forest mb-2 animate-pulse" />
-                  <p className="text-meta font-semibold uppercase tracking-wider text-terracotta">
-                    Active Coordinates
-                  </p>
-                  <h3 className="mt-1 font-serif text-section font-semibold text-charcoal">
-                    {selectedLandmark?.name ?? currentCityData.slug}
-                  </h3>
-                  <p className="mt-1 font-mono text-support text-muted">
-                    {selectedLandmark
-                      ? `${selectedLandmark.coordinates.lat.toFixed(4)}°N, ${selectedLandmark.coordinates.lng.toFixed(4)}°E`
-                      : `${currentCityData.coordinates.lat.toFixed(4)}°N, ${currentCityData.coordinates.lng.toFixed(4)}°E`}
-                  </p>
-                  <p className="mt-3 text-support text-muted leading-relaxed">
-                    {selectedLandmark?.description}
-                  </p>
-                  <div className="mt-5">
-                    <a
-                      href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(
-                        `${selectedLandmark?.name ?? ""}, ${selectedCitySlug}`,
-                      )}`}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="inline-flex min-h-10 items-center justify-center gap-1.5 rounded-full bg-forest px-5 text-meta font-semibold text-on-forest hover:bg-forest-hover shadow-xs transition-colors"
-                    >
-                      Open in External Google Maps <IconExternal width={13} height={13} />
-                    </a>
+                <FadeIn key={selectedLandmark?.id ?? currentCityData.slug} duration={0.35} y={10}>
+                  <div className="rounded-2xl border border-border bg-surface/95 p-6 shadow-sm backdrop-blur-md">
+                    <div className="flex justify-center mb-2">
+                      <PulsingDot />
+                    </div>
+                    <p className="text-meta font-semibold uppercase tracking-wider text-terracotta">
+                      Active Coordinates
+                    </p>
+                    <h3 className="mt-1 font-serif text-section font-semibold text-charcoal">
+                      {selectedLandmark?.name ?? currentCityData.slug}
+                    </h3>
+                    <p className="mt-1 font-mono text-support text-muted">
+                      {selectedLandmark
+                        ? `${selectedLandmark.coordinates.lat.toFixed(4)}°N, ${selectedLandmark.coordinates.lng.toFixed(4)}°E`
+                        : `${currentCityData.coordinates.lat.toFixed(4)}°N, ${currentCityData.coordinates.lng.toFixed(4)}°E`}
+                    </p>
+                    <p className="mt-3 text-support text-muted leading-relaxed">
+                      {selectedLandmark?.description}
+                    </p>
+                    <div className="mt-5">
+                      <a
+                        href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(
+                          `${selectedLandmark?.name ?? ""}, ${selectedCitySlug}`,
+                        )}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex min-h-10 items-center justify-center gap-1.5 rounded-full bg-forest px-5 text-meta font-semibold text-on-forest hover:bg-forest-hover shadow-xs transition-colors"
+                      >
+                        Open in External Google Maps <IconExternal width={13} height={13} />
+                      </a>
+                    </div>
                   </div>
-                </div>
+                </FadeIn>
               </div>
 
               <div className="flex items-center justify-between text-[11px] text-muted">
@@ -239,7 +244,7 @@ export function PlacesClient({
         {/* Right: Selected Place Detail Inspection Panel */}
         <aside className="rounded-xl border border-border bg-surface p-5 shadow-xs space-y-5">
           {selectedLandmark ? (
-            <>
+            <FadeIn key={selectedLandmark.id} duration={0.3} y={8} className="space-y-5">
               <div>
                 <div className="flex items-center justify-between">
                   <span className="rounded-full bg-forest/10 px-2.5 py-0.5 text-meta font-semibold text-forest">
@@ -286,7 +291,7 @@ export function PlacesClient({
                   Ask TattvaCo About This Site ✦
                 </Link>
               </div>
-            </>
+            </FadeIn>
           ) : (
             <p className="text-support text-muted">Select a landmark from the list to view detailed cultural significance.</p>
           )}

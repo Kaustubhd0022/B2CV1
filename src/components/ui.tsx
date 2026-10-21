@@ -8,16 +8,18 @@ export function cx(...c: (string | false | null | undefined)[]) {
 
 /* ---------------- Buttons (Design §5A) ---------------- */
 
-type Variant = "primary" | "secondary" | "tertiary";
+type Variant = "primary" | "secondary" | "tertiary" | "terracotta";
 const btn: Record<Variant, string> = {
   primary:
-    "bg-forest text-on-forest hover:bg-forest-hover active:bg-forest-hover disabled:bg-muted/50 disabled:cursor-not-allowed shadow-md font-semibold",
+    "bg-forest text-on-forest hover:bg-forest-hover active:scale-[0.985] disabled:bg-muted/30 disabled:text-muted disabled:cursor-not-allowed shadow-xs font-semibold",
   secondary:
-    "border border-border bg-elevated text-charcoal hover:bg-surface active:bg-surface disabled:opacity-60 disabled:cursor-not-allowed shadow-xs",
-  tertiary: "text-gold underline-offset-4 hover:underline px-1",
+    "border border-border bg-surface text-charcoal hover:bg-surface-2 hover:border-forest/40 active:scale-[0.985] disabled:opacity-60 disabled:cursor-not-allowed shadow-2xs font-medium",
+  terracotta:
+    "bg-terracotta text-white hover:bg-terracotta-hover active:scale-[0.985] disabled:bg-muted/30 disabled:cursor-not-allowed shadow-xs font-semibold",
+  tertiary: "text-forest underline-offset-4 hover:underline px-1 font-medium",
 };
 const btnBase =
-  "inline-flex min-h-11 items-center justify-center gap-2 rounded-full px-5 py-2.5 text-support font-semibold transition-colors";
+  "inline-flex min-h-11 items-center justify-center gap-2 rounded-full px-5 py-2.5 text-support transition-all duration-200";
 
 export function Button({
   variant = "primary",
@@ -50,12 +52,12 @@ export function ButtonLink({
 /* ---------------- Layout ---------------- */
 
 export function Page({ children, className }: { children: ReactNode; className?: string }) {
-  return <div className={cx("mx-auto w-full max-w-5xl px-4 pb-28 pt-4 sm:px-5 md:px-8 md:pb-16", className)}>{children}</div>;
+  return <div className={cx("mx-auto w-full max-w-6xl px-4 pb-24 pt-4 sm:px-6 md:px-8 md:pb-16", className)}>{children}</div>;
 }
 
 export function BackLink({ href, label }: { href: string; label: string }) {
   return (
-    <Link href={href} className="-ml-1 inline-flex min-h-11 items-center gap-1 text-support font-medium text-gold hover:text-gold-hover">
+    <Link href={href} className="-ml-1 inline-flex min-h-11 items-center gap-1 text-support font-medium text-forest hover:text-forest-hover transition-colors">
       <IconBack width={18} height={18} />
       {label}
     </Link>
@@ -63,12 +65,12 @@ export function BackLink({ href, label }: { href: string; label: string }) {
 }
 
 export function Eyebrow({ children }: { children: ReactNode }) {
-  return <p className="text-meta font-semibold uppercase tracking-[0.14em] text-gold">{children}</p>;
+  return <p className="text-meta font-semibold uppercase tracking-[0.16em] text-terracotta">{children}</p>;
 }
 
 export function SectionTitle({ children, id }: { children: ReactNode; id?: string }) {
   return (
-    <h2 id={id} className="font-serif text-section md:text-section-lg font-semibold text-charcoal">
+    <h2 id={id} className="font-serif text-section md:text-section-lg font-semibold text-charcoal tracking-tight">
       {children}
     </h2>
   );

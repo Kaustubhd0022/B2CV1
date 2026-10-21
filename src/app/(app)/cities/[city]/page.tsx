@@ -127,58 +127,58 @@ export default async function CityPage({
         <span className="font-semibold text-charcoal">{name}</span>
       </nav>
 
-      {/* 1. Photographic Hero with Action Bar (Master Spec §12 Screen 5) */}
-      <div className="relative isolate overflow-hidden rounded-2xl border border-border bg-stone">
-        <div className="relative min-h-[380px] md:min-h-[440px] flex flex-col justify-end p-6 md:p-10 text-white">
+      {/* 1. Photographic Hero with Action Bar */}
+      <div className="relative isolate overflow-hidden rounded-3xl border border-border/80 bg-stone shadow-sm">
+        <div className="relative min-h-[400px] md:min-h-[460px] flex flex-col justify-end p-6 sm:p-8 md:p-12 text-white">
           {city.image ? (
             <Image
               src={city.image.src}
               alt={city.image.alt}
               fill
               priority
-              sizes="(min-width: 1024px) 1024px, 100vw"
-              className="-z-20 object-cover"
+              sizes="(min-width: 1200px) 1152px, 100vw"
+              className="-z-20 object-cover object-center transition-transform duration-1000 ease-out hover:scale-[1.02]"
             />
           ) : (
-            <div className="absolute inset-0 -z-20 bg-gradient-to-br from-[#24352b] via-[#1a2820] to-[#141f19]" />
+            <div className="absolute inset-0 -z-20 bg-gradient-to-br from-[#173D32] via-[#1E4D40] to-[#122F26]" />
           )}
           <div className="scrim absolute inset-0 -z-10" aria-hidden="true" />
 
           {/* Eyebrow & Region */}
           <div className="flex flex-wrap items-center gap-2">
-            <span className="rounded-full bg-forest/80 border border-white/20 px-3 py-1 text-[11px] font-semibold uppercase tracking-wider text-white backdrop-blur-xs">
+            <span className="rounded-full bg-forest/85 border border-white/20 px-3.5 py-1 text-[11px] font-semibold uppercase tracking-wider text-white backdrop-blur-xs">
               {culturalData?.region ?? "Cultural Ecosystem"}
             </span>
             {city.image && !city.image.rightsCleared && (
-              <span className="text-[10px] text-white/60">Demo photo · Reference rights</span>
+              <span className="text-[10px] text-white/70">Demo photo · Reference rights</span>
             )}
           </div>
 
-          <h1 className="mt-3 font-serif text-display leading-tight text-white md:text-display-lg">
+          <h1 className="mt-3 font-serif text-display leading-tight text-white md:text-display-lg tracking-tight drop-shadow-xs">
             {name}
           </h1>
 
-          <p className="mt-2 max-w-2xl text-body text-white/90 leading-relaxed font-light md:text-lg">
+          <p className="mt-2.5 max-w-2xl text-body-lead text-white/90 leading-relaxed font-normal">
             {city.taglines[lang] ?? city.taglines.en ?? "A living cultural ecosystem of India"}
           </p>
 
           {/* Primary Actions Strip */}
-          <div className="mt-6 flex flex-wrap items-center gap-3">
+          <div className="mt-7 flex flex-wrap items-center gap-3.5">
             <a
               href="#stories-section"
-              className="inline-flex min-h-11 items-center justify-center rounded-full bg-forest px-5 text-support font-semibold text-on-forest hover:bg-forest-hover shadow-xs transition-colors"
+              className="inline-flex min-h-11 items-center justify-center rounded-full bg-forest px-6 text-support font-semibold text-on-forest hover:bg-forest-hover shadow-xs transition-all active:scale-[0.985]"
             >
               Explore Stories ({list.length}) ↓
             </a>
             <a
               href="#map-section"
-              className="inline-flex min-h-11 items-center justify-center rounded-full border border-white/30 bg-black/40 px-5 text-support font-semibold text-white hover:bg-black/60 backdrop-blur-xs transition-colors"
+              className="inline-flex min-h-11 items-center justify-center rounded-full border border-white/30 bg-black/35 px-6 text-support font-semibold text-white hover:bg-white/20 backdrop-blur-xs transition-all active:scale-[0.985]"
             >
-              Interactive Map 🗺️
+              Interactive Map
             </a>
             <Link
               href={`/ask?q=${encodeURIComponent(`Tell me about the sacred cultural geography of ${name}`)}`}
-              className="inline-flex min-h-11 items-center justify-center rounded-full border border-gold/40 bg-gold/15 px-5 text-support font-semibold text-gold hover:bg-gold/25 backdrop-blur-xs transition-colors"
+              className="inline-flex min-h-11 items-center justify-center rounded-full border border-sandstone/40 bg-sandstone/20 px-6 text-support font-semibold text-white hover:bg-sandstone/30 backdrop-blur-xs transition-all active:scale-[0.985]"
             >
               Ask TattvaCo ✦
             </Link>
@@ -186,60 +186,60 @@ export default async function CityPage({
         </div>
       </div>
 
-      {/* 2. Sub-navigation tabs (Screen 5 Reference) */}
-      <nav aria-label="City sub-sections" className="no-scrollbar -mx-4 mt-4 overflow-x-auto px-4 border-b border-border pb-2">
-        <ul className="flex w-max gap-2 text-support font-medium">
+      {/* 2. Sub-navigation tabs */}
+      <nav aria-label="City sub-sections" className="no-scrollbar -mx-4 mt-6 overflow-x-auto px-4 border-b border-border pb-3">
+        <ul className="flex w-max items-center gap-2 text-support font-medium">
           <li>
-            <a href="#overview" className="rounded-full bg-forest text-on-forest px-4 py-1.5 shadow-xs">
+            <a href="#overview" className="rounded-full bg-forest text-on-forest px-4 py-1.5 shadow-xs font-semibold">
               Overview
             </a>
           </li>
           <li>
-            <a href="#stories-section" className="rounded-full bg-surface border border-border text-charcoal hover:bg-surface-2 px-4 py-1.5">
+            <a href="#stories-section" className="rounded-full bg-surface border border-border text-charcoal hover:bg-surface-2 px-4 py-1.5 transition-colors">
               Stories ({list.length})
             </a>
           </li>
           <li>
-            <a href="#map-section" className="rounded-full bg-surface border border-border text-charcoal hover:bg-surface-2 px-4 py-1.5">
+            <a href="#map-section" className="rounded-full bg-surface border border-border text-charcoal hover:bg-surface-2 px-4 py-1.5 transition-colors">
               Map & Landmarks
             </a>
           </li>
           <li>
-            <a href="#themes-section" className="rounded-full bg-surface border border-border text-charcoal hover:bg-surface-2 px-4 py-1.5">
+            <a href="#themes-section" className="rounded-full bg-surface border border-border text-charcoal hover:bg-surface-2 px-4 py-1.5 transition-colors">
               Cultural Themes
             </a>
           </li>
           <li>
-            <a href="#traditions-section" className="rounded-full bg-surface border border-border text-charcoal hover:bg-surface-2 px-4 py-1.5">
+            <a href="#traditions-section" className="rounded-full bg-surface border border-border text-charcoal hover:bg-surface-2 px-4 py-1.5 transition-colors">
               Living Traditions
             </a>
           </li>
           <li>
-            <a href="#travel-lens" className="rounded-full bg-surface border border-border text-charcoal hover:bg-surface-2 px-4 py-1.5">
+            <a href="#travel-lens" className="rounded-full bg-surface border border-border text-charcoal hover:bg-surface-2 px-4 py-1.5 transition-colors">
               Cultural Lens Tips
             </a>
           </li>
         </ul>
       </nav>
 
-      {/* 3. 4 Verified Stat Cards (Master Spec §12 Screen 5) */}
-      <section className="mt-6 grid grid-cols-2 gap-3 sm:grid-cols-4" aria-label="Key facts">
+      {/* 3. 4 Verified Stat Cards */}
+      <section className="mt-8 grid grid-cols-2 gap-3.5 sm:grid-cols-4" aria-label="Key facts">
         {currentStats.map((stat) => (
-          <div key={stat.label} className="rounded-xl border border-border bg-surface p-4 shadow-xs">
-            <p className="font-serif text-section font-semibold text-forest md:text-section-lg">{stat.val}</p>
+          <div key={stat.label} className="rounded-2xl border border-border/80 bg-surface p-5 shadow-2xs">
+            <p className="font-serif text-section md:text-section-lg font-semibold text-forest tracking-tight">{stat.val}</p>
             <p className="mt-1 text-meta text-muted leading-tight">{stat.label}</p>
           </div>
         ))}
       </section>
 
       {/* 4. Two-Column Editorial Layout */}
-      <div className="mt-10 lg:grid lg:grid-cols-[minmax(0,1fr)_22rem] lg:gap-10">
+      <div className="mt-12 lg:grid lg:grid-cols-[minmax(0,1fr)_22rem] lg:gap-10">
         {/* Left Column: Main Narrative Content */}
-        <div className="space-y-12">
+        <div className="space-y-14">
           {/* Overview */}
           <section id="overview" aria-labelledby="overview-title">
             <SectionTitle id="overview-title">About {name}</SectionTitle>
-            <p className="mt-3 text-body text-charcoal leading-relaxed">
+            <p className="mt-3.5 text-body text-charcoal leading-relaxed">
               {culturalData?.region ? `${name} is situated in ${culturalData.region}. ` : ""}
               As one of India&apos;s oldest living cultural nodes, it represents a profound synthesis of sacred geography, artisanal guilds, musical traditions, and philosophical lineages. Every riverfront step, temple corridor, and handloom workshop carries centuries of cumulative craftsmanship and ritual devotion.
             </p>
@@ -249,12 +249,12 @@ export default async function CityPage({
           {culturalData && (
             <section id="themes-section" aria-labelledby="themes-title">
               <SectionTitle id="themes-title">Key Cultural Themes</SectionTitle>
-              <p className="mt-1 text-support text-muted">The core civilisational threads defining {name}</p>
-              <div className="mt-4 grid gap-2.5 sm:grid-cols-2">
+              <p className="mt-1 text-support text-secondary-text">The core civilisational threads defining {name}</p>
+              <div className="mt-5 grid gap-3 sm:grid-cols-2">
                 {culturalData.culturalThemes.map((theme) => (
                   <div
                     key={theme}
-                    className="flex items-center gap-3 rounded-lg border border-border bg-surface p-3.5 hover:border-forest/40 transition-colors shadow-2xs"
+                    className="flex items-center gap-3 rounded-xl border border-border/80 bg-surface p-4 hover:border-forest/40 transition-colors shadow-2xs"
                   >
                     <span className="text-terracotta text-sm">✦</span>
                     <span className="text-support font-semibold text-charcoal">{theme}</span>
@@ -264,22 +264,22 @@ export default async function CityPage({
             </section>
           )}
 
-          {/* Flagship Stories (Screen 5 Core) */}
+          {/* Flagship Stories */}
           <section id="stories-section" aria-labelledby="stories-title">
-            <div className="flex items-baseline justify-between gap-3">
+            <div className="flex items-baseline justify-between gap-4">
               <div>
                 <SectionTitle id="stories-title">{t("city.stories")}</SectionTitle>
-                <p className="mt-1 text-support text-muted">{t("city.startIntro")}</p>
+                <p className="mt-1 text-support text-secondary-text">{t("city.startIntro")}</p>
               </div>
             </div>
 
             {list.length === 0 && (
-              <Notice className="mt-4" role="status">
+              <Notice className="mt-5" role="status">
                 {t("city.empty", { city: name })}
               </Notice>
             )}
 
-            <div className="mt-5 grid gap-4">
+            <div className="mt-6 grid gap-5">
               {list.map((s) => (
                 <StoryCard
                   key={s.slug}
@@ -299,28 +299,28 @@ export default async function CityPage({
           {culturalData && (
             <section id="traditions-section" aria-labelledby="traditions-title">
               <SectionTitle id="traditions-title">Living Traditions & Custodians</SectionTitle>
-              <p className="mt-1 text-support text-muted">Intangible heritage and historical torchbearers</p>
+              <p className="mt-1 text-support text-secondary-text">Intangible heritage and historical torchbearers</p>
 
-              <div className="mt-5 grid gap-4 sm:grid-cols-2">
-                <div className="rounded-xl border border-border bg-surface p-5 shadow-xs">
+              <div className="mt-6 grid gap-5 sm:grid-cols-2">
+                <div className="rounded-2xl border border-border/80 bg-surface p-6 shadow-2xs">
                   <h3 className="font-serif text-card font-semibold text-charcoal">Living Traditions</h3>
-                  <ul className="mt-3 space-y-3">
+                  <ul className="mt-4 space-y-3.5">
                     {culturalData.livingTraditions.map((trad) => (
-                      <li key={trad.name} className="border-t border-border/60 pt-2.5 first:border-0 first:pt-0">
+                      <li key={trad.name} className="border-t border-border-subtle pt-3 first:border-0 first:pt-0">
                         <p className="text-support font-semibold text-forest">{trad.name}</p>
-                        <p className="mt-0.5 text-meta text-muted leading-relaxed">{trad.description}</p>
+                        <p className="mt-1 text-meta text-secondary-text leading-relaxed">{trad.description}</p>
                       </li>
                     ))}
                   </ul>
                 </div>
 
-                <div className="rounded-xl border border-border bg-surface p-5 shadow-xs">
+                <div className="rounded-2xl border border-border/80 bg-surface p-6 shadow-2xs">
                   <h3 className="font-serif text-card font-semibold text-charcoal">Cultural Figures</h3>
-                  <ul className="mt-3 space-y-3">
+                  <ul className="mt-4 space-y-3.5">
                     {culturalData.culturalFigures.map((fig) => (
-                      <li key={fig.name} className="border-t border-border/60 pt-2.5 first:border-0 first:pt-0">
+                      <li key={fig.name} className="border-t border-border-subtle pt-3 first:border-0 first:pt-0">
                         <p className="text-support font-semibold text-charcoal">{fig.name}</p>
-                        <p className="text-meta text-terracotta font-medium">{fig.role} · {fig.era}</p>
+                        <p className="mt-0.5 text-meta text-terracotta font-medium">{fig.role} · {fig.era}</p>
                       </li>
                     ))}
                   </ul>
@@ -330,24 +330,24 @@ export default async function CityPage({
           )}
 
           {/* Culture-Lens Travel Tips */}
-          <section id="travel-lens" className="rounded-2xl border border-border bg-[#FBF9F4] p-6 shadow-xs" aria-labelledby="tips-title">
-            <div className="flex items-center gap-2 text-meta font-semibold uppercase tracking-wider text-terracotta">
+          <section id="travel-lens" className="rounded-3xl border border-border bg-gradient-to-br from-[#EFE9DC] to-[#E7DDCA] p-7 md:p-8 shadow-xs" aria-labelledby="tips-title">
+            <div className="flex items-center gap-2 text-meta font-semibold uppercase tracking-[0.16em] text-terracotta">
               <span>✦</span>
               <span>Cultural-Lens Exploration Tips</span>
             </div>
-            <h2 id="tips-title" className="mt-2 font-serif text-section font-semibold text-charcoal">
+            <h2 id="tips-title" className="mt-2.5 font-serif text-section md:text-section-lg font-semibold text-charcoal tracking-tight">
               Visiting {name} with Cultural Context
             </h2>
-            <div className="mt-4 grid gap-4 sm:grid-cols-3 text-support text-muted">
-              <div>
+            <div className="mt-5 grid gap-5 sm:grid-cols-3 text-support text-secondary-text">
+              <div className="rounded-2xl bg-surface/70 border border-border/70 p-4">
                 <p className="font-semibold text-charcoal">Sacred Etiquette</p>
                 <p className="mt-1 text-meta leading-relaxed">Remove footwear at ghats and shrines. Always request permission before photographing rituals or artisans at work.</p>
               </div>
-              <div>
+              <div className="rounded-2xl bg-surface/70 border border-border/70 p-4">
                 <p className="font-semibold text-charcoal">Living Craft Quarters</p>
                 <p className="mt-1 text-meta leading-relaxed">Visit master weaver workshops and GI-registered cooperatives directly to witness traditional pit-looms in action.</p>
               </div>
-              <div>
+              <div className="rounded-2xl bg-surface/70 border border-border/70 p-4">
                 <p className="font-semibold text-charcoal">Acoustic & Morning Rhythm</p>
                 <p className="mt-1 text-meta leading-relaxed">Experience sunrise along the riverfront to hear morning ragas and the ancient call-and-response of temple bells.</p>
               </div>
@@ -356,7 +356,7 @@ export default async function CityPage({
         </div>
 
         {/* Right Column: Cultural Map Panel, Must-Explore Landmarks & AI Prompt */}
-        <aside className="mt-12 space-y-6 lg:mt-0" aria-label="City discovery tools">
+        <aside className="mt-14 space-y-6 lg:mt-0" aria-label="City discovery tools">
           {/* Map Section */}
           <div id="map-section">
             {culturalData && (
@@ -370,21 +370,21 @@ export default async function CityPage({
 
           {/* Must-Explore Landmarks */}
           {culturalData && culturalData.landmarks.length > 0 && (
-            <div className="rounded-xl border border-border bg-surface p-5 shadow-xs">
+            <div className="rounded-2xl border border-border/80 bg-surface p-6 shadow-2xs">
               <div className="flex items-center justify-between">
                 <h3 className="font-serif text-card font-semibold text-charcoal">Must-Explore Sites</h3>
-                <span className="text-[11px] font-semibold text-gold">{culturalData.landmarks.length} sites</span>
+                <span className="text-[11px] font-semibold text-terracotta">{culturalData.landmarks.length} sites</span>
               </div>
-              <ul className="mt-4 space-y-3">
+              <ul className="mt-4 space-y-3.5">
                 {culturalData.landmarks.slice(0, 5).map((lm) => (
-                  <li key={lm.id} className="border-t border-border/60 pt-2.5 first:border-0 first:pt-0">
+                  <li key={lm.id} className="border-t border-border-subtle pt-3 first:border-0 first:pt-0">
                     <div className="flex items-baseline justify-between gap-2">
                       <p className="text-support font-semibold text-charcoal">{lm.name}</p>
-                      <span className="rounded-xs bg-elevated border border-border/70 px-1.5 py-0.5 text-[10px] uppercase font-semibold text-muted">
-                        {lm.type}
+                      <span className="rounded-full bg-surface-2 border border-border/70 px-2 py-0.5 text-[10px] uppercase font-semibold text-muted">
+                        {lm.type.replace("_", " ")}
                       </span>
                     </div>
-                    <p className="mt-0.5 text-meta text-muted leading-snug">{lm.description}</p>
+                    <p className="mt-1 text-meta text-secondary-text leading-snug">{lm.description}</p>
                   </li>
                 ))}
               </ul>
@@ -392,12 +392,12 @@ export default async function CityPage({
           )}
 
           {/* Ask TattvaCo Prompt Card */}
-          <div className="rounded-xl border border-gold/30 bg-gradient-to-br from-[#1b1916] via-[#161513] to-[#111110] p-5 shadow-md">
-            <span className="text-meta font-semibold uppercase tracking-wider text-gold">✦ Ask TattvaCo</span>
-            <h3 className="mt-1 font-serif text-card font-semibold text-charcoal">
+          <div className="rounded-2xl border border-border bg-gradient-to-br from-[#EFE9DC] to-[#E7DDCA] p-6 shadow-xs">
+            <span className="text-meta font-semibold uppercase tracking-[0.16em] text-terracotta">✦ Ask TattvaCo</span>
+            <h3 className="mt-1.5 font-serif text-card font-semibold text-charcoal">
               Curious about {name}?
             </h3>
-            <p className="mt-1 text-meta text-muted leading-relaxed">
+            <p className="mt-1 text-meta text-secondary-text leading-relaxed">
               Ask any source-grounded question about monuments, weaving techniques, or living traditions.
             </p>
             <div className="mt-4 space-y-2">
@@ -408,7 +408,7 @@ export default async function CityPage({
                 <Link
                   key={qText}
                   href={`/ask?q=${encodeURIComponent(qText)}`}
-                  className="block rounded-lg border border-border bg-surface p-2.5 text-meta font-medium text-charcoal hover:border-gold hover:text-gold transition-colors shadow-2xs"
+                  className="block rounded-xl border border-border/80 bg-surface p-3 text-meta font-medium text-charcoal hover:border-forest hover:text-forest transition-all shadow-2xs"
                 >
                   “{qText}” →
                 </Link>

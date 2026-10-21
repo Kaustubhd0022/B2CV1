@@ -118,7 +118,7 @@ export default async function StoryPage({ params, searchParams }: { params: Prom
               className="-z-20 object-cover"
             />
           ) : (
-            <div className="absolute inset-0 -z-20 bg-gradient-to-br from-[#24352b] via-[#1a2820] to-[#141f19]" />
+            <div className="absolute inset-0 -z-20 bg-gradient-to-br from-[#173D32] via-[#1E4D40] to-[#122F26]" />
           )}
           <div className="scrim absolute inset-0 -z-10" aria-hidden="true" />
 
@@ -347,8 +347,8 @@ export default async function StoryPage({ params, searchParams }: { params: Prom
           </section>
 
           {/* Go Deeper / Follow-up Questions */}
-          <section className="mt-12 rounded-2xl border border-gold/30 bg-gradient-to-br from-[#1b1916] via-[#161513] to-[#111110] p-6 shadow-md" aria-labelledby="deeper-title">
-            <div className="flex items-center gap-2 text-meta font-semibold uppercase tracking-wider text-gold">
+          <section className="mt-12 rounded-3xl border border-forest/20 bg-gradient-to-br from-[#EFE9DC] via-[#E7DDCA] to-[#DFD7C7] p-7 md:p-8 shadow-xs" aria-labelledby="deeper-title">
+            <div className="flex items-center gap-2 text-meta font-semibold uppercase tracking-wider text-terracotta">
               <span>✦</span>
               <span>Curiosity-Led Exploration</span>
             </div>

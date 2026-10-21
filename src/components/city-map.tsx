@@ -119,8 +119,8 @@ export function CityMapPanel({
                     className={cx(
                       "w-full rounded-md border p-3 text-left transition-colors",
                       isSelected
-                        ? "border-gold bg-[#221e17] ring-1 ring-gold shadow-xs"
-                        : "border-border bg-surface hover:border-gold/40 hover:bg-surface-2",
+                        ? "border-forest bg-forest/10 ring-1 ring-forest/30 shadow-xs"
+                        : "border-border bg-surface hover:border-forest/40 hover:bg-surface-2",
                     )}
                   >
                     <div className="flex items-baseline justify-between gap-2">

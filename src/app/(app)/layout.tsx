@@ -17,12 +17,15 @@ export default async function AppLayout({ children }: { children: React.ReactNod
       <a href="#main" className="sr-only focus:not-sr-only focus:absolute focus:left-3 focus:top-3 focus:z-50 focus:rounded-md focus:bg-surface focus:px-3 focus:py-2">
         {t("nav.skip")}
       </a>
-      <header className="sticky top-0 z-30 border-b border-border bg-canvas/95 backdrop-blur-md">
-        <div className="mx-auto flex max-w-5xl items-center justify-between gap-3 px-4 py-2 sm:px-5 md:px-8">
-          <Link href="/" className="flex min-h-11 items-center gap-2 font-serif text-section font-semibold text-gold tracking-wide hover:text-gold-hover transition-colors">
-            TattvaCo
+      <header className="sticky top-0 z-30 border-b border-border bg-canvas/90 backdrop-blur-md">
+        <div className="mx-auto flex max-w-6xl items-center justify-between gap-4 px-4 py-2.5 sm:px-6 md:px-8">
+          <Link href="/" className="flex min-h-10 items-center gap-2 font-serif text-section font-semibold text-forest tracking-tight hover:opacity-90 transition-opacity">
+            <span className="flex size-7 items-center justify-center rounded-full bg-forest text-white text-xs font-serif font-bold shadow-2xs">
+              ✦
+            </span>
+            <span>TattvaCo</span>
             {config().demoMode && (
-              <span title={t("common.demoBanner")} className="rounded-sm border border-gold/40 bg-gold/10 px-1.5 font-sans text-meta font-semibold text-gold">
+              <span title={t("common.demoBanner")} className="rounded-full border border-terracotta/30 bg-terracotta/10 px-2 py-0.5 font-sans text-[11px] font-semibold text-terracotta">
                 {t("common.demoLabel")}
               </span>
             )}

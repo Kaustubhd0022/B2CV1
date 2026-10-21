@@ -1,85 +1,98 @@
 @import "tailwindcss";
 
 /*
- * TattvaCo Visual System — Cinematic Black Editorial Atlas
- * Master Cinematic Black Theme tokens:
- *   canvas          = #090909 (App canvas background)
- *   surface         = #171717 (Cards and primary panels)
- *   surface-2       = #111111 (Secondary background / inner sections)
- *   elevated        = #202020 (Dialogs, menus and elevated panels)
- *   forest          = #D6B36A (Primary action: Antique Gold)
- *   forest-hover    = #E7C985 (Primary action hover state)
- *   on-forest       = #111111 (Text on gold buttons)
- *   gold            = #D6B36A (Antique Gold accent)
- *   gold-hover      = #E7C985 (Antique Gold hover)
- *   terracotta      = #D6B36A (Cultural highlight)
- *   terracotta-text = #E7C985 (Readable gold highlight)
- *   charcoal        = #F5F0E8 (Primary text: Warm Ivory)
- *   secondary-text  = #B7B0A5 (Secondary text / descriptions)
- *   muted           = #89847C (Metadata and secondary labels)
- *   border          = #302C25 (Subtle bronze/charcoal borders)
- *   stone           = #1A1A1A (Subtle neutral card surface)
- *   success         = #65B88A (Success feedback)
- *   warning         = #E3B765 (Warnings)
- *   error           = #F07878 (Errors)
- *   info            = #76A9C7 (Information)
+ * TattvaCo Visual System — Living Heritage Editorial Design System
+ * Inspired by Apple's visual clarity & world-class museum storytelling.
+ *
+ * Core Palette:
+ *   canvas          = #F6F2E9 (Warm Ivory app background)
+ *   surface         = #FFFFFF (Pure White cards and primary panels)
+ *   surface-2       = #EFE9DC (Soft Sandstone secondary sections & inputs)
+ *   elevated        = #FFFFFF (Floating panels & modals with soft shadow)
+ *   forest          = #173D32 (Deep Forest Green primary action & branding)
+ *   forest-hover    = #1F4E40 (Forest Green hover state)
+ *   on-forest       = #FFFFFF (Text on Forest buttons)
+ *   terracotta      = #B85C3E (Heritage Terracotta accent & badges)
+ *   terracotta-text = #A34F34 (High-contrast Terracotta text)
+ *   charcoal        = #252923 (Deep Ink Charcoal primary text)
+ *   secondary-text  = #52574E (Balanced charcoal for descriptions)
+ *   muted           = #6B7065 (High-contrast metadata & secondary labels, passes WCAG AA)
+ *   border          = #DFD7C7 (Subtle warm Sandstone borders)
+ *   border-subtle   = #E8E2D6 (Ultra-light borders)
+ *   sandstone       = #E7DDCA (Natural Sandstone container fills)
+ *   gold            = #B85C3E (Cultural highlights mapped to warm terracotta/bronze)
+ *   gold-hover      = #9E4A30 (Terracotta hover)
+ *   stone           = #F0E9DC (Neutral architectural card backdrop)
+ *
+ * Semantic Feedback:
+ *   success         = #246B48 (Verified green)
+ *   warning         = #A66415 (Warm amber)
+ *   error           = #B83232 (Deep red)
+ *   info            = #2B6282 (Deep indigo)
  */
 @theme {
-  --color-canvas: #090909;
-  --color-surface: #171717;
-  --color-surface-2: #111111;
-  --color-elevated: #202020;
-  --color-forest: #d6b36a;
-  --color-forest-hover: #e7c985;
-  --color-on-forest: #111111;
-  --color-terracotta: #d6b36a;
-  --color-terracotta-text: #e7c985;
-  --color-charcoal: #f5f0e8;
-  --color-secondary-text: #b7b0a5;
-  --color-muted: #89847c;
-  --color-border: #302c25;
-  --color-gold: #d6b36a;
-  --color-gold-hover: #e7c985;
-  --color-stone: #1a1a1a;
+  --color-canvas: #f6f2e9;
+  --color-surface: #ffffff;
+  --color-surface-2: #efe9dc;
+  --color-elevated: #ffffff;
+  --color-forest: #173d32;
+  --color-forest-hover: #1f4e40;
+  --color-on-forest: #ffffff;
+  --color-terracotta: #b85c3e;
+  --color-terracotta-text: #a34f34;
+  --color-charcoal: #252923;
+  --color-secondary-text: #52574e;
+  --color-muted: #6b7065;
+  --color-border: #dfd7c7;
+  --color-border-subtle: #e8e2d6;
+  --color-sandstone: #e7ddca;
+  --color-gold: #b85c3e;
+  --color-gold-hover: #9e4a30;
+  --color-stone: #f0e9dc;
 
-  --color-success: #65b88a;
-  --color-warning: #e3b765;
-  --color-error: #f07878;
-  --color-info: #76a9c7;
+  --color-success: #246b48;
+  --color-warning: #a66415;
+  --color-error: #b83232;
+  --color-info: #2b6282;
 
-  --radius-sm: 6px;
-  --radius-md: 12px;
-  --radius-lg: 18px;
+  --radius-xs: 4px;
+  --radius-sm: 8px;
+  --radius-md: 14px;
+  --radius-lg: 20px;
+  --radius-xl: 28px;
   --radius-full: 9999px;
 
   --font-sans: var(--font-display), var(--font-noto-sans), var(--font-deva), var(--font-beng), var(--font-guru), var(--font-gujr),
-    var(--font-orya), var(--font-taml), var(--font-telu), var(--font-knda), var(--font-mlym), system-ui, sans-serif;
-  --font-serif: var(--font-noto-serif), Georgia, serif;
+    var(--font-orya), var(--font-taml), var(--font-telu), var(--font-knda), var(--font-mlym), -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --font-serif: var(--font-noto-serif), Georgia, Cambria, "Times New Roman", serif;
 
-  /* Type scale matching Section 3 Typography hierarchy */
+  /* Typographic scale with Apple-like optical balance */
   --text-display: 2.25rem; /* 36px */
   --text-display--line-height: 1.15;
-  --text-display-lg: 3.25rem; /* 52px */
-  --text-display-lg--line-height: 1.1;
-  --text-page: 1.75rem; /* 28px */
-  --text-page--line-height: 1.25;
-  --text-page-lg: 2rem; /* 32px */
-  --text-section: 1.375rem; /* 22px */
+  --text-display-lg: 3.5rem; /* 56px */
+  --text-display-lg--line-height: 1.08;
+  --text-page: 1.875rem; /* 30px */
+  --text-page--line-height: 1.2;
+  --text-page-lg: 2.25rem; /* 36px */
+  --text-section: 1.5rem; /* 24px */
   --text-section--line-height: 1.3;
-  --text-section-lg: 1.625rem; /* 26px */
-  --text-card: 1.125rem; /* 18px */
+  --text-section-lg: 1.875rem; /* 30px */
+  --text-card: 1.25rem; /* 20px */
   --text-card--line-height: 1.35;
-  --text-body: 1.0625rem; /* 17px */
-  --text-body--line-height: 1.7;
+  --text-body-lead: 1.125rem; /* 18px */
+  --text-body-lead--line-height: 1.65;
+  --text-body: 1rem; /* 16px */
+  --text-body--line-height: 1.65;
   --text-support: 0.875rem; /* 14px */
-  --text-support--line-height: 1.55;
+  --text-support--line-height: 1.5;
   --text-meta: 0.8125rem; /* 13px */
-  --text-meta--line-height: 1.5;
+  --text-meta--line-height: 1.45;
 }
 
 html {
   -webkit-text-size-adjust: 100%;
-  color-scheme: dark;
+  color-scheme: light;
+  scroll-behavior: smooth;
 }
 
 body {
@@ -89,6 +102,8 @@ body {
   font-size: var(--text-body);
   line-height: 1.65;
   text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 /* Indic scripts need more vertical room for matras and conjuncts. */
@@ -106,9 +121,9 @@ body {
 }
 
 :focus-visible {
-  outline: 2px solid var(--color-gold);
+  outline: 2px solid var(--color-forest);
   outline-offset: 2px;
-  border-radius: 4px;
+  border-radius: 6px;
 }
 
 a {
@@ -139,20 +154,20 @@ dd {
   }
 }
 
-/* Frosted dark charcoal panel used over imagery (hero search, badges, round buttons). */
+/* Frosted glass header & backdrop blur */
 .glass {
-  background: rgba(23, 23, 23, 0.78);
-  backdrop-filter: blur(16px) saturate(1.2);
-  -webkit-backdrop-filter: blur(16px) saturate(1.2);
-  border: 1px solid rgba(48, 44, 37, 0.85);
+  background: rgba(246, 242, 233, 0.85);
+  backdrop-filter: blur(20px) saturate(1.4);
+  -webkit-backdrop-filter: blur(20px) saturate(1.4);
+  border: 1px solid rgba(223, 215, 199, 0.7);
   color: var(--color-charcoal);
 }
 
-.glass-dark {
-  background: rgba(9, 9, 9, 0.85);
-  backdrop-filter: blur(16px) saturate(1.2);
-  -webkit-backdrop-filter: blur(16px) saturate(1.2);
-  border: 1px solid rgba(48, 44, 37, 0.9);
+.glass-white {
+  background: rgba(255, 255, 255, 0.9);
+  backdrop-filter: blur(20px) saturate(1.4);
+  -webkit-backdrop-filter: blur(20px) saturate(1.4);
+  border: 1px solid rgba(223, 215, 199, 0.8);
   color: var(--color-charcoal);
 }
 
@@ -160,22 +175,40 @@ dd {
 .scrim {
   background: linear-gradient(
     180deg,
-    rgba(9, 9, 9, 0.7) 0%,
-    rgba(9, 9, 9, 0.2) 28%,
-    rgba(9, 9, 9, 0.45) 55%,
-    rgba(9, 9, 9, 0.88) 80%,
-    rgba(9, 9, 9, 0.98) 100%
+    rgba(23, 61, 50, 0.25) 0%,
+    rgba(23, 61, 50, 0.1) 30%,
+    rgba(37, 41, 35, 0.5) 60%,
+    rgba(37, 41, 35, 0.88) 85%,
+    rgba(37, 41, 35, 0.98) 100%
+  );
+}
+
+.scrim-subtle {
+  background: linear-gradient(
+    180deg,
+    rgba(37, 41, 35, 0.1) 0%,
+    rgba(37, 41, 35, 0.65) 70%,
+    rgba(37, 41, 35, 0.92) 100%
   );
 }
 
 .scrim-bottom {
-  background: linear-gradient(180deg, rgba(9, 9, 9, 0) 35%, rgba(9, 9, 9, 0.92) 100%);
+  background: linear-gradient(180deg, rgba(37, 41, 35, 0) 40%, rgba(37, 41, 35, 0.85) 100%);
 }
 
 .card-editorial {
   background: var(--color-surface);
   border: 1px solid var(--color-border);
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+  box-shadow: 0 4px 20px rgba(37, 41, 35, 0.06);
+}
+
+.card-hover-lift {
+  transition: transform 0.25s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.25s cubic-bezier(0.22, 1, 0.36, 1), border-color 0.25s ease;
+}
+.card-hover-lift:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 12px 30px rgba(23, 61, 50, 0.1);
+  border-color: rgba(23, 61, 50, 0.3);
 }
 
 .no-scrollbar {

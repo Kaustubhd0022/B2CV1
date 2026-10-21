@@ -147,13 +147,13 @@ export default async function SignInPage({ searchParams }: { searchParams: Promi
 
           {/* Right Column: Floating Dark Authentication Card (Compact Desktop Size) */}
           <div className="w-full max-w-[370px] lg:shrink-0">
-            <div className="rounded-2xl border border-border bg-[#171717] p-5 shadow-2xl backdrop-blur-md">
+            <div className="rounded-3xl border border-border bg-surface p-6 shadow-xl">
               <div className="text-left">
-                <span className="inline-block rounded-full bg-gold/15 border border-gold/30 px-2.5 py-0.5 text-xs font-semibold text-gold">
+                <span className="inline-block rounded-full bg-forest/10 border border-forest/20 px-2.5 py-0.5 text-xs font-semibold text-forest">
                   Welcome to TattvaCo
                 </span>
-                <h2 className="mt-1.5 font-serif text-2xl font-semibold text-charcoal">{t("auth.title")}</h2>
-                <p className="mt-0.5 text-xs text-muted leading-snug">{t("auth.subtitle")}</p>
+                <h2 className="mt-2 font-serif text-2xl font-semibold text-charcoal">{t("auth.title")}</h2>
+                <p className="mt-1 text-xs text-muted leading-snug">{t("auth.subtitle")}</p>
               </div>
 
               {/* Status and Error Notices (removed demo and expired notices as requested) */}

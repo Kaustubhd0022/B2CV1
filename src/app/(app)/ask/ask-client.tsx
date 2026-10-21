@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useRef, useState } from "react";
 import type { AskResult } from "@/lib/ai/types";
 import { makeClientT, type ClientT } from "@/lib/i18n/client-t";
+import { FadeIn, MotionCard, StaggerContainer, StaggerItem } from "@/components/motion";
 import { IconExternal, IconFlag, IconSend } from "@/components/icons";
 import { Button, EpistemicLabel, FixtureBadge, Notice, cx } from "@/components/ui";
 
@@ -154,9 +155,9 @@ export function AskClient({
             <span className="text-[11px] font-semibold text-forest">Phase 1 Pilot</span>
           </div>
 
-          <div className="mt-4 space-y-5">
+          <StaggerContainer className="mt-4 space-y-5" staggerDelay={0.06}>
             {SUGGESTED_TOPICS.map((topic) => (
-              <div key={topic.category}>
+              <StaggerItem key={topic.category}>
                 <p className="text-[11px] font-semibold uppercase tracking-wider text-terracotta">
                   {topic.category}
                 </p>
@@ -173,14 +174,14 @@ export function AskClient({
                     </button>
                   ))}
                 </div>
-              </div>
+              </StaggerItem>
             ))}
-          </div>
+          </StaggerContainer>
         </div>
 
         {/* Source Grounding Assurance Panel */}
-        <div className="rounded-xl border border-gold/20 bg-gradient-to-br from-[#1b1916] to-[#121110] p-4 text-meta text-muted shadow-sm">
-          <p className="font-semibold text-gold">✦ Real-time Source Grounding</p>
+        <div className="rounded-xl border border-forest/20 bg-forest/5 p-4 text-meta text-muted shadow-xs">
+          <p className="font-semibold text-forest">✦ Real-time Source Grounding</p>
           <p className="mt-1 leading-relaxed text-secondary-text">
             Every answer is verified against statutory archives, academic repositories and primary gazetteers before rendering.
           </p>
@@ -202,51 +203,61 @@ export function AskClient({
           {turns.map((turn) => (
             <li key={turn.id} className="space-y-4">
               {/* User Question Bubble */}
-              <div className="rounded-xl border border-border bg-elevated p-4 shadow-sm">
-                <p className="text-[11px] font-semibold uppercase tracking-[0.14em] text-gold">
-                  {t("ask.yourQuestion")}
-                </p>
-                <p className="mt-1 font-serif text-section font-semibold text-charcoal">{turn.question}</p>
-              </div>
+              <FadeIn duration={0.3} y={10}>
+                <div className="rounded-xl border border-border bg-elevated p-4 shadow-sm">
+                  <p className="text-[11px] font-semibold uppercase tracking-[0.14em] text-gold">
+                    {t("ask.yourQuestion")}
+                  </p>
+                  <p className="mt-1 font-serif text-section font-semibold text-charcoal">{turn.question}</p>
+                </div>
+              </FadeIn>
 
               {/* Assistant Answer Stream */}
               <div>
-                {turn.state === "loading" && <Progress stage={turn.stage} t={t} />}
+                {turn.state === "loading" && (
+                  <FadeIn duration={0.25} y={8}>
+                    <Progress stage={turn.stage} t={t} />
+                  </FadeIn>
+                )}
                 {turn.state === "error" && (
-                  <Notice
-                    tone={turn.error === "rate_limited" ? "warning" : "error"}
-                    role="alert"
-                    title={turn.error === "rate_limited" ? undefined : t("ask.failureTitle")}
-                  >
-                    <p>
-                      {turn.error === "rate_limited"
-                        ? t("ask.rateLimited")
-                        : turn.error === "too_long"
-                        ? t("ask.tooLong")
-                        : turn.error === "too_short"
-                        ? t("ask.tooShort")
-                        : t("ask.failureBody")}
-                    </p>
-                    {turn.error !== "rate_limited" && (
-                      <Button
-                        type="button"
-                        variant="secondary"
-                        className="mt-3"
-                        onClick={() => ask(turn.question, { replaceId: turn.id })}
-                      >
-                        {t("common.retry")}
-                      </Button>
-                    )}
-                  </Notice>
+                  <FadeIn duration={0.25} y={8}>
+                    <Notice
+                      tone={turn.error === "rate_limited" ? "warning" : "error"}
+                      role="alert"
+                      title={turn.error === "rate_limited" ? undefined : t("ask.failureTitle")}
+                    >
+                      <p>
+                        {turn.error === "rate_limited"
+                          ? t("ask.rateLimited")
+                          : turn.error === "too_long"
+                          ? t("ask.tooLong")
+                          : turn.error === "too_short"
+                          ? t("ask.tooShort")
+                          : t("ask.failureBody")}
+                      </p>
+                      {turn.error !== "rate_limited" && (
+                        <Button
+                          type="button"
+                          variant="secondary"
+                          className="mt-3"
+                          onClick={() => ask(turn.question, { replaceId: turn.id })}
+                        >
+                          {t("common.retry")}
+                        </Button>
+                      )}
+                    </Notice>
+                  </FadeIn>
                 )}
                 {turn.state === "done" && turn.result && (
-                  <Answer
-                    result={turn.result}
-                    t={t}
-                    onRetry={() => ask(turn.question, { replaceId: turn.id })}
-                    onAsk={(q) => ask(q)}
-                    selected={lang}
-                  />
+                  <FadeIn duration={0.4} y={12}>
+                    <Answer
+                      result={turn.result}
+                      t={t}
+                      onRetry={() => ask(turn.question, { replaceId: turn.id })}
+                      onAsk={(q) => ask(q)}
+                      selected={lang}
+                    />
+                  </FadeIn>
                 )}
               </div>
             </li>
