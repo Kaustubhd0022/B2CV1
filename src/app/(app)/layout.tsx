@@ -39,7 +39,7 @@ export default async function AppLayout({ children }: { children: React.ReactNod
           </p>
         )}
       </header>
-      <main id="main">{children}</main>
+      <main id="main" className="pb-20 md:pb-0">{children}</main>
       <MainNav labels={labels} variant="bottom" />
     </div>
   );

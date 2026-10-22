@@ -19,34 +19,181 @@ import {
 } from "@/components/icons";
 import { Notice, Page, SectionTitle } from "@/components/ui";
 
-export const metadata: Metadata = { title: "Explore by Theme · India's Culture, Many Dimensions" };
+export const metadata: Metadata = {
+  title: "Explore by Theme · India's Cultural Ecosystems",
+  description:
+    "Explore humanity's cultural knowledge in one place. Discover traditions, architecture, music, rituals, and craft practices organized across nine foundational cultural categories and six geographic regions.",
+};
 
 const CATEGORIES = [
-  { id: "places", label: "Places", Icon: IconPlaces, count: "6 Cities", desc: "Cities, landscapes, sacred geography & riverfronts" },
-  { id: "people", label: "People", Icon: IconPeople, count: "Masters", desc: "Saints, poets, master weavers & cultural visionaries" },
-  { id: "festivals", label: "Festivals", Icon: IconFestivals, count: "Living", desc: "Seasonal cycles, sacred processions & community rites" },
-  { id: "food", label: "Food", Icon: IconFood, count: "Cuisines", desc: "Sacred offerings, regional spice routes & culinary heritage" },
-  { id: "crafts", label: "Crafts", Icon: IconCrafts, count: "Guilds", desc: "Banarasi brocade, stone masonry & metallurgy" },
-  { id: "history", label: "History", Icon: IconHistory, count: "Chronology", desc: "Archaeological sites, dynasties & historical archives" },
-  { id: "beliefs", label: "Beliefs", Icon: IconBeliefs, count: "Philosophy", desc: "Philosophical traditions, sacred mandalas & ritual order" },
-  { id: "art-music", label: "Art & Music", Icon: IconMusic, count: "Gharanas", desc: "Classical ragas, acoustic shrines & temple dance" },
-  { id: "communities", label: "Communities", Icon: IconCommunities, count: "Lineages", desc: "Artisanal guilds, living lineages & oral cultures" },
+  {
+    id: "places",
+    label: "Places & Sacred Geography",
+    Icon: IconPlaces,
+    count: "42 Sites",
+    desc: "Ancient riverfronts, stepped tanks, living temple sanctuaries, and sacred mandalas.",
+    image: "https://images.unsplash.com/photo-1561359313-0639aad49ca6?auto=format&fit=crop&w=600&q=80",
+  },
+  {
+    id: "people",
+    label: "People & Thinkers",
+    Icon: IconPeople,
+    count: "28 Masters",
+    desc: "Mystic poets, saint-weavers, master astronomers, and visionary dynastic monarchs.",
+    image: "https://images.unsplash.com/photo-1599661046289-e31897846e41?auto=format&fit=crop&w=600&q=80",
+  },
+  {
+    id: "festivals",
+    label: "Festivals & Rituals",
+    Icon: IconFestivals,
+    count: "34 Celebrations",
+    desc: "Twilight Maha Aarti, grand car festivals, community Durga Puja, and seasonal equinoxes.",
+    image: "https://images.unsplash.com/photo-1571536802807-30451e3955d8?auto=format&fit=crop&w=600&q=80",
+  },
+  {
+    id: "food",
+    label: "Food Cultures",
+    Icon: IconFood,
+    count: "18 Traditions",
+    desc: "Sacred temple prasad, Malabar spice routes, slow fermentation, and culinary philosophy.",
+    image: "https://images.unsplash.com/photo-1610030469983-98e550d6193c?auto=format&fit=crop&w=600&q=80",
+  },
+  {
+    id: "crafts",
+    label: "Crafts & Master Guilds",
+    Icon: IconCrafts,
+    count: "26 Guilds",
+    desc: "Kadhwa handloom silk, Sanganer natural block prints, Sungudi dyeing, and clay sculpting.",
+    image: "https://images.unsplash.com/photo-1558431382-27e303142255?auto=format&fit=crop&w=600&q=80",
+  },
+  {
+    id: "history",
+    label: "History & Epochs",
+    Icon: IconHistory,
+    count: "38 Chronologies",
+    desc: "Vedic cosmology, Mauryan pillars, Vijayanagara grandeur, and Bengal intellectual adda.",
+    image: "https://images.unsplash.com/photo-1590050752117-238cb0fb12b1?auto=format&fit=crop&w=600&q=80",
+  },
+  {
+    id: "beliefs",
+    label: "Beliefs & Philosophy",
+    Icon: IconBeliefs,
+    count: "24 Systems",
+    desc: "Moksha and liberation circuits, Shaivite metaphysics, Buddhist Sangha, and syncretism.",
+    image: "https://images.unsplash.com/photo-1598977123418-454555aa1641?auto=format&fit=crop&w=600&q=80",
+  },
+  {
+    id: "art-music",
+    label: "Art & Classical Music",
+    Icon: IconMusic,
+    count: "31 Lineages",
+    desc: "Banaras Gharana tabla, Kathakali temple dramaturgy, acoustic columns, and ragas.",
+    image: "https://images.unsplash.com/photo-1593693397690-362cb9666fc2?auto=format&fit=crop&w=600&q=80",
+  },
+  {
+    id: "communities",
+    label: "Communities & Mohallas",
+    Icon: IconCommunities,
+    count: "22 Lineages",
+    desc: "Ansari master weavers, Kumartuli clay palas, Paradesi Jews, and Chhipa artisans.",
+    image: "https://images.unsplash.com/photo-1582510003544-4d00b7f74220?auto=format&fit=crop&w=600&q=80",
+  },
 ];
 
 const FEATURED_COLLECTIONS = [
-  { title: "Sacred Rivers of India", slug: "sacred-rivers", desc: "Ecological lifeblood and sacred geography connecting civilisations.", count: "Riverfront Stories", img: "/images/dev/varanasi-hero.jpg" },
-  { title: "Indian Handloom & Textiles", slug: "textiles", desc: "Ancient weaves, master guild techniques and silk traditions.", count: "Living Guilds", img: "/images/dev/varanasi-card.jpg" },
-  { title: "Temples of South India", slug: "temples", desc: "Dravidian sacred geometry, towering gopurams and acoustic stone shrines.", count: "Sacred Architecture", img: "/images/dev/hampi.jpg" },
-  { title: "Classical Arts & Gharanas", slug: "arts", desc: "Acoustic lineages, guru-shishya paramparas and temple dance.", count: "Performing Lineages", img: "/images/dev/jaipur.jpg" },
+  {
+    title: "Sacred Rivers of India",
+    slug: "sacred-rivers",
+    desc: "Hydrological lifeblood and sacred geography connecting civilisations from Ganga to Tungabhadra.",
+    count: "Riverfront Circuits",
+    img: "https://images.unsplash.com/photo-1571536802807-30451e3955d8?auto=format&fit=crop&w=800&q=80",
+    query: "river",
+  },
+  {
+    title: "Indian Handloom & Textiles",
+    slug: "textiles",
+    desc: "Ancient warp and weft: Banarasi Kadhwa silk, Sanganer woodblock calico, and Sungudi knot-dyeing.",
+    count: "Master Guilds",
+    img: "https://images.unsplash.com/photo-1610030469983-98e550d6193c?auto=format&fit=crop&w=800&q=80",
+    query: "silk",
+  },
+  {
+    title: "Living Temples of Stone",
+    slug: "temples",
+    desc: "Dravidian gopurams, Nagara spires, Vijayanagara monolithic granite, and acoustic pillars.",
+    count: "Sacred Architecture",
+    img: "https://images.unsplash.com/photo-1582510003544-4d00b7f74220?auto=format&fit=crop&w=800&q=80",
+    query: "temple",
+  },
+  {
+    title: "Classical Arts & Gharanas",
+    slug: "arts",
+    desc: "Acoustic lineages, guru-shishya paramparas, shehnai maestros, and Kerala ritual dramaturgy.",
+    count: "Living Lineages",
+    img: "https://images.unsplash.com/photo-1593693397690-362cb9666fc2?auto=format&fit=crop&w=800&q=80",
+    query: "music",
+  },
+  {
+    title: "Monsoon & Hydraulic Engineering",
+    slug: "water-engineering",
+    desc: "Stepwells, cantilevered coastal nets, subterranean aqueducts, and sacred river ghat steps.",
+    count: "Hydraulic Heritage",
+    img: "https://images.unsplash.com/photo-1590050752117-238cb0fb12b1?auto=format&fit=crop&w=800&q=80",
+    query: "water",
+  },
+  {
+    title: "Clay, Devotion & Public Art",
+    slug: "clay-sculpture",
+    desc: "From fertile river mud to divine effigies: Bengal's living Durga Puja sculpting tradition.",
+    count: "Sculptural Arts",
+    img: "https://images.unsplash.com/photo-1558431382-27e303142255?auto=format&fit=crop&w=800&q=80",
+    query: "clay",
+  },
 ];
 
 const REGIONS = [
-  { name: "North India", states: "Uttar Pradesh, Rajasthan, Punjab", desc: "Gangetic sacred geography, pink sandstone and Mughal-Rajput synthesis." },
-  { name: "South India", states: "Karnataka, Kerala, Tamil Nadu", desc: "Granite temple monuments, maritime spice corridors and classical Carnatic arts." },
-  { name: "East India", states: "West Bengal, Odisha, Bihar", desc: "River deltas, terracotta temple architecture and philosophical renaissance." },
-  { name: "West India", states: "Gujarat, Maharashtra", desc: "Ancient stepwells, coastal trade routes and artisanal textile printing." },
-  { name: "Central India", states: "Madhya Pradesh, Chhattisgarh", desc: "Rock-shelter art, tribal traditions and ancient stupa complexes." },
-  { name: "North East", states: "Assam, Meghalaya, Manipur", desc: "Living root bridges, golden muga silk and sacred grove conservation." },
+  {
+    name: "North India",
+    states: "Uttar Pradesh · Delhi · Rajasthan",
+    cities: "Varanasi · Jaipur",
+    desc: "Gangetic sacred geography, pink sandstone masonry, astronomical observatories, and Mughal-Rajput synthesis.",
+    query: "varanasi",
+  },
+  {
+    name: "South India",
+    states: "Karnataka · Kerala · Tamil Nadu",
+    cities: "Hampi · Kochi · Madurai",
+    desc: "Granite temple cities, maritime spice ports, Sangam literature, and living Dravidian temple rituals.",
+    query: "madurai",
+  },
+  {
+    name: "East India",
+    states: "West Bengal · Odisha · Bihar",
+    cities: "Kolkata",
+    desc: "Hooghly clay sculptors, terracotta temple architecture, intellectual adda, and the Bengal Renaissance.",
+    query: "kolkata",
+  },
+  {
+    name: "West India",
+    states: "Rajasthan · Gujarat · Maharashtra",
+    cities: "Jaipur",
+    desc: "Ancient stepwells, desert textile printing guilds, Maratha riverfront patronage, and coastal trade.",
+    query: "jaipur",
+  },
+  {
+    name: "Central India",
+    states: "Madhya Pradesh · Chhattisgarh",
+    cities: "Indore · Ujjain · Sanchi",
+    desc: "Ahilyabai Holkar's architectural renaissance, ancient rock-shelters, and Narmada sacred riverfronts.",
+    query: "ahilyabai",
+  },
+  {
+    name: "North East India",
+    states: "Assam · Meghalaya · Manipur",
+    cities: "Majuli · Guwahati",
+    desc: "Living root bridges, golden Muga silk weaving, Brahmaputra island monasteries, and sacred groves.",
+    query: "assam",
+  },
 ];
 
 export default async function ExplorePage({
@@ -101,25 +248,26 @@ export default async function ExplorePage({
   });
 
   return (
-    <Page className="pt-2">
-      {/* Editorial Theme Hero */}
+    <Page className="max-w-[1440px] px-3 sm:px-6 pt-2">
+      {/* 1. Master Editorial Theme Hero matching Reference Page 4 */}
       <FadeIn delay={0.05}>
-        <section className="rounded-3xl border border-gold/25 bg-gradient-to-br from-[#171512] via-[#1a1714] to-[#12100d] p-8 sm:p-10 md:p-12 shadow-md">
-          <div className="max-w-2xl">
-            <p className="text-meta font-semibold uppercase tracking-[0.18em] text-gold">
-              ✦ Explore by Dimension
-            </p>
-            <h1 className="mt-2.5 font-serif text-display leading-tight text-charcoal md:text-display-lg tracking-tight">
-              India&apos;s Culture, Many Dimensions
+        <section className="relative overflow-hidden rounded-3xl border border-gold/30 bg-gradient-to-br from-[#171411] via-[#1b1714] to-[#12100d] p-8 sm:p-10 md:p-12 shadow-md">
+          <div className="max-w-3xl">
+            <div className="flex items-center gap-2 text-[11px] font-semibold uppercase tracking-[0.2em] text-gold">
+              <span>✦</span>
+              <span>Explore by Cultural Dimension</span>
+            </div>
+            <h1 className="mt-3 font-serif text-3xl sm:text-4xl md:text-5xl font-bold leading-tight text-white tracking-tight">
+              Explore Humanity&apos;s Cultural Knowledge
             </h1>
-            <p className="mt-3 text-body text-secondary-text leading-relaxed">
-              Step beyond geography. Discover how craft, philosophy, ritual, architecture and living lineages form a single interconnected universe.
+            <p className="mt-3 text-body text-secondary-text leading-relaxed font-light md:text-lg">
+              Discover sacred geography, ancient astronomy, master craft guilds, and classical music traditions organized across nine foundational cultural categories and six geographic regions.
             </p>
 
-            {/* Search bar inside hero */}
-            <form method="get" role="search" className="mt-7 flex max-w-md items-center gap-2.5">
+            {/* Integrated Search Bar inside Hero */}
+            <form method="get" role="search" className="mt-8 flex max-w-xl items-center gap-2.5">
               <label htmlFor="explore-search" className="sr-only">
-                Search themes, stories, and places
+                Search themes, stories, and cultural sites
               </label>
               <div className="relative flex-1">
                 <IconSearch
@@ -131,14 +279,14 @@ export default async function ExplorePage({
                   id="explore-search"
                   name="q"
                   defaultValue={q}
-                  placeholder="Search stories, traditions, places or crafts…"
-                  className="block w-full min-h-12 rounded-full border border-border bg-surface-2 py-2.5 pl-11 pr-4 text-body text-charcoal placeholder:text-muted shadow-2xs focus:border-gold focus:outline-none focus:ring-2 focus:ring-gold/20"
+                  placeholder="Search stories, traditions, places, or crafts…"
+                  className="block w-full min-h-12 rounded-full border border-border/80 bg-surface-2/90 py-2.5 pl-11 pr-4 text-body text-charcoal placeholder:text-muted shadow-2xs focus:border-gold focus:outline-none focus:ring-2 focus:ring-gold/25"
                 />
                 {activeCategory !== "all" && <input type="hidden" name="category" value={activeCategory} />}
               </div>
               <button
                 type="submit"
-                className="inline-flex min-h-12 items-center rounded-full bg-gold px-6 text-support font-semibold text-on-gold hover:bg-gold-hover shadow-xs transition-all active:scale-[0.985]"
+                className="inline-flex min-h-12 items-center rounded-full bg-forest px-6 text-support font-semibold text-on-forest hover:bg-forest-hover shadow-xs transition-all active:scale-[0.985]"
               >
                 Search
               </button>
@@ -147,53 +295,66 @@ export default async function ExplorePage({
         </section>
       </FadeIn>
 
-      {/* 9 Category Cards Grid */}
-      <section className="mt-16 md:mt-20" aria-labelledby="categories-grid-title">
-        <div className="flex items-baseline justify-between gap-4">
+      {/* 2. 9 Cultural Taxonomy Categories Grid matching Reference Page 4 */}
+      <section className="mt-14 sm:mt-16" aria-labelledby="categories-grid-title">
+        <div className="flex flex-wrap items-baseline justify-between gap-4 border-b border-border/60 pb-3">
           <div>
-            <SectionTitle id="categories-grid-title">Explore 9 Cultural Categories</SectionTitle>
-            <p className="mt-1 text-support text-secondary-text">
-              Select any category to view curated cultural stories and evidence
-            </p>
+            <div className="flex items-center gap-2 text-[11px] font-semibold uppercase tracking-wider text-gold">
+              <span>✦</span>
+              <span>Foundational Taxonomy</span>
+            </div>
+            <h2 id="categories-grid-title" className="mt-1 font-serif text-2xl sm:text-3xl font-semibold text-charcoal">
+              Explore 9 Cultural Categories
+            </h2>
           </div>
           {activeCategory !== "all" && (
-            <Link href="/explore" className="text-support font-semibold text-gold hover:text-gold-hover hover:underline">
-              Reset filter (show all)
+            <Link
+              href="/explore"
+              className="text-meta font-semibold text-gold hover:underline"
+            >
+              Reset filter (show all categories)
             </Link>
           )}
         </div>
 
-        <StaggerContainer className="mt-6 grid gap-4 sm:grid-cols-2 md:grid-cols-3" staggerDelay={0.04}>
+        <StaggerContainer className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-3" staggerDelay={0.03}>
           {CATEGORIES.map((cat) => {
             const isSelected = activeCategory === cat.id;
             return (
               <StaggerItem key={cat.id}>
                 <MotionCard className="h-full">
                   <Link
-                    href={isSelected ? "/explore" : `/explore?category=${cat.id}${q ? `&q=${encodeURIComponent(q)}` : ""}`}
-                    className={`group relative flex h-full flex-col justify-between rounded-2xl border p-6 transition-all duration-300 ${
+                    href={
                       isSelected
-                        ? "border-gold bg-elevated ring-2 ring-gold/30 shadow-md"
-                        : "border-border/80 bg-surface hover:border-gold/40 hover:shadow-md shadow-2xs"
+                        ? "/explore"
+                        : `/explore?category=${cat.id}${q ? `&q=${encodeURIComponent(q)}` : ""}`
+                    }
+                    className={`group relative flex h-full flex-col justify-between overflow-hidden rounded-2xl border p-5 transition-all duration-300 ${
+                      isSelected
+                        ? "border-gold bg-[#1c1814] ring-2 ring-gold/40 shadow-md"
+                        : "border-border/80 bg-surface hover:border-gold/50 hover:bg-surface-2 shadow-2xs"
                     }`}
                   >
                     <div>
                       <div className="flex items-center justify-between">
-                        <span className="flex size-10 items-center justify-center rounded-full bg-surface-2 border border-border/80 text-forest group-hover:bg-forest group-hover:text-on-forest transition-colors shadow-2xs">
-                          <cat.Icon width={20} height={20} />
+                        <span className="flex size-11 items-center justify-center rounded-xl bg-surface-2 border border-border/80 text-gold group-hover:bg-gold group-hover:text-[#12100e] transition-colors shadow-2xs">
+                          <cat.Icon width={22} height={22} />
                         </span>
-                        <span className="rounded-full bg-surface-2 border border-border/70 px-2.5 py-0.5 text-[11px] font-medium text-secondary-text">
+                        <span className="rounded-full bg-gold/10 border border-gold/30 px-2.5 py-0.5 text-[11px] font-semibold text-gold">
                           {cat.count}
                         </span>
                       </div>
-                      <h3 className="mt-3.5 font-serif text-card md:text-section font-semibold text-charcoal group-hover:text-forest transition-colors tracking-tight">
+                      <h3 className="mt-4 font-serif text-xl font-semibold text-charcoal group-hover:text-gold transition-colors tracking-tight">
                         {cat.label}
                       </h3>
-                      <p className="mt-1.5 text-support text-secondary-text leading-relaxed">{cat.desc}</p>
+                      <p className="mt-2 text-support text-secondary-text leading-relaxed">
+                        {cat.desc}
+                      </p>
                     </div>
-                    <div className="mt-5 flex items-center justify-between text-meta font-medium pt-3 border-t border-border-subtle">
-                      <span className={isSelected ? "text-forest font-semibold" : "text-muted group-hover:text-forest"}>
-                        {isSelected ? "Active Filter ✓" : "Explore dimension →"}
+
+                    <div className="mt-5 flex items-center justify-between text-meta font-medium pt-3 border-t border-border/60">
+                      <span className={isSelected ? "text-gold font-semibold" : "text-muted group-hover:text-charcoal transition-colors"}>
+                        {isSelected ? "Active Dimension ✓" : "Explore Category →"}
                       </span>
                     </div>
                   </Link>
@@ -204,25 +365,27 @@ export default async function ExplorePage({
         </StaggerContainer>
       </section>
 
-      {/* Filtered Stories under Selected Dimension */}
-      <section className="mt-16 md:mt-20" aria-labelledby="theme-stories-title">
-        <div className="flex items-baseline justify-between gap-4 border-b border-border pb-3">
+      {/* 3. Filtered Curated Flagship Stories matching Selected Category */}
+      <section className="mt-14 sm:mt-16" aria-labelledby="theme-stories-title">
+        <div className="flex items-baseline justify-between gap-4 border-b border-border/60 pb-3">
           <div>
-            <SectionTitle id="theme-stories-title">
-              {activeCategory === "all" ? "Curated Flagship Stories" : `Stories in ${CATEGORIES.find((c) => c.id === activeCategory)?.label ?? activeCategory}`} ({filteredStories.length})
-            </SectionTitle>
-            <p className="mt-0.5 text-support text-secondary-text">
-              Source-grounded cultural narratives across pilot ecosystems
+            <h2 id="theme-stories-title" className="font-serif text-2xl font-semibold text-charcoal">
+              {activeCategory === "all"
+                ? "Curated Flagship Stories"
+                : `Stories in ${CATEGORIES.find((c) => c.id === activeCategory)?.label ?? activeCategory}`} ({filteredStories.length})
+            </h2>
+            <p className="mt-1 text-meta text-muted">
+              Source-grounded cultural narratives across India&apos;s pilot ecosystems
             </p>
           </div>
         </div>
 
         {filteredStories.length === 0 ? (
           <Notice className="mt-6" tone="info" role="status">
-            No stories match this filter in the current pilot selection. Try selecting another category or resetting the search.
+            No stories match this filter in the current pilot selection. Try selecting another category or clearing search filters.
           </Notice>
         ) : (
-          <StaggerContainer className="mt-6 grid gap-5 md:grid-cols-2" staggerDelay={0.06}>
+          <StaggerContainer className="mt-6 grid gap-5 md:grid-cols-2" staggerDelay={0.05}>
             {filteredStories.map((s) => (
               <StaggerItem key={s.slug}>
                 <StoryCard
@@ -230,7 +393,7 @@ export default async function ExplorePage({
                   eyebrow={s.citySlug ? s.citySlug.toUpperCase() : "CULTURAL NARRATIVE"}
                   title={s.title}
                   summary={s.orientation}
-                  meta="Grounded Narrative · Verified Evidence"
+                  meta="Grounded Narrative · Primary Evidence"
                   fixtureLabel={s.isFixture ? t("common.devFixture") : undefined}
                 />
               </StaggerItem>
@@ -239,49 +402,54 @@ export default async function ExplorePage({
         )}
       </section>
 
-      {/* Featured Thematic Collections */}
-      <section className="mt-16 md:mt-20" aria-labelledby="thematic-collections-title">
-        <div className="flex items-baseline justify-between gap-4">
+      {/* 4. Featured Thematic Collections Rail matching Reference Page 4 */}
+      <section className="mt-16 sm:mt-20" aria-labelledby="thematic-collections-title">
+        <div className="flex items-baseline justify-between gap-4 border-b border-border/60 pb-3">
           <div>
-            <SectionTitle id="thematic-collections-title">Featured Thematic Collections</SectionTitle>
-            <p className="mt-1 text-support text-secondary-text">
-              Deep-dive cultural modules bridging multiple pilot cities
-            </p>
+            <div className="flex items-center gap-2 text-[11px] font-semibold uppercase tracking-wider text-gold">
+              <span>✦</span>
+              <span>Curated Thematic Modules</span>
+            </div>
+            <h2 id="thematic-collections-title" className="mt-1 font-serif text-2xl sm:text-3xl font-semibold text-charcoal">
+              Featured Thematic Collections
+            </h2>
           </div>
         </div>
 
-        <div className="mt-6 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+        <div className="mt-6 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
           {FEATURED_COLLECTIONS.map((col) => (
             <div
               key={col.title}
-              className="group relative flex flex-col justify-between overflow-hidden rounded-2xl border border-border/80 bg-surface shadow-2xs transition-all duration-300 hover:border-forest/40 hover:shadow-md"
+              className="group relative flex flex-col justify-between overflow-hidden rounded-2xl border border-border/80 bg-surface shadow-xs transition-all duration-300 hover:border-gold/50 hover:shadow-md"
             >
-              <div className="relative aspect-[16/10] overflow-hidden bg-surface-2">
+              <div className="relative aspect-[16/10] overflow-hidden bg-stone">
                 <Image
                   src={col.img}
                   alt={col.title}
                   fill
-                  sizes="(min-width: 1024px) 25vw, 50vw"
-                  className="object-cover transition-transform duration-700 ease-out group-hover:scale-105"
+                  sizes="(min-width: 1024px) 33vw, 50vw"
+                  className="object-cover transition-transform duration-500 ease-out group-hover:scale-105"
                 />
-                <div className="scrim-bottom absolute inset-0" />
-                <span className="absolute bottom-2.5 left-3 rounded-full bg-forest/85 border border-white/20 px-2.5 py-0.5 text-[11px] font-semibold text-white backdrop-blur-xs">
+                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
+                <span className="absolute bottom-3 left-3 rounded-full bg-forest/90 border border-white/20 px-3 py-1 text-[11px] font-semibold text-white backdrop-blur-xs">
                   {col.count}
                 </span>
               </div>
-              <div className="p-5 flex-1 flex flex-col justify-between">
+              <div className="p-5 flex-1 flex flex-col justify-between space-y-4">
                 <div>
-                  <h3 className="font-serif text-card font-semibold text-charcoal group-hover:text-forest transition-colors tracking-tight">
+                  <h3 className="font-serif text-lg font-semibold text-charcoal group-hover:text-gold transition-colors">
                     {col.title}
                   </h3>
-                  <p className="mt-1.5 text-support text-secondary-text leading-snug">{col.desc}</p>
+                  <p className="mt-1.5 text-meta text-muted leading-relaxed">
+                    {col.desc}
+                  </p>
                 </div>
-                <div className="mt-4 pt-3 border-t border-border-subtle">
+                <div className="pt-2 border-t border-border/60">
                   <Link
-                    href={`/explore?q=${encodeURIComponent(col.title)}`}
-                    className="inline-flex items-center text-support font-semibold text-forest hover:underline"
+                    href={`/explore?q=${encodeURIComponent(col.query)}`}
+                    className="inline-flex items-center gap-1 text-meta font-semibold text-gold hover:underline"
                   >
-                    View Stories →
+                    Explore Collection Stories →
                   </Link>
                 </div>
               </div>
@@ -290,40 +458,59 @@ export default async function ExplorePage({
         </div>
       </section>
 
-      {/* Explore by Region */}
-      <section className="mt-16 md:mt-20" aria-labelledby="regions-title">
-        <div className="flex items-baseline justify-between gap-4">
+      {/* 5. Explore by Region matching Reference Page 4 */}
+      <section className="mt-16 sm:mt-20" aria-labelledby="regions-title">
+        <div className="flex items-baseline justify-between gap-4 border-b border-border/60 pb-3">
           <div>
-            <SectionTitle id="regions-title">Explore by Region</SectionTitle>
-            <p className="mt-1 text-support text-secondary-text">
-              Cultural landscapes across India&apos;s geographic zones
-            </p>
+            <div className="flex items-center gap-2 text-[11px] font-semibold uppercase tracking-wider text-gold">
+              <span>✦</span>
+              <span>Geographic Portals</span>
+            </div>
+            <h2 id="regions-title" className="mt-1 font-serif text-2xl sm:text-3xl font-semibold text-charcoal">
+              Explore by Geographic Region
+            </h2>
           </div>
         </div>
 
         <div className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {REGIONS.map((reg) => (
-            <div
+            <Link
               key={reg.name}
-              className="rounded-2xl border border-border/80 bg-surface p-5 shadow-2xs transition-all duration-300 hover:border-forest/40 hover:shadow-md"
+              href={`/explore?q=${encodeURIComponent(reg.query)}`}
+              className="group rounded-2xl border border-border/80 bg-surface p-5 shadow-xs transition-all duration-300 hover:border-gold/50 hover:bg-surface-2"
             >
               <div className="flex items-center justify-between">
-                <h3 className="font-serif text-card font-semibold text-charcoal tracking-tight">{reg.name}</h3>
-                <span className="text-terracotta text-sm">✦</span>
+                <h3 className="font-serif text-lg font-semibold text-charcoal group-hover:text-gold transition-colors">
+                  {reg.name}
+                </h3>
+                <span className="text-gold text-xs">✦</span>
               </div>
-              <p className="mt-1 text-meta font-medium text-terracotta">{reg.states}</p>
-              <p className="mt-2 text-support text-secondary-text leading-relaxed">{reg.desc}</p>
-            </div>
+              <p className="mt-1 text-[11px] font-semibold uppercase tracking-wider text-gold">
+                {reg.states}
+              </p>
+              <p className="mt-2 text-support text-secondary-text leading-relaxed">
+                {reg.desc}
+              </p>
+              <div className="mt-3.5 flex items-center justify-between pt-2 border-t border-border/60 text-[11px] text-muted">
+                <span>Pilot: {reg.cities}</span>
+                <span className="text-gold font-semibold group-hover:translate-x-1 transition-transform">Explore →</span>
+              </div>
+            </Link>
           ))}
         </div>
       </section>
 
-      {/* Pilot Cities Section */}
-      <section className="mt-16 md:mt-20 border-t border-border pt-12" aria-labelledby="cities-section-title">
-        <div className="flex items-baseline justify-between gap-4">
+      {/* 6. Pilot Cities Section */}
+      <section className="mt-16 sm:mt-20 border-t border-border/70 pt-12" aria-labelledby="cities-section-title">
+        <div className="flex items-baseline justify-between gap-4 border-b border-border/60 pb-3">
           <div>
-            <SectionTitle id="cities-section-title">Pilot Cities ({filteredCities.length})</SectionTitle>
-            <p className="mt-1 text-support text-secondary-text">Geographic hubs and their connected cultural ecosystems</p>
+            <div className="flex items-center gap-2 text-[11px] font-semibold uppercase tracking-wider text-gold">
+              <span>✦</span>
+              <span>Pilot Ecosystems</span>
+            </div>
+            <h2 id="cities-section-title" className="mt-1 font-serif text-2xl sm:text-3xl font-semibold text-charcoal">
+              Six Pilot Cities ({filteredCities.length})
+            </h2>
           </div>
         </div>
 
@@ -353,7 +540,18 @@ export default async function ExplorePage({
         )}
       </section>
 
-      <p className="mt-10 text-meta text-muted">{t("explore.pilotNote")}</p>
+      {/* 7. Bottom Editorial Quote Banner matching Reference Page 4 */}
+      <section className="mt-16 sm:mt-20 mb-8 rounded-3xl border border-gold/30 bg-gradient-to-br from-[#161310] via-[#1a1714] to-[#12100d] p-8 sm:p-12 text-center shadow-md">
+        <div className="max-w-3xl mx-auto space-y-3">
+          <span className="text-gold text-lg">✦</span>
+          <blockquote className="font-serif text-xl sm:text-2xl md:text-3xl italic font-normal text-white leading-relaxed">
+            &ldquo;Culture is not a monument of the past, but an active memory lived every day in sacred water, woven silk, and resonant stone.&rdquo;
+          </blockquote>
+          <p className="text-meta font-semibold uppercase tracking-widest text-gold pt-2">
+            TattvaCo Cultural Discovery Engine
+          </p>
+        </div>
+      </section>
     </Page>
   );
 }
