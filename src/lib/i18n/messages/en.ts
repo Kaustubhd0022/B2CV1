@@ -6,7 +6,9 @@ const en = {
 
   "nav.discover": "Discover",
   "nav.explore": "Explore",
+  "nav.atlas": "Atlas",
   "nav.ask": "Ask",
+  "nav.comingSoon": "Coming Soon",
   "nav.settings": "Settings",
   "nav.main": "Main navigation",
   "nav.back": "Back",

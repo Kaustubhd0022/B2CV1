@@ -5,7 +5,48 @@ import { usePathname } from "next/navigation";
 import { IconAsk, IconDiscover, IconExplore, IconSettings } from "./icons";
 import { cx } from "./ui";
 
-type Labels = { discover: string; explore: string; ask: string; settings: string; main: string };
+type Labels = {
+  discover: string;
+  explore: string;
+  atlas?: string;
+  ask: string;
+  comingSoon?: string;
+  settings: string;
+  main: string;
+};
+
+const TOP_ITEMS = [
+  {
+    href: "/",
+    key: "discover",
+    fallbackLabel: "Discover",
+    match: (p: string) => p === "/" || p.startsWith("/connections"),
+  },
+  {
+    href: "/explore",
+    key: "explore",
+    fallbackLabel: "Explore",
+    match: (p: string) => p.startsWith("/explore") || p.startsWith("/stories"),
+  },
+  {
+    href: "/places",
+    key: "atlas",
+    fallbackLabel: "Atlas",
+    match: (p: string) => p.startsWith("/places") || p.startsWith("/cities"),
+  },
+  {
+    href: "/ask",
+    key: "ask",
+    fallbackLabel: "Ask",
+    match: (p: string) => p.startsWith("/ask"),
+  },
+  {
+    href: "/coming-soon",
+    key: "comingSoon",
+    fallbackLabel: "Coming Soon",
+    match: (p: string) => p.startsWith("/coming-soon"),
+  },
+] as const;
 
 const ITEMS = [
   {
@@ -53,7 +94,7 @@ export function MainNav({ labels, variant }: { labels: Labels; variant: "bottom"
     return (
       <nav aria-label={labels.main} className="hidden md:block">
         <ul className="flex items-center gap-1.5">
-          {ITEMS.map(({ href, key, fallbackLabel, match }) => {
+          {TOP_ITEMS.map(({ href, key, fallbackLabel, match }) => {
             const active = match(pathname);
             const labelText = (key in labels ? labels[key as keyof Labels] : fallbackLabel) || fallbackLabel;
             return (

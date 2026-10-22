@@ -10,7 +10,15 @@ export default async function AppLayout({ children }: { children: React.ReactNod
   const { lang, t } = await pageContext();
   const info = languageInfo(lang);
   const coverage = uiCoverage(lang);
-  const labels = { discover: t("nav.discover"), explore: t("nav.explore"), ask: t("nav.ask"), settings: t("nav.settings"), main: t("nav.main") };
+  const labels = {
+    discover: t("nav.discover"),
+    explore: t("nav.explore"),
+    atlas: t("nav.atlas"),
+    ask: t("nav.ask"),
+    comingSoon: t("nav.comingSoon"),
+    settings: t("nav.settings"),
+    main: t("nav.main"),
+  };
 
   return (
     <div lang={lang} className="min-h-dvh">
@@ -31,7 +39,19 @@ export default async function AppLayout({ children }: { children: React.ReactNod
             )}
           </Link>
           <MainNav labels={labels} variant="top" />
-          <LanguageLink lang={lang} native={info.native} label={t("lang.change")} />
+          <div className="flex items-center gap-2.5">
+            <Link
+              href="/explore"
+              className="hidden lg:flex items-center gap-2 rounded-full border border-border/80 bg-surface/80 px-3.5 py-1 text-meta text-muted hover:text-charcoal hover:border-gold/40 transition-all duration-200"
+              aria-label="Search places and stories"
+            >
+              <svg className="size-3.5 text-muted" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+              </svg>
+              <span>Search places, stories…</span>
+            </Link>
+            <LanguageLink lang={lang} native={info.native} label={t("lang.change")} />
+          </div>
         </div>
         {lang !== "en" && (coverage < 1 || !gatePassed(lang)) && (
           <p role="note" className="border-t border-warning/30 bg-warning/5 px-4 py-2 text-center text-meta text-charcoal">
