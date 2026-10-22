@@ -1,59 +1,64 @@
 @import "tailwindcss";
 
 /*
- * TattvaCo Visual System — Living Heritage Editorial Design System
- * Inspired by Apple's visual clarity & world-class museum storytelling.
+ * TattvaCo Visual System — Cinematic Cultural Discovery — Near-Black Editorial
  *
- * Core Palette:
- *   canvas          = #F6F2E9 (Warm Ivory app background)
- *   surface         = #FFFFFF (Pure White cards and primary panels)
- *   surface-2       = #EFE9DC (Soft Sandstone secondary sections & inputs)
- *   elevated        = #FFFFFF (Floating panels & modals with soft shadow)
- *   forest          = #173D32 (Deep Forest Green primary action & branding)
- *   forest-hover    = #1F4E40 (Forest Green hover state)
- *   on-forest       = #FFFFFF (Text on Forest buttons)
- *   terracotta      = #B85C3E (Heritage Terracotta accent & badges)
- *   terracotta-text = #A34F34 (High-contrast Terracotta text)
- *   charcoal        = #252923 (Deep Ink Charcoal primary text)
- *   secondary-text  = #52574E (Balanced charcoal for descriptions)
- *   muted           = #6B7065 (High-contrast metadata & secondary labels, passes WCAG AA)
- *   border          = #DFD7C7 (Subtle warm Sandstone borders)
- *   border-subtle   = #E8E2D6 (Ultra-light borders)
- *   sandstone       = #E7DDCA (Natural Sandstone container fills)
- *   gold            = #B85C3E (Cultural highlights mapped to warm terracotta/bronze)
- *   gold-hover      = #9E4A30 (Terracotta hover)
- *   stone           = #F0E9DC (Neutral architectural card backdrop)
+ * Direction: Premium Indian cultural editorial. Near-black OLED backgrounds.
+ * Gold (#D6B36A) as the primary accent. Forest green for brand actions.
+ * Typography: Noto Serif for editorial headlines, Plus Jakarta Sans for UI.
  *
- * Semantic Feedback:
- *   success         = #246B48 (Verified green)
- *   warning         = #A66415 (Warm amber)
- *   error           = #B83232 (Deep red)
- *   info            = #2B6282 (Deep indigo)
+ * Core Palette (dark cinematic):
+ *   canvas          = #0C0B0A  (Near-black warm app background)
+ *   surface         = #171512  (Dark warm card surface)
+ *   surface-2       = #111009  (Deeper secondary sections & inputs)
+ *   elevated        = #1E1C18  (Floating panels & modals — elevated dark)
+ *   forest          = #2D6A52  (Forest Green — brand action colour)
+ *   forest-hover    = #38836A  (Forest hover state)
+ *   on-forest       = #FFFFFF  (Text on Forest buttons)
+ *   gold            = #D6B36A  (Heritage Gold — primary accent & highlights)
+ *   gold-hover      = #E7C985  (Gold hover state)
+ *   on-gold         = #0C0B0A  (Dark text on gold buttons)
+ *   terracotta      = #C4674A  (Heritage Terracotta — editorial accents)
+ *   terracotta-text = #E07A5A  (Terracotta on dark — lightened for contrast)
+ *   charcoal        = #F5F0E8  (PRIMARY TEXT — warm white on dark backgrounds)
+ *   secondary-text  = #B7B0A5  (Supporting descriptions on dark)
+ *   muted           = #89847C  (Metadata — WCAG AA 4.5:1 on canvas)
+ *   border          = #302C25  (Warm dark card & control borders)
+ *   border-subtle   = #231F1A  (Ultra-subtle dividers on dark)
+ *   sandstone       = #3D3529  (Dark sandstone container fills)
+ *   stone           = #1A1612  (Neutral dark architectural card backdrop)
+ *
+ * Semantic Feedback (legible on dark):
+ *   success         = #65B88A  (Verified green)
+ *   warning         = #E3B765  (Warm amber)
+ *   error           = #F07878  (Coral red)
+ *   info            = #5B9FD4  (Sky blue)
  */
 @theme {
-  --color-canvas: #f6f2e9;
-  --color-surface: #ffffff;
-  --color-surface-2: #efe9dc;
-  --color-elevated: #ffffff;
-  --color-forest: #173d32;
-  --color-forest-hover: #1f4e40;
+  --color-canvas: #0c0b0a;
+  --color-surface: #171512;
+  --color-surface-2: #111009;
+  --color-elevated: #1e1c18;
+  --color-forest: #2d6a52;
+  --color-forest-hover: #38836a;
   --color-on-forest: #ffffff;
-  --color-terracotta: #b85c3e;
-  --color-terracotta-text: #a34f34;
-  --color-charcoal: #252923;
-  --color-secondary-text: #52574e;
-  --color-muted: #6b7065;
-  --color-border: #dfd7c7;
-  --color-border-subtle: #e8e2d6;
-  --color-sandstone: #e7ddca;
-  --color-gold: #b85c3e;
-  --color-gold-hover: #9e4a30;
-  --color-stone: #f0e9dc;
+  --color-gold: #d6b36a;
+  --color-gold-hover: #e7c985;
+  --color-on-gold: #0c0b0a;
+  --color-terracotta: #c4674a;
+  --color-terracotta-text: #e07a5a;
+  --color-charcoal: #f5f0e8;
+  --color-secondary-text: #b7b0a5;
+  --color-muted: #89847c;
+  --color-border: #302c25;
+  --color-border-subtle: #231f1a;
+  --color-sandstone: #3d3529;
+  --color-stone: #1a1612;
 
-  --color-success: #246b48;
-  --color-warning: #a66415;
-  --color-error: #b83232;
-  --color-info: #2b6282;
+  --color-success: #65b88a;
+  --color-warning: #e3b765;
+  --color-error: #f07878;
+  --color-info: #5b9fd4;
 
   --radius-xs: 4px;
   --radius-sm: 8px;
@@ -66,19 +71,19 @@
     var(--font-orya), var(--font-taml), var(--font-telu), var(--font-knda), var(--font-mlym), -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
   --font-serif: var(--font-noto-serif), Georgia, Cambria, "Times New Roman", serif;
 
-  /* Typographic scale with Apple-like optical balance */
+  /* Typographic scale */
   --text-display: 2.25rem; /* 36px */
-  --text-display--line-height: 1.15;
+  --text-display--line-height: 1.12;
   --text-display-lg: 3.5rem; /* 56px */
-  --text-display-lg--line-height: 1.08;
+  --text-display-lg--line-height: 1.06;
   --text-page: 1.875rem; /* 30px */
-  --text-page--line-height: 1.2;
+  --text-page--line-height: 1.18;
   --text-page-lg: 2.25rem; /* 36px */
   --text-section: 1.5rem; /* 24px */
-  --text-section--line-height: 1.3;
+  --text-section--line-height: 1.28;
   --text-section-lg: 1.875rem; /* 30px */
   --text-card: 1.25rem; /* 20px */
-  --text-card--line-height: 1.35;
+  --text-card--line-height: 1.32;
   --text-body-lead: 1.125rem; /* 18px */
   --text-body-lead--line-height: 1.65;
   --text-body: 1rem; /* 16px */
@@ -91,7 +96,7 @@
 
 html {
   -webkit-text-size-adjust: 100%;
-  color-scheme: light;
+  color-scheme: dark;
   scroll-behavior: smooth;
 }
 
@@ -121,7 +126,7 @@ body {
 }
 
 :focus-visible {
-  outline: 2px solid var(--color-forest);
+  outline: 2px solid var(--color-gold);
   outline-offset: 2px;
   border-radius: 6px;
 }
@@ -154,52 +159,52 @@ dd {
   }
 }
 
-/* Frosted glass header & backdrop blur */
+/* Frosted glass — dark cinematic style */
 .glass {
-  background: rgba(246, 242, 233, 0.85);
-  backdrop-filter: blur(20px) saturate(1.4);
-  -webkit-backdrop-filter: blur(20px) saturate(1.4);
-  border: 1px solid rgba(223, 215, 199, 0.7);
+  background: rgba(14, 13, 11, 0.82);
+  backdrop-filter: blur(20px) saturate(1.6);
+  -webkit-backdrop-filter: blur(20px) saturate(1.6);
+  border: 1px solid rgba(48, 44, 37, 0.9);
   color: var(--color-charcoal);
 }
 
 .glass-white {
-  background: rgba(255, 255, 255, 0.9);
+  background: rgba(30, 28, 24, 0.88);
   backdrop-filter: blur(20px) saturate(1.4);
   -webkit-backdrop-filter: blur(20px) saturate(1.4);
-  border: 1px solid rgba(223, 215, 199, 0.8);
+  border: 1px solid rgba(48, 44, 37, 0.8);
   color: var(--color-charcoal);
 }
 
-/* Photo gradient overlays so text over photographs stays cinematic and readable (≥ 4.5:1). */
+/* Cinematic scrims: near-black warm overlays over photography */
 .scrim {
   background: linear-gradient(
     180deg,
-    rgba(23, 61, 50, 0.25) 0%,
-    rgba(23, 61, 50, 0.1) 30%,
-    rgba(37, 41, 35, 0.5) 60%,
-    rgba(37, 41, 35, 0.88) 85%,
-    rgba(37, 41, 35, 0.98) 100%
+    rgba(12, 11, 10, 0.18) 0%,
+    rgba(12, 11, 10, 0.08) 28%,
+    rgba(12, 11, 10, 0.48) 55%,
+    rgba(12, 11, 10, 0.84) 80%,
+    rgba(12, 11, 10, 0.97) 100%
   );
 }
 
 .scrim-subtle {
   background: linear-gradient(
     180deg,
-    rgba(37, 41, 35, 0.1) 0%,
-    rgba(37, 41, 35, 0.65) 70%,
-    rgba(37, 41, 35, 0.92) 100%
+    rgba(12, 11, 10, 0.06) 0%,
+    rgba(12, 11, 10, 0.58) 65%,
+    rgba(12, 11, 10, 0.92) 100%
   );
 }
 
 .scrim-bottom {
-  background: linear-gradient(180deg, rgba(37, 41, 35, 0) 40%, rgba(37, 41, 35, 0.85) 100%);
+  background: linear-gradient(180deg, rgba(12, 11, 10, 0) 35%, rgba(12, 11, 10, 0.84) 100%);
 }
 
 .card-editorial {
   background: var(--color-surface);
   border: 1px solid var(--color-border);
-  box-shadow: 0 4px 20px rgba(37, 41, 35, 0.06);
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.32);
 }
 
 .card-hover-lift {
@@ -207,8 +212,8 @@ dd {
 }
 .card-hover-lift:hover {
   transform: translateY(-3px);
-  box-shadow: 0 12px 30px rgba(23, 61, 50, 0.1);
-  border-color: rgba(23, 61, 50, 0.3);
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.50);
+  border-color: rgba(214, 179, 106, 0.25);
 }
 
 .no-scrollbar {
@@ -217,3 +222,19 @@ dd {
 .no-scrollbar::-webkit-scrollbar {
   display: none;
 }
+
+/* Gold shimmer for editorial headlines and hero accents */
+@keyframes gold-shimmer {
+  0%   { background-position: -200% center; }
+  100% { background-position:  200% center; }
+}
+
+.gold-shimmer {
+  background: linear-gradient(90deg, #d6b36a 0%, #e7c985 45%, #d6b36a 65%, #b89248 100%);
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: gold-shimmer 5s linear infinite;
+}
+

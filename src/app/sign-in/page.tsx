@@ -57,8 +57,8 @@ export default async function SignInPage({ searchParams }: { searchParams: Promi
     { slug: "jaipur", name: "Jaipur", state: "Rajasthan", img: "/images/dev/jaipur.jpg" },
     { slug: "hampi", name: "Hampi", state: "Karnataka", img: "/images/dev/hampi.jpg" },
     { slug: "kochi", name: "Kochi", state: "Kerala", img: "/images/dev/kochi.jpg" },
-    { slug: "kolkata", name: "Kolkata", state: "West Bengal", img: "/images/dev/varanasi-hero.jpg" },
-    { slug: "madurai", name: "Madurai", state: "Tamil Nadu", img: "/images/dev/hampi.jpg" },
+    { slug: "kolkata", name: "Kolkata", state: "West Bengal", img: "/images/dev/kolkata.jpg" },
+    { slug: "madurai", name: "Madurai", state: "Tamil Nadu", img: "/images/dev/madurai.jpg" },
   ];
 
   const categories = [

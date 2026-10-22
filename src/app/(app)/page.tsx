@@ -266,9 +266,9 @@ export default async function HomePage() {
 
       {/* Prominent Ask TattvaCo Callout Module */}
       <FadeIn delay={0.12}>
-        <section className="mt-16 md:mt-24 rounded-3xl border border-border bg-gradient-to-br from-[#EFE9DC] via-[#E7DDCA] to-[#DFD7C7] p-8 sm:p-10 md:p-12 shadow-xs">
+        <section className="mt-16 md:mt-24 rounded-3xl border border-gold/25 bg-gradient-to-br from-[#171512] via-[#1a1714] to-[#12100d] p-8 sm:p-10 md:p-12 shadow-md">
           <div className="max-w-2xl">
-            <div className="flex items-center gap-2 text-meta font-semibold uppercase tracking-[0.16em] text-terracotta">
+            <div className="flex items-center gap-2 text-meta font-semibold uppercase tracking-[0.16em] text-gold">
               <span>✦</span>
               <span>AI Cultural Discovery</span>
             </div>
@@ -281,13 +281,13 @@ export default async function HomePage() {
             <div className="mt-7 flex flex-wrap items-center gap-3.5">
               <Link
                 href="/ask"
-                className="inline-flex min-h-12 items-center justify-center rounded-full bg-forest px-6 text-support font-semibold text-on-forest transition-all hover:bg-forest-hover shadow-xs active:scale-[0.985]"
+                className="inline-flex min-h-12 items-center justify-center gap-2 rounded-full bg-gold px-6 text-support font-semibold text-on-gold transition-all hover:bg-gold-hover shadow-xs active:scale-[0.985]"
               >
                 Ask TattvaCo a Question →
               </Link>
               <Link
                 href="/explore"
-                className="inline-flex min-h-12 items-center justify-center rounded-full border border-border bg-surface px-6 text-support font-semibold text-charcoal shadow-2xs hover:bg-surface-2 transition-all active:scale-[0.985]"
+                className="inline-flex min-h-12 items-center justify-center rounded-full border border-border bg-surface px-6 text-support font-semibold text-charcoal shadow-2xs hover:bg-elevated hover:border-gold/40 transition-all active:scale-[0.985]"
               >
                 Browse Pilot Collections
               </Link>

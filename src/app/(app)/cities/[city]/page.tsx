@@ -331,8 +331,8 @@ export default async function CityPage({
           )}
 
           {/* Culture-Lens Travel Tips */}
-          <section id="travel-lens" className="rounded-3xl border border-border bg-gradient-to-br from-[#EFE9DC] to-[#E7DDCA] p-7 md:p-8 shadow-xs" aria-labelledby="tips-title">
-            <div className="flex items-center gap-2 text-meta font-semibold uppercase tracking-[0.16em] text-terracotta">
+          <section id="travel-lens" className="rounded-3xl border border-gold/25 bg-gradient-to-br from-[#171512] via-[#1a1714] to-[#12100d] p-7 md:p-8 shadow-md" aria-labelledby="tips-title">
+            <div className="flex items-center gap-2 text-meta font-semibold uppercase tracking-[0.16em] text-gold">
               <span>✦</span>
               <span>Cultural-Lens Exploration Tips</span>
             </div>
@@ -412,8 +412,8 @@ export default async function CityPage({
           )}
 
           {/* Ask TattvaCo Prompt Card */}
-          <div className="rounded-2xl border border-border bg-gradient-to-br from-[#EFE9DC] to-[#E7DDCA] p-6 shadow-xs">
-            <span className="text-meta font-semibold uppercase tracking-[0.16em] text-terracotta">✦ Ask TattvaCo</span>
+          <div className="rounded-2xl border border-gold/25 bg-gradient-to-br from-[#171512] via-[#1a1714] to-[#12100d] p-6 shadow-md">
+            <span className="text-meta font-semibold uppercase tracking-[0.16em] text-gold">✦ Ask TattvaCo</span>
             <h3 className="mt-1.5 font-serif text-card font-semibold text-charcoal">
               Curious about {name}?
             </h3>

@@ -153,7 +153,7 @@ function cleanGeminiSchema(schema: unknown): unknown {
  */
 export class GeminiProvider implements LLMProvider {
   name = "gemini";
-  constructor(public model: string = "gemini-3.5-flash-lite") {}
+  constructor(public model: string = "gemini-3.8-flash") {}
 
   async generate<T>(req: { task: LLMTask; system: string; user: string; schema: z.ZodType<T>; maxTokens?: number }): Promise<LLMResult<T>> {
     const key = process.env.GEMINI_API_KEY || process.env.GOOGLE_AI_API_KEY;
@@ -304,7 +304,7 @@ export function getProvider(): LLMProvider | null {
   const hasGroq = !!process.env.GROQ_API_KEY;
   const hasAnthropic = !!process.env.ANTHROPIC_API_KEY;
 
-  const geminiModel = c.ai.model.startsWith("gemini") ? c.ai.model : "gemini-3.5-flash-lite";
+  const geminiModel = c.ai.model.startsWith("gemini") ? c.ai.model : "gemini-3.8-flash";
   const groqModel = c.ai.model.startsWith("openai/") ? c.ai.model : "openai/gpt-oss-120b";
 
   const gemini = hasGemini ? new GeminiProvider(geminiModel) : null;

@@ -109,7 +109,7 @@ function load() {
       model:
         process.env.LLM_MODEL ||
         (llmProvider() === "gemini" || llmProvider() === "auto"
-          ? "gemini-3.5-flash-lite"
+          ? "gemini-3.8-flash"
           : llmProvider() === "groq"
           ? "openai/gpt-oss-120b"
           : "claude-opus-5-5"),

@@ -46,11 +46,11 @@ export function CityCard({
             priority={priority}
           />
         ) : (
-          <div className="absolute inset-0 bg-gradient-to-br from-[#e7ddca] via-[#dfd7c7] to-[#d4c9b5]" aria-hidden="true" />
+          <div className="absolute inset-0 bg-gradient-to-br from-[#1c1915] via-[#16130f] to-[#0e0c0a]" aria-hidden="true" />
         )}
         <div className="scrim absolute inset-0" aria-hidden="true" />
         {badge && (
-          <span className="glass-white absolute right-3.5 top-3.5 rounded-full px-3 py-1 text-[11px] font-semibold text-forest shadow-2xs">
+          <span className="glass-white absolute right-3.5 top-3.5 rounded-full px-3 py-1 text-[11px] font-semibold text-gold shadow-2xs">
             {badge}
           </span>
         )}
@@ -60,7 +60,7 @@ export function CityCard({
           {taglineNote && <p className="mt-1 text-[11px] italic text-white/70">{taglineNote}</p>}
           {meta && (
             <p className="mt-2 text-meta font-medium text-sandstone flex items-center gap-1.5">
-              <span className="size-1.5 rounded-full bg-terracotta" />
+              <span className="size-1.5 rounded-full bg-gold" />
               {meta}
             </p>
           )}
@@ -92,11 +92,11 @@ export function StoryCard({
     <MotionCard className="h-full">
       <Link
         href={href}
-        className="group flex h-full flex-col justify-between rounded-2xl border border-border/80 bg-surface p-6 shadow-2xs transition-all duration-300 hover:border-forest/40 hover:shadow-md"
+        className="group flex h-full flex-col justify-between rounded-2xl border border-border/80 bg-surface p-6 shadow-2xs transition-all duration-300 hover:border-gold/40 hover:shadow-md"
       >
         <div>
-          {eyebrow && <p className="text-meta font-semibold uppercase tracking-[0.16em] text-terracotta">{eyebrow}</p>}
-          <h3 className="mt-1.5 font-serif text-card md:text-section font-semibold text-charcoal group-hover:text-forest transition-colors tracking-tight">
+          {eyebrow && <p className="text-meta font-semibold uppercase tracking-[0.16em] text-gold">{eyebrow}</p>}
+          <h3 className="mt-1.5 font-serif text-card md:text-section font-semibold text-charcoal group-hover:text-gold transition-colors tracking-tight">
             {title}
           </h3>
           <p className="mt-2 text-support text-secondary-text leading-relaxed line-clamp-3">{summary}</p>
@@ -109,7 +109,7 @@ export function StoryCard({
           )}
           {languageNote && <span className="text-meta text-muted">{languageNote}</span>}
           {fixtureLabel && <FixtureBadge label={fixtureLabel} />}
-          <span className="ml-auto inline-flex items-center gap-1 text-meta font-semibold text-forest transition-transform group-hover:translate-x-1">
+          <span className="ml-auto inline-flex items-center gap-1 text-meta font-semibold text-gold transition-transform group-hover:translate-x-1">
             Read story <IconArrow width={16} height={16} />
           </span>
         </div>
@@ -142,13 +142,13 @@ export function ConnectionCard({
         className={cx(
           "group relative block overflow-hidden rounded-2xl border p-6 transition-all duration-300 md:p-8",
           featured
-            ? "border-forest/40 bg-gradient-to-br from-[#173D32] via-[#1A4438] to-[#122F26] text-white shadow-md hover:shadow-lg"
-            : "border-border bg-surface hover:border-forest/40 hover:shadow-md shadow-2xs",
+            ? "border-gold/30 bg-gradient-to-br from-[#1c1915] via-[#161410] to-[#110f0c] text-white shadow-md hover:border-gold/60 hover:shadow-lg"
+            : "border-border bg-surface hover:border-gold/40 hover:shadow-md shadow-2xs",
         )}
       >
         <div className="flex items-center gap-2 text-meta font-semibold uppercase tracking-wider">
-          <IconConnect width={18} height={18} className={featured ? "text-sandstone" : "text-terracotta"} />
-          <span className={featured ? "text-sandstone" : "text-terracotta"}>{typeLabel}</span>
+          <IconConnect width={18} height={18} className={featured ? "text-gold" : "text-gold"} />
+          <span className={featured ? "text-gold" : "text-gold"}>{typeLabel}</span>
         </div>
         <h3 className={cx("mt-2.5 font-serif text-section font-semibold tracking-tight md:text-section-lg", featured ? "text-white" : "text-charcoal")}>
           {title}
@@ -161,8 +161,8 @@ export function ConnectionCard({
             className={cx(
               "inline-flex min-h-10 items-center gap-2 rounded-full px-5 text-support font-semibold transition-all duration-200",
               featured
-                ? "bg-white text-forest shadow-xs group-hover:bg-sandstone"
-                : "bg-forest text-on-forest group-hover:bg-forest-hover shadow-xs",
+                ? "bg-gold text-on-gold shadow-xs hover:bg-gold-hover"
+                : "bg-gold text-on-gold hover:bg-gold-hover shadow-xs",
             )}
           >
             {cta} <IconArrow width={16} height={16} className="transition-transform group-hover:translate-x-0.5" />
@@ -193,10 +193,10 @@ export function ThematicCard({
     <MotionCard className="h-full">
       <Link
         href={href}
-        className="group relative flex h-full flex-col justify-between overflow-hidden rounded-2xl border border-border/80 bg-surface p-6 shadow-2xs transition-all duration-300 hover:border-forest/40 hover:shadow-md"
+        className="group relative flex h-full flex-col justify-between overflow-hidden rounded-2xl border border-border/80 bg-surface p-6 shadow-2xs transition-all duration-300 hover:border-gold/40 hover:shadow-md"
       >
         <div>
-          <div className="flex items-center justify-between text-meta font-semibold uppercase tracking-wider text-terracotta">
+          <div className="flex items-center justify-between text-meta font-semibold uppercase tracking-wider text-gold">
             <span>{category}</span>
             {count && (
               <span className="rounded-full bg-surface-2 border border-border/80 px-2.5 py-0.5 text-[11px] font-medium text-secondary-text">
@@ -204,12 +204,12 @@ export function ThematicCard({
               </span>
             )}
           </div>
-          <h3 className="mt-2.5 font-serif text-card md:text-section font-semibold text-charcoal group-hover:text-forest transition-colors tracking-tight">
+          <h3 className="mt-2.5 font-serif text-card md:text-section font-semibold text-charcoal group-hover:text-gold transition-colors tracking-tight">
             {title}
           </h3>
           <p className="mt-1.5 text-support text-secondary-text leading-relaxed">{subtitle}</p>
         </div>
-        <div className="mt-6 flex items-center gap-1.5 text-meta font-semibold text-forest group-hover:text-forest-hover">
+        <div className="mt-6 flex items-center gap-1.5 text-meta font-semibold text-gold group-hover:text-gold-hover">
           <span>Explore dimension</span>
           <IconArrow width={14} height={14} className="transition-transform group-hover:translate-x-1" />
         </div>

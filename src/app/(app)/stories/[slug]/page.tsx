@@ -348,8 +348,8 @@ export default async function StoryPage({ params, searchParams }: { params: Prom
           </section>
 
           {/* Go Deeper / Follow-up Questions */}
-          <section className="mt-12 rounded-3xl border border-forest/20 bg-gradient-to-br from-[#EFE9DC] via-[#E7DDCA] to-[#DFD7C7] p-7 md:p-8 shadow-xs" aria-labelledby="deeper-title">
-            <div className="flex items-center gap-2 text-meta font-semibold uppercase tracking-wider text-terracotta">
+          <section className="mt-12 rounded-3xl border border-gold/25 bg-gradient-to-br from-[#171512] via-[#1a1714] to-[#12100d] p-7 md:p-8 shadow-md" aria-labelledby="deeper-title">
+            <div className="flex items-center gap-2 text-meta font-semibold uppercase tracking-wider text-gold">
               <span>✦</span>
               <span>Curiosity-Led Exploration</span>
             </div>

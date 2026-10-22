@@ -20,8 +20,8 @@ export default async function PlacesPage({
 
   return (
     <Page className="max-w-6xl pt-2">
-      <div className="rounded-3xl border border-border bg-gradient-to-br from-[#EFE9DC] via-[#E7DDCA] to-[#DFD7C7] p-8 sm:p-10 shadow-xs mb-6">
-        <div className="flex items-center gap-2 text-meta font-semibold uppercase tracking-wider text-terracotta">
+      <div className="rounded-3xl border border-gold/25 bg-gradient-to-br from-[#171512] via-[#1a1714] to-[#12100d] p-8 sm:p-10 shadow-md mb-6">
+        <div className="flex items-center gap-2 text-meta font-semibold uppercase tracking-wider text-gold">
           <span>✦</span>
           <span>Interactive Cultural Atlas</span>
         </div>

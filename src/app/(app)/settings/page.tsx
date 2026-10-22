@@ -22,13 +22,13 @@ export default async function SettingsPage() {
   return (
     <Page className="max-w-2xl pt-2">
       {/* Explorer Profile Banner (Master Spec §12 Screen 10 / Reference Page 9) */}
-      <div className="rounded-3xl border border-border bg-gradient-to-br from-[#EFE9DC] via-[#E7DDCA] to-[#DFD7C7] p-6 sm:p-8 shadow-xs">
+      <div className="rounded-3xl border border-gold/25 bg-gradient-to-br from-[#171512] via-[#1a1714] to-[#12100d] p-6 sm:p-8 shadow-md">
         <div className="flex items-center justify-between">
-          <div className="flex items-center gap-2 text-meta font-semibold uppercase tracking-wider text-terracotta">
+          <div className="flex items-center gap-2 text-meta font-semibold uppercase tracking-wider text-gold">
             <span>✦</span>
             <span>My Cultural Journey</span>
           </div>
-          <span className="rounded-full bg-forest/10 border border-forest/20 px-3 py-1 text-meta font-semibold text-forest">
+          <span className="rounded-full bg-gold/10 border border-gold/30 px-3 py-1 text-meta font-semibold text-gold">
             Explorer Profile
           </span>
         </div>
@@ -92,7 +92,7 @@ export default async function SettingsPage() {
           ))}
           {session.role === "editor" && (
             <li>
-              <Link href="/editorial" className="group flex min-h-16 items-center justify-between gap-3 px-5 py-3.5 hover:bg-surface-2 transition-colors bg-[#f4f7f4]">
+              <Link href="/editorial" className="group flex min-h-16 items-center justify-between gap-3 px-5 py-3.5 hover:bg-forest/20 transition-colors bg-forest/10 border-t border-border">
                 <div className="flex items-center gap-3.5">
                   <span className="flex size-9 items-center justify-center rounded-full bg-forest/15 border border-forest/30 text-forest shadow-2xs">
                     ✦

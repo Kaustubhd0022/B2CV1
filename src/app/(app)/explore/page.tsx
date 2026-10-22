@@ -104,9 +104,9 @@ export default async function ExplorePage({
     <Page className="pt-2">
       {/* Editorial Theme Hero */}
       <FadeIn delay={0.05}>
-        <section className="rounded-3xl border border-border bg-gradient-to-br from-[#EFE9DC] via-[#E7DDCA] to-[#DFD7C7] p-8 sm:p-10 md:p-12 shadow-xs">
+        <section className="rounded-3xl border border-gold/25 bg-gradient-to-br from-[#171512] via-[#1a1714] to-[#12100d] p-8 sm:p-10 md:p-12 shadow-md">
           <div className="max-w-2xl">
-            <p className="text-meta font-semibold uppercase tracking-[0.18em] text-terracotta">
+            <p className="text-meta font-semibold uppercase tracking-[0.18em] text-gold">
               ✦ Explore by Dimension
             </p>
             <h1 className="mt-2.5 font-serif text-display leading-tight text-charcoal md:text-display-lg tracking-tight">
@@ -132,13 +132,13 @@ export default async function ExplorePage({
                   name="q"
                   defaultValue={q}
                   placeholder="Search stories, traditions, places or crafts…"
-                  className="block w-full min-h-12 rounded-full border border-border bg-surface py-2.5 pl-11 pr-4 text-body text-charcoal placeholder:text-muted shadow-2xs focus:border-forest focus:outline-none focus:ring-2 focus:ring-forest/20"
+                  className="block w-full min-h-12 rounded-full border border-border bg-surface-2 py-2.5 pl-11 pr-4 text-body text-charcoal placeholder:text-muted shadow-2xs focus:border-gold focus:outline-none focus:ring-2 focus:ring-gold/20"
                 />
                 {activeCategory !== "all" && <input type="hidden" name="category" value={activeCategory} />}
               </div>
               <button
                 type="submit"
-                className="inline-flex min-h-12 items-center rounded-full bg-forest px-6 text-support font-semibold text-on-forest hover:bg-forest-hover shadow-xs transition-all active:scale-[0.985]"
+                className="inline-flex min-h-12 items-center rounded-full bg-gold px-6 text-support font-semibold text-on-gold hover:bg-gold-hover shadow-xs transition-all active:scale-[0.985]"
               >
                 Search
               </button>
@@ -157,7 +157,7 @@ export default async function ExplorePage({
             </p>
           </div>
           {activeCategory !== "all" && (
-            <Link href="/explore" className="text-support font-semibold text-forest hover:underline">
+            <Link href="/explore" className="text-support font-semibold text-gold hover:text-gold-hover hover:underline">
               Reset filter (show all)
             </Link>
           )}
@@ -173,8 +173,8 @@ export default async function ExplorePage({
                     href={isSelected ? "/explore" : `/explore?category=${cat.id}${q ? `&q=${encodeURIComponent(q)}` : ""}`}
                     className={`group relative flex h-full flex-col justify-between rounded-2xl border p-6 transition-all duration-300 ${
                       isSelected
-                        ? "border-forest bg-[#F1EBE1] ring-2 ring-forest/30 shadow-xs"
-                        : "border-border/80 bg-surface hover:border-forest/40 hover:shadow-md shadow-2xs"
+                        ? "border-gold bg-elevated ring-2 ring-gold/30 shadow-md"
+                        : "border-border/80 bg-surface hover:border-gold/40 hover:shadow-md shadow-2xs"
                     }`}
                   >
                     <div>

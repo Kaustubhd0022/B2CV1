@@ -8,15 +8,17 @@ export function cx(...c: (string | false | null | undefined)[]) {
 
 /* ---------------- Buttons (Design §5A) ---------------- */
 
-type Variant = "primary" | "secondary" | "tertiary" | "terracotta";
+type Variant = "primary" | "secondary" | "tertiary" | "terracotta" | "gold";
 const btn: Record<Variant, string> = {
   primary:
     "bg-forest text-on-forest hover:bg-forest-hover active:scale-[0.985] disabled:bg-muted/30 disabled:text-muted disabled:cursor-not-allowed shadow-xs font-semibold",
+  gold:
+    "bg-gold text-on-gold hover:bg-gold-hover active:scale-[0.985] disabled:bg-muted/30 disabled:text-muted disabled:cursor-not-allowed shadow-xs font-semibold",
   secondary:
-    "border border-border bg-surface text-charcoal hover:bg-surface-2 hover:border-forest/40 active:scale-[0.985] disabled:opacity-60 disabled:cursor-not-allowed shadow-2xs font-medium",
+    "border border-border bg-surface text-charcoal hover:bg-surface-2 hover:border-gold/40 active:scale-[0.985] disabled:opacity-60 disabled:cursor-not-allowed shadow-2xs font-medium",
   terracotta:
     "bg-terracotta text-white hover:bg-terracotta-hover active:scale-[0.985] disabled:bg-muted/30 disabled:cursor-not-allowed shadow-xs font-semibold",
-  tertiary: "text-forest underline-offset-4 hover:underline px-1 font-medium",
+  tertiary: "text-gold underline-offset-4 hover:underline px-1 font-medium",
 };
 const btnBase =
   "inline-flex min-h-11 items-center justify-center gap-2 rounded-full px-5 py-2.5 text-support transition-all duration-200";
@@ -57,7 +59,7 @@ export function Page({ children, className }: { children: ReactNode; className?:
 
 export function BackLink({ href, label }: { href: string; label: string }) {
   return (
-    <Link href={href} className="-ml-1 inline-flex min-h-11 items-center gap-1 text-support font-medium text-forest hover:text-forest-hover transition-colors">
+    <Link href={href} className="-ml-1 inline-flex min-h-11 items-center gap-1 text-support font-medium text-gold hover:text-gold-hover transition-colors">
       <IconBack width={18} height={18} />
       {label}
     </Link>
@@ -65,7 +67,7 @@ export function BackLink({ href, label }: { href: string; label: string }) {
 }
 
 export function Eyebrow({ children }: { children: ReactNode }) {
-  return <p className="text-meta font-semibold uppercase tracking-[0.16em] text-terracotta">{children}</p>;
+  return <p className="text-meta font-semibold uppercase tracking-[0.16em] text-gold">{children}</p>;
 }
 
 export function SectionTitle({ children, id }: { children: ReactNode; id?: string }) {

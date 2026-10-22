@@ -32,7 +32,7 @@ export function MainNav({ labels, variant }: { labels: Labels; variant: "bottom"
                   className={cx(
                     "inline-flex min-h-10 items-center rounded-full px-4 text-support font-medium transition-all duration-200",
                     active
-                      ? "bg-forest text-on-forest shadow-xs font-semibold"
+                      ? "bg-gold text-on-gold shadow-xs font-semibold"
                       : "text-muted hover:text-charcoal hover:bg-surface-2",
                   )}
                 >
@@ -63,13 +63,13 @@ export function MainNav({ labels, variant }: { labels: Labels; variant: "bottom"
                 aria-label={labels[key]}
                 className={cx(
                   "flex flex-col items-center justify-center gap-1 py-1 text-[11px] font-medium transition-colors",
-                  active ? "text-forest font-semibold" : "text-muted hover:text-charcoal",
+                  active ? "text-gold font-semibold" : "text-muted hover:text-charcoal",
                 )}
               >
                 <div
                   className={cx(
                     "flex size-8 items-center justify-center rounded-full transition-all",
-                    active ? "bg-forest/10 text-forest" : "text-muted",
+                    active ? "bg-gold/15 text-gold" : "text-muted",
                   )}
                 >
                   <Icon width={18} height={18} />
@@ -90,10 +90,10 @@ export function LanguageLink({ lang, native, label }: { lang: string; native: st
   return (
     <Link
       href={`/language?next=${encodeURIComponent(pathname)}`}
-      className="inline-flex min-h-9 items-center gap-2 rounded-full border border-border bg-surface px-3 py-1 text-meta font-medium text-charcoal shadow-2xs hover:border-forest/40 hover:bg-surface-2 transition-all duration-200"
+      className="inline-flex min-h-9 items-center gap-2 rounded-full border border-border bg-surface px-3 py-1 text-meta font-medium text-charcoal shadow-2xs hover:border-gold/40 hover:bg-surface-2 transition-all duration-200"
       aria-label={`${label}: ${native}`}
     >
-      <span className="size-2 rounded-full bg-terracotta" aria-hidden="true" />
+      <span className="size-2 rounded-full bg-gold" aria-hidden="true" />
       <span lang={lang} className="text-support">{native}</span>
     </Link>
   );

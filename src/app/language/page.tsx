@@ -12,7 +12,7 @@ import { Notice } from "@/components/ui";
 
 export const metadata: Metadata = { title: "Select Language" };
 
-const FIVE_LANGUAGES = [
+const ALL_LANGUAGES = [
   {
     code: "en",
     native: "English",
@@ -24,29 +24,71 @@ const FIVE_LANGUAGES = [
     code: "hi",
     native: "हिन्दी",
     english: "Hindi",
-    img: "https://images.unsplash.com/photo-1598324789736-4861f89564a0?auto=format&fit=crop&w=600&q=80",
+    img: "/images/dev/varanasi-card.jpg",
     place: "Varanasi Ghats, Uttar Pradesh",
+  },
+  {
+    code: "kn",
+    native: "ಕನ್ನಡ",
+    english: "Kannada",
+    img: "/images/dev/hampi.jpg",
+    place: "Vijaya Vittala Temple, Hampi, Karnataka",
+  },
+  {
+    code: "ml",
+    native: "മലയാളം",
+    english: "Malayalam",
+    img: "/images/dev/kochi.jpg",
+    place: "Shore-Operated Fishing Nets, Kochi, Kerala",
+  },
+  {
+    code: "bn",
+    native: "বাংলা",
+    english: "Bengali",
+    img: "/images/dev/kolkata.jpg",
+    place: "Hooghly Riverfront & Victoria Memorial, Kolkata",
+  },
+  {
+    code: "ta",
+    native: "தமிழ்",
+    english: "Tamil",
+    img: "/images/dev/madurai.jpg",
+    place: "Meenakshi Amman Temple Gopuram, Madurai",
   },
   {
     code: "mr",
     native: "मराठी",
     english: "Marathi",
     img: "https://images.unsplash.com/photo-1570168007204-dfb528c6958f?auto=format&fit=crop&w=600&q=80",
-    place: "Gateway of India, Maharashtra",
+    place: "Gateway of India & Ajanta-Ellora, Maharashtra",
+  },
+  {
+    code: "te",
+    native: "తెలుగు",
+    english: "Telugu",
+    img: "https://images.unsplash.com/photo-1605649487212-47bdab064df7?auto=format&fit=crop&w=600&q=80",
+    place: "Charminar & Warangal, Telangana & Andhra Pradesh",
   },
   {
     code: "gu",
     native: "ગુજરાતી",
     english: "Gujarati",
     img: "https://images.unsplash.com/photo-1609137144813-7d9921338f24?auto=format&fit=crop&w=600&q=80",
-    place: "Somnath Temple, Gujarat",
+    place: "Somnath Temple & Rani ki Vav, Gujarat",
   },
   {
-    code: "bn",
-    native: "বাংলা",
-    english: "Bengali",
-    img: "https://images.unsplash.com/photo-1558431382-27e303142255?auto=format&fit=crop&w=600&q=80",
-    place: "Victoria Memorial, Kolkata",
+    code: "pa",
+    native: "ਪੰਜਾਬੀ",
+    english: "Punjabi",
+    img: "https://images.unsplash.com/photo-1588096344356-9b5966d92efb?auto=format&fit=crop&w=600&q=80",
+    place: "Harmandir Sahib Golden Temple, Amritsar, Punjab",
+  },
+  {
+    code: "or",
+    native: "ଓଡ଼ିଆ",
+    english: "Odia",
+    img: "https://images.unsplash.com/photo-1629813366051-b58137b2792c?auto=format&fit=crop&w=600&q=80",
+    place: "Konark Sun Temple & Jagannath Puri, Odisha",
   },
 ];
 
@@ -96,7 +138,7 @@ export default async function LanguagePage({ searchParams }: { searchParams: Pro
                 Experience India&apos;s cultural stories in your language. You can always change this later.
               </p>
 
-              {/* Dark green quote box matching page 10 reference */}
+              {/* Dark green quote box matching reference */}
               <div className="mt-8 rounded-xl border border-white/10 bg-[#162920]/85 p-4 backdrop-blur-xs">
                 <span className="font-serif text-2xl text-gold leading-none">“</span>
                 <p className="mt-1 text-sm font-medium text-white italic leading-relaxed">
@@ -113,18 +155,18 @@ export default async function LanguagePage({ searchParams }: { searchParams: Pro
           </div>
         </aside>
 
-        {/* Right Column: Language Selection Flow matching page 10 reference */}
+        {/* Right Column: Language Selection Flow matching reference */}
         <main className="flex-1 px-4 py-8 sm:px-8 md:px-12 lg:py-10">
           <div className="mx-auto max-w-xl">
             {/* Step header */}
             <div className="flex items-center justify-between border-b border-border pb-4">
-              <Link href="/" className="font-serif text-card font-semibold text-forest lg:hidden">
+              <Link href="/" className="font-serif text-card font-semibold text-gold lg:hidden">
                 TattvaCo
               </Link>
               <div className="flex items-center gap-2">
                 <span className="flex size-2 rounded-full bg-gold" />
                 <span className="text-meta font-semibold uppercase tracking-wider text-gold">
-                  Step 1 of 3: Language
+                  11 Planned Languages
                 </span>
               </div>
               <Link href="/sign-in" className="text-meta font-medium text-muted hover:text-charcoal flex items-center gap-1">
@@ -137,7 +179,7 @@ export default async function LanguagePage({ searchParams }: { searchParams: Pro
                 Choose your language
               </h1>
               <p className="mt-1.5 text-support text-muted leading-relaxed">
-                Explore places, people, traditions and ideas in your preferred language.
+                Explore places, people, traditions and ideas in your preferred native script or English.
               </p>
             </div>
 
@@ -147,15 +189,15 @@ export default async function LanguagePage({ searchParams }: { searchParams: Pro
               </Notice>
             )}
 
-            {/* 5 Photographic Language Cards matching page 10 reference */}
+            {/* 11 Photographic Language Cards */}
             <form action="/language/select" method="post" className="mt-6">
               <input type="hidden" name="next" value={next} />
               <fieldset>
                 <legend className="sr-only">Choose your language</legend>
-                <StaggerContainer className="grid grid-cols-2 gap-3 sm:gap-4" staggerDelay={0.06}>
-                  {FIVE_LANGUAGES.map((l, index) => (
-                    <StaggerItem key={l.code} className={index === 4 ? "col-span-2 sm:col-span-1" : ""}>
-                      <MotionCard hoverScale={1.025} hoverY={-3}>
+                <StaggerContainer className="grid grid-cols-2 gap-3 sm:gap-4 max-h-[58vh] overflow-y-auto pr-1 no-scrollbar" staggerDelay={0.03}>
+                  {ALL_LANGUAGES.map((l, index) => (
+                    <StaggerItem key={l.code} className={index === ALL_LANGUAGES.length - 1 && ALL_LANGUAGES.length % 2 !== 0 ? "col-span-2 sm:col-span-1" : ""}>
+                      <MotionCard hoverScale={1.025} hoverY={-2}>
                         <label className="group relative flex aspect-[16/10] cursor-pointer flex-col justify-between overflow-hidden rounded-xl border border-border/80 bg-surface-2 p-3.5 shadow-sm transition-all hover:shadow-lg has-[:checked]:border-gold has-[:checked]:ring-2 has-[:checked]:ring-gold">
                           {/* Cultural Landmark Background Image */}
                           <Image
@@ -205,7 +247,7 @@ export default async function LanguagePage({ searchParams }: { searchParams: Pro
               </fieldset>
 
               <div className="mt-8 flex flex-col gap-3">
-                <SubmitButton className="w-full !min-h-12 !rounded-xl !bg-forest hover:!bg-forest-hover !text-on-forest font-semibold text-base shadow-md">
+                <SubmitButton className="w-full !min-h-12 !rounded-xl !bg-gold hover:!bg-gold-hover !text-on-gold font-semibold text-base shadow-md">
                   Continue →
                 </SubmitButton>
               </div>

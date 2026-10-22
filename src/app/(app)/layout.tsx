@@ -19,13 +19,13 @@ export default async function AppLayout({ children }: { children: React.ReactNod
       </a>
       <header className="sticky top-0 z-30 border-b border-border bg-canvas/90 backdrop-blur-md">
         <div className="mx-auto flex max-w-6xl items-center justify-between gap-4 px-4 py-2.5 sm:px-6 md:px-8">
-          <Link href="/" className="flex min-h-10 items-center gap-2 font-serif text-section font-semibold text-forest tracking-tight hover:opacity-90 transition-opacity">
-            <span className="flex size-7 items-center justify-center rounded-full bg-forest text-white text-xs font-serif font-bold shadow-2xs">
+          <Link href="/" className="flex min-h-10 items-center gap-2.5 font-serif text-section font-semibold text-charcoal tracking-tight hover:text-gold transition-colors">
+            <span className="flex size-7 items-center justify-center rounded-full border border-gold/40 bg-surface text-gold text-xs font-serif font-bold shadow-xs">
               ✦
             </span>
-            <span>TattvaCo</span>
+            <span className="tracking-wide">TattvaCo</span>
             {config().demoMode && (
-              <span title={t("common.demoBanner")} className="rounded-full border border-terracotta/30 bg-terracotta/10 px-2 py-0.5 font-sans text-[11px] font-semibold text-terracotta">
+              <span title={t("common.demoBanner")} className="rounded-full border border-gold/30 bg-gold/10 px-2 py-0.5 font-sans text-[11px] font-semibold text-gold">
                 {t("common.demoLabel")}
               </span>
             )}
