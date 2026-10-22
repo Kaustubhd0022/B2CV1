@@ -323,15 +323,15 @@ export function getProvider(): LLMProvider | null {
     return groq;
   }
 
-  // 3. Explicit Auto or Dual: Primary Gemini with Groq fallback
+  // 3. Explicit Auto or Dual: Primary Groq (sub-second real-time speed) with Gemini fallback
   if (c.ai.provider === "auto") {
-    if (gemini && groq) return new DualFallbackProvider(gemini, groq);
-    return gemini ?? groq ?? anthropic;
+    if (groq && gemini) return new DualFallbackProvider(groq, gemini);
+    return groq ?? gemini ?? anthropic;
   }
 
   if (c.ai.provider === "anthropic") return anthropic;
 
-  // 4. Default: fallback between available providers
-  if (gemini && groq) return new DualFallbackProvider(gemini, groq);
-  return gemini ?? groq ?? anthropic;
+  // 4. Default: fallback between available providers (prefer Groq for sub-second speed)
+  if (groq && gemini) return new DualFallbackProvider(groq, gemini);
+  return groq ?? gemini ?? anthropic;
 }

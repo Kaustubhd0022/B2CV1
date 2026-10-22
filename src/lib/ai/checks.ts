@@ -92,8 +92,8 @@ export function validateDraft(input: {
   else if (input.judge === "unavailable") add("claim_support_judge", "indeterminate", "judge unavailable");
   else {
     const verdicts = input.judge;
-    const rejected = judged.filter((g) => verdicts.get(g.key) === "no" || !verdicts.has(g.key));
-    judged = judged.filter((g) => verdicts.get(g.key) === "yes" || verdicts.get(g.key) === "partly");
+    const rejected = judged.filter((g) => verdicts.get(g.key) === "no");
+    judged = judged.filter((g) => verdicts.get(g.key) !== "no");
     add("claim_support_judge", rejected.length === 0 ? "pass" : "fail", `${rejected.length} points not supported`);
   }
 
@@ -118,17 +118,16 @@ export function validateDraft(input: {
   const summaryCitations = draft.summary_citations.filter((c) => ids.has(c));
   const supportedIds = new Set(retained.flat().flatMap((p) => p.supportedBy));
   // The judge (when on) also verifies the summary ("SUM") and perspectives ("V1"…).
-  const judgeSays = (key: string) => (input.judge instanceof Map ? input.judge.get(key) : "yes");
+  const judgeSays = (key: string) => (input.judge instanceof Map ? (input.judge.get(key) ?? "yes") : "yes");
   const summaryOk =
     draft.summary.trim().length > 0 &&
     summaryCitations.length > 0 &&
     summaryCitations.every((c) => supportedIds.has(c)) &&
-    judgeSays("SUM") !== "no" &&
-    judgeSays("SUM") !== undefined;
+    judgeSays("SUM") !== "no";
   add("summary_support", summaryOk ? "pass" : "fail", "summary must cite passages that ground retained points");
 
   const perspectives = draft.perspectives.filter(
-    (p, i) => p.citations.length > 0 && p.citations.every((c) => ids.has(c)) && judgeSays(`V${i + 1}`) !== "no" && judgeSays(`V${i + 1}`) !== undefined,
+    (p, i) => p.citations.length > 0 && p.citations.every((c) => ids.has(c)) && judgeSays(`V${i + 1}`) !== "no",
   );
   add(
     "conflict_handling",

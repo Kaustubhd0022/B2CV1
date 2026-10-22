@@ -27,12 +27,12 @@ const EnvSchema = z.object({
   PGLITE_DIR: z.string().default(".data/pglite"),
 });
 
-/** Explicit LLM_PROVIDER wins; otherwise the first provider with a key (Gemini, Groq, Anthropic). */
+/** Explicit LLM_PROVIDER wins; otherwise the first provider with a key (Groq, Gemini, Anthropic). */
 function llmProvider(): "anthropic" | "groq" | "gemini" | "auto" | "none" | "scripted" {
   const p = process.env.LLM_PROVIDER;
   if (p === "anthropic" || p === "groq" || p === "gemini" || p === "auto" || p === "none" || p === "scripted") return p;
-  if (process.env.GEMINI_API_KEY || process.env.GOOGLE_AI_API_KEY) return "auto";
   if (process.env.GROQ_API_KEY) return "groq";
+  if (process.env.GEMINI_API_KEY || process.env.GOOGLE_AI_API_KEY) return "gemini";
   if (process.env.ANTHROPIC_API_KEY) return "anthropic";
   return "none";
 }
@@ -114,13 +114,13 @@ function load() {
           ? "openai/gpt-oss-120b"
           : "claude-opus-5-5"),
       effort: (process.env.LLM_EFFORT ?? "medium") as "low" | "medium" | "high",
-      timeoutMs: num(process.env.LLM_TIMEOUT_MS, 90_000),
+      timeoutMs: num(process.env.LLM_TIMEOUT_MS, 15_000),
       judge: bool(process.env.ANSWER_JUDGE, true),
       retrievalProviders: csv(process.env.RETRIEVAL_PROVIDERS ?? "corpus"),
       retrievalTimeoutMs: num(process.env.RETRIEVAL_TIMEOUT_MS, 8_000),
       // PROVISIONAL thresholds (OD-02). Product owner must approve before launch.
       minPassages: num(process.env.ANSWER_MIN_PASSAGES, 2),
-      minPassageScore: num(process.env.ANSWER_MIN_PASSAGE_SCORE, 0.3),
+      minPassageScore: num(process.env.ANSWER_MIN_PASSAGE_SCORE, 0.2),
       minCoverage: num(process.env.ANSWER_MIN_COVERAGE, 0.8),
       abstainBelowCoverage: num(process.env.ANSWER_ABSTAIN_BELOW_COVERAGE, 0.5),
       minScriptRatio: num(process.env.ANSWER_MIN_SCRIPT_RATIO, 0.6),

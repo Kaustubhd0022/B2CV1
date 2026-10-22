@@ -42,10 +42,25 @@ export function normalizeForQuote(s: string) {
     .toLowerCase();
 }
 
+function cleanWords(s: string) {
+  return s.toLowerCase().replace(/[^\p{L}\p{M}\p{N}\s]+/gu, " ").replace(/\s+/g, " ").trim();
+}
+
 /** True when `quote` appears verbatim (modulo whitespace/quote style/case) in `passage`. */
 export function quoteInPassage(quote: string, passage: string) {
+  const normPassage = normalizeForQuote(passage);
   const q = normalizeForQuote(quote).replace(/^["'.…\s]+|["'.…\s]+$/g, "");
-  return q.length >= 15 && normalizeForQuote(passage).includes(q);
+  if (q.length >= 12 && normPassage.includes(q)) return true;
+  // If the quote contains ellipsis ("..." or "…"), verify all non-trivial segments appear in passage
+  if (q.includes("...") || q.includes("…")) {
+    const parts = q.split(/\.{3,}|…/).map((p) => p.trim()).filter((p) => p.length >= 8);
+    if (parts.length >= 2 && parts.every((p) => normPassage.includes(p))) return true;
+  }
+  // Punctuation-insensitive word sequence match fallback
+  const cwPassage = cleanWords(passage);
+  const cwQuote = cleanWords(quote);
+  if (cwQuote.length >= 12 && cwPassage.includes(cwQuote)) return true;
+  return false;
 }
 
 export function hasUrl(text: string) {

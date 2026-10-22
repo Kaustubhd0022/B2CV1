@@ -18,6 +18,8 @@ Risk:
 - sensitive: caste, communal violence, partition, contested histories or sites, conversion, sacred or restricted practices, health claims of traditional remedies, whether beliefs are literally true.
 - routine: everything else.
 
+Search queries: write search_query_en and search_query_native as 2 to 5 essential search keywords (e.g. 'Varanasi 84 ghats', not a conversational question).
+
 If session context is given and the new question is a follow-up, rewrite it as a standalone question. Never copy personal information into queries.`;
 
 export function understandUser(question: string, lang: string, context: AskContextTurn[]) {

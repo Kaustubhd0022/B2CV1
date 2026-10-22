@@ -106,7 +106,10 @@ async function wikiJson(wiki: string, params: Record<string, string>, signal: Ab
 
 export async function wikipediaSearch(query: string, lang: string, signal: AbortSignal, pages = 3): Promise<Candidate[]> {
   const wiki = languageInfo(lang).wiki;
-  const search = await wikiJson(wiki, { action: "query", list: "search", srsearch: query, srlimit: String(pages), srprop: "" }, signal);
+  // Clean query for Wikipedia search: prioritize meaningful keywords over conversational filler
+  const keywords = tokenize(query).slice(0, 6).join(" ");
+  const srsearch = keywords.length >= 3 ? keywords : query;
+  const search = await wikiJson(wiki, { action: "query", list: "search", srsearch, srlimit: String(pages), srprop: "" }, signal);
   const titles: string[] = (search?.query?.search ?? []).map((s: { title: string }) => s.title);
   const results: Candidate[][] = [];
   // Sequential page fetches keep request rates polite.
@@ -131,7 +134,7 @@ export async function wikipediaSearch(query: string, lang: string, signal: Abort
         .map((p) => p.trim())
         .filter((p) => p.length >= 80 && !/^==/.test(p));
       return paragraphs
-        .map((p, i) => ({ text: p.slice(0, 1500), heading: page.title, source, provider: "wikipedia" as const, score: overlapScore(query, p) + (i === 0 ? 0.1 : 0) }))
+        .map((p, i) => ({ text: p.slice(0, 1500), heading: page.title, source, provider: "wikipedia" as const, score: overlapScore(srsearch, `${page.title} ${p}`) + (i === 0 ? 0.1 : 0) }))
         .sort((a, b) => b.score - a.score)
         .slice(0, 3);
     })());
