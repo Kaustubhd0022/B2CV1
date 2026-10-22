@@ -150,3 +150,107 @@ export const IconApple = (p: SVGProps<SVGSVGElement>) => (
     <path d="M150.37 130.25c-2.45 5.66-5.35 10.87-8.71 15.66-4.58 6.53-8.33 11.05-11.22 13.56-4.48 4.12-9.28 6.23-14.42 6.35-3.69 0-8.14-1.05-13.32-3.18-5.19-2.12-9.97-3.17-14.34-3.17-4.58 0-9.49 1.05-14.75 3.17-5.26 2.13-9.5 3.24-12.74 3.35-4.35.13-9.16-1.9-14.42-6.08-3.7-3.05-7.62-7.83-11.75-14.34-7.41-11.75-13.06-25.04-16.94-39.87-3.88-14.82-5.83-28.52-5.83-41.09 0-14.97 3.52-27.42 10.55-37.36 7.03-9.94 15.97-15.02 26.83-15.24 4.58 0 9.87 1.25 15.86 3.76 5.99 2.51 10.02 3.82 12.1 3.93 2.07-.11 6.27-1.47 12.6-4.08 6.33-2.61 11.83-3.82 16.5-3.63 12.42.65 22.42 5.37 30 14.15-10.9 6.64-16.23 15.79-16 27.44.22 9.04 3.76 16.7 10.63 22.97 6.87 6.27 15.19 9.83 24.96 10.69-2.39 7.4-5.34 15.08-8.85 23.03zm-27.16-112.58c0 7.18-2.67 13.93-8.01 20.25-5.34 6.32-11.77 10.15-19.29 11.5-.98-7.08 1.4-13.78 7.14-20.1 5.74-6.32 12.47-10.2 20.16-11.65z" />
   </svg>
 );
+
+/* ---------------- Cultural Dimension Icons (Editorial System) ---------------- */
+
+export const IconPlaces = (p: P) => (
+  <svg {...base(p)}>
+    <path d="M3 21h18M5 21V9l7-5 7 5v12M9 21V13h6v8M10 9h4" />
+  </svg>
+);
+
+export const IconPeople = (p: P) => (
+  <svg {...base(p)}>
+    <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2" />
+    <circle cx="12" cy="7" r="4" />
+  </svg>
+);
+
+export const IconFestivals = (p: P) => (
+  <svg {...base(p)}>
+    <path d="M12 2c1.5 2 3 4 3 6.5a3 3 0 1 1-6 0C9 6 10.5 4 12 2z" />
+    <path d="M4 14c0 4 3.5 7 8 7s8-3 8-7H4z" />
+  </svg>
+);
+
+export const IconFood = (p: P) => (
+  <svg {...base(p)}>
+    <path d="M4 11h16a8 8 0 0 1-16 0z" />
+    <path d="M12 3v3M8 4v2M16 4v2M6 19h12" />
+  </svg>
+);
+
+export const IconCrafts = (p: P) => (
+  <svg {...base(p)}>
+    <path d="m14.5 9.5-5 5M6 18l3-3M15 9l3-3" />
+    <circle cx="6" cy="6" r="3" />
+    <circle cx="18" cy="18" r="3" />
+  </svg>
+);
+
+export const IconHistory = (p: P) => (
+  <svg {...base(p)}>
+    <path d="M8 3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V8l-5-5z" />
+    <path d="M14 3v5h5M8 13h8M8 17h5" />
+  </svg>
+);
+
+export const IconBeliefs = (p: P) => (
+  <svg {...base(p)}>
+    <circle cx="12" cy="12" r="9" />
+    <path d="M12 3a9 9 0 0 1 0 18M12 3a9 9 0 0 0 0 18M3 12h18" />
+  </svg>
+);
+
+export const IconMusic = (p: P) => (
+  <svg {...base(p)}>
+    <path d="M9 18V5l12-2v13" />
+    <circle cx="6" cy="18" r="3" />
+    <circle cx="18" cy="16" r="3" />
+  </svg>
+);
+
+export const IconCommunities = (p: P) => (
+  <svg {...base(p)}>
+    <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" />
+    <circle cx="9" cy="7" r="4" />
+    <path d="M22 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75" />
+  </svg>
+);
+
+/* ---------------- Settings & System Icons ---------------- */
+
+export const IconAccount = (p: P) => (
+  <svg {...base(p)}>
+    <circle cx="12" cy="8" r="4" />
+    <path d="M6 21v-2a6 6 0 0 1 12 0v2" />
+  </svg>
+);
+
+export const IconLanguage = (p: P) => (
+  <svg {...base(p)}>
+    <circle cx="12" cy="12" r="9" />
+    <path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z" />
+  </svg>
+);
+
+export const IconPrivacy = (p: P) => (
+  <svg {...base(p)}>
+    <rect x="3" y="11" width="18" height="11" rx="2" ry="2" />
+    <path d="M7 11V7a5 5 0 0 1 10 0v4" />
+  </svg>
+);
+
+export const IconTerms = (p: P) => (
+  <svg {...base(p)}>
+    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+    <path d="M14 2v6h6M16 13H8M16 17H8M10 9H8" />
+  </svg>
+);
+
+export const IconReport = (p: P) => (
+  <svg {...base(p)}>
+    <path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1zM4 22v-7" />
+  </svg>
+);
+

@@ -123,9 +123,9 @@ export function PlacesClient({
       </div>
 
       {/* Main 3-Column Layout: Landmark List | Map View | Place Detail */}
-      <div className="grid gap-6 lg:grid-cols-[18rem_1fr_20rem]">
+      <div className="grid gap-6 lg:grid-cols-[16rem_minmax(0,1fr)_18rem] xl:grid-cols-[18rem_minmax(0,1fr)_20rem]">
         {/* Left: Landmark List */}
-        <div className="rounded-xl border border-border bg-surface p-4 shadow-xs">
+        <div className="min-w-0 rounded-2xl border border-border bg-surface p-4 shadow-xs">
           <div className="flex items-center justify-between border-b border-border pb-3">
             <h2 className="font-serif text-support font-semibold text-charcoal">
               Cultural Places ({filteredLandmarks.length})
@@ -170,7 +170,7 @@ export function PlacesClient({
         </div>
 
         {/* Center: Interactive Map / Topographic Atlas */}
-        <div className="relative min-h-[460px] overflow-hidden rounded-xl border border-border bg-stone shadow-xs">
+        <div className="min-w-0 relative min-h-[460px] overflow-hidden rounded-2xl border border-border bg-stone shadow-xs">
           {hasMapsKey && selectedLandmark ? (
             <iframe
               title={`Map of ${selectedLandmark.name}`}
@@ -242,7 +242,7 @@ export function PlacesClient({
         </div>
 
         {/* Right: Selected Place Detail Inspection Panel */}
-        <aside className="rounded-xl border border-border bg-surface p-5 shadow-xs space-y-5">
+        <aside className="min-w-0 rounded-2xl border border-border bg-surface p-5 shadow-xs space-y-5">
           {selectedLandmark ? (
             <FadeIn key={selectedLandmark.id} duration={0.3} y={8} className="space-y-5">
               <div>

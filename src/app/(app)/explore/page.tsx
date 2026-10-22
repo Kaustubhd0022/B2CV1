@@ -5,21 +5,32 @@ import { pageContext } from "@/lib/page";
 import { cityStoryCounts, listAllPublishedStories, listCities, localName } from "@/lib/content/repo";
 import { CityCard, StoryCard } from "@/components/cards";
 import { FadeIn, MotionCard, StaggerContainer, StaggerItem } from "@/components/motion";
-import { IconSearch } from "@/components/icons";
+import {
+  IconSearch,
+  IconPlaces,
+  IconPeople,
+  IconFestivals,
+  IconFood,
+  IconCrafts,
+  IconHistory,
+  IconBeliefs,
+  IconMusic,
+  IconCommunities,
+} from "@/components/icons";
 import { Notice, Page, SectionTitle } from "@/components/ui";
 
 export const metadata: Metadata = { title: "Explore by Theme · India's Culture, Many Dimensions" };
 
 const CATEGORIES = [
-  { id: "places", label: "Places", icon: "🏛️", count: "6 Cities", desc: "Cities, landscapes, sacred geography & riverfronts" },
-  { id: "people", label: "People", icon: "👤", count: "Masters", desc: "Saints, poets, master weavers & cultural visionaries" },
-  { id: "festivals", label: "Festivals", icon: "🪔", count: "Living", desc: "Seasonal cycles, sacred processions & community rites" },
-  { id: "food", label: "Food", icon: "🍲", count: "Cuisines", desc: "Sacred offerings, regional spice routes & culinary heritage" },
-  { id: "crafts", label: "Crafts", icon: "🧵", count: "Guilds", desc: "Banarasi brocade, stone masonry & metallurgy" },
-  { id: "history", label: "History", icon: "📜", count: "Chronology", desc: "Archaeological sites, dynasties & historical archives" },
-  { id: "beliefs", label: "Beliefs", icon: "🕉️", count: "Philosophy", desc: "Philosophical traditions, sacred mandalas & ritual order" },
-  { id: "art-music", label: "Art & Music", icon: "🎶", count: "Gharanas", desc: "Classical ragas, acoustic shrines & temple dance" },
-  { id: "communities", label: "Communities", icon: "👥", count: "Lineages", desc: "Artisanal guilds, living lineages & oral cultures" },
+  { id: "places", label: "Places", Icon: IconPlaces, count: "6 Cities", desc: "Cities, landscapes, sacred geography & riverfronts" },
+  { id: "people", label: "People", Icon: IconPeople, count: "Masters", desc: "Saints, poets, master weavers & cultural visionaries" },
+  { id: "festivals", label: "Festivals", Icon: IconFestivals, count: "Living", desc: "Seasonal cycles, sacred processions & community rites" },
+  { id: "food", label: "Food", Icon: IconFood, count: "Cuisines", desc: "Sacred offerings, regional spice routes & culinary heritage" },
+  { id: "crafts", label: "Crafts", Icon: IconCrafts, count: "Guilds", desc: "Banarasi brocade, stone masonry & metallurgy" },
+  { id: "history", label: "History", Icon: IconHistory, count: "Chronology", desc: "Archaeological sites, dynasties & historical archives" },
+  { id: "beliefs", label: "Beliefs", Icon: IconBeliefs, count: "Philosophy", desc: "Philosophical traditions, sacred mandalas & ritual order" },
+  { id: "art-music", label: "Art & Music", Icon: IconMusic, count: "Gharanas", desc: "Classical ragas, acoustic shrines & temple dance" },
+  { id: "communities", label: "Communities", Icon: IconCommunities, count: "Lineages", desc: "Artisanal guilds, living lineages & oral cultures" },
 ];
 
 const FEATURED_COLLECTIONS = [
@@ -168,8 +179,8 @@ export default async function ExplorePage({
                   >
                     <div>
                       <div className="flex items-center justify-between">
-                        <span className="flex size-9 items-center justify-center rounded-full bg-surface-2 border border-border/80 text-sm font-semibold text-terracotta">
-                          {cat.icon}
+                        <span className="flex size-10 items-center justify-center rounded-full bg-surface-2 border border-border/80 text-forest group-hover:bg-forest group-hover:text-on-forest transition-colors shadow-2xs">
+                          <cat.Icon width={20} height={20} />
                         </span>
                         <span className="rounded-full bg-surface-2 border border-border/70 px-2.5 py-0.5 text-[11px] font-medium text-secondary-text">
                           {cat.count}

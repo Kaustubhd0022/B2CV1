@@ -9,7 +9,17 @@ import { translator, type MessageKey } from "@/lib/i18n/t";
 import { isLanguageCode, LANGUAGES } from "@/lib/i18n/languages";
 import { Notice } from "@/components/ui";
 import { SubmitButton } from "@/components/submit-button";
-import { IconApple, IconGoogle } from "@/components/icons";
+import {
+  IconApple,
+  IconGoogle,
+  IconPlaces,
+  IconPeople,
+  IconFestivals,
+  IconFood,
+  IconCrafts,
+  IconHistory,
+  IconBeliefs,
+} from "@/components/icons";
 import { startEmail, startPhone } from "./actions";
 
 export const metadata: Metadata = { title: "Sign in" };
@@ -52,13 +62,13 @@ export default async function SignInPage({ searchParams }: { searchParams: Promi
   ];
 
   const categories = [
-    { label: "Places", icon: "🏛️" },
-    { label: "People", icon: "👤" },
-    { label: "Festivals", icon: "🪔" },
-    { label: "Food", icon: "🍲" },
-    { label: "Crafts", icon: "🧵" },
-    { label: "History", icon: "📜" },
-    { label: "Traditions", icon: "🕉️" },
+    { label: "Places", icon: IconPlaces },
+    { label: "People", icon: IconPeople },
+    { label: "Festivals", icon: IconFestivals },
+    { label: "Food", icon: IconFood },
+    { label: "Crafts", icon: IconCrafts },
+    { label: "History", icon: IconHistory },
+    { label: "Traditions", icon: IconBeliefs },
   ];
 
   return (
@@ -104,15 +114,18 @@ export default async function SignInPage({ searchParams }: { searchParams: Promi
             <div className="mt-8">
               <p className="text-meta font-medium uppercase tracking-wider text-white/70">Explore 7 Dimensions</p>
               <ul className="mt-3 flex flex-wrap gap-2">
-                {categories.map((cat) => (
-                  <li
-                    key={cat.label}
-                    className="inline-flex items-center gap-1.5 rounded-full border border-white/20 bg-black/35 px-3 py-1 text-support text-white/90 backdrop-blur-xs"
-                  >
-                    <span aria-hidden="true">{cat.icon}</span>
-                    <span>{cat.label}</span>
-                  </li>
-                ))}
+                {categories.map((cat) => {
+                  const Icon = cat.icon;
+                  return (
+                    <li
+                      key={cat.label}
+                      className="inline-flex items-center gap-1.5 rounded-full border border-white/20 bg-black/35 px-3 py-1 text-support text-white/90 backdrop-blur-xs"
+                    >
+                      <Icon className="size-3.5 text-gold shrink-0" />
+                      <span>{cat.label}</span>
+                    </li>
+                  );
+                })}
               </ul>
             </div>
 

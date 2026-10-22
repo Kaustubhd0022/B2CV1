@@ -205,7 +205,7 @@ export function AskClient({
               {/* User Question Bubble */}
               <FadeIn duration={0.3} y={10}>
                 <div className="rounded-xl border border-border bg-elevated p-4 shadow-sm">
-                  <p className="text-[11px] font-semibold uppercase tracking-[0.14em] text-gold">
+                  <p className="text-[11px] font-semibold uppercase tracking-[0.14em] text-terracotta">
                     {t("ask.yourQuestion")}
                   </p>
                   <p className="mt-1 font-serif text-section font-semibold text-charcoal">{turn.question}</p>
@@ -266,9 +266,9 @@ export function AskClient({
 
         <div ref={bottom} />
 
-        {/* Floating Input Composer */}
+        {/* Follow-up / Initial Input Composer */}
         <form
-          className="sticky bottom-16 mt-8 rounded-2xl border border-border bg-surface p-3.5 shadow-md md:bottom-4"
+          className="mt-8 rounded-2xl border border-border bg-surface p-4 shadow-sm"
           onSubmit={(e) => {
             e.preventDefault();
             if (busy) return;
@@ -532,8 +532,8 @@ function Answer({ result: r, t, onRetry, onAsk, selected }: { result: AskResult;
           <ul className="mt-2 grid gap-2">
             {r.nextDiscoveries.map((d) => (
               <li key={`${d.kind}:${d.slug}`}>
-                <Link href={`/${d.kind === "story" ? "stories" : "connections"}/${d.slug}`} className="block rounded-md border border-border bg-surface p-3 hover:border-gold transition-colors">
-                  <span className="font-semibold text-gold">{d.title}</span>
+                <Link href={`/${d.kind === "story" ? "stories" : "connections"}/${d.slug}`} className="block rounded-xl border border-border bg-surface p-3.5 hover:border-forest/40 hover:bg-surface-2 transition-all shadow-2xs">
+                  <span className="font-serif font-semibold text-forest hover:underline">{d.title}</span>
                   <span className="mt-0.5 block text-meta text-muted">{t("ask.nextRationale")}</span>
                   {d.isFixture && (
                     <span className="mt-1 block">
@@ -553,7 +553,7 @@ function Answer({ result: r, t, onRetry, onAsk, selected }: { result: AskResult;
           <ul className="mt-2 flex flex-wrap gap-2">
             {r.followUps.map((q) => (
               <li key={q}>
-                <button type="button" onClick={() => onAsk(q)} className="min-h-11 rounded-full border border-border bg-elevated px-4 text-left text-support text-charcoal hover:border-gold hover:text-gold transition-colors">
+                <button type="button" onClick={() => onAsk(q)} className="min-h-11 rounded-full border border-border bg-elevated px-4 text-left text-support text-charcoal hover:border-forest hover:text-forest transition-colors shadow-2xs">
                   {q}
                 </button>
               </li>
@@ -562,7 +562,7 @@ function Answer({ result: r, t, onRetry, onAsk, selected }: { result: AskResult;
         </section>
       )}
 
-      <Link href={`/report?type=answer&ref=${r.runId}`} className="inline-flex min-h-11 items-center gap-2 text-support font-semibold text-gold underline-offset-4 hover:underline">
+      <Link href={`/report?type=answer&ref=${r.runId}`} className="inline-flex min-h-11 items-center gap-2 text-support font-semibold text-terracotta-text underline-offset-4 hover:underline">
         <IconFlag width={18} height={18} /> {t("ask.reportAnswer")}
       </Link>
     </div>

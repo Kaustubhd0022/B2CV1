@@ -456,7 +456,7 @@ export default async function CityPage({
             <SectionTitle id="other-cities-title">Explore Other Pilot Cities</SectionTitle>
             <p className="mt-1 text-support text-muted">Continue discovering India&apos;s diverse cultural ecosystems</p>
           </div>
-          <Link href="/explore" className="text-support font-semibold text-gold hover:underline">
+          <Link href="/explore" className="text-support font-semibold text-terracotta hover:underline">
             View all 6 cities →
           </Link>
         </div>

@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { pageContext } from "@/lib/page";
 import { languageInfo } from "@/lib/i18n/languages";
-import { IconArrow } from "@/components/icons";
+import { IconAccount, IconArrow, IconLanguage, IconPrivacy, IconReport, IconTerms } from "@/components/icons";
 import { Page } from "@/components/ui";
 import { signOut } from "@/app/sign-in/actions";
 import { SubmitButton } from "@/components/submit-button";
@@ -12,11 +12,11 @@ export const metadata: Metadata = { title: "Settings" };
 export default async function SettingsPage() {
   const { session, lang, t } = await pageContext();
   const items = [
-    { href: "/settings/account", title: t("settings.account"), hint: t("settings.accountHint"), icon: "👤" },
-    { href: "/language?next=/settings", title: t("settings.language"), hint: `${t("settings.languageHint")} · ${languageInfo(lang).native}`, icon: "🌐" },
-    { href: "/settings/privacy", title: t("settings.privacy"), hint: t("settings.privacyHint"), icon: "🔒" },
-    { href: "/policies", title: t("settings.terms"), hint: t("settings.termsHint"), icon: "📜" },
-    { href: "/report?type=product&ref=general", title: t("settings.report"), hint: t("settings.reportHint"), icon: "🚩" },
+    { href: "/settings/account", title: t("settings.account"), hint: t("settings.accountHint"), Icon: IconAccount },
+    { href: "/language?next=/settings", title: t("settings.language"), hint: `${t("settings.languageHint")} · ${languageInfo(lang).native}`, Icon: IconLanguage },
+    { href: "/settings/privacy", title: t("settings.privacy"), hint: t("settings.privacyHint"), Icon: IconPrivacy },
+    { href: "/policies", title: t("settings.terms"), hint: t("settings.termsHint"), Icon: IconTerms },
+    { href: "/report?type=product&ref=general", title: t("settings.report"), hint: t("settings.reportHint"), Icon: IconReport },
   ];
 
   return (
@@ -38,7 +38,7 @@ export default async function SettingsPage() {
             {(session.email ?? "T").slice(0, 1).toUpperCase()}
           </span>
           <div>
-            <h1 className="font-serif text-page font-semibold text-charcoal">
+            <h1 className="font-serif text-page font-semibold text-charcoal break-all sm:break-normal">
               {session.email ?? "Cultural Explorer"}
             </h1>
             <div className="mt-1 flex flex-wrap items-center gap-2 text-meta text-muted">
@@ -65,7 +65,7 @@ export default async function SettingsPage() {
           <p className="mt-1 text-meta text-muted">Privacy Respecting</p>
         </div>
         <div className="rounded-xl border border-border bg-surface p-4 shadow-xs">
-          <p className="font-serif text-section font-semibold text-gold">Tier-1</p>
+          <p className="font-serif text-section font-semibold text-forest">Tier-1</p>
           <p className="mt-1 text-meta text-muted">Statutory Evidence</p>
         </div>
       </section>
@@ -76,29 +76,33 @@ export default async function SettingsPage() {
         <ul className="divide-y divide-border overflow-hidden rounded-xl border border-border bg-surface shadow-xs">
           {items.map((i) => (
             <li key={i.href}>
-              <Link href={i.href} className="flex min-h-16 items-center justify-between gap-3 px-5 py-3.5 hover:bg-surface-2 transition-colors">
-                <div className="flex items-center gap-3">
-                  <span className="text-lg" aria-hidden="true">{i.icon}</span>
+              <Link href={i.href} className="group flex min-h-16 items-center justify-between gap-3 px-5 py-3.5 hover:bg-surface-2 transition-colors">
+                <div className="flex items-center gap-3.5">
+                  <span className="flex size-9 items-center justify-center rounded-full bg-surface-2 border border-border/70 text-forest group-hover:bg-forest group-hover:text-on-forest transition-colors shadow-2xs">
+                    <i.Icon width={18} height={18} />
+                  </span>
                   <div>
                     <span className="block font-semibold text-charcoal">{i.title}</span>
                     <span className="block text-meta text-muted">{i.hint}</span>
                   </div>
                 </div>
-                <IconArrow width={18} height={18} className="shrink-0 text-muted" />
+                <IconArrow width={18} height={18} className="shrink-0 text-muted transition-transform group-hover:translate-x-0.5" />
               </Link>
             </li>
           ))}
           {session.role === "editor" && (
             <li>
-              <Link href="/editorial" className="flex min-h-16 items-center justify-between gap-3 px-5 py-3.5 hover:bg-surface-2 transition-colors bg-[#f4f7f4]">
-                <div className="flex items-center gap-3">
-                  <span className="text-lg" aria-hidden="true">✏️</span>
+              <Link href="/editorial" className="group flex min-h-16 items-center justify-between gap-3 px-5 py-3.5 hover:bg-surface-2 transition-colors bg-[#f4f7f4]">
+                <div className="flex items-center gap-3.5">
+                  <span className="flex size-9 items-center justify-center rounded-full bg-forest/15 border border-forest/30 text-forest shadow-2xs">
+                    ✦
+                  </span>
                   <div>
                     <span className="block font-semibold text-forest">Editorial Workspace</span>
                     <span className="block text-meta text-muted">Review queue, publishing and reports (editors only)</span>
                   </div>
                 </div>
-                <IconArrow width={18} height={18} className="shrink-0 text-muted" />
+                <IconArrow width={18} height={18} className="shrink-0 text-forest transition-transform group-hover:translate-x-0.5" />
               </Link>
             </li>
           )}

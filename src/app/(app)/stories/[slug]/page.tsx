@@ -10,7 +10,7 @@ import { ConnectionCard, StoryCard } from "@/components/cards";
 import { ClaimedParagraph, EpistemicLegend, SourceList } from "@/components/evidence";
 import { QuestionComposer } from "@/components/composer";
 import { ShareButton } from "@/components/share";
-import { IconFlag } from "@/components/icons";
+import { IconFlag, IconExplore } from "@/components/icons";
 import { Notice, Page, SectionTitle } from "@/components/ui";
 import { FactPills, PhotoHero } from "@/components/hero";
 import { OtherLanguagesAvailable, Unavailable } from "@/components/unavailable";
@@ -151,9 +151,10 @@ export default async function StoryPage({ params, searchParams }: { params: Prom
             {city && (
               <Link
                 href={`/cities/${city.slug}#map-section`}
-                className="inline-flex min-h-11 items-center justify-center rounded-full border border-white/30 bg-black/40 px-5 text-support font-semibold text-white hover:bg-black/60 backdrop-blur-xs transition-colors"
+                className="inline-flex min-h-11 items-center gap-2 justify-center rounded-full border border-white/30 bg-black/40 px-5 text-support font-semibold text-white hover:bg-black/60 backdrop-blur-xs transition-colors"
               >
-                Explore Map 🗺️
+                <IconExplore className="size-4 shrink-0 text-white" />
+                <span>Explore Map</span>
               </Link>
             )}
             <Link

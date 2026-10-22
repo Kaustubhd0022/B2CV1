@@ -2,13 +2,35 @@ import Link from "next/link";
 
 export default function NotFound() {
   return (
-    <main className="mx-auto mt-16 max-w-lg px-4 text-center" role="status">
-      <p className="font-serif text-section font-semibold text-forest">TattvaCo</p>
-      <h1 className="mt-6 font-serif text-page font-semibold">We couldn&apos;t find that page</h1>
-      <p className="mt-2 text-support text-muted">The link may be wrong, or the item is no longer available.</p>
-      <Link href="/" className="mt-6 inline-flex min-h-11 items-center rounded-md bg-forest px-5 font-semibold text-on-forest">
-        Home
-      </Link>
+    <main className="mx-auto mt-20 max-w-xl px-4 text-center" role="status">
+      <div className="rounded-3xl border border-border bg-gradient-to-br from-[#EFE9DC] via-[#E7DDCA] to-[#DFD7C7] p-8 sm:p-12 shadow-xs">
+        <div className="mx-auto flex size-12 items-center justify-center rounded-full bg-forest text-sandstone shadow-xs">
+          <span className="font-serif text-lg">✦</span>
+        </div>
+        <p className="mt-4 text-meta font-semibold uppercase tracking-[0.16em] text-terracotta">
+          Uncharted Pathway · 404
+        </p>
+        <h1 className="mt-2 font-serif text-page font-semibold text-charcoal md:text-page-lg">
+          We couldn&apos;t find that cultural record
+        </h1>
+        <p className="mt-3 text-body text-secondary-text leading-relaxed">
+          The link may have moved or the item has not yet been documented in this pilot edition. Your exploration is safe.
+        </p>
+        <div className="mt-8 flex flex-wrap items-center justify-center gap-3">
+          <Link
+            href="/"
+            className="inline-flex min-h-11 items-center justify-center rounded-full bg-forest px-6 text-support font-semibold text-on-forest hover:bg-forest-hover shadow-xs transition-colors"
+          >
+            Return to Discovery →
+          </Link>
+          <Link
+            href="/explore"
+            className="inline-flex min-h-11 items-center justify-center rounded-full border border-border bg-surface px-6 text-support font-semibold text-charcoal hover:bg-surface-2 shadow-2xs transition-colors"
+          >
+            Browse Collections
+          </Link>
+        </div>
+      </div>
     </main>
   );
 }

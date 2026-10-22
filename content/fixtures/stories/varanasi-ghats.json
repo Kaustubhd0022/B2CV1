@@ -23,6 +23,7 @@
             "heading": "The story",
             "paragraphs": [
               { "text": "Along the Ganges at Varanasi, a long sequence of stone steps — the ghats — connects the city to the river. The word itself describes a landing place or embankment.", "claims": ["ghats-definition", "ghat-etymology"] },
+              { "text": "The riverfront counts 84 traditional ghats along the crescent curve of the Ganga. In Hindu sacred cosmology and the Kashi Khanda of the Skanda Purana, the number 84 symbolizes liberation from the 84 lakh (8.4 million) cycles of rebirth and corresponds to 84 sacred tirthas (crossing places) aligned with 12 solar zodiacs traversing 7 cosmic realms; completing rituals across the circuit is traditionally held to deliver liberation (moksha).", "claims": ["eighty-four-ghats-symbolism"] },
               { "text": "The ghats are not one kind of place. Most are used for bathing and worship, while two, Manikarnika and Harishchandra, are used as cremation grounds.", "claims": ["ghat-uses"] },
               { "text": "Much of what stands today is relatively recent in the long history of the city: most ghats were rebuilt in the eighteenth century with Maratha patronage.", "claims": ["maratha-rebuilding"] }
             ]
@@ -59,6 +60,11 @@
         "relatedStories": ["varanasi-silk-weaving-craft-and-living-tradition", "jaipur-jantar-mantar"]
       },
       "claims": [
+        { "key": "eighty-four-ghats-symbolism", "text": "The 84 ghats of Varanasi symbolize liberation from the 84 lakh cycles of rebirth and represent 84 sacred tirthas aligned with cosmic cycles in the Kashi Khanda.", "claimType": "interpretive", "epistemic": "tradition",
+          "evidence": [
+            { "source": "gov-ignca-kashi-sacred-geography", "relation": "supports", "excerpt": "The 84 ghats along the crescent Ganga correspond to the 84 lakh cycles of reincarnation and 84 sacred tirthas codified in the Kashi Khanda, symbolizing complete cosmic liberation from the cycle of rebirth.", "locator": "Cosmological Geometry §3" },
+            { "source": "org-sahapedia-ghats-varanasi", "relation": "supports", "excerpt": "The canonical count of 84 ghats reflects sacred numerology: 12 zodiac houses multiplied by 7 cosmic realms, offering pilgrims a complete cosmological circuit of salvation along the riverfront.", "locator": "Sacred Numerology and Ghat Topology" }
+          ] },
         { "key": "ghats-definition", "text": "The ghats of Varanasi are riverfront steps leading to the Ganges; the city counts 84 ghats.", "claimType": "descriptive", "epistemic": "documented",
           "evidence": [
             { "source": "gov-asi-varanasi-ghats", "relation": "supports", "excerpt": "The riverfront of Varanasi comprises a continuous chain of 84 major stone ghats along the crescent curve of the holy river Ganga.", "locator": "Monument Survey §1" },
