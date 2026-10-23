@@ -93,7 +93,7 @@ export function MainNav({ labels, variant }: { labels: Labels; variant: "bottom"
   if (variant === "top") {
     return (
       <nav aria-label={labels.main} className="hidden md:block">
-        <ul className="flex items-center gap-1.5">
+        <ul className="flex items-center gap-1 sm:gap-1.5">
           {TOP_ITEMS.map(({ href, key, fallbackLabel, match }) => {
             const active = match(pathname);
             const labelText = (key in labels ? labels[key as keyof Labels] : fallbackLabel) || fallbackLabel;
@@ -103,10 +103,10 @@ export function MainNav({ labels, variant }: { labels: Labels; variant: "bottom"
                   href={href}
                   aria-current={active ? "page" : undefined}
                   className={cx(
-                    "inline-flex min-h-10 items-center rounded-full px-4 text-support font-medium transition-all duration-200",
+                    "inline-flex min-h-9 items-center rounded-full px-3.5 py-1 text-xs sm:text-sm font-medium transition-all duration-200 whitespace-nowrap",
                     active
-                      ? "bg-gold text-[#12100e] shadow-xs font-semibold"
-                      : "text-secondary-text hover:text-charcoal hover:bg-surface-2",
+                      ? "bg-[#24131E] text-white shadow-xs font-semibold"
+                      : "text-[#5A4450] hover:text-[#20101B] hover:bg-black/5",
                   )}
                 >
                   {labelText}
@@ -119,11 +119,11 @@ export function MainNav({ labels, variant }: { labels: Labels; variant: "bottom"
     );
   }
 
-  // Mobile docked bottom bar with safe-area padding matching Reference Page 2
+  // Mobile docked bottom bar with safe-area padding matching 21st.dev light theme
   return (
     <nav
       aria-label={labels.main}
-      className="fixed inset-x-0 bottom-0 z-40 border-t border-border/80 bg-[#12100e]/95 pb-[env(safe-area-inset-bottom)] shadow-xl backdrop-blur-lg md:hidden"
+      className="fixed inset-x-0 bottom-0 z-40 border-t border-[#F0DCE4] bg-white/95 pb-[env(safe-area-inset-bottom)] shadow-xl backdrop-blur-lg md:hidden"
     >
       <ul className="flex h-16 items-center justify-around px-2">
         {ITEMS.map(({ href, key, fallbackLabel, Icon, match }) => {
@@ -136,21 +136,21 @@ export function MainNav({ labels, variant }: { labels: Labels; variant: "bottom"
                 aria-current={active ? "page" : undefined}
                 aria-label={labelText}
                 className={cx(
-                  "flex min-h-[48px] flex-col items-center justify-center gap-1 py-1 text-[10px] font-medium transition-colors relative",
-                  active ? "text-gold font-semibold" : "text-muted hover:text-charcoal",
+                  "flex min-h-[48px] flex-col items-center justify-center gap-1 py-1 text-[10px] font-medium transition-colors relative whitespace-nowrap",
+                  active ? "text-[#24131E] font-semibold" : "text-[#7E6674] hover:text-[#20101B]",
                 )}
               >
                 <div
                   className={cx(
                     "flex size-7 items-center justify-center rounded-full transition-all",
-                    active ? "bg-gold/15 text-gold" : "text-muted",
+                    active ? "bg-[#24131E]/10 text-[#24131E]" : "text-[#7E6674]",
                   )}
                 >
                   <Icon width={18} height={18} />
                 </div>
                 <span className="leading-none">{labelText}</span>
                 {active && (
-                  <span className="absolute bottom-0.5 size-1 rounded-full bg-gold" />
+                  <span className="absolute bottom-0.5 size-1 rounded-full bg-[#24131E]" />
                 )}
               </Link>
             </li>

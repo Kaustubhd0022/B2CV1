@@ -1,64 +1,39 @@
 @import "tailwindcss";
 
 /*
- * TattvaCo Visual System — Cinematic Cultural Discovery — Near-Black Editorial
+ * TattvaCo Visual System — 21st.dev Flower Meadow & Living Heritage Theme
  *
- * Direction: Premium Indian cultural editorial. Near-black OLED backgrounds.
- * Gold (#D6B36A) as the primary accent. Forest green for brand actions.
- * Typography: Noto Serif for editorial headlines, Plus Jakarta Sans for UI.
- *
- * Core Palette (dark cinematic):
- *   canvas          = #0C0B0A  (Near-black warm app background)
- *   surface         = #171512  (Dark warm card surface)
- *   surface-2       = #111009  (Deeper secondary sections & inputs)
- *   elevated        = #1E1C18  (Floating panels & modals — elevated dark)
- *   forest          = #2D6A52  (Forest Green — brand action colour)
- *   forest-hover    = #38836A  (Forest hover state)
- *   on-forest       = #FFFFFF  (Text on Forest buttons)
- *   gold            = #D6B36A  (Heritage Gold — primary accent & highlights)
- *   gold-hover      = #E7C985  (Gold hover state)
- *   on-gold         = #0C0B0A  (Dark text on gold buttons)
- *   terracotta      = #C4674A  (Heritage Terracotta — editorial accents)
- *   terracotta-text = #E07A5A  (Terracotta on dark — lightened for contrast)
- *   charcoal        = #F5F0E8  (PRIMARY TEXT — warm white on dark backgrounds)
- *   secondary-text  = #B7B0A5  (Supporting descriptions on dark)
- *   muted           = #89847C  (Metadata — WCAG AA 4.5:1 on canvas)
- *   border          = #302C25  (Warm dark card & control borders)
- *   border-subtle   = #231F1A  (Ultra-subtle dividers on dark)
- *   sandstone       = #3D3529  (Dark sandstone container fills)
- *   stone           = #1A1612  (Neutral dark architectural card backdrop)
- *
- * Semantic Feedback (legible on dark):
- *   success         = #65B88A  (Verified green)
- *   warning         = #E3B765  (Warm amber)
- *   error           = #F07878  (Coral red)
- *   info            = #5B9FD4  (Sky blue)
+ * Direction: Luminous Dawn Rose & Royal Deep Plum Lacquer.
+ * Background: Soft warm petal dawn (#FFF5F8).
+ * Text: Deep Royal Jamun / Plum (#20101B) with warm supporting tones.
+ * Accents: Royal Plum (#24131E), Antique Heritage Amber-Gold (#C67D28),
+ *          Lotus Rose (#F3D0D7), Sandstone Terracotta (#C45538).
  */
 @theme {
-  --color-canvas: #0c0b0a;
-  --color-surface: #171512;
-  --color-surface-2: #111009;
-  --color-elevated: #1e1c18;
-  --color-forest: #2d6a52;
-  --color-forest-hover: #38836a;
+  --color-canvas: #fff5f8;
+  --color-surface: #ffffff;
+  --color-surface-2: #faf0f4;
+  --color-elevated: #ffffff;
+  --color-forest: #24131e;
+  --color-forest-hover: #381c2e;
   --color-on-forest: #ffffff;
-  --color-gold: #d6b36a;
-  --color-gold-hover: #e7c985;
-  --color-on-gold: #0c0b0a;
-  --color-terracotta: #c4674a;
-  --color-terracotta-text: #e07a5a;
-  --color-charcoal: #f5f0e8;
-  --color-secondary-text: #b7b0a5;
-  --color-muted: #89847c;
-  --color-border: #302c25;
-  --color-border-subtle: #231f1a;
-  --color-sandstone: #3d3529;
-  --color-stone: #1a1612;
+  --color-gold: #c67d28;
+  --color-gold-hover: #aa6518;
+  --color-on-gold: #ffffff;
+  --color-terracotta: #c45538;
+  --color-terracotta-text: #b24326;
+  --color-charcoal: #20101b;
+  --color-secondary-text: #5a4450;
+  --color-muted: #7e6674;
+  --color-border: #f0dce4;
+  --color-border-subtle: #f8ecf1;
+  --color-sandstone: #f4e3ea;
+  --color-stone: #faf0f4;
 
-  --color-success: #65b88a;
-  --color-warning: #e3b765;
-  --color-error: #f07878;
-  --color-info: #5b9fd4;
+  --color-success: #2e7d5b;
+  --color-warning: #c67d28;
+  --color-error: #d93d3d;
+  --color-info: #2b7cb8;
 
   --radius-xs: 4px;
   --radius-sm: 8px;
@@ -96,7 +71,7 @@
 
 html {
   -webkit-text-size-adjust: 100%;
-  color-scheme: dark;
+  color-scheme: light;
   scroll-behavior: smooth;
 }
 
@@ -159,52 +134,51 @@ dd {
   }
 }
 
-/* Frosted glass — dark cinematic style */
+/* Frosted glass — 21st.dev light translucent style */
 .glass {
-  background: rgba(14, 13, 11, 0.82);
+  background: rgba(255, 255, 255, 0.82);
   backdrop-filter: blur(20px) saturate(1.6);
   -webkit-backdrop-filter: blur(20px) saturate(1.6);
-  border: 1px solid rgba(48, 44, 37, 0.9);
+  border: 1px solid rgba(240, 220, 228, 0.9);
   color: var(--color-charcoal);
 }
 
 .glass-white {
-  background: rgba(30, 28, 24, 0.88);
+  background: rgba(255, 255, 255, 0.92);
   backdrop-filter: blur(20px) saturate(1.4);
   -webkit-backdrop-filter: blur(20px) saturate(1.4);
-  border: 1px solid rgba(48, 44, 37, 0.8);
+  border: 1px solid rgba(240, 220, 228, 0.9);
   color: var(--color-charcoal);
 }
 
-/* Cinematic scrims: near-black warm overlays over photography */
+/* Subtle scrims over photography */
 .scrim {
   background: linear-gradient(
     180deg,
-    rgba(12, 11, 10, 0.18) 0%,
-    rgba(12, 11, 10, 0.08) 28%,
-    rgba(12, 11, 10, 0.48) 55%,
-    rgba(12, 11, 10, 0.84) 80%,
-    rgba(12, 11, 10, 0.97) 100%
+    rgba(36, 19, 30, 0.04) 0%,
+    rgba(36, 19, 30, 0.12) 35%,
+    rgba(36, 19, 30, 0.55) 75%,
+    rgba(36, 19, 30, 0.92) 100%
   );
 }
 
 .scrim-subtle {
   background: linear-gradient(
     180deg,
-    rgba(12, 11, 10, 0.06) 0%,
-    rgba(12, 11, 10, 0.58) 65%,
-    rgba(12, 11, 10, 0.92) 100%
+    rgba(36, 19, 30, 0.02) 0%,
+    rgba(36, 19, 30, 0.40) 65%,
+    rgba(36, 19, 30, 0.85) 100%
   );
 }
 
 .scrim-bottom {
-  background: linear-gradient(180deg, rgba(12, 11, 10, 0) 35%, rgba(12, 11, 10, 0.84) 100%);
+  background: linear-gradient(180deg, rgba(36, 19, 30, 0) 35%, rgba(36, 19, 30, 0.82) 100%);
 }
 
 .card-editorial {
   background: var(--color-surface);
   border: 1px solid var(--color-border);
-  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.32);
+  box-shadow: 0 4px 24px rgba(36, 19, 30, 0.06);
 }
 
 .card-hover-lift {

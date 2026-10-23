@@ -91,7 +91,7 @@ export function StoryCard({
     <MotionCard className="h-full">
       <Link
         href={href}
-        className="group flex h-full flex-col justify-between rounded-[1.75rem] border border-white/10 bg-[#171411] p-6 sm:p-7 shadow-md transition-all duration-300 hover:border-gold/40 hover:shadow-xl hover:-translate-y-1"
+        className="group flex h-full flex-col justify-between rounded-[1.75rem] border border-[#F0DCE4] bg-white p-6 sm:p-7 shadow-xs transition-all duration-300 hover:border-amber-600/40 hover:shadow-lg hover:-translate-y-1"
       >
         <div>
           {eyebrow && <p className="text-meta font-semibold uppercase tracking-[0.16em] text-gold">{eyebrow}</p>}
@@ -102,7 +102,7 @@ export function StoryCard({
         </div>
         <div className="mt-5 flex flex-wrap items-center gap-2 border-t border-border-subtle pt-3.5">
           {meta && (
-            <span className="rounded-full border border-white/10 bg-surface-2 px-3 py-0.5 text-meta font-medium text-secondary-text">
+            <span className="rounded-full border border-[#F0DCE4] bg-surface-2 px-3 py-0.5 text-meta font-medium text-secondary-text">
               {meta}
             </span>
           )}
@@ -141,8 +141,8 @@ export function ConnectionCard({
         className={cx(
           "group relative block overflow-hidden rounded-[1.75rem] border p-6 transition-all duration-300 md:p-8 hover:-translate-y-1",
           featured
-            ? "border-gold/30 bg-gradient-to-br from-[#1c1915] via-[#161410] to-[#110f0c] text-white shadow-lg hover:border-gold/60 hover:shadow-2xl"
-            : "border-white/10 bg-surface hover:border-gold/40 hover:shadow-lg shadow-xs",
+            ? "border-[#24131E]/20 bg-gradient-to-br from-[#2B1522] via-[#24131E] to-[#1A0E16] text-white shadow-xl hover:shadow-2xl"
+            : "border-[#F0DCE4] bg-white hover:border-amber-600/40 hover:shadow-lg shadow-xs",
         )}
       >
         <div className="flex items-center gap-2 text-meta font-semibold uppercase tracking-wider">

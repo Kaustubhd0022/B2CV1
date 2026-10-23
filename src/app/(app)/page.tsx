@@ -40,7 +40,7 @@ export default async function HomePage() {
             <li>
               <Link
                 href="/explore"
-                className="inline-flex min-h-10 items-center rounded-full bg-forest px-5 text-support font-semibold text-on-forest shadow-xs hover:bg-forest-hover transition-colors"
+                className="inline-flex min-h-10 items-center rounded-full bg-[#24131E] px-5 text-support font-semibold text-white shadow-xs hover:bg-[#381C2E] transition-colors"
               >
                 {t("home.allCities")}
               </Link>
@@ -49,7 +49,7 @@ export default async function HomePage() {
               <li key={c.slug}>
                 <Link
                   href={`/cities/${c.slug}`}
-                  className="inline-flex min-h-10 items-center rounded-full border border-border bg-surface px-5 text-support font-medium text-charcoal shadow-2xs hover:bg-surface-2 hover:border-forest/40 transition-all duration-200"
+                  className="inline-flex min-h-10 items-center rounded-full border border-[#F0DCE4] bg-white px-5 text-support font-medium text-[#20101B] shadow-2xs hover:bg-[#FAF0F4] hover:border-amber-600/40 transition-all duration-200"
                 >
                   {localName(c.names, lang)}
                 </Link>
@@ -140,28 +140,28 @@ export default async function HomePage() {
 
       {/* Spatial Cultural Discovery Module (Interactive Map & Upcoming Trails) */}
       <FadeIn delay={0.12}>
-        <section className="mt-16 md:mt-24 rounded-3xl border border-gold/25 bg-gradient-to-br from-[#171512] via-[#1a1714] to-[#12100d] p-8 sm:p-10 md:p-12 shadow-md">
+        <section className="mt-16 md:mt-24 rounded-[2.5rem] border border-[#24131E]/20 bg-gradient-to-br from-[#2B1522] via-[#24131E] to-[#1A0E16] p-8 sm:p-10 md:p-14 shadow-xl text-white">
           <div className="max-w-2xl">
-            <div className="flex items-center gap-2 text-meta font-semibold uppercase tracking-[0.16em] text-gold">
+            <div className="flex items-center gap-2 text-meta font-semibold uppercase tracking-[0.16em] text-amber-300">
               <span>✦</span>
               <span>Spatial Cultural Discovery</span>
             </div>
-            <h2 className="mt-2.5 font-serif text-page font-semibold text-charcoal md:text-page-lg tracking-tight">
+            <h2 className="mt-2.5 font-serif text-page font-semibold text-white md:text-page-lg tracking-tight">
               Experience India&apos;s Living Heritage on the Map
             </h2>
-            <p className="mt-3 text-body text-secondary-text leading-relaxed">
+            <p className="mt-3 text-body text-white/80 leading-relaxed">
               Trace ancient riverfronts, monumental temple mandapas, and generational artisan quarters across our interactive cultural atlas. Connect physical places with the stories and traditions that brought them to life.
             </p>
             <div className="mt-7 flex flex-wrap items-center gap-3.5">
               <Link
                 href="/places"
-                className="inline-flex min-h-12 items-center justify-center gap-2 rounded-full bg-gold px-6 text-support font-semibold text-on-gold transition-all hover:bg-gold-hover shadow-xs active:scale-[0.985]"
+                className="inline-flex min-h-12 items-center justify-center gap-2 rounded-full bg-gold px-6 text-support font-semibold text-white transition-all hover:bg-gold-hover shadow-md active:scale-[0.985]"
               >
                 Explore Cultural Map →
               </Link>
               <Link
                 href="/coming-soon"
-                className="inline-flex min-h-12 items-center justify-center rounded-full border border-border bg-surface px-6 text-support font-semibold text-charcoal shadow-2xs hover:bg-elevated hover:border-gold/40 transition-all active:scale-[0.985]"
+                className="inline-flex min-h-12 items-center justify-center rounded-full border border-white/20 bg-white/10 px-6 text-support font-semibold text-white shadow-xs hover:bg-white/15 transition-all active:scale-[0.985]"
               >
                 Preview AI Cultural Trails
               </Link>

@@ -638,7 +638,7 @@ export function CulturalMeadowBoard({ userEmail }: { userEmail?: string | null }
           3. THE INTERACTIVE EXPEDITION SLIDER (Matching 21st.dev Yield Calculator)
           Live reactive slider computing stops, citations, distance & handloom guilds
       ────────────────────────────────────────────────────────────────────────── */}
-      <section aria-labelledby="expedition-slider-title" className="rounded-[2.5rem] border border-white/15 bg-gradient-to-br from-[#1A1218] via-[#161014] to-[#110D10] p-6 sm:p-10 md:p-14 shadow-2xl text-white">
+      <section aria-labelledby="expedition-slider-title" className="rounded-[2.5rem] border border-[#24131E]/20 bg-gradient-to-br from-[#2B1522] via-[#24131E] to-[#1A0E16] p-6 sm:p-10 md:p-14 shadow-2xl text-white">
         <div className="max-w-3xl">
           <div className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-[0.2em] text-gold">
             <span>✦</span>
@@ -766,13 +766,13 @@ export function CulturalMeadowBoard({ userEmail }: { userEmail?: string | null }
       {/* ─────────────────────────────────────────────────────────────────────────
           5. MINIMALIST ACCORDION FAQ (Matching 21st.dev Template FAQ section)
       ────────────────────────────────────────────────────────────────────────── */}
-      <section aria-labelledby="faq-title" className="rounded-[2.5rem] border border-white/10 bg-[#161311] p-6 sm:p-10 md:p-14 shadow-xl">
+      <section aria-labelledby="faq-title" className="rounded-[2.5rem] border border-[#F0DCE4] bg-white p-6 sm:p-10 md:p-14 shadow-sm">
         <div className="max-w-2xl">
-          <div className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-[0.2em] text-gold">
+          <div className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-[0.2em] text-amber-700">
             <span>✦</span>
             <span>FREQUENTLY ASKED QUESTIONS</span>
           </div>
-          <h2 id="faq-title" className="mt-2 font-serif text-2xl sm:text-3xl font-bold text-charcoal tracking-tight">
+          <h2 id="faq-title" className="mt-2 font-serif text-2xl sm:text-3xl font-bold text-[#20101B] tracking-tight">
             Everything About TattvaCo&apos;s Methodology
           </h2>
         </div>
@@ -783,21 +783,21 @@ export function CulturalMeadowBoard({ userEmail }: { userEmail?: string | null }
             return (
               <div
                 key={faq.q}
-                className="overflow-hidden rounded-2xl border border-border/80 bg-surface transition-all duration-200"
+                className="overflow-hidden rounded-2xl border border-[#F0DCE4] bg-[#FAF0F4]/50 transition-all duration-200 hover:border-amber-600/30"
               >
                 <button
                   type="button"
                   onClick={() => setOpenFaq(isOpen ? null : idx)}
-                  className="flex w-full items-center justify-between p-5 text-left font-serif text-base sm:text-lg font-semibold text-charcoal hover:text-gold transition-colors cursor-pointer"
+                  className="flex w-full items-center justify-between p-5 text-left font-serif text-base sm:text-lg font-semibold text-[#20101B] hover:text-amber-800 transition-colors cursor-pointer"
                   aria-expanded={isOpen}
                 >
                   <span>{faq.q}</span>
-                  <span className={`ml-4 text-gold transition-transform duration-200 ${isOpen ? "rotate-45" : ""}`}>
+                  <span className={`ml-4 text-amber-700 text-lg transition-transform duration-200 ${isOpen ? "rotate-45" : ""}`}>
                     +
                   </span>
                 </button>
                 {isOpen && (
-                  <div className="px-5 pb-5 text-support text-secondary-text leading-relaxed border-t border-border/40 pt-3">
+                  <div className="px-5 pb-5 text-support text-[#5A4450] leading-relaxed border-t border-[#F0DCE4] pt-3">
                     {faq.a}
                   </div>
                 )}
