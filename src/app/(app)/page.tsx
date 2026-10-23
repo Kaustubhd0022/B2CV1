@@ -41,15 +41,22 @@ export default async function HomePage() {
         <div className="scrim absolute inset-0 -z-10" aria-hidden="true" />
         <div className="flex min-h-[540px] flex-col justify-between p-6 sm:p-8 md:min-h-[580px] md:p-12">
           <FadeIn delay={0.05}>
-            <div className="flex items-center gap-3">
-              <span
-                className="glass-white flex size-10 items-center justify-center rounded-full font-serif text-sm font-semibold text-forest shadow-xs"
-                aria-hidden="true"
-              >
-                {(session.email ?? "T").slice(0, 1).toUpperCase()}
-              </span>
-              <p className="text-support font-medium text-white/90">{t("home.greeting")}</p>
-            </div>
+            {session.email ? (
+              <div className="flex items-center gap-3">
+                <span
+                  className="glass-white flex size-10 items-center justify-center rounded-full font-serif text-sm font-semibold text-gold shadow-xs"
+                  aria-hidden="true"
+                >
+                  {session.email.slice(0, 1).toUpperCase()}
+                </span>
+                <p className="text-support font-medium text-white/90">{t("home.greeting")}</p>
+              </div>
+            ) : (
+              <div className="inline-flex items-center gap-2 rounded-full border border-gold/40 bg-[#12100E]/85 px-3.5 py-1 text-meta font-semibold uppercase tracking-[0.2em] text-gold shadow-sm backdrop-blur-md">
+                <span className="text-xs">✦</span>
+                <span>TATTVACO · CULTURAL DISCOVERY</span>
+              </div>
+            )}
           </FadeIn>
           <div>
             <FadeIn delay={0.1}>
@@ -90,9 +97,6 @@ export default async function HomePage() {
             </FadeIn>
           </div>
         </div>
-        <p className="absolute right-6 top-6 hidden max-w-48 text-right text-[11px] leading-snug text-white/60 sm:block">
-          {HERO.credit}
-        </p>
       </section>
 
       {/* Explore India's Cultural Universe */}
@@ -264,32 +268,32 @@ export default async function HomePage() {
         </FadeIn>
       </section>
 
-      {/* Prominent Ask TattvaCo Callout Module */}
+      {/* Spatial Cultural Discovery Module (Interactive Map & Upcoming Trails) */}
       <FadeIn delay={0.12}>
         <section className="mt-16 md:mt-24 rounded-3xl border border-gold/25 bg-gradient-to-br from-[#171512] via-[#1a1714] to-[#12100d] p-8 sm:p-10 md:p-12 shadow-md">
           <div className="max-w-2xl">
             <div className="flex items-center gap-2 text-meta font-semibold uppercase tracking-[0.16em] text-gold">
               <span>✦</span>
-              <span>AI Cultural Discovery</span>
+              <span>Spatial Cultural Discovery</span>
             </div>
             <h2 className="mt-2.5 font-serif text-page font-semibold text-charcoal md:text-page-lg tracking-tight">
-              Have a question about India&apos;s living heritage?
+              Experience India&apos;s Living Heritage on the Map
             </h2>
             <p className="mt-3 text-body text-secondary-text leading-relaxed">
-              Ask open-ended questions about sacred geography, craft guilds, temple architecture or classical music. Every answer is grounded in statutory archives, academic research and verified sources.
+              Trace ancient riverfronts, monumental temple mandapas, and generational artisan quarters across our interactive cultural atlas. Connect physical places with the stories and traditions that brought them to life.
             </p>
             <div className="mt-7 flex flex-wrap items-center gap-3.5">
               <Link
-                href="/ask"
+                href="/places"
                 className="inline-flex min-h-12 items-center justify-center gap-2 rounded-full bg-gold px-6 text-support font-semibold text-on-gold transition-all hover:bg-gold-hover shadow-xs active:scale-[0.985]"
               >
-                Ask TattvaCo a Question →
+                Explore Cultural Map →
               </Link>
               <Link
-                href="/explore"
+                href="/coming-soon"
                 className="inline-flex min-h-12 items-center justify-center rounded-full border border-border bg-surface px-6 text-support font-semibold text-charcoal shadow-2xs hover:bg-elevated hover:border-gold/40 transition-all active:scale-[0.985]"
               >
-                Browse Pilot Collections
+                Preview AI Cultural Trails
               </Link>
             </div>
           </div>

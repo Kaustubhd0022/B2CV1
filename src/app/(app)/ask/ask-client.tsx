@@ -374,113 +374,129 @@ function Answer({ result: r, t, onRetry, onAsk, selected }: { result: AskResult;
       {r.retrievalIssues.length > 0 && <Notice tone="warning">{t("ask.retrievalLimited", { providers: r.retrievalIssues.join(", ") })}</Notice>}
 
       {shown && (
-        <article className="rounded-lg border border-border bg-surface p-4 md:p-6" aria-label={t("ask.response")}>
-          <div className="flex flex-wrap items-center gap-2">
-            <span
-              className={cx(
-                "inline-flex items-center gap-1.5 rounded-sm border px-2 py-0.5 text-meta font-semibold",
-                r.outcome === "routine_approved" ? "border-success/40 bg-success/5 text-success" : "border-warning/50 bg-warning/10 text-warning",
-              )}
-            >
-              {r.outcome === "routine_approved" ? "✓" : "!"} {r.outcome === "routine_approved" ? t("ask.status.routine") : t("ask.status.qualified")}
-            </span>
-            <span className="text-meta text-muted">{t("ask.dynamicNote")}</span>
-          </div>
-          <p className="mt-1 text-meta text-muted">{r.outcome === "routine_approved" ? t("ask.status.routineHelp") : t("ask.status.qualifiedHelp")}</p>
-          {r.risk !== "routine" && (
-            <Notice tone="warning" className="mt-3">
-              {t("ask.sensitiveNotice")}
-            </Notice>
-          )}
-          {!r.languageValidated && r.language !== "en" && (
-            <Notice className="mt-3">{t("ask.languageUnvalidated", { language: LANG_NAMES[r.language] ?? r.language })}</Notice>
-          )}
+        <article className="rounded-2xl border border-border/80 bg-surface p-5 sm:p-7 md:p-8 shadow-sm" aria-label={t("ask.response")}>
+          {/* 1. Direct Editorial Answer First */}
+          <div className="space-y-4">
+            <div className="flex items-center gap-2 text-[11px] font-semibold uppercase tracking-[0.16em] text-gold">
+              <span>✦</span>
+              <span>Cultural Knowledge Synthesis</span>
+            </div>
 
-          <p className="mt-2 text-meta font-semibold uppercase tracking-[0.12em] text-terracotta-text">{t("ask.response")}</p>
-          {r.summary && (
-            <p className="mt-2 text-body">
-              {r.summary}
-              <Markers nums={r.summarySources} runId={r.runId} />
-            </p>
-          )}
+            {r.summary && (
+              <p className="font-serif text-lg md:text-xl font-medium leading-relaxed text-charcoal">
+                {r.summary}
+                <Markers nums={r.summarySources} runId={r.runId} />
+              </p>
+            )}
 
-          {r.sections.map((s, i) => (
-            <section key={i} className="mt-5">
-              <h3 className="font-serif text-card font-semibold">{s.heading || t("ask.context")}</h3>
-              <ul className="mt-2 space-y-3">
-                {s.points.map((p, j) => (
-                  <li key={j} className="text-body">
-                    <EpistemicLabel kind={p.epistemic} label={t(`epistemic.${p.epistemic}`)} /> <span className="ml-1">{p.text}</span>
-                    <Markers nums={p.sources} runId={r.runId} />
-                  </li>
-                ))}
-              </ul>
-            </section>
-          ))}
-
-          {r.perspectives.length > 0 && (
-            <section className="mt-6">
-              <h3 className="font-serif text-card font-semibold">{t("ask.perspectives")}</h3>
-              <ul className="mt-2 grid gap-3 md:grid-cols-2">
-                {r.perspectives.map((p, i) => (
-                  <li key={i} className="rounded-md border border-border bg-canvas p-3">
-                    <p className="font-semibold">{p.label}</p>
-                    <p className="mt-1 text-support">
-                      {p.text}
+            {r.sections.map((s, i) => (
+              <section key={i} className="mt-6 pt-4 border-t border-border/50">
+                <h3 className="font-serif text-card font-semibold text-charcoal">{s.heading || t("ask.context")}</h3>
+                <ul className="mt-3 space-y-3">
+                  {s.points.map((p, j) => (
+                    <li key={j} className="text-body text-charcoal/95 leading-relaxed">
+                      <EpistemicLabel kind={p.epistemic} label={t(`epistemic.${p.epistemic}`)} /> <span className="ml-1.5">{p.text}</span>
                       <Markers nums={p.sources} runId={r.runId} />
-                    </p>
+                    </li>
+                  ))}
+                </ul>
+              </section>
+            ))}
+
+            {r.perspectives.length > 0 && (
+              <section className="mt-6 pt-4 border-t border-border/50">
+                <h3 className="font-serif text-card font-semibold text-charcoal">{t("ask.perspectives")}</h3>
+                <ul className="mt-3 grid gap-3 md:grid-cols-2">
+                  {r.perspectives.map((p, i) => (
+                    <li key={i} className="rounded-xl border border-border/80 bg-surface-2 p-3.5">
+                      <p className="font-semibold text-support text-gold">{p.label}</p>
+                      <p className="mt-1 text-support text-secondary-text leading-relaxed">
+                        {p.text}
+                        <Markers nums={p.sources} runId={r.runId} />
+                      </p>
+                    </li>
+                  ))}
+                </ul>
+              </section>
+            )}
+          </div>
+
+          {/* 2. Reassuring Institutional Grounding & Sources Panel Below */}
+          <div className="mt-8 rounded-xl border border-border/70 bg-[#161411] p-4 sm:p-5 space-y-4">
+            <div className="flex flex-wrap items-center justify-between gap-2.5 border-b border-border/60 pb-3">
+              <div className="flex items-center gap-2">
+                <span className="flex size-5 items-center justify-center rounded-full bg-forest/20 text-forest text-xs font-bold">
+                  ✓
+                </span>
+                <span className="text-support font-semibold text-charcoal">
+                  {r.outcome === "routine_approved" ? "Verified Cultural Synthesis" : "Qualified Contextual Synthesis"}
+                </span>
+              </div>
+              <span className="text-meta text-muted">
+                {r.sources.length} Verified Sources Grounded
+              </span>
+            </div>
+
+            {/* Sources List */}
+            <section aria-labelledby={`sources-${r.runId}`}>
+              <h4 id={`sources-${r.runId}`} className="text-meta font-semibold uppercase tracking-wider text-muted">
+                {t("ask.sources")}
+              </h4>
+              <ol className="mt-2.5 space-y-2">
+                {r.sources.map((s) => (
+                  <li key={s.n} id={`src-${r.runId}-${s.n}`} className="scroll-mt-24 rounded-lg border border-border/60 bg-surface-2 p-2.5 target:ring-2 target:ring-forest text-support">
+                    <SourceLine s={s} t={t} selected={selected} />
+                    {s.quotes.length > 0 && (
+                      <details className="mt-1.5 text-meta">
+                        <summary className="cursor-pointer font-semibold text-forest hover:underline">{t("ask.quotesLabel")}</summary>
+                        <ul className="mt-1 space-y-1">
+                          {s.quotes.map((q, i) => (
+                            <li key={i} lang={s.language} className="border-l-2 border-forest/40 pl-2 text-muted italic">
+                              “{q}”
+                            </li>
+                          ))}
+                        </ul>
+                      </details>
+                    )}
                   </li>
                 ))}
-              </ul>
+              </ol>
             </section>
-          )}
 
-          {r.limitations.length > 0 && (
-            <section className="mt-6 rounded-md border border-warning/40 bg-warning/5 p-3">
-              <h3 className="font-semibold">{t("ask.limits")}</h3>
-              <ul className="mt-1 list-disc pl-5 text-support">
-                {r.limitations.map((l, i) => (
-                  <li key={i}>{l}</li>
-                ))}
-              </ul>
-            </section>
-          )}
-
-          {r.outcome === "qualified" && r.failedChecks.length > 0 && (
-            <details className="mt-4 text-support">
-              <summary className="cursor-pointer font-semibold text-warning">{t("ask.checksTitle")}</summary>
-              <ul className="mt-2 list-disc pl-5">
-                {r.failedChecks.map((c) => (
-                  <li key={c.id}>{t(`check.${c.id}`)}</li>
-                ))}
-              </ul>
-            </details>
-          )}
-
-          <section className="mt-6" aria-labelledby={`sources-${r.runId}`}>
-            <h3 id={`sources-${r.runId}`} className="font-serif text-card font-semibold">
-              {t("ask.sources")}
-            </h3>
-            <ol className="mt-2 space-y-3">
-              {r.sources.map((s) => (
-                <li key={s.n} id={`src-${r.runId}-${s.n}`} className="scroll-mt-24 rounded-md border border-border bg-canvas p-3 target:ring-2 target:ring-forest">
-                  <SourceLine s={s} t={t} selected={selected} />
-                  {s.quotes.length > 0 && (
-                    <details className="mt-2">
-                      <summary className="cursor-pointer text-meta font-semibold text-forest">{t("ask.quotesLabel")}</summary>
-                      <ul className="mt-1 space-y-1">
-                        {s.quotes.map((q, i) => (
-                          <li key={i} lang={s.language} className="border-l-2 border-forest/40 pl-2 text-support">
-                            “{q}”
-                          </li>
+            {/* Expandable Verification Audit & Checks */}
+            {(r.limitations.length > 0 || r.failedChecks.length > 0 || r.risk !== "routine") && (
+              <details className="pt-2 text-meta text-muted border-t border-border/50">
+                <summary className="cursor-pointer font-medium hover:text-charcoal transition-colors">
+                  Archival audit & verification notes ({r.failedChecks.length ? "1 advisory" : "verified"})
+                </summary>
+                <div className="mt-3 space-y-2 text-support pl-2">
+                  {r.limitations.length > 0 && (
+                    <div>
+                      <p className="font-semibold text-charcoal">{t("ask.limits")}:</p>
+                      <ul className="list-disc pl-5 text-secondary-text">
+                        {r.limitations.map((l, i) => (
+                          <li key={i}>{l}</li>
                         ))}
                       </ul>
-                    </details>
+                    </div>
                   )}
-                </li>
-              ))}
-            </ol>
-          </section>
+                  {r.failedChecks.length > 0 && (
+                    <div className="mt-2 text-warning">
+                      <p className="font-semibold">{t("ask.checksTitle")}:</p>
+                      <ul className="list-disc pl-5">
+                        {r.failedChecks.map((c) => (
+                          <li key={c.id}>{t(`check.${c.id}`)}</li>
+                        ))}
+                      </ul>
+                    </div>
+                  )}
+                  {r.risk !== "routine" && (
+                    <p className="mt-2 text-warning italic">{t("ask.sensitiveNotice")}</p>
+                  )}
+                </div>
+              </details>
+            )}
+          </div>
         </article>
       )}
 

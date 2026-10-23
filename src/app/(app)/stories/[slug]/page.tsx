@@ -228,7 +228,7 @@ export default async function StoryPage({
 
       {/* Notices */}
       {row.isFixture && (
-        <Notice tone="warning" className="mt-4" title={t("common.devFixture")}>
+        <Notice tone="info" className="mt-4" title={t("common.devFixture")}>
           {t("common.devFixtureLong")}
         </Notice>
       )}

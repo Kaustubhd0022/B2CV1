@@ -19,25 +19,25 @@ const TOP_ITEMS = [
   {
     href: "/",
     key: "discover",
-    fallbackLabel: "Discover",
+    fallbackLabel: "Home",
     match: (p: string) => p === "/" || p.startsWith("/connections"),
   },
   {
     href: "/explore",
     key: "explore",
-    fallbackLabel: "Explore",
+    fallbackLabel: "Stories",
     match: (p: string) => p.startsWith("/explore") || p.startsWith("/stories"),
   },
   {
     href: "/places",
     key: "atlas",
-    fallbackLabel: "Atlas",
+    fallbackLabel: "Cultural Map",
     match: (p: string) => p.startsWith("/places") || p.startsWith("/cities"),
   },
   {
     href: "/ask",
     key: "ask",
-    fallbackLabel: "Ask",
+    fallbackLabel: "Ask AI",
     match: (p: string) => p.startsWith("/ask"),
   },
   {
@@ -59,14 +59,14 @@ const ITEMS = [
   {
     href: "/explore",
     key: "explore",
-    fallbackLabel: "Explore",
+    fallbackLabel: "Stories",
     Icon: IconDiscover,
     match: (p: string) => p.startsWith("/explore") || p.startsWith("/stories"),
   },
   {
     href: "/places",
     key: "atlas",
-    fallbackLabel: "Atlas",
+    fallbackLabel: "Map",
     Icon: IconExplore,
     match: (p: string) => p.startsWith("/places") || p.startsWith("/cities"),
   },
