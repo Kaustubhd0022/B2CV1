@@ -1,4 +1,6 @@
 import "server-only";
+import { readFileSync, readdirSync } from "node:fs";
+import path from "node:path";
 import { and, desc, eq, sql } from "drizzle-orm";
 import { config } from "@/lib/config";
 import { getDb, schema } from "@/lib/db/client";
@@ -28,62 +30,162 @@ function tsQuery(q: string) {
   return terms.map((t) => (/^[a-z]{4,}$/.test(t) ? `${stem(t)}:*` : t)).join(" | ");
 }
 
+let fixturePassagesCache: Candidate[] | null = null;
+
+function loadFixturePassages(): Candidate[] {
+  if (fixturePassagesCache) return fixturePassagesCache;
+  const candidates: Candidate[] = [];
+  try {
+    const catalogPath = path.join(process.cwd(), "content/fixtures/catalog.json");
+    const catalog = JSON.parse(readFileSync(catalogPath, "utf8"));
+    const sourcesMap = new Map<string, any>((catalog.sources ?? []).map((s: any) => [s.id, s]));
+
+    const loadDir = (kind: "story" | "connection") => {
+      const dir = path.join(process.cwd(), "content/fixtures", kind === "story" ? "stories" : "connections");
+      const files = readdirSync(dir).filter((f) => f.endsWith(".json"));
+      for (const f of files) {
+        try {
+          const item = JSON.parse(readFileSync(path.join(dir, f), "utf8"));
+          const internal = { kind, slug: item.slug, isFixture: true };
+          for (const ver of item.versions ?? []) {
+            const body = ver.body;
+            const title = body.title || item.slug;
+            const storySource: SourceRef = {
+              key: `tattvaco:${kind}:${item.slug}`,
+              title: `TattvaCo ${kind}: ${title}`,
+              publisher: "TattvaCo editorial",
+              url: `/${kind === "story" ? "stories" : "connections"}/${item.slug}`,
+              language: ver.language,
+              sourceType: "editorial",
+              tier: 1,
+              internal,
+            };
+
+            // Section paragraphs
+            for (const sec of body.sections ?? []) {
+              const heading = sec.heading || sec.id;
+              for (const p of sec.paragraphs ?? []) {
+                if (p.text && p.text.trim().length > 30) {
+                  candidates.push({
+                    text: p.text.trim(),
+                    heading,
+                    provider: "corpus",
+                    source: storySource,
+                    score: 0,
+                  });
+                }
+              }
+            }
+
+            // Claims with evidence excerpts
+            for (const clm of ver.claims ?? []) {
+              for (const ev of clm.evidence ?? []) {
+                if (ev.excerpt && ev.excerpt.trim().length > 25) {
+                  const s = sourcesMap.get(ev.source);
+                  const src: SourceRef = s
+                    ? {
+                        key: s.url ?? `src:${s.id}`,
+                        title: s.title,
+                        publisher: s.publisher,
+                        url: s.url ?? null,
+                        language: s.language ?? "en",
+                        sourceType: s.sourceType ?? "reference",
+                        tier: s.tier ?? 1,
+                        internal,
+                      }
+                    : storySource;
+                  candidates.push({
+                    text: ev.excerpt.trim(),
+                    heading: clm.text,
+                    provider: "corpus",
+                    source: src,
+                    score: 0,
+                  });
+                }
+              }
+            }
+          }
+        } catch {}
+      }
+    };
+
+    loadDir("story");
+    loadDir("connection");
+  } catch {}
+  fixturePassagesCache = candidates;
+  return candidates;
+}
+
+export function corpusFilesFallback(query: string, limit = 8): Candidate[] {
+  const all = loadFixturePassages();
+  if (!all.length) return [];
+  const scored = all
+    .map((c) => ({ ...c, score: overlapScore(query, `${c.heading ?? ""} ${c.text}`) }))
+    .filter((c) => c.score >= 0.15)
+    .sort((a, b) => b.score - a.score)
+    .slice(0, limit * 2);
+  return scored;
+}
+
 export async function corpusSearch(query: string, limit = 8): Promise<Candidate[]> {
   const tsq = tsQuery(query);
   if (!tsq) return [];
-  const db = await getDb();
-  const fixtureClause = config().content.allowFixtures ? undefined : eq(schema.contentItems.isFixture, false);
-  const rank = sql<number>`ts_rank_cd(${schema.corpusPassages.tsv}, to_tsquery('simple', ${tsq}))`;
-  const rows = await db
-    .select({
-      text: schema.corpusPassages.text,
-      heading: schema.corpusPassages.heading,
-      language: schema.corpusPassages.language,
-      rank,
-      kind: schema.contentItems.kind,
-      slug: schema.contentItems.slug,
-      isFixture: schema.contentItems.isFixture,
-      body: schema.contentVersions.body,
-      source: schema.sources,
-    })
-    .from(schema.corpusPassages)
-    .innerJoin(schema.contentVersions, eq(schema.contentVersions.id, schema.corpusPassages.versionId))
-    .innerJoin(schema.contentItems, eq(schema.contentItems.id, schema.contentVersions.itemId))
-    .leftJoin(schema.sources, eq(schema.sources.id, schema.corpusPassages.sourceId))
-    .where(and(sql`${schema.corpusPassages.tsv} @@ to_tsquery('simple', ${tsq})`, eq(schema.contentVersions.status, "published"), fixtureClause))
-    .orderBy(desc(rank))
-    .limit(limit * 2);
+  try {
+    const db = await getDb();
+    const fixtureClause = config().content.allowFixtures ? undefined : eq(schema.contentItems.isFixture, false);
+    const rank = sql<number>`ts_rank_cd(${schema.corpusPassages.tsv}, to_tsquery('simple', ${tsq}))`;
+    const rows = await db
+      .select({
+        text: schema.corpusPassages.text,
+        heading: schema.corpusPassages.heading,
+        language: schema.corpusPassages.language,
+        rank,
+        kind: schema.contentItems.kind,
+        slug: schema.contentItems.slug,
+        isFixture: schema.contentItems.isFixture,
+        body: schema.contentVersions.body,
+        source: schema.sources,
+      })
+      .from(schema.corpusPassages)
+      .innerJoin(schema.contentVersions, eq(schema.contentVersions.id, schema.corpusPassages.versionId))
+      .innerJoin(schema.contentItems, eq(schema.contentItems.id, schema.contentVersions.itemId))
+      .leftJoin(schema.sources, eq(schema.sources.id, schema.corpusPassages.sourceId))
+      .where(and(sql`${schema.corpusPassages.tsv} @@ to_tsquery('simple', ${tsq})`, eq(schema.contentVersions.status, "published"), fixtureClause))
+      .orderBy(desc(rank))
+      .limit(limit * 2);
 
-  return rows.map((r) => {
-    const internal = { kind: r.kind, slug: r.slug, isFixture: r.isFixture };
-    const title = r.kind === "story" ? (r.body as StoryBody).title : (r.body as ConnectionBody).title;
-    const source: SourceRef = r.source
-      ? {
-          key: r.source.url ?? `src:${r.source.id}`,
-          title: r.source.title,
-          publisher: r.source.publisher,
-          url: r.source.url,
-          language: r.source.language,
-          sourceType: r.source.sourceType,
-          tier: r.source.tier as 1 | 2 | 3,
-          internal,
-        }
-      : {
-          key: `tattvaco:${r.kind}:${r.slug}`,
-          title: `TattvaCo ${r.kind === "story" ? "story" : "connection"}: ${title}`,
-          publisher: r.isFixture ? "TattvaCo (development sample, not editorially reviewed)" : "TattvaCo editorial",
-          url: `/${r.kind === "story" ? "stories" : "connections"}/${r.slug}`,
-          language: r.language,
-          sourceType: "editorial",
-          // Unreviewed fixtures are weighted like tertiary material, never as approved editorial.
-          tier: r.isFixture ? 3 : 1,
-          internal,
-        };
-    const lexical = overlapScore(query, `${r.heading ?? ""} ${r.text}`);
-    // FTS rank orders candidates; the score used for sufficiency is query-term coverage, so a
-    // single generic word ("festival") cannot make an unrelated passage look relevant.
-    return { text: r.text, heading: r.heading ?? undefined, provider: "corpus" as const, source, score: lexical };
-  });
+    if (rows && rows.length > 0) {
+      return rows.map((r) => {
+        const internal = { kind: r.kind, slug: r.slug, isFixture: r.isFixture };
+        const title = r.kind === "story" ? (r.body as StoryBody).title : (r.body as ConnectionBody).title;
+        const source: SourceRef = r.source
+          ? {
+              key: r.source.url ?? `src:${r.source.id}`,
+              title: r.source.title,
+              publisher: r.source.publisher,
+              url: r.source.url,
+              language: r.source.language,
+              sourceType: r.source.sourceType,
+              tier: r.source.tier as 1 | 2 | 3,
+              internal,
+            }
+          : {
+              key: `tattvaco:${r.kind}:${r.slug}`,
+              title: `TattvaCo ${r.kind === "story" ? "story" : "connection"}: ${title}`,
+              publisher: r.isFixture ? "TattvaCo (development sample, not editorially reviewed)" : "TattvaCo editorial",
+              url: `/${r.kind === "story" ? "stories" : "connections"}/${r.slug}`,
+              language: r.language,
+              sourceType: "editorial",
+              tier: r.isFixture ? 3 : 1,
+              internal,
+            };
+        const lexical = overlapScore(query, `${r.heading ?? ""} ${r.text}`);
+        return { text: r.text, heading: r.heading ?? undefined, provider: "corpus" as const, source, score: lexical };
+      });
+    }
+  } catch {}
+
+  return corpusFilesFallback(query, limit);
 }
 
 // Wikimedia's API policy requires an identifying User-Agent with contact details.

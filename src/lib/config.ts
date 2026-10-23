@@ -116,7 +116,7 @@ function load() {
       effort: (process.env.LLM_EFFORT ?? "medium") as "low" | "medium" | "high",
       timeoutMs: num(process.env.LLM_TIMEOUT_MS, 15_000),
       judge: bool(process.env.ANSWER_JUDGE, true),
-      retrievalProviders: csv(process.env.RETRIEVAL_PROVIDERS ?? "corpus"),
+      retrievalProviders: csv(process.env.RETRIEVAL_PROVIDERS ?? "corpus,wikipedia,serpapi"),
       retrievalTimeoutMs: num(process.env.RETRIEVAL_TIMEOUT_MS, 8_000),
       serpApiKey: process.env.SERPAPI_API_KEY,
       // PROVISIONAL thresholds (OD-02). Product owner must approve before launch.
