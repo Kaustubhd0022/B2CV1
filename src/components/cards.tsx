@@ -32,7 +32,7 @@ export function CityCard({
       <Link
         href={href}
         className={cx(
-          "group relative block h-full aspect-[3/4] overflow-hidden rounded-2xl bg-stone border border-border/80 shadow-2xs transition-all duration-300 hover:shadow-lg",
+          "group relative block h-full aspect-[3/4] overflow-hidden rounded-[1.75rem] bg-stone border border-white/10 shadow-md transition-all duration-300 hover:shadow-2xl hover:border-gold/40 hover:-translate-y-1",
           className,
         )}
       >
@@ -50,11 +50,11 @@ export function CityCard({
         )}
         <div className="scrim absolute inset-0" aria-hidden="true" />
         {badge && (
-          <span className="glass-white absolute right-3.5 top-3.5 rounded-full px-3 py-1 text-[11px] font-semibold text-gold shadow-2xs">
+          <span className="glass-white absolute right-3.5 top-3.5 rounded-full px-3.5 py-1 text-[11px] font-semibold text-gold shadow-xs backdrop-blur-md">
             {badge}
           </span>
         )}
-        <div className="absolute inset-x-0 bottom-0 p-5">
+        <div className="absolute inset-x-0 bottom-0 p-5 sm:p-6">
           <h3 className="font-serif text-section lg:text-section-lg font-semibold text-white tracking-tight">{name}</h3>
           {tagline && <p className="mt-1 text-support text-white/90 line-clamp-2 leading-snug">{tagline}</p>}
           {taglineNote && <p className="mt-1 text-[11px] italic text-white/70">{taglineNote}</p>}
@@ -91,7 +91,7 @@ export function StoryCard({
     <MotionCard className="h-full">
       <Link
         href={href}
-        className="group flex h-full flex-col justify-between rounded-2xl border border-border/80 bg-surface p-6 shadow-2xs transition-all duration-300 hover:border-gold/40 hover:shadow-md"
+        className="group flex h-full flex-col justify-between rounded-[1.75rem] border border-white/10 bg-[#171411] p-6 sm:p-7 shadow-md transition-all duration-300 hover:border-gold/40 hover:shadow-xl hover:-translate-y-1"
       >
         <div>
           {eyebrow && <p className="text-meta font-semibold uppercase tracking-[0.16em] text-gold">{eyebrow}</p>}
@@ -102,7 +102,7 @@ export function StoryCard({
         </div>
         <div className="mt-5 flex flex-wrap items-center gap-2 border-t border-border-subtle pt-3.5">
           {meta && (
-            <span className="rounded-full border border-border bg-surface-2 px-3 py-0.5 text-meta font-medium text-secondary-text">
+            <span className="rounded-full border border-white/10 bg-surface-2 px-3 py-0.5 text-meta font-medium text-secondary-text">
               {meta}
             </span>
           )}
@@ -139,10 +139,10 @@ export function ConnectionCard({
       <Link
         href={href}
         className={cx(
-          "group relative block overflow-hidden rounded-2xl border p-6 transition-all duration-300 md:p-8",
+          "group relative block overflow-hidden rounded-[1.75rem] border p-6 transition-all duration-300 md:p-8 hover:-translate-y-1",
           featured
-            ? "border-gold/30 bg-gradient-to-br from-[#1c1915] via-[#161410] to-[#110f0c] text-white shadow-md hover:border-gold/60 hover:shadow-lg"
-            : "border-border bg-surface hover:border-gold/40 hover:shadow-md shadow-2xs",
+            ? "border-gold/30 bg-gradient-to-br from-[#1c1915] via-[#161410] to-[#110f0c] text-white shadow-lg hover:border-gold/60 hover:shadow-2xl"
+            : "border-white/10 bg-surface hover:border-gold/40 hover:shadow-lg shadow-xs",
         )}
       >
         <div className="flex items-center gap-2 text-meta font-semibold uppercase tracking-wider">

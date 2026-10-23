@@ -25,37 +25,55 @@ export default async function AppLayout({ children }: { children: React.ReactNod
       <a href="#main" className="sr-only focus:not-sr-only focus:absolute focus:left-3 focus:top-3 focus:z-50 focus:rounded-md focus:bg-[#1c1915] focus:text-gold focus:border focus:border-gold focus:ring-2 focus:ring-gold focus:px-4 focus:py-2.5 focus:shadow-lg focus:font-semibold">
         {t("nav.skip")}
       </a>
-      <header className="sticky top-0 z-30 border-b border-border bg-canvas/90 backdrop-blur-md">
-        <div className="mx-auto flex max-w-6xl items-center justify-between gap-4 px-4 py-2.5 sm:px-6 md:px-8">
-          <Link href="/" className="flex min-h-10 items-center gap-2.5 font-serif text-section font-semibold text-charcoal tracking-tight hover:text-gold transition-colors">
-            <span className="flex size-7 items-center justify-center rounded-full border border-gold/40 bg-surface text-gold text-xs font-serif font-bold shadow-xs">
+      {/* 21st.dev Floating Glass Pill Nav */}
+      <header className="sticky top-3 sm:top-4 z-40 mx-auto max-w-6xl px-3 sm:px-6">
+        <div className="flex items-center justify-between gap-3 sm:gap-4 rounded-full border border-white/20 bg-[#161311]/88 px-4 py-2 sm:px-5 sm:py-2.5 shadow-xl backdrop-blur-xl transition-all duration-300">
+          <Link
+            href="/"
+            className="flex min-h-10 items-center gap-2.5 font-serif text-section font-semibold text-charcoal tracking-tight hover:text-gold transition-colors"
+          >
+            <span className="flex size-7 items-center justify-center rounded-full border border-gold/40 bg-gold/10 text-gold text-xs font-serif font-bold shadow-xs">
               ✦
             </span>
             <span className="tracking-wide">TattvaCo</span>
             {config().demoMode && (
-              <span title={t("common.demoBanner")} className="rounded-full border border-gold/30 bg-gold/10 px-2 py-0.5 font-sans text-[11px] font-semibold text-gold">
+              <span
+                title={t("common.demoBanner")}
+                className="hidden sm:inline-flex rounded-full border border-gold/30 bg-gold/10 px-2 py-0.5 font-sans text-[11px] font-semibold text-gold"
+              >
                 {t("common.demoLabel")}
               </span>
             )}
           </Link>
           <MainNav labels={labels} variant="top" />
-          <div className="flex items-center gap-2.5">
+          <div className="flex items-center gap-2 sm:gap-3">
             <Link
               href="/explore"
-              className="hidden lg:flex items-center gap-2 rounded-full border border-border/80 bg-surface/80 px-3.5 py-1 text-meta text-muted hover:text-charcoal hover:border-gold/40 transition-all duration-200"
+              className="hidden lg:flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-3.5 py-1.5 text-meta text-secondary-text hover:text-charcoal hover:border-gold/40 transition-all duration-200"
               aria-label="Search places and stories"
             >
-              <svg className="size-3.5 text-muted" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <svg className="size-3.5 text-gold" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
               </svg>
               <span>Search places, stories…</span>
             </Link>
             <LanguageLink lang={lang} native={info.native} label={t("lang.change")} />
+            <Link
+              href="/places"
+              className="hidden sm:inline-flex min-h-9 items-center justify-center rounded-full bg-[#271520] hover:bg-[#381c2d] border border-gold/40 px-4 text-support font-semibold text-gold shadow-xs transition-all active:scale-95"
+            >
+              Cultural Atlas →
+            </Link>
           </div>
         </div>
         {lang !== "en" && (coverage < 1 || !gatePassed(lang)) && (
-          <p role="note" className="border-t border-warning/30 bg-warning/5 px-4 py-2 text-center text-meta text-charcoal">
-            {coverage < 1 ? t("lang.partialBanner", { language: info.native }) : t("lang.previewBanner", { language: info.native })}
+          <p
+            role="note"
+            className="mt-2 rounded-full border border-warning/30 bg-warning/10 px-4 py-1.5 text-center text-meta text-charcoal backdrop-blur-md"
+          >
+            {coverage < 1
+              ? t("lang.partialBanner", { language: info.native })
+              : t("lang.previewBanner", { language: info.native })}
           </p>
         )}
       </header>

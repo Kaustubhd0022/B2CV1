@@ -5,7 +5,7 @@ import { track } from "@/lib/analytics";
 import { CityCard, ConnectionCard, StoryCard } from "@/components/cards";
 import { FadeIn, StaggerContainer, StaggerItem } from "@/components/motion";
 import { Page, SectionTitle } from "@/components/ui";
-import { VaranasiDiscoveryBoard } from "@/components/varanasi-discovery-board";
+import { CulturalMeadowBoard } from "@/components/cultural-meadow-board";
 
 export default async function HomePage() {
   const { session, lang, t } = await pageContext();
@@ -19,8 +19,8 @@ export default async function HomePage() {
 
   return (
     <Page className="pt-2">
-      {/* 21st.dev Adapted Varanasi-Led Discovery Board & Floating Frosted Glass UI */}
-      <VaranasiDiscoveryBoard userEmail={session.email} />
+      {/* 21st.dev Fintech Flower Meadow Hero & Cultural Bento Discovery Board */}
+      <CulturalMeadowBoard userEmail={session.email} />
 
       {/* Start with a City (Pilot Cities) */}
       <section className="mt-16 md:mt-20" aria-labelledby="cities-title">
