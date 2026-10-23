@@ -64,7 +64,6 @@ export function CityCard({
               {meta}
             </p>
           )}
-          {image && !image.rightsCleared && <p className="mt-1.5 text-[10px] leading-tight text-white/60">{image.credit}</p>}
         </div>
       </Link>
     </MotionCard>

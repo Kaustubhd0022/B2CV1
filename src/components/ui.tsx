@@ -15,7 +15,7 @@ const btn: Record<Variant, string> = {
   gold:
     "bg-gold text-on-gold hover:bg-gold-hover active:scale-[0.985] disabled:bg-muted/30 disabled:text-muted disabled:cursor-not-allowed shadow-xs font-semibold",
   secondary:
-    "border border-border bg-surface text-charcoal hover:bg-surface-2 hover:border-gold/40 active:scale-[0.985] disabled:opacity-60 disabled:cursor-not-allowed shadow-2xs font-medium",
+    "border border-border/80 bg-surface text-charcoal hover:bg-elevated hover:border-gold/50 hover:text-gold active:scale-[0.985] disabled:opacity-60 disabled:cursor-not-allowed shadow-2xs font-medium",
   terracotta:
     "bg-terracotta text-white hover:bg-terracotta-hover active:scale-[0.985] disabled:bg-muted/30 disabled:cursor-not-allowed shadow-xs font-semibold",
   tertiary: "text-gold underline-offset-4 hover:underline px-1 font-medium",
@@ -117,11 +117,13 @@ export function FixtureBadge({ label, onDark }: { label: string; onDark?: boolea
   return (
     <span
       className={cx(
-        "inline-flex items-center gap-1.5 rounded-sm border px-2 py-0.5 text-meta font-semibold",
-        onDark ? "border-white/60 bg-white text-warning" : "border-warning/50 bg-warning/10 text-warning",
+        "inline-flex items-center gap-1.5 rounded-full border px-2.5 py-0.5 text-[11px] font-semibold tracking-wide",
+        onDark
+          ? "border-gold/50 bg-black/40 text-gold backdrop-blur-xs"
+          : "border-gold/35 bg-gold/10 text-gold",
       )}
     >
-      <IconWarning width={14} height={14} />
+      <span aria-hidden="true" className="text-[10px]">✦</span>
       {label}
     </span>
   );
@@ -131,11 +133,11 @@ export function FixtureBadge({ label, onDark }: { label: string; onDark?: boolea
 
 export type Epistemic = "documented" | "tradition" | "interpretation" | "contested" | "uncertain";
 const epiCls: Record<Epistemic, string> = {
-  documented: "border-forest/40 text-forest bg-forest/5",
-  tradition: "border-terracotta/50 text-terracotta-text bg-terracotta/5",
-  interpretation: "border-info/40 text-info bg-info/5",
-  contested: "border-warning/50 text-warning bg-warning/10",
-  uncertain: "border-muted/50 text-muted bg-surface-2",
+  documented: "border-forest/60 text-[#7AD1A8] bg-forest/15",
+  tradition: "border-terracotta/60 text-[#FFA07A] bg-terracotta/15",
+  interpretation: "border-info/60 text-[#8AC8F5] bg-info/15",
+  contested: "border-warning/60 text-[#F5C77E] bg-warning/15",
+  uncertain: "border-border text-secondary-text bg-surface-2",
 };
 const epiMark: Record<Epistemic, string> = {
   documented: "●",
@@ -149,11 +151,11 @@ export function EpistemicLabel({ kind, label }: { kind: Epistemic; label: string
   return (
     <span
       className={cx(
-        "inline-flex items-center gap-1 whitespace-nowrap rounded-sm border px-1.5 py-px text-meta font-semibold align-middle",
+        "inline-flex items-center gap-1.5 whitespace-nowrap rounded-md border px-2 py-0.5 text-[11px] font-semibold align-middle shadow-2xs",
         epiCls[kind],
       )}
     >
-      <span aria-hidden="true">{epiMark[kind]}</span>
+      <span aria-hidden="true" className="font-mono text-xs">{epiMark[kind]}</span>
       {label}
     </span>
   );

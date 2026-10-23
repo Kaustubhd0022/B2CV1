@@ -22,7 +22,7 @@ export default async function AppLayout({ children }: { children: React.ReactNod
 
   return (
     <div lang={lang} className="min-h-dvh">
-      <a href="#main" className="sr-only focus:not-sr-only focus:absolute focus:left-3 focus:top-3 focus:z-50 focus:rounded-md focus:bg-surface focus:px-3 focus:py-2">
+      <a href="#main" className="sr-only focus:not-sr-only focus:absolute focus:left-3 focus:top-3 focus:z-50 focus:rounded-md focus:bg-[#1c1915] focus:text-gold focus:border focus:border-gold focus:ring-2 focus:ring-gold focus:px-4 focus:py-2.5 focus:shadow-lg focus:font-semibold">
         {t("nav.skip")}
       </a>
       <header className="sticky top-0 z-30 border-b border-border bg-canvas/90 backdrop-blur-md">

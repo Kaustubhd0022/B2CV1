@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { IconAsk, IconDiscover, IconExplore, IconSettings } from "./icons";
+import { IconAsk, IconDiscover, IconExplore, IconHistory, IconSettings } from "./icons";
 import { cx } from "./ui";
 
 type Labels = {
@@ -60,7 +60,7 @@ const ITEMS = [
     href: "/explore",
     key: "explore",
     fallbackLabel: "Stories",
-    Icon: IconDiscover,
+    Icon: IconHistory,
     match: (p: string) => p.startsWith("/explore") || p.startsWith("/stories"),
   },
   {
@@ -103,7 +103,7 @@ export function MainNav({ labels, variant }: { labels: Labels; variant: "bottom"
                   href={href}
                   aria-current={active ? "page" : undefined}
                   className={cx(
-                    "inline-flex min-h-9 items-center rounded-full px-3.5 text-support font-medium transition-all duration-200",
+                    "inline-flex min-h-10 items-center rounded-full px-4 text-support font-medium transition-all duration-200",
                     active
                       ? "bg-gold text-[#12100e] shadow-xs font-semibold"
                       : "text-secondary-text hover:text-charcoal hover:bg-surface-2",
@@ -136,7 +136,7 @@ export function MainNav({ labels, variant }: { labels: Labels; variant: "bottom"
                 aria-current={active ? "page" : undefined}
                 aria-label={labelText}
                 className={cx(
-                  "flex flex-col items-center justify-center gap-1 py-1 text-[10px] font-medium transition-colors relative",
+                  "flex min-h-[48px] flex-col items-center justify-center gap-1 py-1 text-[10px] font-medium transition-colors relative",
                   active ? "text-gold font-semibold" : "text-muted hover:text-charcoal",
                 )}
               >

@@ -135,14 +135,14 @@ const en = {
   "story.factConnections": "Connections",
   "story.factLanguage": "Language",
 
-  "epistemic.documented": "Documented",
-  "epistemic.tradition": "Tradition / belief",
-  "epistemic.interpretation": "Interpretation",
-  "epistemic.contested": "Contested",
-  "epistemic.uncertain": "Uncertain",
-  "epistemic.help": "How to read these labels",
+  "epistemic.documented": "Archival evidence",
+  "epistemic.tradition": "Living tradition / belief",
+  "epistemic.interpretation": "Scholarly interpretation",
+  "epistemic.contested": "Diverse perspectives",
+  "epistemic.uncertain": "Under archival study",
+  "epistemic.help": "Understanding epistemic grounding markers",
   "epistemic.helpBody":
-    "Documented: supported by cited evidence. Tradition / belief: held within a tradition or community, not presented as established history. Interpretation: an attributed reading by scholars or traditions. Contested: credible sources disagree. Uncertain: the evidence is limited.",
+    "Archival evidence: verified in primary or statutory documents. Living tradition / belief: documented community practice and sacred tradition. Scholarly interpretation: critical analysis by accredited historians. Diverse perspectives: multiple credible scholarly traditions exist. Under archival study: primary field documentation is ongoing.",
 
   "source.title": "Sources and evidence",
   "source.claim": "Claim supported",

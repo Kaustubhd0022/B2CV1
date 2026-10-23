@@ -40,9 +40,9 @@ export function QuestionComposer({
       <form ref={form} action="/ask" method="get">
         {context && <input type="hidden" name="context" value={context} />}
         <div className="glass flex items-center gap-3 rounded-full py-2.5 pl-5 pr-2.5 shadow-xl">
-          <IconSearch width={22} height={22} className="shrink-0 text-forest" />
+          <IconSearch width={22} height={22} className="shrink-0 text-gold" />
           <div className="min-w-0 flex-1">
-            <label htmlFor="composer-q" className="block text-[11px] font-semibold uppercase tracking-wider text-forest">
+            <label htmlFor="composer-q" className="block text-[11px] font-semibold uppercase tracking-wider text-gold">
               {label}
             </label>
             <textarea

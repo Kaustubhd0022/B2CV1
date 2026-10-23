@@ -60,24 +60,43 @@ export function ShareButton({ path, kind, title, summary, labels }: { path: stri
       <dialog
         ref={dialog}
         aria-labelledby="share-title"
-        className="m-auto w-[min(32rem,calc(100vw-2rem))] rounded-lg border border-border bg-canvas p-0 text-charcoal shadow-xl backdrop:bg-black/70"
+        aria-modal="true"
+        className="m-auto w-[min(32rem,calc(100vw-2rem))] rounded-2xl border border-border/80 bg-[#14120f] p-0 text-charcoal shadow-2xl backdrop:bg-black/75 backdrop:backdrop-blur-xs"
         onClose={() => setCopied(false)}
       >
-        <div className="p-5">
-          <h2 id="share-title" className="font-serif text-section font-semibold">
-            {labels.title}
-          </h2>
-          <div className="mt-4 rounded-md border border-border bg-surface p-4">
-            <p className="text-meta font-semibold uppercase tracking-[0.12em] text-terracotta-text">{labels.preview}</p>
-            <p className="mt-1 font-serif text-card font-semibold">{title}</p>
-            <p className="mt-1 text-support text-muted">{summary}</p>
+        <div className="p-5 sm:p-6">
+          <div className="flex items-center justify-between">
+            <h2 id="share-title" className="font-serif text-section font-semibold text-charcoal">
+              {labels.title}
+            </h2>
+            <button
+              type="button"
+              onClick={() => dialog.current?.close()}
+              className="rounded-full p-1.5 text-muted hover:text-charcoal hover:bg-surface-2 transition-colors"
+              aria-label={labels.close}
+            >
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                <line x1="18" y1="6" x2="6" y2="18"></line>
+                <line x1="6" y1="6" x2="18" y2="18"></line>
+              </svg>
+            </button>
           </div>
-          <label className="mt-4 block text-support font-medium">
+          <div className="mt-4 rounded-xl border border-border/80 bg-surface p-4">
+            <p className="text-meta font-semibold uppercase tracking-[0.12em] text-gold">{labels.preview}</p>
+            <p className="mt-1 font-serif text-card font-semibold text-charcoal">{title}</p>
+            <p className="mt-1 text-support text-secondary-text">{summary}</p>
+          </div>
+          <label className="mt-4 block text-support font-medium text-charcoal">
             {labels.url}
-            <input readOnly value={url} onFocus={(e) => e.currentTarget.select()} className="mt-1 block w-full min-h-11 rounded-md border border-border bg-surface px-3 text-support" />
+            <input
+              readOnly
+              value={url}
+              onFocus={(e) => e.currentTarget.select()}
+              className="mt-1.5 block w-full min-h-11 rounded-lg border border-border/80 bg-surface-2 px-3 text-support text-charcoal focus:border-gold focus:outline-none focus:ring-2 focus:ring-gold/30"
+            />
           </label>
           <p className="mt-2 text-meta text-muted">{labels.privacy}</p>
-          <div className="mt-4 flex flex-wrap gap-2">
+          <div className="mt-5 flex flex-wrap gap-2.5">
             <Button type="button" onClick={copy}>
               {copied ? labels.copied : labels.copy}
             </Button>
