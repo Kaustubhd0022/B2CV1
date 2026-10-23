@@ -118,6 +118,7 @@ function load() {
       judge: bool(process.env.ANSWER_JUDGE, true),
       retrievalProviders: csv(process.env.RETRIEVAL_PROVIDERS ?? "corpus"),
       retrievalTimeoutMs: num(process.env.RETRIEVAL_TIMEOUT_MS, 8_000),
+      serpApiKey: process.env.SERPAPI_API_KEY,
       // PROVISIONAL thresholds (OD-02). Product owner must approve before launch.
       minPassages: num(process.env.ANSWER_MIN_PASSAGES, 2),
       minPassageScore: num(process.env.ANSWER_MIN_PASSAGE_SCORE, 0.2),

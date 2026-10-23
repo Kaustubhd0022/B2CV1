@@ -6,7 +6,7 @@ export type Passage = {
   text: string;
   heading?: string;
   score: number;
-  provider: "corpus" | "wikipedia";
+  provider: "corpus" | "wikipedia" | "serpapi";
   source: SourceRef;
 };
 

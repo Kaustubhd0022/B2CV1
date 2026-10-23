@@ -13,6 +13,8 @@ import type { Passage, RetrievalOutcome, SourceRef } from "./types";
  *  - corpus:    TattvaCo's published editorial content + verbatim source excerpts (Postgres FTS).
  *  - wikipedia: MediaWiki API in the user's language and English (no key; external call,
  *               revision-pinned permalinks). Tertiary source: tier 2.
+ *  - serpapi:   SerpApi Google search scraper for real-time web retrieval of cultural knowledge,
+ *               answer boxes, knowledge graphs, and organic web results. Tier 2.
  * Keyword retrieval is used deliberately: the corpus is small and no embedding provider is
  * configured (see DECISIONS D-07).
  */
@@ -142,6 +144,115 @@ export async function wikipediaSearch(query: string, lang: string, signal: Abort
   return results.flat();
 }
 
+// Short-lived cache of SerpApi responses to respect quota and ensure fast retrieval
+const gSerp = globalThis as unknown as { __tcSerp?: Map<string, { at: number; data: unknown }> };
+const serpCache: Map<string, { at: number; data: unknown }> = (gSerp.__tcSerp ??= new Map());
+const SERP_TTL_MS = 15 * 60_000;
+
+export async function serpApiSearch(
+  query: string,
+  lang: string,
+  signal: AbortSignal,
+  limit = 4,
+): Promise<Candidate[]> {
+  const apiKey = process.env.SERPAPI_API_KEY || config().ai.serpApiKey;
+  if (!apiKey) return [];
+
+  const cacheKey = `${lang}:${query}`;
+  const hit = serpCache.get(cacheKey);
+  let data: any = null; // eslint-disable-line @typescript-eslint/no-explicit-any
+
+  if (hit && Date.now() - hit.at < SERP_TTL_MS) {
+    data = hit.data;
+  } else {
+    const params = new URLSearchParams({
+      engine: "google",
+      q: query,
+      api_key: apiKey,
+      hl: lang || "en",
+      gl: "in",
+      num: String(limit),
+    });
+    const url = `https://serpapi.com/search.json?${params}`;
+    const res = await fetch(url, { signal });
+    if (!res.ok) throw new Error(`serpapi_http_${res.status}`);
+    data = await res.json();
+    if (serpCache.size > 200) serpCache.clear();
+    serpCache.set(cacheKey, { at: Date.now(), data });
+  }
+
+  const candidates: Candidate[] = [];
+
+  // 1. Answer box (featured snippet) if present
+  if (data?.answer_box?.snippet || data?.answer_box?.answer) {
+    const answerText = (data.answer_box.snippet || data.answer_box.answer) as string;
+    const title = (data.answer_box.title || "Featured Knowledge Snippet") as string;
+    const link = (data.answer_box.link || null) as string | null;
+    candidates.push({
+      text: answerText,
+      heading: title,
+      provider: "serpapi",
+      source: {
+        key: link ?? `serpapi:answer_box:${encodeURIComponent(query)}`,
+        title,
+        publisher: "Google Search (via SerpApi)",
+        url: link,
+        language: lang,
+        sourceType: "reference",
+        tier: 2,
+      },
+      score: overlapScore(query, `${title} ${answerText}`) + 0.15,
+    });
+  }
+
+  // 2. Knowledge graph description if present
+  if (data?.knowledge_graph?.description) {
+    const desc = data.knowledge_graph.description as string;
+    const title = (data.knowledge_graph.title || "Knowledge Graph") as string;
+    const link = (data.knowledge_graph.source?.link || null) as string | null;
+    candidates.push({
+      text: desc,
+      heading: title,
+      provider: "serpapi",
+      source: {
+        key: link ?? `serpapi:kg:${encodeURIComponent(title)}`,
+        title,
+        publisher: data.knowledge_graph.source?.name || "Google Knowledge Graph",
+        url: link,
+        language: lang,
+        sourceType: "reference",
+        tier: 2,
+      },
+      score: overlapScore(query, `${title} ${desc}`) + 0.1,
+    });
+  }
+
+  // 3. Organic search results
+  const organics = data?.organic_results ?? [];
+  for (const item of organics.slice(0, limit)) {
+    if (!item.snippet) continue;
+    const title = item.title || "";
+    const sourceName = item.source || item.displayed_link || "Web Source";
+    candidates.push({
+      text: item.snippet,
+      heading: title,
+      provider: "serpapi",
+      source: {
+        key: item.link || `serpapi:${encodeURIComponent(title)}`,
+        title,
+        publisher: `${sourceName} (via Google Search)`,
+        url: item.link || null,
+        language: lang,
+        sourceType: "reference",
+        tier: 2,
+      },
+      score: overlapScore(query, `${title} ${item.snippet}`),
+    });
+  }
+
+  return candidates;
+}
+
 /** Runs configured providers with timeouts, then dedupes, weights by tier and ranks. */
 export async function retrieve(opts: { queryNative: string; queryEn: string; lang: string; limit?: number }): Promise<RetrievalOutcome> {
   const c = config();
@@ -169,6 +280,9 @@ export async function retrieve(opts: { queryNative: string; queryEn: string; lan
   if (providers.includes("wikipedia")) {
     if (opts.lang !== "en") run(`wikipedia:${opts.lang}`, (s) => wikipediaSearch(opts.queryNative, opts.lang, s, 2));
     run("wikipedia:en", (s) => wikipediaSearch(opts.queryEn, "en", s, 3));
+  }
+  if (providers.includes("serpapi") && (process.env.SERPAPI_API_KEY || c.ai.serpApiKey)) {
+    run("serpapi", (s) => serpApiSearch(opts.queryEn, opts.lang, s, 4));
   }
   const all = (await Promise.all(tasks)).flat();
 
