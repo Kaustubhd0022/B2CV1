@@ -135,14 +135,14 @@ const en = {
   "story.factConnections": "Connections",
   "story.factLanguage": "Language",
 
-  "epistemic.documented": "Archival evidence",
-  "epistemic.tradition": "Living tradition / belief",
-  "epistemic.interpretation": "Scholarly interpretation",
-  "epistemic.contested": "Diverse perspectives",
-  "epistemic.uncertain": "Under archival study",
-  "epistemic.help": "Understanding epistemic grounding markers",
+  "epistemic.documented": "Historical Record",
+  "epistemic.tradition": "Living Oral Tradition",
+  "epistemic.interpretation": "Scholarly Perspective",
+  "epistemic.contested": "Multiple Traditions",
+  "epistemic.uncertain": "Evolving Context",
+  "epistemic.help": "Cultural Provenance Markers",
   "epistemic.helpBody":
-    "Archival evidence: verified in primary or statutory documents. Living tradition / belief: documented community practice and sacred tradition. Scholarly interpretation: critical analysis by accredited historians. Diverse perspectives: multiple credible scholarly traditions exist. Under archival study: primary field documentation is ongoing.",
+    "Historical Record: verified in primary or statutory documents. Living Oral Tradition: documented community practice and sacred tradition. Scholarly Perspective: critical analysis by accredited historians. Multiple Traditions: diverse credible perspectives exist. Evolving Context: field research and archival documentation is ongoing.",
 
   "source.title": "Sources and evidence",
   "source.claim": "Claim supported",
@@ -227,9 +227,9 @@ const en = {
   "ask.nextRationale": "This published story was among the sources retrieved for your question.",
   "ask.followUps": "You could also ask",
   "ask.checksTitle": "Checks that did not pass",
-  "ask.insufficientTitle": "We couldn't establish a reliable answer",
+  "ask.insufficientTitle": "We couldn't establish a fully verified answer",
   "ask.insufficientBody":
-    "The sources we could find do not support a confident answer to this question. Rather than guess, here is what we found and how you might narrow the question.",
+    "The available sources do not yet provide an unbroken, definitive answer to this exact phrasing. To preserve cultural authenticity rather than speculate, here is the context we found along with recommended paths to explore.",
   "ask.sensitiveTitle": "This topic needs particular care",
   "ask.sensitiveBody":
     "This question touches a sensitive or contested subject. TattvaCo does not answer it automatically; explore the related published stories or ask a narrower question about documented evidence.",

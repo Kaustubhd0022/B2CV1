@@ -350,20 +350,102 @@ function Progress({ stage, t }: { stage?: Stage; t: ClientT }) {
   );
 }
 
-function Markers({ nums, runId }: { nums: number[]; runId: string }) {
+function getPivotSuggestions(question: string): { label: string; question?: string; href?: string }[] {
+  const q = question.toLowerCase();
+  if (q.includes("varanasi") || q.includes("ghat") || q.includes("ganga") || q.includes("kashi")) {
+    return [
+      { label: "Flagship Story: Sacred Geometry of 84 Ghats", href: "/stories/varanasi-ghats" },
+      { label: "Ask: Who built the 84 ghats along the Ganga?", question: "Who built the 84 ghats of Varanasi along the Ganga?" },
+      { label: "View Dashashwamedh Ghat on Cultural Map", href: "/places?city=varanasi&place=dashashwamedh-ghat" },
+      { label: "Ask: What is the history of Banaras Gharana music?", question: "What is the history of the Banaras Gharana music tradition?" },
+    ];
+  }
+  if (q.includes("silk") || q.includes("craft") || q.includes("weave") || q.includes("handloom") || q.includes("kadhwa")) {
+    return [
+      { label: "Flagship Story: Kadhwa Silk Handloom Guilds", href: "/stories/varanasi-silk-craft" },
+      { label: "Ask: How are Banarasi silks handwoven?", question: "How are Banarasi silks handwoven on traditional pit looms?" },
+      { label: "Explore Sanganer Block Printing", href: "/stories/jaipur-sanganer-block-printing" },
+    ];
+  }
+  if (q.includes("hampi") || q.includes("vijayanagara") || q.includes("pillar") || q.includes("temple")) {
+    return [
+      { label: "Flagship Story: Hampi Vittala Temple Musical Pillars", href: "/stories/hampi-vittala-musical-pillars" },
+      { label: "Ask: What makes Hampi's architecture acoustic?", question: "What makes the musical pillars of Vittala Temple in Hampi acoustic?" },
+      { label: "View Hampi on Cultural Map", href: "/places?city=hampi" },
+    ];
+  }
+  if (q.includes("jaipur") || q.includes("observatory") || q.includes("jantar mantar")) {
+    return [
+      { label: "Flagship Story: Jantar Mantar Astronomical Observatory", href: "/stories/jaipur-jantar-mantar" },
+      { label: "Ask: Why were stone observatories built across India?", question: "Why did Sawai Jai Singh build five stone observatories across India?" },
+    ];
+  }
+  return [
+    { label: "Explore Varanasi Riverfront & Sacred Geography", href: "/stories/varanasi-ghats" },
+    { label: "Browse India's 9 Cultural Dimensions", href: "/explore" },
+    { label: "Explore Living Heritage on Cultural Map", href: "/places" },
+  ];
+}
+
+function Markers({ nums, runId, sources }: { nums: number[]; runId: string; sources?: AskResult["sources"] }) {
+  const [activeNum, setActiveNum] = useState<number | null>(null);
   if (!nums.length) return null;
   return (
-    <span className="ml-1 whitespace-nowrap">
-      {nums.map((n) => (
-        <a key={n} href={`#src-${runId}-${n}`} className="ml-0.5 inline-flex min-w-6 items-center justify-center rounded-sm border border-forest/40 px-1 text-meta font-semibold text-forest no-underline hover:bg-forest/10" aria-label={`Source ${n}`}>
-          {n}
-        </a>
-      ))}
+    <span className="relative ml-1 inline-flex items-center gap-1 align-baseline">
+      {nums.map((n) => {
+        const src = sources?.find((s) => s.n === n);
+        const isOpen = activeNum === n;
+        return (
+          <span key={n} className="relative inline-block">
+            <button
+              type="button"
+              onClick={() => setActiveNum(isOpen ? null : n)}
+              onMouseEnter={() => setActiveNum(n)}
+              onMouseLeave={() => setActiveNum(null)}
+              className="inline-flex min-w-5 h-5 items-center justify-center rounded-md border border-forest/50 bg-forest/10 px-1 font-mono text-[11px] font-bold text-forest hover:bg-forest hover:text-white transition-colors cursor-pointer"
+              aria-label={`Source citation ${n}: ${src?.title || `Citation ${n}`}`}
+              aria-expanded={isOpen}
+            >
+              {n}
+            </button>
+            {isOpen && src && (
+              <span
+                role="tooltip"
+                className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 z-50 w-64 rounded-xl border border-border/90 bg-[#171512] p-3 text-left shadow-2xl backdrop-blur-md"
+              >
+                <span className="block text-[10px] font-semibold uppercase tracking-wider text-gold">
+                  Source [{n}] · {src.publisher || "Archival Source"}
+                </span>
+                <span className="mt-1 block font-serif text-xs font-semibold text-white leading-tight">
+                  {src.title}
+                </span>
+                {src.url ? (
+                  <a
+                    href={src.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="mt-2 inline-flex items-center gap-1 text-[11px] font-medium text-forest hover:underline"
+                  >
+                    <span>View primary source</span>
+                    <IconExternal width={11} height={11} />
+                  </a>
+                ) : (
+                  <span className="mt-1.5 block text-[10px] text-muted italic">
+                    Verified institutional excerpt
+                  </span>
+                )}
+                <span className="absolute -bottom-1 left-1/2 -translate-x-1/2 size-2 rotate-45 border-r border-b border-border/90 bg-[#171512]" />
+              </span>
+            )}
+          </span>
+        );
+      })}
     </span>
   );
 }
 
 function Answer({ result: r, t, onRetry, onAsk, selected }: { result: AskResult; t: ClientT; onRetry: () => void; onAsk: (q: string) => void; selected: string }) {
+  const router = useRouter();
   const shown = r.outcome === "routine_approved" || r.outcome === "qualified";
 
   return (
@@ -385,7 +467,7 @@ function Answer({ result: r, t, onRetry, onAsk, selected }: { result: AskResult;
             {r.summary && (
               <p className="font-serif text-lg md:text-xl font-medium leading-relaxed text-charcoal">
                 {r.summary}
-                <Markers nums={r.summarySources} runId={r.runId} />
+                <Markers nums={r.summarySources} runId={r.runId} sources={r.sources} />
               </p>
             )}
 
@@ -396,7 +478,7 @@ function Answer({ result: r, t, onRetry, onAsk, selected }: { result: AskResult;
                   {s.points.map((p, j) => (
                     <li key={j} className="text-body text-charcoal/95 leading-relaxed">
                       <EpistemicLabel kind={p.epistemic} label={t(`epistemic.${p.epistemic}`)} /> <span className="ml-1.5">{p.text}</span>
-                      <Markers nums={p.sources} runId={r.runId} />
+                      <Markers nums={p.sources} runId={r.runId} sources={r.sources} />
                     </li>
                   ))}
                 </ul>
@@ -412,7 +494,7 @@ function Answer({ result: r, t, onRetry, onAsk, selected }: { result: AskResult;
                       <p className="font-semibold text-support text-gold">{p.label}</p>
                       <p className="mt-1 text-support text-secondary-text leading-relaxed">
                         {p.text}
-                        <Markers nums={p.sources} runId={r.runId} />
+                        <Markers nums={p.sources} runId={r.runId} sources={r.sources} />
                       </p>
                     </li>
                   ))}
@@ -467,7 +549,7 @@ function Answer({ result: r, t, onRetry, onAsk, selected }: { result: AskResult;
             {(r.limitations.length > 0 || r.failedChecks.length > 0 || r.risk !== "routine") && (
               <details className="pt-2 text-meta text-muted border-t border-border/50">
                 <summary className="cursor-pointer font-medium hover:text-charcoal transition-colors">
-                  Archival audit & verification notes ({r.failedChecks.length ? "1 advisory" : "verified"})
+                  Source verification & archival details ({r.failedChecks.length ? "1 contextual advisory" : "verified"})
                 </summary>
                 <div className="mt-3 space-y-2 text-support pl-2">
                   {r.limitations.length > 0 && (
@@ -515,20 +597,67 @@ function Answer({ result: r, t, onRetry, onAsk, selected }: { result: AskResult;
       )}
 
       {r.outcome === "abstained" && (
-        <div className="rounded-lg border border-border bg-surface p-4">
-          <Notice
-            tone="warning"
-            role="status"
-            title={r.abstainReason === "sensitive" ? t("ask.sensitiveTitle") : r.abstainReason === "out_of_scope" ? t("ask.outOfScopeTitle") : t("ask.insufficientTitle")}
-          >
-            <p>{r.abstainReason === "sensitive" ? t("ask.sensitiveBody") : r.abstainReason === "out_of_scope" ? t("ask.outOfScopeBody") : t("ask.insufficientBody")}</p>
-            {r.abstainReason === "insufficient_evidence" && <p className="mt-1">{t("ask.tryNarrower")}</p>}
-          </Notice>
+        <div className="space-y-4">
+          <div className="rounded-2xl border border-warning/40 bg-surface p-5 sm:p-6 shadow-sm">
+            <div className="flex items-start gap-3">
+              <span className="flex size-7 shrink-0 items-center justify-center rounded-full bg-warning/15 text-warning font-bold">
+                !
+              </span>
+              <div className="flex-1">
+                <h3 className="font-serif text-lg font-bold text-charcoal">
+                  {r.abstainReason === "sensitive"
+                    ? t("ask.sensitiveTitle")
+                    : r.abstainReason === "out_of_scope"
+                    ? t("ask.outOfScopeTitle")
+                    : t("ask.insufficientTitle")}
+                </h3>
+                <p className="mt-1.5 text-support text-secondary-text leading-relaxed">
+                  {r.abstainReason === "sensitive"
+                    ? t("ask.sensitiveBody")
+                    : r.abstainReason === "out_of_scope"
+                    ? t("ask.outOfScopeBody")
+                    : t("ask.insufficientBody")}
+                </p>
+
+                {/* Helpful Cultural Guided Pivots */}
+                <div className="mt-5 pt-4 border-t border-border/60">
+                  <span className="text-[11px] font-semibold uppercase tracking-wider text-gold flex items-center gap-1.5">
+                    <span>✦</span> Recommended Inquiry Paths
+                  </span>
+                  <div className="mt-3 flex flex-wrap gap-2">
+                    {getPivotSuggestions(r.abstainReason === "insufficient_evidence" ? "varanasi ghats" : "").map((p) => (
+                      <button
+                        key={p.label}
+                        type="button"
+                        onClick={() => {
+                          if (p.href) {
+                            router.push(p.href);
+                          } else if (p.question) {
+                            onAsk(p.question);
+                          }
+                        }}
+                        className="inline-flex min-h-10 items-center gap-1.5 rounded-full border border-border/80 bg-surface-2 px-4 py-1.5 text-support font-medium text-charcoal hover:border-gold hover:text-gold transition-colors shadow-2xs cursor-pointer"
+                      >
+                        <span>{p.label}</span>
+                        <span className="text-gold font-bold">→</span>
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
           {r.foundSources.length > 0 && r.abstainReason !== "sensitive" && (
-            <>
-              <p className="mt-3 text-support text-muted">{t("ask.foundSourcesNote")}</p>
-              <FoundSources r={r} t={t} selected={selected} />
-            </>
+            <div className="rounded-2xl border border-border bg-surface p-5">
+              <p className="text-support font-semibold text-charcoal flex items-center gap-2">
+                <span className="text-forest font-bold">✓</span>
+                <span>{t("ask.foundSourcesNote")}</span>
+              </p>
+              <div className="mt-3">
+                <FoundSources r={r} t={t} selected={selected} />
+              </div>
+            </div>
           )}
         </div>
       )}

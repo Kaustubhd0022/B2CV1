@@ -356,9 +356,24 @@ export default async function ExplorePage({
         </div>
 
         {filteredStories.length === 0 ? (
-          <Notice className="mt-6" tone="info" role="status">
-            No stories match this filter in the current pilot selection. Try selecting another category or clearing search filters.
-          </Notice>
+          <div className="mt-6 rounded-2xl border border-dashed border-border/80 bg-surface/80 p-7 text-center">
+            <p className="text-body text-secondary-text">
+              {q
+                ? `No published stories match “${q}” in this selection.`
+                : "No published stories found in this category."}
+            </p>
+            {q && (
+              <div className="mt-4">
+                <Link
+                  href={`/ask?q=${encodeURIComponent(q)}`}
+                  className="inline-flex min-h-11 items-center justify-center gap-2 rounded-full bg-forest px-6 text-support font-semibold text-on-forest hover:bg-forest-hover shadow-xs transition-colors"
+                >
+                  <span>Ask TattvaCo Cultural AI about &ldquo;{q}&rdquo;</span>
+                  <span>→</span>
+                </Link>
+              </div>
+            )}
+          </div>
         ) : (
           <StaggerContainer className="mt-6 grid gap-5 md:grid-cols-2" staggerDelay={0.05}>
             {filteredStories.map((s) => (
