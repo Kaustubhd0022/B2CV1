@@ -1,19 +1,36 @@
 import { NextResponse, type NextRequest } from "next/server";
 
 const SESSION_COOKIE = "tc_session";
-const PUBLIC_PREFIXES = ["/sign-in", "/auth/", "/api/health", "/policies", "/language"];
+
+const PUBLIC_PREFIXES = [
+  "/sign-in",
+  "/auth/",
+  "/api/health",
+  "/policies",
+  "/language",
+  "/stories",
+  "/places",
+  "/cities",
+  "/connections",
+  "/explore",
+  "/sources",
+  "/s/",
+  "/ask",
+  "/api/ask",
+];
 
 /**
- * First line of FR-01: requests without a session cookie are sent to sign-in with the
- * intended destination preserved. Pages still validate the session server-side
- * (requireUser), because a cookie's presence is not proof of a valid session.
+ * First line of FR-01: protected administrative and user account requests without a session cookie
+ * are sent to sign-in with the intended destination preserved. Cultural discovery surfaces
+ * (stories, places, cities, connections, explore, ask) are open to public guest exploration.
  */
 export function proxy(request: NextRequest) {
   const { pathname, search } = request.nextUrl;
   const headers = new Headers(request.headers);
   headers.set("x-tc-path", pathname + search);
 
-  const isPublic = PUBLIC_PREFIXES.some((p) => pathname === p || pathname.startsWith(p));
+  const isHome = pathname === "/";
+  const isPublic = isHome || PUBLIC_PREFIXES.some((p) => pathname === p || pathname.startsWith(p));
   const hasAuth = Boolean(request.cookies.get(SESSION_COOKIE)?.value || request.cookies.get("tc-language")?.value);
   if (!isPublic && !hasAuth) {
     if (pathname.startsWith("/api/")) {

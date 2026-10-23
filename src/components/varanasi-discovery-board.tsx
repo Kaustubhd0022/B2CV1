@@ -112,7 +112,7 @@ const CULTURAL_TILES: CulturalTileItem[] = [
     description: "84 stepped stone tirthas along the sacred Ganga, built by Maratha and Rajput monarchs.",
     image: "/images/dev/varanasi-ghats.jpg",
     badge: "Sacred Geography",
-    href: "/stories/varanasi-ghats",
+    href: "/stories/varanasi-ghats-architecture-and-river",
     metric: "84 Ghats",
     actionLabel: "Read Story",
   },
@@ -124,7 +124,7 @@ const CULTURAL_TILES: CulturalTileItem[] = [
     description: "Master Muslim Ansari weavers hand-engraving pure gold zari motifs on pit looms without floating threads.",
     image: "https://images.unsplash.com/photo-1558431382-27e303142255?auto=format&fit=crop&w=700&q=80",
     badge: "GI Protected Handloom",
-    href: "/stories/varanasi-ghats",
+    href: "/stories/varanasi-silk-weaving-craft-and-living-tradition",
     metric: "1,000+ Looms",
     actionLabel: "Explore Craft",
   },
@@ -138,7 +138,7 @@ const CULTURAL_TILES: CulturalTileItem[] = [
     badge: "Unbroken Ritual",
     href: "/places?city=varanasi&place=dashashwamedh-ghat",
     metric: "Sunset Ritual",
-    actionLabel: "Inspect Site",
+    actionLabel: "Inspect Site on Atlas",
   },
   {
     id: "music-gharana",
@@ -148,9 +148,9 @@ const CULTURAL_TILES: CulturalTileItem[] = [
     description: "The rhythmic lineage of Pandit Ravi Shankar and Ustad Bismillah Khan echoing across riverside mohallas.",
     image: "https://images.unsplash.com/photo-1593693397690-362cb9666fc2?auto=format&fit=crop&w=700&q=80",
     badge: "UNESCO City of Music",
-    href: "/ask?q=Tell%20me%20about%20the%20Banaras%20Gharana%20music%20tradition",
+    href: "/stories/varanasi-music-banaras-gharana",
     metric: "200+ Yrs Tradition",
-    actionLabel: "Ask Copilot",
+    actionLabel: "Listen Lineage",
   },
   {
     id: "people-kabir",
@@ -160,7 +160,7 @@ const CULTURAL_TILES: CulturalTileItem[] = [
     description: "Mystic saint-weavers who challenged orthodoxy and translated cosmic truths into vernacular poetry.",
     image: "https://images.unsplash.com/photo-1599661046289-e31897846e41?auto=format&fit=crop&w=700&q=80",
     badge: "Bhakti Renaissance",
-    href: "/ask?q=How%20did%20Sant%20Kabir%20and%20Tulsidas%20shape%20Varanasi%20culture?",
+    href: "/places?city=varanasi&place=kashi-vishwanath",
     metric: "15th–16th Century",
     actionLabel: "Explore Thinkers",
   },
@@ -184,7 +184,7 @@ const CULTURAL_TILES: CulturalTileItem[] = [
     description: "Dew-whipped saffron milk foam prepared under the open winter night sky, and age-old betel leaf mastery.",
     image: "https://images.unsplash.com/photo-1610030469983-98e550d6193c?auto=format&fit=crop&w=700&q=80",
     badge: "Slow Food Heritage",
-    href: "/ask?q=What%20is%20the%20cultural%20history%20behind%20Banarasi%20Malaiyyo%20and%20Paan?",
+    href: "/places?city=varanasi&place=assi-ghat",
     metric: "Seasonal Alchemy",
     actionLabel: "Culinary Notes",
   },
@@ -194,11 +194,11 @@ const CULTURAL_TILES: CulturalTileItem[] = [
     categoryKey: "beliefs",
     title: "Panchakroshi Cosmic Mandala",
     description: "A 50-mile sacred circumambulation circuit encoding Kashi as a cosmic yantra between Varuna and Assi rivers.",
-    image: "https://images.unsplash.com/photo-1598977123418-454555aa1641?auto=format&fit=crop&w=700&q=80",
+    image: "/images/dev/varanasi-hero.jpg",
     badge: "Sacred Geometry",
-    href: "/connections/varanasi-ghats-and-ganga-river",
+    href: "/stories/varanasi-panchakroshi-yatra",
     metric: "Cosmic Yantra",
-    actionLabel: "Follow Link",
+    actionLabel: "Explore Mandala",
   },
 ];
 
@@ -217,7 +217,7 @@ const JOURNEY_STEPS = [
     title: "Twilight Maha Aarti",
     desc: "Multi-tiered brass fire lamps offered nightly by seven priests chanting Vedic mantras.",
     tag: "Tradition",
-    href: "/stories/varanasi-ghats",
+    href: "/stories/varanasi-ghats-architecture-and-river",
   },
   {
     step: "03",
@@ -225,7 +225,7 @@ const JOURNEY_STEPS = [
     title: "Kadhwa Brocade Weaving",
     desc: "Ansari master weavers threading gold zari into pure mulberry silks in Madanpura mohallas.",
     tag: "Handloom Guild",
-    href: "/stories/varanasi-ghats",
+    href: "/stories/varanasi-silk-weaving-craft-and-living-tradition",
   },
   {
     step: "04",
@@ -233,7 +233,7 @@ const JOURNEY_STEPS = [
     title: "Banaras Gharana Ragas",
     desc: "Acoustic riverfront morning scales bridging temple chanting and classical shehnai.",
     tag: "Acoustic Seat",
-    href: "/ask?q=What%20defines%20the%20Banaras%20Gharana%20musical%20style?",
+    href: "/stories/varanasi-music-banaras-gharana",
   },
   {
     step: "05",
@@ -241,7 +241,7 @@ const JOURNEY_STEPS = [
     title: "The Crescent Riverfront",
     desc: "Explore the complete verified flagship story connecting 84 ghats to sacred liberation.",
     tag: "Flagship Story",
-    href: "/stories/varanasi-ghats",
+    href: "/stories/varanasi-ghats-architecture-and-river",
   },
 ];
 
@@ -427,7 +427,7 @@ export function VaranasiDiscoveryBoard({ userEmail }: { userEmail?: string | nul
                   </div>
                   <div className="flex items-center gap-2">
                     <Link
-                      href="/stories/varanasi-ghats"
+                      href="/stories/varanasi-ghats-architecture-and-river"
                       className="inline-flex min-h-10 items-center justify-center gap-2 rounded-full bg-gold px-5 text-support font-semibold text-on-gold hover:bg-gold-hover shadow-xs transition-colors"
                     >
                       Read Narrative →

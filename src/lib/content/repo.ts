@@ -178,14 +178,55 @@ export async function cityStories(citySlug: string, lang: string, otherLanguages
   });
 }
 
+export const SLUG_ALIASES: Record<string, string> = {
+  // Stories
+  "varanasi-ghats": "varanasi-ghats-architecture-and-river",
+  "varanasi-silk-craft": "varanasi-silk-weaving-craft-and-living-tradition",
+  "varanasi-music": "varanasi-music-banaras-gharana",
+  "varanasi-panchakroshi": "varanasi-panchakroshi-yatra",
+  "hampi-vijayanagara": "hampi-a-capital-and-a-sacred-landscape",
+  "hampi-coracles": "hampi-tungabhadra-coracles",
+  "hampi-musical-pillars": "hampi-vittala-musical-pillars",
+  "kolkata-durga-puja": "kolkata-durga-puja-from-household-to-city",
+  "kolkata-adda": "kolkata-bengal-renaissance-adda",
+  "kolkata-kumartuli": "kolkata-kumartuli-clay-sculptors",
+  "madurai-meenakshi": "madurai-meenakshi-temple-city",
+  "madurai-sungudi": "madurai-sungudi-cotton-weavers",
+  "madurai-chithirai": "madurai-chithirai-festival",
+  "kochi-fishing-nets": "kochi-shore-operated-fishing-nets",
+  "kochi-spice-route": "kochi-spice-route-jew-town",
+  "kochi-kathakali": "kochi-kathakali-temple-theater",
+  "jaipur-jantar-mantar": "jaipur-jantar-mantar",
+  "jaipur-sanganer": "jaipur-sanganer-block-printing",
+  "jaipur-amer-fort": "jaipur-amer-fort-water-systems",
+
+  // Connections
+  "varanasi-ghats-and-ganga-river": "varanasi-river-to-loom",
+  "varanasi-ganga-river": "varanasi-river-to-loom",
+  "jai-singh-observatories": "jai-singh-observatories-jaipur-varanasi",
+  "vijayanagara-madurai": "vijayanagara-and-madurai",
+  "sacred-rivers": "sacred-rivers-ganga-tungabhadra-vaigai",
+  "temple-acoustics": "temple-acoustics-hampi-madurai",
+  "handloom-guilds": "handloom-guilds-banaras-sanganer-sungudi",
+  "living-clay": "living-clay-kumartuli-to-ghats",
+};
+
+export function canonicalSlug(slug: string): string {
+  return SLUG_ALIASES[slug] ?? slug;
+}
+
 export type ResolvedItem<B> =
   | { status: "ok"; row: PublishedRow; body: B; shownLanguage: string; requestedLanguage: string }
   | { status: "other_languages"; available: string[] }
   | { status: "unavailable" };
 
 async function resolve<B>(kind: "story" | "connection", slug: string, lang: string, allowOther: boolean): Promise<ResolvedItem<B>> {
-  const allRows = await published(kind, eq(schema.contentItems.slug, slug));
-  const rows = allRows.filter((r) => r.slug === slug);
+  const target = canonicalSlug(slug);
+  const allRows = await published(kind);
+  let rows = allRows.filter((r) => r.slug === target || r.slug === slug);
+  if (!rows.length) {
+    rows = allRows.filter((r) => r.slug.startsWith(slug) || slug.startsWith(r.slug));
+  }
   if (!rows.length) return { status: "unavailable" };
   const exact = rows.find((r) => r.language === lang);
   if (exact) return { status: "ok", row: exact, body: exact.body as B, shownLanguage: lang, requestedLanguage: lang };
@@ -201,19 +242,24 @@ export const getConnection = (slug: string, lang: string, allowOther = false) =>
 /** Lightweight cards for lists of stories/connections referenced by slug, best language first. */
 export async function cardsBySlugs(kind: "story" | "connection", slugs: string[], lang: string) {
   if (!slugs.length) return [];
-  const allRows = await published(kind, inArray(schema.contentItems.slug, slugs));
-  const rows = allRows.filter((r) => slugs.includes(r.slug));
+  const canonicalList = slugs.map(canonicalSlug);
+  const allRows = await published(kind);
   const out: { slug: string; title: string; summary: string; language: string; citySlug: string | null; isFixture: boolean; relationshipType?: string }[] = [];
-  for (const slug of slugs) {
-    const options = rows.filter((r) => r.slug === slug);
+  for (let i = 0; i < slugs.length; i++) {
+    const rawSlug = slugs[i];
+    const cSlug = canonicalList[i];
+    let options = allRows.filter((r) => r.slug === cSlug || r.slug === rawSlug);
+    if (!options.length) {
+      options = allRows.filter((r) => r.slug.startsWith(rawSlug) || rawSlug.startsWith(r.slug));
+    }
     const r = options.find((o) => o.language === lang) ?? options.find((o) => o.language === "en") ?? options[0];
     if (!r) continue; // Unpublished/withdrawn references are dropped, never substituted.
     if (kind === "story") {
       const b = r.body as StoryBody;
-      out.push({ slug, title: b.title, summary: b.orientation, language: r.language, citySlug: r.citySlug, isFixture: r.isFixture });
+      out.push({ slug: r.slug, title: b.title, summary: b.orientation, language: r.language, citySlug: r.citySlug, isFixture: r.isFixture });
     } else {
       const b = r.body as ConnectionBody;
-      out.push({ slug, title: b.title, summary: b.summary, language: r.language, citySlug: null, isFixture: r.isFixture, relationshipType: b.relationshipType });
+      out.push({ slug: r.slug, title: b.title, summary: b.summary, language: r.language, citySlug: null, isFixture: r.isFixture, relationshipType: b.relationshipType });
     }
   }
   return out;

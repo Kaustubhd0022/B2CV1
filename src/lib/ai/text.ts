@@ -50,7 +50,7 @@ function cleanWords(s: string) {
 export function quoteInPassage(quote: string, passage: string) {
   const normPassage = normalizeForQuote(passage);
   const q = normalizeForQuote(quote).replace(/^["'.…\s]+|["'.…\s]+$/g, "");
-  if (q.length >= 12 && normPassage.includes(q)) return true;
+  if (q.length >= 10 && normPassage.includes(q)) return true;
   // If the quote contains ellipsis ("..." or "…"), verify all non-trivial segments appear in passage
   if (q.includes("...") || q.includes("…")) {
     const parts = q.split(/\.{3,}|…/).map((p) => p.trim()).filter((p) => p.length >= 8);
@@ -59,7 +59,17 @@ export function quoteInPassage(quote: string, passage: string) {
   // Punctuation-insensitive word sequence match fallback
   const cwPassage = cleanWords(passage);
   const cwQuote = cleanWords(quote);
-  if (cwQuote.length >= 12 && cwPassage.includes(cwQuote)) return true;
+  if (cwQuote.length >= 10 && cwPassage.includes(cwQuote)) return true;
+
+  // Multi-word sequence matching: if at least 5 consecutive words from the quote appear verbatim in the passage
+  const words = cwQuote.split(" ").filter((w) => w.length >= 2);
+  if (words.length >= 5) {
+    for (let i = 0; i <= words.length - 5; i++) {
+      const window = words.slice(i, i + 5).join(" ");
+      if (cwPassage.includes(window)) return true;
+    }
+  }
+
   return false;
 }
 

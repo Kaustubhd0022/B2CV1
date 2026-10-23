@@ -175,19 +175,17 @@ export async function currentSession(): Promise<SessionUser | null> {
   }
 
   if (!token) {
-    // If user has selected a language preference, allow guest explorer access
-    if (isLanguageCode(langCookie)) {
-      return {
-        sessionId: toDeterministicUuid("guest-explorer-session"),
-        analyticsId: "anon-explorer",
-        userId: toDeterministicUuid("guest-explorer-user"),
-        role: "user",
-        email: "explorer@tattvaco.org",
-        phone: null,
-        language: langCookie,
-      };
-    }
-    return null;
+    // Frictionless guest explorer access (defaults to en or user's selected language)
+    const lang = isLanguageCode(langCookie) ? langCookie : "en";
+    return {
+      sessionId: toDeterministicUuid(`guest-${langCookie || "en"}`),
+      analyticsId: "anon-explorer",
+      userId: toDeterministicUuid(`guest-user-${langCookie || "en"}`),
+      role: "user",
+      email: "explorer@tattvaco.org",
+      phone: null,
+      language: lang,
+    };
   }
 
   // 1. Try stateless cryptographic verification first (works across serverless lambdas)
