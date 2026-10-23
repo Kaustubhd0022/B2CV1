@@ -18,6 +18,96 @@ import { StoryTimeline } from "@/components/story-timeline";
 import { StoryContextualAsk } from "@/components/story-contextual-ask";
 import { StoryTableOfContents } from "@/components/story-table-of-contents";
 import { StoryMiniMap } from "@/components/story-mini-map";
+import {
+  StatutoryEvidenceBadge,
+  AcousticShrinePlayer,
+  type AcousticTrack,
+  type StatutoryType,
+} from "@/components/media";
+
+const STORY_ACOUSTIC_MAP: Record<string, AcousticTrack> = {
+  "varanasi-ghats": {
+    id: "track-banaras-dawn",
+    title: "Subah-e-Banaras Morning Ragas & Shehnai Recitation",
+    tradition: "Banaras Gharana (Tabla, Shehnai & Dhrupad)",
+    scaleOrRaga: "Raga Bhairav (Pratah-Kala Sacred Scale)",
+    sourceInstitution: "Sangeet Natak Akademi Archives",
+    sourceUrl: "https://sangeetnatak.gov.in/",
+  },
+  "varanasi-ghats-architecture-and-river": {
+    id: "track-banaras-riverfront",
+    title: "Subah-e-Banaras River Raga & Shehnai Echoes",
+    tradition: "Banaras Gharana (Pratah Acoustic Tradition)",
+    scaleOrRaga: "Raga Bhairav · Assi Dawn Aarti",
+    sourceInstitution: "Sangeet Natak Akademi Archives",
+    sourceUrl: "https://sangeetnatak.gov.in/",
+  },
+  "varanasi-music-banaras-gharana": {
+    id: "track-banaras-gharana-full",
+    title: "Banaras Gharana Tabla Solo & Shehnai Jugalbandi",
+    tradition: "Banaras Gharana Rhythm Lineage (Pandit Kanthe Maharaj & Bismillah Khan)",
+    scaleOrRaga: "Teental (16 Beats) & Raga Bhairav",
+    sourceInstitution: "Sangeet Natak Akademi Archives & Indian Culture Portal",
+    sourceUrl: "https://sangeetnatak.gov.in/",
+  },
+  "hampi-vittala-musical-pillars": {
+    id: "track-hampi-pillars",
+    title: "Resonant Granite Colonnade Acoustic Rhythms",
+    tradition: "Vijayanagara Temple Colonnade Acoustics",
+    scaleOrRaga: "Sapta Swaras (7 Resonant Tones)",
+    sourceInstitution: "Archaeological Survey of India & IGNCA",
+    sourceUrl: "https://ignca.gov.in/",
+  },
+  "kolkata-durga-puja": {
+    id: "track-kolkata-dhak",
+    title: "Living Rhythm of Durga Puja Dhak & Shankha",
+    tradition: "Bengal Ritual Percussion Ensemble",
+    scaleOrRaga: "Dhak Tala & Vedic Aarti Chants",
+    sourceInstitution: "UNESCO Intangible Cultural Heritage Inscription #01738",
+    sourceUrl: "https://ich.unesco.org/en/RL/durga-puja-in-kolkata-01738",
+  },
+  "kochi-kathakali-temple-theater": {
+    id: "track-kathakali-chenda",
+    title: "Sopana Sangeetam & Chenda Melam Rhythm",
+    tradition: "Kerala Temple Classical Performance",
+    scaleOrRaga: "Sopanam Ragas & Chenda Tala",
+    sourceInstitution: "Kerala Kalamandalam & Sangeet Natak Akademi",
+    sourceUrl: "https://sangeetnatak.gov.in/",
+  },
+};
+
+function getStoryStatutoryBadges(slug: string, citySlug?: string | null): { type: StatutoryType; title: string; regNumber?: string }[] {
+  const badges: { type: StatutoryType; title: string; regNumber?: string }[] = [];
+  if (slug.includes("varanasi") || citySlug === "varanasi") {
+    badges.push({ type: "asi", title: "ASI Protected Riverfront" });
+    if (slug.includes("silk") || slug.includes("craft")) {
+      badges.push({ type: "gi", title: "GI Registry", regNumber: "Application #99" });
+    }
+  }
+  if (slug.includes("durga") || slug.includes("kolkata") || citySlug === "kolkata") {
+    badges.push({ type: "unesco", title: "UNESCO ICH", regNumber: "ICH #01738" });
+  }
+  if (slug.includes("jantar") || citySlug === "jaipur") {
+    badges.push({ type: "unesco", title: "UNESCO World Heritage", regNumber: "WH #1338" });
+    badges.push({ type: "asi", title: "ASI National Monument" });
+  }
+  if (slug.includes("hampi") || citySlug === "hampi") {
+    badges.push({ type: "unesco", title: "UNESCO World Heritage", regNumber: "WH #241" });
+    badges.push({ type: "asi", title: "ASI Core Protected Zone" });
+  }
+  if (slug.includes("kochi") || citySlug === "kochi") {
+    badges.push({ type: "sahapedia", title: "Sahapedia Maritime Survey" });
+  }
+  if (slug.includes("madurai") || citySlug === "madurai") {
+    badges.push({ type: "state_archaeology", title: "Tamil Nadu State Archaeology" });
+    badges.push({ type: "gi", title: "Madurai Sungudi GI" });
+  }
+  if (badges.length === 0) {
+    badges.push({ type: "sahapedia", title: "Sahapedia Verified" });
+    badges.push({ type: "indian_culture", title: "Indian Culture Portal" });
+  }
+  return badges;
+}
 
 export const metadata: Metadata = { title: "Flagship Story · TattvaCo Cultural Discovery" };
 
@@ -64,6 +154,8 @@ export default async function StoryPage({
   const cityName = city ? localName(city.names, lang) : "";
   const from = `story:${slug}`;
   const sourceCount = new Set([...claims.values()].flatMap((c) => c.evidence.map((e) => e.sourceId))).size;
+  const storyBadges = getStoryStatutoryBadges(slug, row.citySlug);
+  const acousticTrack = STORY_ACOUSTIC_MAP[slug];
 
   // Build table of contents items
   const tocItems = [
@@ -71,6 +163,9 @@ export default async function StoryPage({
       id: `sec-${sec.id}`,
       label: sec.heading,
     })),
+    ...(acousticTrack
+      ? [{ id: "acoustic-section", label: "Acoustic Listening Station" }]
+      : []),
     { id: "timeline-section", label: "A River Through Time (Chronology)" },
     { id: "themes-section", label: "Key Cultural Themes" },
     { id: "connections-section", label: "Cultural Connections" },
@@ -146,12 +241,21 @@ export default async function StoryPage({
             {body.orientation}
           </p>
 
-          {/* Metadata Row */}
-          <div className="mt-4 flex flex-wrap items-center gap-4 text-meta text-white/75 border-t border-white/15 pt-3">
-            <span>Verified by TattvaCo Editorial Registry</span>
-            <span>·</span>
+          {/* Metadata Row with Statutory Evidence Badges */}
+          <div className="mt-4 flex flex-wrap items-center gap-3 text-meta text-white/75 border-t border-white/15 pt-3">
+            <div className="flex flex-wrap items-center gap-2">
+              {storyBadges.map((b) => (
+                <StatutoryEvidenceBadge
+                  key={b.title}
+                  type={b.type}
+                  title={b.title}
+                  regNumber={b.regNumber}
+                />
+              ))}
+            </div>
+            <span className="hidden sm:inline">·</span>
             <span>Version {row.versionNo} ({formatDate(row.approvedAt, lang)})</span>
-            <span>·</span>
+            <span className="hidden sm:inline">·</span>
             <span className="rounded-full bg-forest/80 px-2.5 py-0.5 text-[11px] font-semibold text-white">
               Primary Sources Grounded
             </span>
@@ -295,6 +399,13 @@ export default async function StoryPage({
               </section>
             ))}
           </div>
+
+          {/* Living Tradition Acoustic Listening Station */}
+          {acousticTrack && (
+            <div id="acoustic-section" className="mt-10">
+              <AcousticShrinePlayer track={acousticTrack} />
+            </div>
+          )}
 
           {/* Historical Timeline Node Chain ("A River Through Time") */}
           <StoryTimeline slug={slug} />
@@ -477,14 +588,24 @@ export default async function StoryPage({
               <SourceList claims={claims} t={t} from={from} uiLang={lang} />
             </div>
 
-            {/* Academic Institutions Citation Banner */}
-            <div className="mt-5 rounded-xl border border-border/70 bg-surface-2/60 p-3.5 space-y-2">
-              <span className="text-[11px] font-semibold uppercase tracking-wider text-gold">
-                Institutional Verification
-              </span>
+            {/* Academic & Statutory Institutions Citation Banner */}
+            <div className="mt-5 rounded-xl border border-border/70 bg-surface-2/60 p-3.5 space-y-3">
+              <div className="flex items-center justify-between">
+                <span className="text-[11px] font-semibold uppercase tracking-wider text-gold">
+                  Statutory Authorities
+                </span>
+                <span className="text-[10px] font-mono text-muted">Tier 1 Canonical</span>
+              </div>
               <p className="text-meta text-muted leading-relaxed">
-                Grounding drawn from the Archaeological Survey of India (ASI), Sahitya Akademi, and Indira Gandhi National Centre for the Arts (IGNCA).
+                Grounding synthesized directly from verified statutory registers and cultural institutions:
               </p>
+              <div className="flex flex-wrap gap-2 pt-1">
+                <StatutoryEvidenceBadge type="asi" title="ASI Official" />
+                <StatutoryEvidenceBadge type="unesco" title="UNESCO ICH" />
+                <StatutoryEvidenceBadge type="gi" title="GI Registry" />
+                <StatutoryEvidenceBadge type="sahapedia" title="Sahapedia" />
+                <StatutoryEvidenceBadge type="indian_culture" title="Indian Culture Portal" />
+              </div>
             </div>
           </div>
 

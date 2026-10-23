@@ -286,6 +286,149 @@
       "language": "en",
       "accessedDate": "2026-10-21",
       "assessment": "Tertiary record of GI-tagged tie-and-dye cotton sarees made by Saurashtrian weavers in Madurai."
+    },
+    {
+      "id": "gov-asi-main",
+      "title": "Archaeological Survey of India (ASI) Monument Portal",
+      "publisher": "Archaeological Survey of India, Ministry of Culture, Govt. of India",
+      "sourceType": "official",
+      "tier": 1,
+      "url": "https://asi.nic.in/",
+      "language": "en",
+      "accessedDate": "2026-10-23",
+      "assessment": "Tier-1 Principal Statutory Authority for archaeological research, protected monuments, and antiquities."
+    },
+    {
+      "id": "gov-culture-main",
+      "title": "Ministry of Culture, Government of India",
+      "publisher": "Ministry of Culture, Govt. of India",
+      "sourceType": "official",
+      "tier": 1,
+      "url": "https://culture.gov.in/",
+      "language": "en",
+      "accessedDate": "2026-10-23",
+      "assessment": "Tier-1 Official policy and national cultural heritage repository body."
+    },
+    {
+      "id": "gov-indian-culture-portal",
+      "title": "Indian Culture Portal & National Virtual Library of India",
+      "publisher": "Ministry of Culture / IIT Bombay",
+      "sourceType": "official",
+      "tier": 1,
+      "url": "https://www.indianculture.gov.in/",
+      "language": "en",
+      "accessedDate": "2026-10-23",
+      "assessment": "Tier-1 Centralized National Virtual Library housing digitized manuscripts, archives, music, and UNESCO records."
+    },
+    {
+      "id": "unesco-ich-india",
+      "title": "UNESCO Intangible Cultural Heritage — India Inscriptions",
+      "publisher": "UNESCO Intangible Cultural Heritage",
+      "sourceType": "official",
+      "tier": 1,
+      "url": "https://ich.unesco.org/en/state/india-IN",
+      "language": "en",
+      "accessedDate": "2026-10-23",
+      "assessment": "Tier-1 Canonical International Charter and nomination dossier records for India's inscribed living heritage."
+    },
+    {
+      "id": "unesco-durga-puja-kolkata",
+      "title": "Durga Puja in Kolkata — Inscribed 2021 (16.COM 8.b.14)",
+      "publisher": "UNESCO Intangible Cultural Heritage",
+      "sourceType": "official",
+      "tier": 1,
+      "url": "https://ich.unesco.org/en/RL/durga-puja-in-kolkata-01738",
+      "language": "en",
+      "accessedDate": "2026-10-23",
+      "assessment": "Tier-1 Official nomination file, documentary photographs, and living heritage dossier."
+    },
+    {
+      "id": "gov-ipindia-gi-registry",
+      "title": "Geographical Indications Registry of India",
+      "publisher": "Controller General of Patents, Designs and Trademarks, DPIIT",
+      "sourceType": "official",
+      "tier": 1,
+      "url": "https://ipindia.gov.in/",
+      "language": "en",
+      "accessedDate": "2026-10-23",
+      "assessment": "Tier-1 Statutory Register of all certified Geographical Indications in India."
+    },
+    {
+      "id": "gov-textiles-handlooms",
+      "title": "Office of the Development Commissioner (Handlooms)",
+      "publisher": "Ministry of Textiles, Government of India",
+      "sourceType": "official",
+      "tier": 1,
+      "url": "https://handlooms.nic.in/",
+      "language": "en",
+      "accessedDate": "2026-10-23",
+      "assessment": "Tier-1 Statutory record of registered weaver cooperative clusters, pit-loom census, and GI yarn specifications."
+    },
+    {
+      "id": "gov-sangeet-natak-main",
+      "title": "Sangeet Natak Akademi — National Academy of Music, Dance and Drama",
+      "publisher": "Sangeet Natak Akademi, Ministry of Culture",
+      "sourceType": "official",
+      "tier": 1,
+      "url": "https://sangeetnatak.gov.in/",
+      "language": "en",
+      "accessedDate": "2026-10-23",
+      "assessment": "Tier-1 Apex national body for classical performing arts, Gharana archives, and master performer fellowships."
+    },
+    {
+      "id": "gov-ignca-kashi",
+      "title": "Indira Gandhi National Centre for the Arts (IGNCA) Heritage Archives",
+      "publisher": "Indira Gandhi National Centre for the Arts",
+      "sourceType": "academic",
+      "tier": 1,
+      "url": "https://ignca.gov.in/",
+      "language": "en",
+      "accessedDate": "2026-10-23",
+      "assessment": "Tier-1 Autonomous cultural research institution specializing in Indology, manuscripts, and ethnomusicology."
+    },
+    {
+      "id": "org-sahapedia-portal",
+      "title": "Sahapedia Open Cultural Heritage Archive",
+      "publisher": "Sahapedia",
+      "sourceType": "specialist",
+      "tier": 2,
+      "url": "https://www.sahapedia.org/",
+      "language": "en",
+      "accessedDate": "2026-10-23",
+      "assessment": "Tier-2 Scholar-curated open encyclopedia of multimedia, photo essays, oral histories, maps, and timelines."
+    },
+    {
+      "id": "org-intach-heritage",
+      "title": "Indian National Trust for Art and Cultural Heritage (INTACH)",
+      "publisher": "INTACH",
+      "sourceType": "specialist",
+      "tier": 2,
+      "url": "https://www.intach.org/",
+      "language": "en",
+      "accessedDate": "2026-10-23",
+      "assessment": "Tier-2 Non-profit conservation trust for built heritage listings, municipal registers, and conservation dossiers."
+    },
+    {
+      "id": "gov-crafts-museum-main",
+      "title": "National Crafts Museum & Hastkala Academy, New Delhi",
+      "publisher": "Ministry of Textiles, Government of India",
+      "sourceType": "official",
+      "tier": 1,
+      "url": "https://nationalcraftsmuseum.nic.in/",
+      "language": "en",
+      "accessedDate": "2026-10-23",
+      "assessment": "Tier-1 National museum collection of living craft traditions, master artisan tools, and regional textiles."
+    },
+    {
+      "id": "gov-tn-keezhadi",
+      "title": "Keezhadi Excavation Reports & Vaigai River Valley Civilization",
+      "publisher": "Tamil Nadu State Department of Archaeology",
+      "sourceType": "official",
+      "tier": 1,
+      "url": "https://tnarchaeology.gov.in/",
+      "language": "en",
+      "accessedDate": "2026-10-23",
+      "assessment": "Tier-1 Official state archaeological survey reports on Sangam-era urbanism, Tamil-Brahmi pottery, and brick structures."
     }
   ],
   "entities": [

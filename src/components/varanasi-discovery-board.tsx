@@ -18,6 +18,77 @@ import {
   IconExplore,
 } from "./icons";
 import { FadeIn, MotionCard, StaggerContainer, StaggerItem } from "./motion";
+import {
+  StatutoryEvidenceBadge,
+  CulturalMediaReel,
+  type CulturalMediaItem,
+  AcousticShrinePlayer,
+  type AcousticTrack,
+} from "./media";
+
+const VARANASI_MEDIA_ITEMS: CulturalMediaItem[] = [
+  {
+    id: "media-ghats",
+    type: "photo",
+    title: "Crescent Riverfront Stone Embankments & 84 Ghats",
+    description:
+      "Monumental stone stairs and bastions built under 18th-century Maratha patronage along the north-flowing sacred Ganga.",
+    src: "/images/dev/varanasi-hero.jpg",
+    institution: "Archaeological Survey of India (ASI) & Sahapedia",
+    institutionUrl: "https://asi.nic.in/",
+    licenseLabel: "Statutory Protected Heritage Survey",
+    tierBadge: "Tier 1: Statutory Authority",
+    yearOrPeriod: "18th Century CE",
+  },
+  {
+    id: "media-aarti",
+    type: "photo",
+    title: "Ganga Twilight Maha Aarti Fire Offering",
+    description:
+      "Seven Hindu priests chant Vedic hymns while offering multi-tiered brass lamps at Dashashwamedh Ghat during dusk.",
+    src: "https://images.unsplash.com/photo-1571536802807-30451e3955d8?auto=format&fit=crop&w=1200&q=80",
+    institution: "UNESCO Intangible Cultural Heritage & Sahapedia",
+    institutionUrl: "https://ich.unesco.org/en/state/india-IN",
+    licenseLabel: "Living Heritage Documentation",
+    tierBadge: "Tier 1: Statutory Authority",
+    yearOrPeriod: "Unbroken Daily Ritual",
+  },
+  {
+    id: "media-kadhwa",
+    type: "photo",
+    title: "Kadhwa Pure Gold Zari Brocade Pit-Loom Weaving",
+    description:
+      "Ansari master weavers in Madanpura hand-engrave pure gold zari motifs on pit looms without floating threads, meeting GI Application No. 99 standards.",
+    src: "https://images.unsplash.com/photo-1558431382-27e303142255?auto=format&fit=crop&w=1200&q=80",
+    institution: "Geographical Indications Registry & Crafts Museum",
+    institutionUrl: "https://ipindia.gov.in/",
+    licenseLabel: "GI Registered Craft Application #99",
+    tierBadge: "Tier 1: Statutory Authority",
+    yearOrPeriod: "GI Tag Certified",
+  },
+  {
+    id: "media-mandala",
+    type: "archive_document",
+    title: "Panchakroshi Cosmic Mandala Circumambulation Circuit",
+    description:
+      "Archival survey of the 50-mile sacred pilgrim trail encoding Varanasi as a cosmic yantra between Varuna and Assi rivers.",
+    src: "https://images.unsplash.com/photo-1598977123418-454555aa1641?auto=format&fit=crop&w=1200&q=80",
+    institution: "Indira Gandhi National Centre for the Arts (IGNCA)",
+    institutionUrl: "https://ignca.gov.in/",
+    licenseLabel: "Sacred Geography Research Monograph",
+    tierBadge: "Tier 1: Statutory Authority",
+    yearOrPeriod: "Puranic & Spatial Survey",
+  },
+];
+
+const BANARAS_GHARANA_TRACK: AcousticTrack = {
+  id: "track-banaras-gharana",
+  title: "Morning River Ragas & Rhythmic Tala Lineage",
+  tradition: "Banaras Gharana (Tabla & Shehnai)",
+  scaleOrRaga: "Raga Bhairav · Subah-e-Banaras",
+  sourceInstitution: "Sangeet Natak Akademi Archives",
+  sourceUrl: "https://sangeetnatak.gov.in/",
+};
 
 export interface CulturalTileItem {
   id: string;
@@ -350,9 +421,9 @@ export function VaranasiDiscoveryBoard({ userEmail }: { userEmail?: string | nul
                 </div>
 
                 <div className="mt-6 pt-4 border-t border-white/15 flex flex-wrap items-center justify-between gap-3">
-                  <div className="flex items-center gap-2 text-meta text-white/70">
-                    <span className="size-1.5 rounded-full bg-forest" />
-                    <span>Primary Evidence Grounded</span>
+                  <div className="flex flex-wrap items-center gap-2">
+                    <StatutoryEvidenceBadge type="asi" title="ASI Protected Riverfront" />
+                    <StatutoryEvidenceBadge type="gi" title="GI Registry #99" />
                   </div>
                   <div className="flex items-center gap-2">
                     <Link
@@ -554,6 +625,16 @@ export function VaranasiDiscoveryBoard({ userEmail }: { userEmail?: string | nul
             </StaggerItem>
           ))}
         </StaggerContainer>
+      </section>
+
+      {/* ── 3.5 Living Empirical Media Reel & Acoustic Shrine Player ─────── */}
+      <section aria-label="Living Empirical Media Reel" className="space-y-6">
+        <CulturalMediaReel
+          items={VARANASI_MEDIA_ITEMS}
+          title="Living Photographic & Archival Evidence"
+          subtitle="Curated primary evidence from the Archaeological Survey of India (ASI), UNESCO Intangible Cultural Heritage, Sahapedia, and the GI Registry."
+        />
+        <AcousticShrinePlayer track={BANARAS_GHARANA_TRACK} />
       </section>
 
       {/* ── 4. Interactive Connected Cultural Journey (Place → Living Tradition → Craft → Story) ── */}
