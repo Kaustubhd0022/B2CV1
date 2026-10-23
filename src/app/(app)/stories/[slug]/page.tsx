@@ -242,10 +242,19 @@ export default async function StoryPage({
       <div className="mt-8 grid gap-8 lg:grid-cols-[minmax(0,1fr)_22rem] xl:grid-cols-[minmax(0,1fr)_25rem]">
         {/* Left Column: Deep Reading Experience */}
         <article lang={shownLanguage} className="min-w-0 prose-reading">
-          {/* Epistemic Legend Card */}
-          <div className="rounded-2xl border border-border/80 bg-surface p-4 shadow-xs">
-            <EpistemicLegend t={t} />
-          </div>
+          {/* Epistemic Legend - Expandable Disclosure */}
+          <details className="rounded-xl border border-border/70 bg-surface-2/60 p-3.5 text-meta text-muted">
+            <summary className="cursor-pointer font-semibold text-charcoal hover:text-gold transition-colors flex items-center justify-between">
+              <span className="flex items-center gap-2">
+                <span className="text-gold">✦</span>
+                <span>Epistemic Grounding Guide (Documented · Tradition · Interpretation)</span>
+              </span>
+              <span className="text-xs text-gold">Explain markers ▾</span>
+            </summary>
+            <div className="mt-3 pt-3 border-t border-border/60">
+              <EpistemicLegend t={t} />
+            </div>
+          </details>
 
           {/* Narrative Sections */}
           <div id="story-text" className="mt-8 space-y-12">
@@ -333,6 +342,38 @@ export default async function StoryPage({
               <p className="mt-3 text-support text-muted">{t("story.noConnections")}</p>
             )}
           </section>
+
+          {/* Continue Journey · Next Story in this Collection */}
+          {related[0] && (
+            <section className="mt-14 rounded-3xl border border-gold/30 bg-gradient-to-br from-[#1a1714] via-[#161310] to-[#12100e] p-6 sm:p-8 shadow-md">
+              <div className="flex items-center gap-2 text-meta font-semibold uppercase tracking-wider text-gold">
+                <span>✦</span>
+                <span>Continue Your Journey · Next Story</span>
+              </div>
+              <h2 className="mt-2 font-serif text-2xl font-bold text-charcoal sm:text-3xl">
+                {related[0].title}
+              </h2>
+              <p className="mt-2 text-body text-secondary-text leading-relaxed">
+                {related[0].summary}
+              </p>
+              <div className="mt-6 flex flex-wrap items-center gap-3">
+                <Link
+                  href={`/stories/${related[0].slug}`}
+                  className="inline-flex min-h-11 items-center justify-center rounded-full bg-forest px-6 text-support font-semibold text-on-forest hover:bg-forest-hover shadow-xs transition-colors"
+                >
+                  Read Next Story →
+                </Link>
+                {city && (
+                  <Link
+                    href={`/places?city=${city.slug}`}
+                    className="inline-flex min-h-11 items-center justify-center rounded-full border border-border bg-surface px-5 text-support font-semibold text-charcoal hover:border-gold/40 transition-colors"
+                  >
+                    Explore {cityName} on Cultural Map
+                  </Link>
+                )}
+              </div>
+            </section>
+          )}
 
           {/* Curiosity-Led Question Composer */}
           <section className="mt-14 rounded-3xl border border-gold/30 bg-gradient-to-br from-[#171512] via-[#1a1714] to-[#12100d] p-6 sm:p-8 shadow-md">

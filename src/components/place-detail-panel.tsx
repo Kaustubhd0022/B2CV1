@@ -261,38 +261,6 @@ export function PlaceDetailPanel({
               </div>
             )}
 
-            {/* Related Flagship Story Card */}
-            {place.relatedStorySlug && (
-              <div className="rounded-xl border border-gold/30 bg-gradient-to-br from-[#1a1714] to-[#12100d] p-4 shadow-xs space-y-2">
-                <span className="text-[11px] font-semibold uppercase tracking-wider text-gold flex items-center gap-1.5">
-                  <span>✦</span> Related Flagship Story
-                </span>
-                <h4 className="font-serif text-support font-semibold text-charcoal leading-snug">
-                  {place.relatedStoryTitle}
-                </h4>
-                <div className="pt-1">
-                  <Link
-                    href={`/stories/${place.relatedStorySlug}`}
-                    className="inline-flex items-center gap-1 text-meta font-semibold text-gold hover:underline"
-                  >
-                    Read Complete Curated Story →
-                  </Link>
-                </div>
-              </div>
-            )}
-
-            {/* Ask TattvaCo AI CTA */}
-            <div className="pt-2">
-              <Link
-                href={`/ask?q=${encodeURIComponent(
-                  `Tell me about the history, architectural significance, and spiritual heritage of ${place.name} in ${place.cityName}`,
-                )}`}
-                className="w-full inline-flex min-h-10 items-center justify-center gap-2 rounded-xl bg-forest px-4 text-meta font-semibold text-on-forest hover:bg-forest-hover shadow-xs transition-colors"
-              >
-                <span>✦</span>
-                <span>Ask TattvaCo AI About This Site</span>
-              </Link>
-            </div>
           </FadeIn>
         )}
 
@@ -330,6 +298,38 @@ export function PlaceDetailPanel({
             </div>
           </FadeIn>
         )}
+
+        {/* Persistent Discovery Gateways: Related Flagship Story & Ask AI */}
+        <div className="space-y-3 pt-3 border-t border-border/70">
+          {place.relatedStorySlug && (
+            <div className="rounded-xl border border-gold/30 bg-gradient-to-br from-[#1a1714] to-[#12100d] p-4 shadow-xs space-y-1.5">
+              <span className="text-[11px] font-semibold uppercase tracking-wider text-gold flex items-center gap-1.5">
+                <span>✦</span> Related Flagship Story
+              </span>
+              <h4 className="font-serif text-support font-semibold text-charcoal leading-snug">
+                {place.relatedStoryTitle}
+              </h4>
+              <div className="pt-1">
+                <Link
+                  href={`/stories/${place.relatedStorySlug}`}
+                  className="inline-flex items-center gap-1 text-meta font-semibold text-gold hover:underline"
+                >
+                  Read Complete Curated Story →
+                </Link>
+              </div>
+            </div>
+          )}
+
+          <Link
+            href={`/ask?q=${encodeURIComponent(
+              `Tell me about the history, architectural significance, and spiritual heritage of ${place.name} in ${place.cityName}`,
+            )}`}
+            className="w-full inline-flex min-h-11 items-center justify-center gap-2 rounded-xl bg-forest px-4 text-support font-semibold text-on-forest hover:bg-forest-hover shadow-xs transition-colors"
+          >
+            <span>✦</span>
+            <span>Ask TattvaCo AI About This Site</span>
+          </Link>
+        </div>
       </div>
     </aside>
   );

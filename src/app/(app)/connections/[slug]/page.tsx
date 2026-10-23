@@ -27,10 +27,45 @@ export default async function ConnectionPage({ params, searchParams }: { params:
   const typeLabel = t(`connection.type.${body.relationshipType}` as MessageKey);
   await track("connection_view", { connection: slug, language: shownLanguage }, session.analyticsId);
 
+  const parentStory = related[0];
+
   return (
-    <Page>
+    <Page className="max-w-[1280px]">
+      {/* Breadcrumb Navigation */}
+      <nav aria-label="Breadcrumb" className="mb-4 flex items-center gap-2 text-meta text-muted">
+        <Link href="/" className="hover:text-charcoal transition-colors">
+          Home
+        </Link>
+        <span>›</span>
+        <Link href="/explore" className="hover:text-charcoal transition-colors">
+          Stories
+        </Link>
+        {parentStory && (
+          <>
+            <span>›</span>
+            <Link href={`/stories/${parentStory.slug}`} className="hover:text-charcoal transition-colors truncate max-w-xs">
+              {parentStory.title}
+            </Link>
+          </>
+        )}
+        <span>›</span>
+        <span className="font-semibold text-charcoal truncate max-w-xs">{body.title}</span>
+      </nav>
+
+      {/* Primary Return Button */}
+      {parentStory && (
+        <div className="mb-3">
+          <Link
+            href={`/stories/${parentStory.slug}`}
+            className="inline-flex items-center gap-1.5 text-support font-semibold text-gold hover:underline"
+          >
+            ← Return to Story: {parentStory.title}
+          </Link>
+        </div>
+      )}
+
       {row.isFixture && (
-        <Notice tone="warning" className="mt-2" title={t("common.devFixture")}>
+        <Notice tone="info" className="mt-2" title={t("common.devFixture")}>
           {t("common.devFixtureLong")}
         </Notice>
       )}
@@ -114,7 +149,16 @@ export default async function ConnectionPage({ params, searchParams }: { params:
             </ul>
           </section>
 
-          <div className="mt-10 flex flex-wrap items-center gap-3 border-t border-border pt-6">
+          <div className="mt-10 flex flex-wrap items-center justify-between gap-3 border-t border-border pt-6">
+            {parentStory && (
+              <Link
+                href={`/stories/${parentStory.slug}`}
+                className="inline-flex min-h-11 items-center justify-center rounded-full bg-forest px-6 text-support font-semibold text-on-forest hover:bg-forest-hover shadow-xs transition-colors"
+              >
+                ← Return to Story: {parentStory.title}
+              </Link>
+            )}
+            <div className="flex flex-wrap items-center gap-3">
             <ShareButton
               path={`/s/connection/${slug}`}
               kind="connection"
@@ -137,6 +181,7 @@ export default async function ConnectionPage({ params, searchParams }: { params:
             </Link>
           </div>
         </div>
+      </div>
 
         <aside className="mt-10 lg:mt-0" aria-labelledby="csources-title">
           <div className="rounded-lg border border-border bg-surface p-4 lg:sticky lg:top-4">

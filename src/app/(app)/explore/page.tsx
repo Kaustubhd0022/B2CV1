@@ -295,8 +295,90 @@ export default async function ExplorePage({
         </section>
       </FadeIn>
 
-      {/* 2. 9 Cultural Taxonomy Categories Grid matching Reference Page 4 */}
-      <section className="mt-14 sm:mt-16" aria-labelledby="categories-grid-title">
+      {/* Fast Horizontal Category Quick-Filter Bar */}
+      <div className="mt-8 flex items-center gap-2 overflow-x-auto pb-2 scrollbar-none" aria-label="Quick category filters">
+        <Link
+          href={q ? `/explore?q=${encodeURIComponent(q)}` : "/explore"}
+          className={`whitespace-nowrap rounded-full px-4 py-2 text-support font-semibold transition-all shadow-2xs ${
+            activeCategory === "all"
+              ? "bg-gold text-on-gold shadow-xs"
+              : "border border-border/80 bg-surface text-charcoal hover:border-gold/40 hover:bg-surface-2"
+          }`}
+        >
+          All Stories ({allStories.length})
+        </Link>
+        {CATEGORIES.map((cat) => {
+          const isSelected = activeCategory === cat.id;
+          return (
+            <Link
+              key={cat.id}
+              href={`/explore?category=${cat.id}${q ? `&q=${encodeURIComponent(q)}` : ""}`}
+              className={`whitespace-nowrap rounded-full px-4 py-2 text-support font-semibold transition-all shadow-2xs flex items-center gap-2 ${
+                isSelected
+                  ? "bg-gold text-on-gold shadow-xs"
+                  : "border border-border/80 bg-surface text-charcoal hover:border-gold/40 hover:bg-surface-2"
+              }`}
+            >
+              <span>{cat.label}</span>
+              <span className={`text-[11px] px-2 py-0.5 rounded-full ${isSelected ? "bg-black/20 text-on-gold" : "bg-surface-2 text-muted"}`}>
+                {cat.count.split(" ")[0]}
+              </span>
+            </Link>
+          );
+        })}
+      </div>
+
+      {/* 2. Curated Flagship Stories (Elevated for Immediate Access) */}
+      <section className="mt-10 sm:mt-12" aria-labelledby="theme-stories-title">
+        <div className="flex flex-wrap items-baseline justify-between gap-4 border-b border-border/60 pb-3">
+          <div>
+            <div className="flex items-center gap-2 text-[11px] font-semibold uppercase tracking-wider text-gold">
+              <span>✦</span>
+              <span>Curated Stories Library</span>
+            </div>
+            <h2 id="theme-stories-title" className="mt-1 font-serif text-2xl sm:text-3xl font-semibold text-charcoal">
+              {activeCategory === "all"
+                ? "All Published Narratives"
+                : `${CATEGORIES.find((c) => c.id === activeCategory)?.label ?? activeCategory}`} ({filteredStories.length})
+            </h2>
+            <p className="mt-1 text-meta text-muted">
+              Source-grounded cultural narratives across India&apos;s pilot ecosystems
+            </p>
+          </div>
+          {activeCategory !== "all" && (
+            <Link
+              href={q ? `/explore?q=${encodeURIComponent(q)}` : "/explore"}
+              className="text-meta font-semibold text-gold hover:underline"
+            >
+              Clear filter (view all)
+            </Link>
+          )}
+        </div>
+
+        {filteredStories.length === 0 ? (
+          <Notice className="mt-6" tone="info" role="status">
+            No stories match this filter in the current pilot selection. Try selecting another category or clearing search filters.
+          </Notice>
+        ) : (
+          <StaggerContainer className="mt-6 grid gap-5 md:grid-cols-2" staggerDelay={0.05}>
+            {filteredStories.map((s) => (
+              <StaggerItem key={s.slug}>
+                <StoryCard
+                  href={`/stories/${s.slug}`}
+                  eyebrow={s.citySlug ? s.citySlug.toUpperCase() : "CULTURAL NARRATIVE"}
+                  title={s.title}
+                  summary={s.orientation}
+                  meta="Grounded Narrative · Primary Evidence"
+                  fixtureLabel={s.isFixture ? t("common.devFixture") : undefined}
+                />
+              </StaggerItem>
+            ))}
+          </StaggerContainer>
+        )}
+      </section>
+
+      {/* 3. 9 Cultural Taxonomy Categories Grid */}
+      <section className="mt-16 sm:mt-20" aria-labelledby="categories-grid-title">
         <div className="flex flex-wrap items-baseline justify-between gap-4 border-b border-border/60 pb-3">
           <div>
             <div className="flex items-center gap-2 text-[11px] font-semibold uppercase tracking-wider text-gold">
@@ -363,43 +445,6 @@ export default async function ExplorePage({
             );
           })}
         </StaggerContainer>
-      </section>
-
-      {/* 3. Filtered Curated Flagship Stories matching Selected Category */}
-      <section className="mt-14 sm:mt-16" aria-labelledby="theme-stories-title">
-        <div className="flex items-baseline justify-between gap-4 border-b border-border/60 pb-3">
-          <div>
-            <h2 id="theme-stories-title" className="font-serif text-2xl font-semibold text-charcoal">
-              {activeCategory === "all"
-                ? "Curated Flagship Stories"
-                : `Stories in ${CATEGORIES.find((c) => c.id === activeCategory)?.label ?? activeCategory}`} ({filteredStories.length})
-            </h2>
-            <p className="mt-1 text-meta text-muted">
-              Source-grounded cultural narratives across India&apos;s pilot ecosystems
-            </p>
-          </div>
-        </div>
-
-        {filteredStories.length === 0 ? (
-          <Notice className="mt-6" tone="info" role="status">
-            No stories match this filter in the current pilot selection. Try selecting another category or clearing search filters.
-          </Notice>
-        ) : (
-          <StaggerContainer className="mt-6 grid gap-5 md:grid-cols-2" staggerDelay={0.05}>
-            {filteredStories.map((s) => (
-              <StaggerItem key={s.slug}>
-                <StoryCard
-                  href={`/stories/${s.slug}`}
-                  eyebrow={s.citySlug ? s.citySlug.toUpperCase() : "CULTURAL NARRATIVE"}
-                  title={s.title}
-                  summary={s.orientation}
-                  meta="Grounded Narrative · Primary Evidence"
-                  fixtureLabel={s.isFixture ? t("common.devFixture") : undefined}
-                />
-              </StaggerItem>
-            ))}
-          </StaggerContainer>
-        )}
       </section>
 
       {/* 4. Featured Thematic Collections Rail matching Reference Page 4 */}

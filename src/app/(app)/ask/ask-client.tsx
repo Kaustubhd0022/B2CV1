@@ -542,17 +542,20 @@ function Answer({ result: r, t, onRetry, onAsk, selected }: { result: AskResult;
         </Notice>
       )}
 
-      {r.nextDiscoveries.length > 0 && (
-        <section>
-          <h3 className="font-serif text-card font-semibold">{t("ask.nextDiscoveries")}</h3>
-          <ul className="mt-2 grid gap-2">
+      {r.nextDiscoveries.length > 0 ? (
+        <section className="mt-8 rounded-2xl border border-border bg-surface p-5 shadow-xs">
+          <div className="flex items-center gap-2 text-meta font-semibold uppercase tracking-wider text-gold">
+            <span>✦</span>
+            <span>{t("ask.nextDiscoveries")}</span>
+          </div>
+          <ul className="mt-3 grid gap-3 sm:grid-cols-2">
             {r.nextDiscoveries.map((d) => (
               <li key={`${d.kind}:${d.slug}`}>
-                <Link href={`/${d.kind === "story" ? "stories" : "connections"}/${d.slug}`} className="block rounded-xl border border-border bg-surface p-3.5 hover:border-forest/40 hover:bg-surface-2 transition-all shadow-2xs">
-                  <span className="font-serif font-semibold text-forest hover:underline">{d.title}</span>
-                  <span className="mt-0.5 block text-meta text-muted">{t("ask.nextRationale")}</span>
+                <Link href={`/${d.kind === "story" ? "stories" : "connections"}/${d.slug}`} className="block rounded-xl border border-border bg-surface-2 p-3.5 hover:border-gold/50 hover:bg-surface transition-all shadow-2xs">
+                  <span className="font-serif font-semibold text-charcoal hover:text-gold">{d.title}</span>
+                  <span className="mt-1 block text-meta text-muted">{t("ask.nextRationale")}</span>
                   {d.isFixture && (
-                    <span className="mt-1 block">
+                    <span className="mt-2 block">
                       <FixtureBadge label={t("common.devFixture")} />
                     </span>
                   )}
@@ -561,16 +564,43 @@ function Answer({ result: r, t, onRetry, onAsk, selected }: { result: AskResult;
             ))}
           </ul>
         </section>
+      ) : (
+        <section className="mt-8 rounded-2xl border border-border/80 bg-surface-2/60 p-5 shadow-xs">
+          <div className="flex items-center gap-2 text-meta font-semibold uppercase tracking-wider text-gold">
+            <span>✦</span>
+            <span>Deepen Your Discovery</span>
+          </div>
+          <p className="mt-1.5 text-support text-secondary-text">
+            Continue exploring India&apos;s living traditions through verified flagship stories and sacred geography.
+          </p>
+          <div className="mt-4 flex flex-wrap items-center gap-3">
+            <Link
+              href="/explore"
+              className="inline-flex min-h-10 items-center justify-center rounded-full bg-forest px-5 text-support font-semibold text-on-forest hover:bg-forest-hover shadow-xs transition-colors"
+            >
+              Explore Flagship Stories →
+            </Link>
+            <Link
+              href="/places"
+              className="inline-flex min-h-10 items-center justify-center rounded-full border border-border bg-surface px-5 text-support font-semibold text-charcoal hover:border-gold/40 transition-colors"
+            >
+              View on Cultural Map →
+            </Link>
+          </div>
+        </section>
       )}
 
       {r.followUps.length > 0 && (
-        <section>
-          <h3 className="text-support font-semibold text-charcoal">{t("ask.followUps")}</h3>
-          <ul className="mt-2 flex flex-wrap gap-2">
+        <section className="mt-6">
+          <h3 className="text-support font-semibold text-charcoal flex items-center gap-2">
+            <span className="text-gold">✦</span>
+            <span>{t("ask.followUps")}</span>
+          </h3>
+          <ul className="mt-2.5 flex flex-wrap gap-2">
             {r.followUps.map((q) => (
               <li key={q}>
-                <button type="button" onClick={() => onAsk(q)} className="min-h-11 rounded-full border border-border bg-elevated px-4 text-left text-support text-charcoal hover:border-forest hover:text-forest transition-colors shadow-2xs">
-                  {q}
+                <button type="button" onClick={() => onAsk(q)} className="min-h-11 rounded-full border border-border bg-surface-2 px-4 text-left text-support text-charcoal hover:border-gold hover:text-gold transition-colors shadow-2xs">
+                  {q} →
                 </button>
               </li>
             ))}
@@ -578,9 +608,11 @@ function Answer({ result: r, t, onRetry, onAsk, selected }: { result: AskResult;
         </section>
       )}
 
-      <Link href={`/report?type=answer&ref=${r.runId}`} className="inline-flex min-h-11 items-center gap-2 text-support font-semibold text-terracotta-text underline-offset-4 hover:underline">
-        <IconFlag width={18} height={18} /> {t("ask.reportAnswer")}
-      </Link>
+      <div className="mt-6 pt-4 border-t border-border/60">
+        <Link href={`/report?type=answer&ref=${r.runId}`} className="inline-flex min-h-9 items-center gap-2 text-meta text-muted hover:text-charcoal transition-colors">
+          <IconFlag width={15} height={15} /> {t("ask.reportAnswer")}
+        </Link>
+      </div>
     </div>
   );
 }
