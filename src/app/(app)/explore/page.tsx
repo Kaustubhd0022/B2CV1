@@ -100,6 +100,110 @@ const CATEGORIES = [
   },
 ];
 
+/** Dedicated topic-specific high-resolution imagery for all 19 published cultural stories */
+const TOPIC_IMAGES: Record<string, { src: string; alt: string }> = {
+  "hampi-tungabhadra-coracles": {
+    src: "/images/stories/hampi-tungabhadra-coracles.jpg",
+    alt: "Woven bamboo coracle boat navigating the rocky Tungabhadra River among Hampi boulders",
+  },
+  "hampi-a-capital-and-a-sacred-landscape": {
+    src: "/images/stories/hampi-vijayanagara.jpg",
+    alt: "Monolithic stone chariot and sacred granite temple halls of the Vijayanagara Empire at Hampi",
+  },
+  "hampi-vijayanagara": {
+    src: "/images/stories/hampi-vijayanagara.jpg",
+    alt: "Monolithic stone chariot and sacred granite temple halls of the Vijayanagara Empire at Hampi",
+  },
+  "hampi-vittala-musical-pillars": {
+    src: "/images/stories/hampi-vittala-musical-pillars.jpg",
+    alt: "Acoustic granite pillars of the Vijaya Vittala temple hall cut from resonant stone",
+  },
+  "jaipur-amer-fort-water-systems": {
+    src: "/images/stories/jaipur-amer-fort-water-systems.jpg",
+    alt: "Amer Fort fortified ramparts reflected in Maota Lake water reservoir in Jaipur",
+  },
+  "jaipur-jantar-mantar": {
+    src: "/images/stories/jaipur-jantar-mantar.jpg",
+    alt: "Vrihat Samrat Yantra stone sundial and astronomical instruments at Jantar Mantar Jaipur",
+  },
+  "jaipur-sanganer-block-printing": {
+    src: "/images/stories/jaipur-sanganer-block-printing.jpg",
+    alt: "Chhipa artisan hand-carved teakwood block printing with natural mineral dyes",
+  },
+  "kochi-shore-operated-fishing-nets": {
+    src: "/images/stories/kochi-fishing-nets.jpg",
+    alt: "Cantilevered Chinese fishing nets along the Arabian Sea waterfront in Fort Kochi",
+  },
+  "kochi-fishing-nets": {
+    src: "/images/stories/kochi-fishing-nets.jpg",
+    alt: "Cantilevered Chinese fishing nets along the Arabian Sea waterfront in Fort Kochi",
+  },
+  "kochi-kathakali-temple-theater": {
+    src: "/images/stories/kochi-kathakali-temple-theater.jpg",
+    alt: "Kathakali classical dancer in traditional green Paccha makeup and elaborate kireedam headdress",
+  },
+  "kochi-spice-route-jew-town": {
+    src: "/images/stories/kochi-spice-route-jew-town.jpg",
+    alt: "Aromatic black pepper, cardamom, and cinnamon sacks in Mattancherry historic spice market",
+  },
+  "kolkata-bengal-renaissance-adda": {
+    src: "/images/stories/kolkata-bengal-renaissance-adda.jpg",
+    alt: "Scholars, literary books, and intellectual adda discourse on historic College Street",
+  },
+  "kolkata-durga-puja-from-household-to-city": {
+    src: "/images/stories/kolkata-durga-puja.jpg",
+    alt: "Intricately ornamented clay idol of Goddess Durga during the grand autumn festival in Kolkata",
+  },
+  "kolkata-durga-puja": {
+    src: "/images/stories/kolkata-durga-puja.jpg",
+    alt: "Intricately ornamented clay idol of Goddess Durga during the grand autumn festival in Kolkata",
+  },
+  "kolkata-kumartuli-clay-sculptors": {
+    src: "/images/stories/kolkata-kumartuli-clay-sculptors.jpg",
+    alt: "Kumartuli artisan shaping sacred Ganga clay and straw into monumental festival idols",
+  },
+  "madurai-chithirai-festival": {
+    src: "/images/stories/madurai-chithirai-festival.jpg",
+    alt: "Devotees pulling the towering carved wooden temple car during the Chithirai festival in Madurai",
+  },
+  "madurai-meenakshi-temple-city": {
+    src: "/images/stories/madurai-meenakshi.jpg",
+    alt: "Multicolored sculpted gopurams of Meenakshi Amman Temple rising above the concentric streets of Madurai",
+  },
+  "madurai-meenakshi": {
+    src: "/images/stories/madurai-meenakshi.jpg",
+    alt: "Multicolored sculpted gopurams of Meenakshi Amman Temple rising above the concentric streets of Madurai",
+  },
+  "madurai-sungudi-cotton-weavers": {
+    src: "/images/stories/madurai-sungudi-cotton-weavers.jpg",
+    alt: "Saurashtrian artisan knotting and dyeing Sungudi cotton fabrics with traditional circular motifs",
+  },
+  "varanasi-ghats-architecture-and-river": {
+    src: "/images/stories/varanasi-ghats.jpg",
+    alt: "Stepped stone ghats and 18th-century Maratha bastions along the sacred Ganga in Varanasi",
+  },
+  "varanasi-ghats": {
+    src: "/images/stories/varanasi-ghats.jpg",
+    alt: "Stepped stone ghats and 18th-century Maratha bastions along the sacred Ganga in Varanasi",
+  },
+  "varanasi-music-banaras-gharana": {
+    src: "/images/stories/varanasi-music-banaras-gharana.jpg",
+    alt: "Banaras Gharana classical music tradition echoing through dawn riyaz on the riverfront",
+  },
+  "varanasi-panchakroshi-yatra": {
+    src: "/images/stories/varanasi-panchakroshi-yatra.jpg",
+    alt: "Devotees undertaking the sacred 50-mile Panchakroshi Yatra pilgrimage around holy Kashi",
+  },
+  "varanasi-silk-weaving-craft-and-living-tradition": {
+    src: "/images/stories/varanasi-silk-craft.jpg",
+    alt: "Ansari master weaver crafting pure gold and silver zari brocade on a traditional pit-loom",
+  },
+  "varanasi-silk-craft": {
+    src: "/images/stories/varanasi-silk-craft.jpg",
+    alt: "Ansari master weaver crafting pure gold and silver zari brocade on a traditional pit-loom",
+  },
+};
+
 const FEATURED_COLLECTIONS = [
   {
     title: "Sacred Rivers of India",
@@ -251,16 +355,16 @@ export default async function ExplorePage({
     <Page className="max-w-[1440px] px-3 sm:px-6 pt-2">
       {/* 1. Master Editorial Theme Hero matching Reference Page 4 */}
       <FadeIn delay={0.05}>
-        <section className="relative overflow-hidden rounded-3xl border border-gold/30 bg-gradient-to-br from-[#171411] via-[#1b1714] to-[#12100d] p-8 sm:p-10 md:p-12 shadow-md">
+        <section className="relative overflow-hidden rounded-[2.5rem] border border-[#F0DCE4] bg-gradient-to-b from-[#FFF5F8] via-[#FDF0F4] to-[#FCE7EF] p-8 sm:p-10 md:p-12 shadow-sm text-[#20101B]">
           <div className="max-w-3xl">
-            <div className="flex items-center gap-2 text-[11px] font-semibold uppercase tracking-[0.2em] text-gold">
+            <div className="flex items-center gap-2 text-[11px] font-semibold uppercase tracking-[0.2em] text-[#A84A78]">
               <span>✦</span>
               <span>Explore by Cultural Dimension</span>
             </div>
-            <h1 className="mt-3 font-serif text-3xl sm:text-4xl md:text-5xl font-bold leading-tight text-white tracking-tight">
+            <h1 className="mt-3 font-serif text-3xl sm:text-4xl md:text-5xl font-bold leading-tight text-[#20101B] tracking-tight">
               Explore Humanity&apos;s Cultural Knowledge
             </h1>
-            <p className="mt-3 text-body text-secondary-text leading-relaxed font-light md:text-lg">
+            <p className="mt-3 text-body text-[#6A4A58] leading-relaxed font-light md:text-lg">
               Discover sacred geography, ancient astronomy, master craft guilds, and classical music traditions organized across nine foundational cultural categories and six geographic regions.
             </p>
 
@@ -271,7 +375,7 @@ export default async function ExplorePage({
               </label>
               <div className="relative flex-1">
                 <IconSearch
-                  className="pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 text-muted"
+                  className="pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 text-[#9A7A88]"
                   width={18}
                   height={18}
                 />
@@ -280,13 +384,13 @@ export default async function ExplorePage({
                   name="q"
                   defaultValue={q}
                   placeholder="Search stories, traditions, places, or crafts…"
-                  className="block w-full min-h-12 rounded-full border border-border/80 bg-surface-2/90 py-2.5 pl-11 pr-4 text-body text-charcoal placeholder:text-muted shadow-2xs focus:border-gold focus:outline-none focus:ring-2 focus:ring-gold/25"
+                  className="block w-full min-h-12 rounded-full border border-[#F0DCE4] bg-white py-2.5 pl-11 pr-4 text-body text-[#20101B] placeholder:text-[#9A7A88] shadow-2xs focus:border-[#A84A78] focus:outline-none focus:ring-2 focus:ring-[#A84A78]/25"
                 />
                 {activeCategory !== "all" && <input type="hidden" name="category" value={activeCategory} />}
               </div>
               <button
                 type="submit"
-                className="inline-flex min-h-12 items-center rounded-full bg-forest px-6 text-support font-semibold text-on-forest hover:bg-forest-hover shadow-xs transition-all active:scale-[0.985]"
+                className="inline-flex min-h-12 items-center rounded-full bg-[#24131E] px-6 text-support font-semibold text-white hover:bg-[#381F30] shadow-xs transition-all active:scale-[0.985]"
               >
                 Search
               </button>
@@ -301,8 +405,8 @@ export default async function ExplorePage({
           href={q ? `/explore?q=${encodeURIComponent(q)}` : "/explore"}
           className={`whitespace-nowrap rounded-full px-4 py-2 text-support font-semibold transition-all shadow-2xs ${
             activeCategory === "all"
-              ? "bg-gold text-on-gold shadow-xs"
-              : "border border-border/80 bg-surface text-charcoal hover:border-gold/40 hover:bg-surface-2"
+              ? "bg-[#24131E] text-white shadow-xs"
+              : "border border-[#F0DCE4] bg-white text-[#20101B] hover:border-[#A84A78]/40 hover:bg-[#FFF5F8]"
           }`}
         >
           All Stories ({allStories.length})
@@ -315,12 +419,12 @@ export default async function ExplorePage({
               href={`/explore?category=${cat.id}${q ? `&q=${encodeURIComponent(q)}` : ""}`}
               className={`whitespace-nowrap rounded-full px-4 py-2 text-support font-semibold transition-all shadow-2xs flex items-center gap-2 ${
                 isSelected
-                  ? "bg-gold text-on-gold shadow-xs"
-                  : "border border-border/80 bg-surface text-charcoal hover:border-gold/40 hover:bg-surface-2"
+                  ? "bg-[#24131E] text-white shadow-xs"
+                  : "border border-[#F0DCE4] bg-white text-[#20101B] hover:border-[#A84A78]/40 hover:bg-[#FFF5F8]"
               }`}
             >
               <span>{cat.label}</span>
-              <span className={`text-[11px] px-2 py-0.5 rounded-full ${isSelected ? "bg-black/20 text-on-gold" : "bg-surface-2 text-muted"}`}>
+              <span className={`text-[11px] px-2 py-0.5 rounded-full ${isSelected ? "bg-white/20 text-white" : "bg-[#FDF0F4] text-[#7A5A68]"}`}>
                 {cat.count.split(" ")[0]}
               </span>
             </Link>
@@ -375,7 +479,7 @@ export default async function ExplorePage({
             )}
           </div>
         ) : (
-          <StaggerContainer className="mt-6 grid gap-5 md:grid-cols-2" staggerDelay={0.05}>
+          <StaggerContainer className="mt-6 grid gap-6 sm:grid-cols-2 lg:grid-cols-3" staggerDelay={0.04}>
             {filteredStories.map((s) => (
               <StaggerItem key={s.slug}>
                 <StoryCard
@@ -383,6 +487,7 @@ export default async function ExplorePage({
                   eyebrow={s.citySlug ? s.citySlug.toUpperCase() : "CULTURAL NARRATIVE"}
                   title={s.title}
                   summary={s.orientation}
+                  image={TOPIC_IMAGES[s.slug] || s.hero}
                   meta="Grounded Narrative · Primary Evidence"
                   fixtureLabel={s.isFixture ? t("common.devFixture") : undefined}
                 />
@@ -390,76 +495,6 @@ export default async function ExplorePage({
             ))}
           </StaggerContainer>
         )}
-      </section>
-
-      {/* 3. 9 Cultural Taxonomy Categories Grid */}
-      <section className="mt-16 sm:mt-20" aria-labelledby="categories-grid-title">
-        <div className="flex flex-wrap items-baseline justify-between gap-4 border-b border-border/60 pb-3">
-          <div>
-            <div className="flex items-center gap-2 text-[11px] font-semibold uppercase tracking-wider text-gold">
-              <span>✦</span>
-              <span>Foundational Taxonomy</span>
-            </div>
-            <h2 id="categories-grid-title" className="mt-1 font-serif text-2xl sm:text-3xl font-semibold text-charcoal">
-              Explore 9 Cultural Categories
-            </h2>
-          </div>
-          {activeCategory !== "all" && (
-            <Link
-              href="/explore"
-              className="text-meta font-semibold text-gold hover:underline"
-            >
-              Reset filter (show all categories)
-            </Link>
-          )}
-        </div>
-
-        <StaggerContainer className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-3" staggerDelay={0.03}>
-          {CATEGORIES.map((cat) => {
-            const isSelected = activeCategory === cat.id;
-            return (
-              <StaggerItem key={cat.id}>
-                <MotionCard className="h-full">
-                  <Link
-                    href={
-                      isSelected
-                        ? "/explore"
-                        : `/explore?category=${cat.id}${q ? `&q=${encodeURIComponent(q)}` : ""}`
-                    }
-                    className={`group relative flex h-full flex-col justify-between overflow-hidden rounded-2xl border p-5 transition-all duration-300 ${
-                      isSelected
-                        ? "border-gold bg-[#1c1814] ring-2 ring-gold/40 shadow-md"
-                        : "border-border/80 bg-surface hover:border-gold/50 hover:bg-surface-2 shadow-2xs"
-                    }`}
-                  >
-                    <div>
-                      <div className="flex items-center justify-between">
-                        <span className="flex size-11 items-center justify-center rounded-xl bg-surface-2 border border-border/80 text-gold group-hover:bg-gold group-hover:text-[#12100e] transition-colors shadow-2xs">
-                          <cat.Icon width={22} height={22} />
-                        </span>
-                        <span className="rounded-full bg-gold/10 border border-gold/30 px-2.5 py-0.5 text-[11px] font-semibold text-gold">
-                          {cat.count}
-                        </span>
-                      </div>
-                      <h3 className="mt-4 font-serif text-xl font-semibold text-charcoal group-hover:text-gold transition-colors tracking-tight">
-                        {cat.label}
-                      </h3>
-                      <p className="mt-2 text-support text-secondary-text leading-relaxed">
-                        {cat.desc}
-                      </p>
-                    </div>
-
-                    <div className="mt-5 flex items-center justify-between text-meta font-medium pt-3 border-t border-border/60">
-                      <span className={isSelected ? "text-gold font-semibold" : "text-muted group-hover:text-charcoal transition-colors"}>
-                        {isSelected ? "Active Dimension ✓" : "Explore Category →"}
-                      </span>
-                    </div>
-                  </Link>
-                </MotionCard>
-              </StaggerItem>
-            );
-          })}
-        </StaggerContainer>
       </section>
 
       {/* 4. Featured Thematic Collections Rail matching Reference Page 4 */}
@@ -600,14 +635,14 @@ export default async function ExplorePage({
         )}
       </section>
 
-      {/* 7. Bottom Editorial Quote Banner matching Reference Page 4 */}
-      <section className="mt-16 sm:mt-20 mb-8 rounded-3xl border border-gold/30 bg-gradient-to-br from-[#161310] via-[#1a1714] to-[#12100d] p-8 sm:p-12 text-center shadow-md">
+      {/* Bottom Editorial Quote Banner matching Reference Design */}
+      <section className="mt-16 sm:mt-20 mb-8 rounded-[2.5rem] border border-[#F0DCE4] bg-gradient-to-b from-[#FFF5F8] via-[#FDF0F4] to-[#FCE7EF] p-8 sm:p-12 text-center shadow-sm">
         <div className="max-w-3xl mx-auto space-y-3">
-          <span className="text-gold text-lg">✦</span>
-          <blockquote className="font-serif text-xl sm:text-2xl md:text-3xl italic font-normal text-white leading-relaxed">
+          <span className="text-[#A84A78] text-lg">✦</span>
+          <blockquote className="font-serif text-xl sm:text-2xl md:text-3xl italic font-normal text-[#20101B] leading-relaxed">
             &ldquo;Culture is not a monument of the past, but an active memory lived every day in sacred water, woven silk, and resonant stone.&rdquo;
           </blockquote>
-          <p className="text-meta font-semibold uppercase tracking-widest text-gold pt-2">
+          <p className="text-meta font-semibold uppercase tracking-widest text-[#A84A78] pt-2">
             TattvaCo Cultural Discovery Engine
           </p>
         </div>

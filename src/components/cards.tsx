@@ -76,6 +76,7 @@ export function StoryCard({
   title,
   summary,
   meta,
+  image,
   fixtureLabel,
   languageNote,
 }: {
@@ -84,31 +85,59 @@ export function StoryCard({
   title: string;
   summary: string;
   meta?: string;
+  image?: ImageRef | { src: string; alt?: string } | string | null;
   fixtureLabel?: string;
   languageNote?: string;
 }) {
+  const imageObj = typeof image === "string" ? { src: image, alt: title } : image;
+
   return (
     <MotionCard className="h-full">
       <Link
         href={href}
-        className="group flex h-full flex-col justify-between rounded-[1.75rem] border border-[#F0DCE4] bg-white p-6 sm:p-7 shadow-xs transition-all duration-300 hover:border-amber-600/40 hover:shadow-lg hover:-translate-y-1"
+        className="group flex h-full flex-col justify-between overflow-hidden rounded-[1.75rem] border border-[#F0DCE4] bg-white shadow-xs transition-all duration-300 hover:border-amber-600/40 hover:shadow-xl hover:-translate-y-1"
       >
         <div>
-          {eyebrow && <p className="text-meta font-semibold uppercase tracking-[0.16em] text-gold">{eyebrow}</p>}
-          <h3 className="mt-1.5 font-serif text-card md:text-section font-semibold text-charcoal group-hover:text-gold transition-colors tracking-tight">
-            {title}
-          </h3>
-          <p className="mt-2 text-support text-secondary-text leading-relaxed line-clamp-3">{summary}</p>
+          {imageObj?.src && (
+            <div className="relative aspect-[16/10] w-full overflow-hidden bg-stone">
+              <Image
+                src={imageObj.src}
+                alt={imageObj.alt || title}
+                fill
+                sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
+                className="object-cover transition-transform duration-700 ease-out group-hover:scale-105"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/45 via-transparent to-transparent" />
+              {eyebrow && (
+                <div className="absolute top-3.5 left-3.5">
+                  <span className="rounded-full bg-white/95 border border-white/90 px-3 py-1 text-[10px] font-bold uppercase tracking-wider text-[#24131E] shadow-xs backdrop-blur-md">
+                    {eyebrow}
+                  </span>
+                </div>
+              )}
+            </div>
+          )}
+
+          <div className="p-5 sm:p-6">
+            {!imageObj?.src && eyebrow && (
+              <p className="text-meta font-semibold uppercase tracking-[0.16em] text-amber-800">{eyebrow}</p>
+            )}
+            <h3 className="mt-1 font-serif text-card md:text-section font-bold text-[#20101B] group-hover:text-amber-800 transition-colors tracking-tight leading-snug">
+              {title}
+            </h3>
+            <p className="mt-2 text-support text-[#5A4450] leading-relaxed line-clamp-3">{summary}</p>
+          </div>
         </div>
-        <div className="mt-5 flex flex-wrap items-center gap-2 border-t border-border-subtle pt-3.5">
+
+        <div className="mx-5 mb-5 sm:mx-6 sm:mb-6 flex flex-wrap items-center gap-2 border-t border-[#F0DCE4] pt-3.5">
           {meta && (
-            <span className="rounded-full border border-[#F0DCE4] bg-surface-2 px-3 py-0.5 text-meta font-medium text-secondary-text">
+            <span className="rounded-full border border-[#F0DCE4] bg-surface-2 px-3 py-0.5 text-meta font-medium text-[#5A4450]">
               {meta}
             </span>
           )}
           {languageNote && <span className="text-meta text-muted">{languageNote}</span>}
           {fixtureLabel && <FixtureBadge label={fixtureLabel} />}
-          <span className="ml-auto inline-flex items-center gap-1 text-meta font-semibold text-gold transition-transform group-hover:translate-x-1">
+          <span className="ml-auto inline-flex items-center gap-1 text-meta font-semibold text-amber-800 transition-transform group-hover:translate-x-1">
             Read story <IconArrow width={16} height={16} />
           </span>
         </div>
