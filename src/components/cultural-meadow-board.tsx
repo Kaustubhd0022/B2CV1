@@ -321,11 +321,7 @@ const FAQS = [
   },
 ];
 
-export function CulturalMeadowBoard({ userEmail }: { userEmail?: string | null } = {}) {
-  const [activeCategory, setActiveCategory] = useState<string>("all");
-  const [selectedStation, setSelectedStation] = useState(0);
-  const [expeditionDays, setExpeditionDays] = useState(5);
-  const [openFaq, setOpenFaq] = useState<number | null>(0);
+export function CulturalHeroSection({ userEmail }: { userEmail?: string | null } = {}) {
   const [inquiryText, setInquiryText] = useState("");
   const [currentTime, setCurrentTime] = useState<string>("");
   const [ritualPhase, setRitualPhase] = useState<{ name: string; phase: string }>({
@@ -373,63 +369,8 @@ export function CulturalMeadowBoard({ userEmail }: { userEmail?: string | null }
     return () => clearInterval(interval);
   }, []);
 
-  const filteredTiles = useMemo(() => {
-    if (activeCategory === "all") return CULTURAL_TILES;
-    if (activeCategory === "places") return CULTURAL_TILES.filter((t) => t.categoryKey === "places" || t.categoryKey === "history");
-    if (activeCategory === "crafts") return CULTURAL_TILES.filter((t) => t.categoryKey === "crafts");
-    if (activeCategory === "festivals") return CULTURAL_TILES.filter((t) => t.categoryKey === "festivals" || t.categoryKey === "beliefs");
-    if (activeCategory === "music") return CULTURAL_TILES.filter((t) => t.categoryKey === "music" || t.categoryKey === "people");
-    if (activeCategory === "food") return CULTURAL_TILES.filter((t) => t.categoryKey === "food");
-    return CULTURAL_TILES;
-  }, [activeCategory]);
-
-  // Dynamic calculations based on Expedition Days slider
-  const expeditionMetrics = useMemo(() => {
-    if (expeditionDays <= 1) {
-      return {
-        label: "1 Day · Riverfront Parikrama",
-        tirthas: "12 Primary Ghats",
-        citations: "14 ASI & UNESCO Citations",
-        guilds: "4 Master Weaving Karkhanas",
-        distance: "6.5 km walking",
-        intensity: "Introductory Riverfront",
-      };
-    } else if (expeditionDays <= 3) {
-      return {
-        label: "3 Days · Heritage & Mohalla Circuit",
-        tirthas: "36 Sacred Shrines & Ghats",
-        citations: "28 Verified Authorities",
-        guilds: "9 Guilds & Sitar Gharanas",
-        distance: "24 km walking & boat trail",
-        intensity: "Moderate Cultural Immersion",
-      };
-    } else if (expeditionDays <= 5) {
-      return {
-        label: "5 Days · Panchakroshi Cosmic Mandala",
-        tirthas: "84 Ghats + 108 Sacred Stations",
-        citations: "42 Statutory Citations",
-        guilds: "18 Master Guilds & Archival Sites",
-        distance: "80.5 km (50 Puranic Miles)",
-        intensity: "Full Cosmic Circumambulation",
-      };
-    } else {
-      return {
-        label: "7 Days · Greater Kashi & Sarnath Odyssey",
-        tirthas: "All 84 Riverfronts + Sarnath Stupas",
-        citations: "65 Statutory & Museum Citations",
-        guilds: "25 Artisan Guilds & Oral Archives",
-        distance: "115 km comprehensive trail",
-        intensity: "Deep Civilizational Expedition",
-      };
-    }
-  }, [expeditionDays]);
-
   return (
-    <div className="space-y-16 md:space-y-24">
-      {/* ─────────────────────────────────────────────────────────────────────────
-          1. THE HERO STAGE: 21st.dev Botanical Flower Meadow & Floating Brass Yantras
-          Framed inside luxurious rounded-[2.5rem] curved canvas with radiant rose-dawn
-      ────────────────────────────────────────────────────────────────────────── */}
+
       <section className="relative isolate overflow-hidden rounded-[2.5rem] border border-[#F0DCE4] bg-gradient-to-b from-[#FFF5F8] via-[#FDF0F4] to-[#FCE7EF] p-6 sm:p-10 md:p-14 shadow-xl transition-all">
         {/* Soft atmospheric ambient light rings */}
         <div className="pointer-events-none absolute -top-40 -left-40 size-[500px] rounded-full bg-rose-200/40 blur-3xl" aria-hidden="true" />
@@ -648,10 +589,29 @@ export function CulturalMeadowBoard({ userEmail }: { userEmail?: string | null }
           </div>
         </div>
       </section>
+  );
+}
 
-      {/* ─────────────────────────────────────────────────────────────────────────
-          2. PILL SCRUBBER & 8 CULTURAL DISCOVERY TILES (Original Subject-Specific Grid)
-      ────────────────────────────────────────────────────────────────────────── */}
+{/* ─────────────────────────────────────────────────────────────────────────
+    2. THE ASYMMETRIC BENTO GRID OF CULTURAL DIMENSIONS & CATEGORY SCRUBBER
+────────────────────────────────────────────────────────────────────────── */}
+export function CulturalBentoSection() {
+  const [activeCategory, setActiveCategory] = useState<string>("all");
+  const [selectedStation, setSelectedStation] = useState(0);
+
+  const filteredTiles = useMemo(() => {
+    if (activeCategory === "all") return CULTURAL_TILES;
+    if (activeCategory === "places") return CULTURAL_TILES.filter((t) => t.categoryKey === "places" || t.categoryKey === "history");
+    if (activeCategory === "crafts") return CULTURAL_TILES.filter((t) => t.categoryKey === "crafts");
+    if (activeCategory === "festivals") return CULTURAL_TILES.filter((t) => t.categoryKey === "festivals" || t.categoryKey === "beliefs");
+    if (activeCategory === "music") return CULTURAL_TILES.filter((t) => t.categoryKey === "music" || t.categoryKey === "people");
+    if (activeCategory === "food") return CULTURAL_TILES.filter((t) => t.categoryKey === "food");
+    return CULTURAL_TILES;
+  }, [activeCategory]);
+
+  return (
+    <div className="space-y-16">
+      {/* 2. PILL SCRUBBER & 8 CULTURAL DISCOVERY TILES (Original Subject-Specific Grid) */}
       <section aria-label="Cultural category scrubber" className="space-y-6">
         <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4 border-b border-[#F0DCE4] pb-4">
           <div>
@@ -662,6 +622,7 @@ export function CulturalMeadowBoard({ userEmail }: { userEmail?: string | null }
               Explore India&apos;s Cultural Ecosystems
             </h2>
           </div>
+
           <Link href="/explore" className="text-support font-semibold text-amber-800 hover:text-amber-900 hover:underline">
             View all categories →
           </Link>
@@ -755,63 +716,10 @@ export function CulturalMeadowBoard({ userEmail }: { userEmail?: string | null }
       </section>
 
       {/* ─────────────────────────────────────────────────────────────────────────
-          3. INTERACTIVE CONNECTED CULTURAL JOURNEY (Original 5-Step Connected Chain)
-      ────────────────────────────────────────────────────────────────────────── */}
-      <section className="rounded-[2.5rem] border border-[#24131E]/20 bg-gradient-to-br from-[#2B1522] via-[#24131E] to-[#1A0E16] p-6 sm:p-8 md:p-10 shadow-xl text-white">
-        <div className="max-w-2xl">
-          <div className="flex items-center gap-2 text-[11px] font-semibold uppercase tracking-[0.2em] text-amber-300">
-            <IconConnect width={17} height={17} className="text-amber-300" />
-            <span>Connected Discovery Chain</span>
-          </div>
-          <h2 className="mt-2 font-serif text-2xl sm:text-3xl font-bold text-white">
-            Follow a Live Cultural Connection
-          </h2>
-          <p className="mt-2 text-support text-white/80 leading-relaxed">
-            Discover how Varanasi&apos;s sacred river geography directly breathes life into living temple rituals, master silk handloom mohallas, and classical music gharanas.
-          </p>
-        </div>
-
-        {/* 5-Step Connected Node Chain */}
-        <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-5">
-          {JOURNEY_STEPS.map((step) => (
-            <Link
-              key={step.step}
-              href={step.href}
-              className="group relative flex flex-col justify-between rounded-2xl border border-white/10 bg-white/5 p-4 transition-all duration-300 hover:border-amber-400/50 hover:bg-white/10 hover:shadow-lg"
-            >
-              <div>
-                <div className="flex items-center justify-between">
-                  <span className="font-mono text-xs font-bold text-amber-300 bg-amber-400/10 px-2 py-0.5 rounded-md border border-amber-400/25">
-                    Step {step.step}
-                  </span>
-                  <span className="text-[10px] uppercase font-semibold text-white/60 tracking-wider">
-                    {step.tag}
-                  </span>
-                </div>
-                <p className="mt-3 text-[11px] font-semibold uppercase tracking-wider text-white/60">
-                  {step.label}
-                </p>
-                <h3 className="mt-0.5 font-serif text-support font-bold text-white group-hover:text-amber-300 transition-colors leading-snug">
-                  {step.title}
-                </h3>
-                <p className="mt-2 text-meta text-white/70 leading-relaxed line-clamp-3">
-                  {step.desc}
-                </p>
-              </div>
-
-              <div className="mt-4 pt-3 border-t border-white/10 flex items-center justify-between text-meta font-semibold text-amber-300">
-                <span>Explore</span>
-                <span className="transition-transform group-hover:translate-x-1">→</span>
-              </div>
-            </Link>
-          ))}
-        </div>
-      </section>
-
-      {/* ─────────────────────────────────────────────────────────────────────────
           4. THE ASYMMETRIC BENTO GRID OF CULTURAL DIMENSIONS (Matching 21st.dev)
       ────────────────────────────────────────────────────────────────────────── */}
       <section aria-labelledby="bento-title" className="space-y-6">
+
         <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4">
           <div>
             <div className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-[0.2em] text-amber-800">
@@ -1042,207 +950,341 @@ export function CulturalMeadowBoard({ userEmail }: { userEmail?: string | null }
           </div>
         </div>
       </section>
-
-      {/* ─────────────────────────────────────────────────────────────────────────
-          5. THE INTERACTIVE EXPEDITION SLIDER (Matching 21st.dev Yield Calculator)
-      ────────────────────────────────────────────────────────────────────────── */}
-      <section aria-labelledby="expedition-slider-title" className="rounded-[2.5rem] border border-[#24131E]/20 bg-gradient-to-br from-[#2B1522] via-[#24131E] to-[#1A0E16] p-6 sm:p-10 md:p-14 shadow-2xl text-white">
-        <div className="max-w-3xl">
-          <div className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-[0.2em] text-gold">
-            <span>✦</span>
-            <span>INTERACTIVE CULTURAL EXPEDITION CALCULATOR</span>
-          </div>
-          <h2 id="expedition-slider-title" className="mt-2 font-serif text-2xl sm:text-4xl font-bold text-white tracking-tight">
-            Plan Your Living Heritage Circuit
-          </h2>
-          <p className="mt-2 text-body text-white/70 leading-relaxed">
-            Drag the expedition slider to calibrate your journey across verified ASI monuments, master weaving quarters, and sacred riverfront ghats.
-          </p>
-        </div>
-
-        <div className="mt-10 grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
-          <div className="lg:col-span-7 space-y-6">
-            <div className="rounded-2xl border border-white/10 bg-white/5 p-6 backdrop-blur-md space-y-4">
-              <div className="flex items-baseline justify-between">
-                <span className="text-sm font-semibold text-white/80">Selected Journey Duration:</span>
-                <span className="font-serif text-2xl font-bold text-gold">
-                  {expeditionDays} {expeditionDays === 1 ? "Day" : "Days"}
-                </span>
-              </div>
-
-              <div className="space-y-2">
-                <input
-                  type="range"
-                  min="1"
-                  max="7"
-                  step="1"
-                  value={expeditionDays}
-                  onChange={(e) => setExpeditionDays(parseInt(e.target.value, 10))}
-                  className="w-full h-3 bg-white/15 rounded-lg appearance-none cursor-pointer accent-gold"
-                  aria-label="Expedition Days Slider"
-                />
-                <div className="flex justify-between text-xs text-white/50 font-mono px-1">
-                  <span>1 Day (Riverfront)</span>
-                  <span>3 Days</span>
-                  <span>5 Days (Panchakroshi)</span>
-                  <span>7 Days (Greater Kashi)</span>
-                </div>
-              </div>
-
-              <div className="pt-3 border-t border-white/10">
-                <div className="text-xs uppercase tracking-wider text-white/50">Expedition Profile</div>
-                <div className="mt-1 font-serif text-lg font-bold text-white">
-                  {expeditionMetrics.label}
-                </div>
-                <div className="text-xs text-gold/90 mt-0.5">
-                  Intensity: {expeditionMetrics.intensity}
-                </div>
-              </div>
-            </div>
-
-            <div className="flex flex-wrap items-center gap-3">
-              <Link
-                href="/places?city=varanasi"
-                className="inline-flex min-h-12 items-center justify-center gap-2 rounded-full bg-gold px-6 text-support font-semibold text-on-gold hover:bg-gold-hover shadow-md transition-all active:scale-95"
-              >
-                <span>Plot Route on Cultural Atlas</span>
-                <span>→</span>
-              </Link>
-              <Link
-                href="/stories/varanasi-panchakroshi-yatra"
-                className="inline-flex min-h-12 items-center justify-center rounded-full border border-white/20 bg-white/10 px-6 text-support font-semibold text-white hover:bg-white/15 transition-all"
-              >
-                Read Verified Guide
-              </Link>
-            </div>
-          </div>
-
-          <div className="lg:col-span-5 grid grid-cols-2 gap-4">
-            <div className="rounded-2xl border border-white/10 bg-white/5 p-5 backdrop-blur-md">
-              <div className="text-[11px] font-semibold uppercase tracking-wider text-gold">Sacred Tirthas</div>
-              <div className="mt-2 font-serif text-xl font-bold text-white">{expeditionMetrics.tirthas}</div>
-              <p className="mt-1 text-xs text-white/60">Ghats, kunds & temples visited</p>
-            </div>
-
-            <div className="rounded-2xl border border-white/10 bg-white/5 p-5 backdrop-blur-md">
-              <div className="text-[11px] font-semibold uppercase tracking-wider text-emerald-400">Statutory Citations</div>
-              <div className="mt-2 font-serif text-xl font-bold text-white">{expeditionMetrics.citations}</div>
-              <p className="mt-1 text-xs text-white/60">ASI & UNESCO groundings</p>
-            </div>
-
-            <div className="rounded-2xl border border-white/10 bg-white/5 p-5 backdrop-blur-md">
-              <div className="text-[11px] font-semibold uppercase tracking-wider text-rose-400">Master Guilds</div>
-              <div className="mt-2 font-serif text-xl font-bold text-white">{expeditionMetrics.guilds}</div>
-              <p className="mt-1 text-xs text-white/60">Karkhanas & oral archives</p>
-            </div>
-
-            <div className="rounded-2xl border border-white/10 bg-white/5 p-5 backdrop-blur-md">
-              <div className="text-[11px] font-semibold uppercase tracking-wider text-sky-400">Trail Footprint</div>
-              <div className="mt-2 font-serif text-xl font-bold text-white">{expeditionMetrics.distance}</div>
-              <p className="mt-1 text-xs text-white/60">Calculated parikrama span</p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* ─────────────────────────────────────────────────────────────────────────
-          6. STATUTORY MEDIA ARCHIVE REEL (High-Fidelity Curated Photography)
-      ────────────────────────────────────────────────────────────────────────── */}
-      <section aria-labelledby="reel-title" className="space-y-6">
-        <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4 border-b border-[#F0DCE4] pb-4">
-          <div>
-            <div className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-[0.2em] text-amber-800">
-              <span>✦</span>
-              <span>STATUTORY MEDIA ARCHIVE</span>
-            </div>
-            <h2 id="reel-title" className="mt-1 font-serif text-2xl sm:text-4xl font-bold text-[#20101B] tracking-tight">
-              Verified Photographic Evidence
-            </h2>
-          </div>
-          <p className="max-w-md text-support text-[#5A4450]">
-            Sourced and accredited in partnership with statutory institutions and academic repositories.
-          </p>
-        </div>
-
-        <CulturalMediaReel items={VARANASI_MEDIA_ITEMS} />
-      </section>
-
-      {/* ─────────────────────────────────────────────────────────────────────────
-          7. MINIMALIST ACCORDION FAQ (Matching 21st.dev Template FAQ section)
-      ────────────────────────────────────────────────────────────────────────── */}
-      <section aria-labelledby="faq-title" className="rounded-[2.5rem] border border-[#F0DCE4] bg-white p-6 sm:p-10 md:p-14 shadow-sm">
-        <div className="max-w-2xl">
-          <div className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-[0.2em] text-amber-700">
-            <span>✦</span>
-            <span>FREQUENTLY ASKED QUESTIONS</span>
-          </div>
-          <h2 id="faq-title" className="mt-2 font-serif text-2xl sm:text-3xl font-bold text-[#20101B] tracking-tight">
-            Everything About TattvaCo&apos;s Methodology
-          </h2>
-        </div>
-
-        <div className="mt-8 space-y-3">
-          {FAQS.map((faq, idx) => {
-            const isOpen = openFaq === idx;
-            return (
-              <div
-                key={faq.q}
-                className="overflow-hidden rounded-2xl border border-[#F0DCE4] bg-[#FAF0F4]/50 transition-all duration-200 hover:border-amber-600/30"
-              >
-                <button
-                  type="button"
-                  onClick={() => setOpenFaq(isOpen ? null : idx)}
-                  className="flex w-full items-center justify-between p-5 text-left font-serif text-base sm:text-lg font-semibold text-[#20101B] hover:text-amber-800 transition-colors cursor-pointer"
-                  aria-expanded={isOpen}
-                >
-                  <span>{faq.q}</span>
-                  <span className={`ml-4 text-amber-700 text-lg transition-transform duration-200 ${isOpen ? "rotate-45" : ""}`}>
-                    +
-                  </span>
-                </button>
-                {isOpen && (
-                  <div className="px-5 pb-5 text-support text-[#5A4450] leading-relaxed border-t border-[#F0DCE4] pt-3">
-                    {faq.a}
-                  </div>
-                )}
-              </div>
-            );
-          })}
-        </div>
-      </section>
-
-      {/* ─────────────────────────────────────────────────────────────────────────
-          8. LUXURY FLOATING CLOSING CTA (Matching 21st.dev Bottom Section)
-      ────────────────────────────────────────────────────────────────────────── */}
-      <section className="relative overflow-hidden rounded-[2.5rem] border border-[#24131E]/20 bg-gradient-to-r from-[#2B1522] via-[#24131E] to-[#1A0E16] p-8 sm:p-12 md:p-16 shadow-2xl text-white text-center">
-        <div className="relative z-10 max-w-2xl mx-auto space-y-4">
-          <div className="inline-flex items-center justify-center gap-2 rounded-full border border-gold/30 bg-gold/10 px-4 py-1 text-xs font-semibold text-gold">
-            <span>✦</span>
-            <span>INDIA&apos;S LIVING CULTURAL ARCHIVE</span>
-          </div>
-          <h2 className="font-serif text-3xl sm:text-5xl font-bold text-white tracking-tight">
-            Begin Your Civilizational Discovery
-          </h2>
-          <p className="text-support text-white/80 leading-relaxed max-w-lg mx-auto">
-            Step onto the crescent stone ghats of Varanasi or trace master handloom guilds with statutorily verified cultural intelligence.
-          </p>
-          <div className="pt-4 flex flex-wrap items-center justify-center gap-3">
-            <Link
-              href="/explore"
-              className="inline-flex min-h-12 items-center justify-center gap-2 rounded-full bg-gold px-8 text-support font-semibold text-on-gold hover:bg-gold-hover shadow-lg transition-all active:scale-95"
-            >
-              <span>Explore All Stories</span>
-              <span>→</span>
-            </Link>
-            <Link
-              href="/places"
-              className="inline-flex min-h-12 items-center justify-center rounded-full border border-white/20 bg-white/10 px-8 text-support font-semibold text-white hover:bg-white/15 transition-all"
-            >
-              <span>Launch Cultural Atlas</span>
-            </Link>
-          </div>
-        </div>
-      </section>
     </div>
   );
 }
+
+{/* ─────────────────────────────────────────────────────────────────────────
+    3. THE 5-STEP CONNECTED DISCOVERY CHAIN (Bridging Place, Ritual, Craft & Music)
+────────────────────────────────────────────────────────────────────────── */}
+export function CulturalConnectedChainSection() {
+  return (
+    <section className="rounded-[2.5rem] border border-[#24131E]/20 bg-gradient-to-br from-[#2B1522] via-[#24131E] to-[#1A0E16] p-6 sm:p-8 md:p-10 shadow-xl text-white">
+      <div className="max-w-2xl">
+        <div className="flex items-center gap-2 text-[11px] font-semibold uppercase tracking-[0.2em] text-amber-300">
+          <IconConnect width={17} height={17} className="text-amber-300" />
+          <span>Connected Discovery Chain</span>
+        </div>
+        <h2 className="mt-2 font-serif text-2xl sm:text-3xl font-bold text-white">
+          Follow a Live Cultural Connection
+        </h2>
+        <p className="mt-2 text-support text-white/80 leading-relaxed">
+          Discover how sacred river geography directly breathes life into living temple rituals, master silk handloom mohallas, and classical music gharanas.
+        </p>
+      </div>
+
+      {/* 5-Step Connected Node Chain */}
+      <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-5">
+        {JOURNEY_STEPS.map((step) => (
+          <Link
+            key={step.step}
+            href={step.href}
+            className="group relative flex flex-col justify-between rounded-2xl border border-white/10 bg-white/5 p-4 transition-all duration-300 hover:border-amber-400/50 hover:bg-white/10 hover:shadow-lg"
+          >
+            <div>
+              <div className="flex items-center justify-between">
+                <span className="font-mono text-xs font-bold text-amber-300 bg-amber-400/10 px-2 py-0.5 rounded-md border border-amber-400/25">
+                  Step {step.step}
+                </span>
+                <span className="text-[10px] uppercase font-semibold text-white/60 tracking-wider">
+                  {step.tag}
+                </span>
+              </div>
+              <p className="mt-3 text-[11px] font-semibold uppercase tracking-wider text-white/60">
+                {step.label}
+              </p>
+              <h3 className="mt-0.5 font-serif text-support font-bold text-white group-hover:text-amber-300 transition-colors leading-snug">
+                {step.title}
+              </h3>
+              <p className="mt-2 text-meta text-white/70 leading-relaxed line-clamp-3">
+                {step.desc}
+              </p>
+            </div>
+
+            <div className="mt-4 pt-3 border-t border-white/10 flex items-center justify-between text-meta font-semibold text-amber-300">
+              <span>Explore</span>
+              <span className="transition-transform group-hover:translate-x-1">→</span>
+            </div>
+          </Link>
+        ))}
+      </div>
+    </section>
+  );
+}
+
+{/* ─────────────────────────────────────────────────────────────────────────
+    4. THE INTERACTIVE EXPEDITION SLIDER (Panchakroshi Circuit Immersion)
+────────────────────────────────────────────────────────────────────────── */}
+export function CulturalExpeditionSection() {
+  const [expeditionDays, setExpeditionDays] = useState(5);
+
+  const expeditionMetrics = useMemo(() => {
+    if (expeditionDays <= 1) {
+      return {
+        label: "1 Day · Riverfront Parikrama",
+        tirthas: "12 Primary Ghats",
+        citations: "14 ASI & UNESCO Citations",
+        guilds: "4 Master Weaving Karkhanas",
+        distance: "6.5 km walking",
+        intensity: "Introductory Riverfront",
+      };
+    } else if (expeditionDays <= 3) {
+      return {
+        label: "3 Days · Heritage & Mohalla Circuit",
+        tirthas: "36 Sacred Shrines & Ghats",
+        citations: "28 Verified Authorities",
+        guilds: "9 Guilds & Sitar Gharanas",
+        distance: "24 km walking & boat trail",
+        intensity: "Moderate Cultural Immersion",
+      };
+    } else if (expeditionDays <= 5) {
+      return {
+        label: "5 Days · Panchakroshi Cosmic Mandala",
+        tirthas: "84 Ghats + 108 Sacred Stations",
+        citations: "42 Statutory Citations",
+        guilds: "18 Master Guilds & Archival Sites",
+        distance: "80.5 km (50 Puranic Miles)",
+        intensity: "Full Cosmic Circumambulation",
+      };
+    } else {
+      return {
+        label: "7 Days · Greater Kashi & Sarnath Odyssey",
+        tirthas: "All 84 Riverfronts + Sarnath Stupas",
+        citations: "65 Statutory & Museum Citations",
+        guilds: "25 Artisan Guilds & Oral Archives",
+        distance: "115 km comprehensive trail",
+        intensity: "Deep Civilizational Expedition",
+      };
+    }
+  }, [expeditionDays]);
+
+  return (
+    <section aria-labelledby="expedition-slider-title" className="rounded-[2.5rem] border border-[#24131E]/20 bg-gradient-to-br from-[#2B1522] via-[#24131E] to-[#1A0E16] p-6 sm:p-10 md:p-14 shadow-2xl text-white">
+      <div className="max-w-3xl">
+        <div className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-[0.2em] text-gold">
+          <span>✦</span>
+          <span>INTERACTIVE CULTURAL EXPEDITION CALCULATOR</span>
+        </div>
+        <h2 id="expedition-slider-title" className="mt-2 font-serif text-2xl sm:text-4xl font-bold text-white tracking-tight">
+          Plan Your Living Heritage Circuit
+        </h2>
+        <p className="mt-2 text-body text-white/70 leading-relaxed">
+          Drag the expedition slider to calibrate your journey across verified ASI monuments, master weaving quarters, and sacred riverfront ghats.
+        </p>
+      </div>
+
+      <div className="mt-10 grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+        <div className="lg:col-span-7 space-y-6">
+          <div className="rounded-2xl border border-white/10 bg-white/5 p-6 backdrop-blur-md space-y-4">
+            <div className="flex items-baseline justify-between">
+              <span className="text-sm font-semibold text-white/80">Selected Journey Duration:</span>
+              <span className="font-serif text-2xl font-bold text-gold">
+                {expeditionDays} {expeditionDays === 1 ? "Day" : "Days"}
+              </span>
+            </div>
+
+            <div className="space-y-2">
+              <input
+                type="range"
+                min="1"
+                max="7"
+                step="1"
+                value={expeditionDays}
+                onChange={(e) => setExpeditionDays(parseInt(e.target.value, 10))}
+                className="w-full h-3 bg-white/15 rounded-lg appearance-none cursor-pointer accent-gold"
+                aria-label="Expedition Days Slider"
+              />
+              <div className="flex justify-between text-xs text-white/50 font-mono px-1">
+                <span>1 Day (Riverfront)</span>
+                <span>3 Days</span>
+                <span>5 Days (Panchakroshi)</span>
+                <span>7 Days (Greater Kashi)</span>
+              </div>
+            </div>
+
+            <div className="pt-3 border-t border-white/10">
+              <div className="text-xs uppercase tracking-wider text-white/50">Expedition Profile</div>
+              <div className="mt-1 font-serif text-lg font-bold text-white">
+                {expeditionMetrics.label}
+              </div>
+              <div className="text-xs text-gold/90 mt-0.5">
+                Intensity: {expeditionMetrics.intensity}
+              </div>
+            </div>
+          </div>
+
+          <div className="flex flex-wrap items-center gap-3">
+            <Link
+              href="/places?city=varanasi"
+              className="inline-flex min-h-12 items-center justify-center gap-2 rounded-full bg-gold px-6 text-support font-semibold text-on-gold hover:bg-gold-hover shadow-md transition-all active:scale-95"
+            >
+              <span>Plot Route on Cultural Atlas</span>
+              <span>→</span>
+            </Link>
+            <Link
+              href="/stories/varanasi-panchakroshi-yatra"
+              className="inline-flex min-h-12 items-center justify-center rounded-full border border-white/20 bg-white/10 px-6 text-support font-semibold text-white hover:bg-white/15 transition-all"
+            >
+              Read Verified Guide
+            </Link>
+          </div>
+        </div>
+
+        <div className="lg:col-span-5 grid grid-cols-2 gap-4">
+          <div className="rounded-2xl border border-white/10 bg-white/5 p-5 backdrop-blur-md">
+            <div className="text-[11px] font-semibold uppercase tracking-wider text-gold">Sacred Tirthas</div>
+            <div className="mt-2 font-serif text-xl font-bold text-white">{expeditionMetrics.tirthas}</div>
+            <p className="mt-1 text-xs text-white/60">Ghats, kunds &amp; temples visited</p>
+          </div>
+
+          <div className="rounded-2xl border border-white/10 bg-white/5 p-5 backdrop-blur-md">
+            <div className="text-[11px] font-semibold uppercase tracking-wider text-emerald-400">Statutory Citations</div>
+            <div className="mt-2 font-serif text-xl font-bold text-white">{expeditionMetrics.citations}</div>
+            <p className="mt-1 text-xs text-white/60">ASI &amp; UNESCO groundings</p>
+          </div>
+
+          <div className="rounded-2xl border border-white/10 bg-white/5 p-5 backdrop-blur-md">
+            <div className="text-[11px] font-semibold uppercase tracking-wider text-rose-400">Master Guilds</div>
+            <div className="mt-2 font-serif text-xl font-bold text-white">{expeditionMetrics.guilds}</div>
+            <p className="mt-1 text-xs text-white/60">Karkhanas &amp; oral archives</p>
+          </div>
+
+          <div className="rounded-2xl border border-white/10 bg-white/5 p-5 backdrop-blur-md">
+            <div className="text-[11px] font-semibold uppercase tracking-wider text-sky-400">Trail Footprint</div>
+            <div className="mt-2 font-serif text-xl font-bold text-white">{expeditionMetrics.distance}</div>
+            <p className="mt-1 text-xs text-white/60">Calculated parikrama span</p>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+{/* ─────────────────────────────────────────────────────────────────────────
+    5. STATUTORY MEDIA ARCHIVE REEL (High-Fidelity Curated Photography)
+────────────────────────────────────────────────────────────────────────── */}
+export function CulturalEvidenceReelSection() {
+  return (
+    <section aria-labelledby="reel-title" className="space-y-6">
+      <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4 border-b border-[#F0DCE4] pb-4">
+        <div>
+          <div className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-[0.2em] text-amber-800">
+            <span>✦</span>
+            <span>STATUTORY MEDIA ARCHIVE</span>
+          </div>
+          <h2 id="reel-title" className="mt-1 font-serif text-2xl sm:text-4xl font-bold text-[#20101B] tracking-tight">
+            Verified Photographic Evidence
+          </h2>
+        </div>
+        <p className="max-w-md text-support text-[#5A4450]">
+          Sourced and accredited in partnership with statutory institutions and academic repositories.
+        </p>
+      </div>
+
+      <CulturalMediaReel items={VARANASI_MEDIA_ITEMS} />
+    </section>
+  );
+}
+
+{/* ─────────────────────────────────────────────────────────────────────────
+    6. MINIMALIST ACCORDION FAQ (Matching 21st.dev Template FAQ section)
+────────────────────────────────────────────────────────────────────────── */}
+export function CulturalFaqSection() {
+  const [openFaq, setOpenFaq] = useState<number | null>(0);
+
+  return (
+    <section aria-labelledby="faq-title" className="rounded-[2.5rem] border border-[#F0DCE4] bg-white p-6 sm:p-10 md:p-14 shadow-sm">
+      <div className="max-w-2xl">
+        <div className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-[0.2em] text-amber-700">
+          <span>✦</span>
+          <span>FREQUENTLY ASKED QUESTIONS</span>
+        </div>
+        <h2 id="faq-title" className="mt-2 font-serif text-2xl sm:text-3xl font-bold text-[#20101B] tracking-tight">
+          Everything About TattvaCo&apos;s Methodology
+        </h2>
+      </div>
+
+      <div className="mt-8 space-y-3">
+        {FAQS.map((faq, idx) => {
+          const isOpen = openFaq === idx;
+          return (
+            <div
+              key={faq.q}
+              className="overflow-hidden rounded-2xl border border-[#F0DCE4] bg-[#FAF0F4]/50 transition-all duration-200 hover:border-amber-600/30"
+            >
+              <button
+                type="button"
+                onClick={() => setOpenFaq(isOpen ? null : idx)}
+                className="flex w-full items-center justify-between p-5 text-left font-serif text-base sm:text-lg font-semibold text-[#20101B] hover:text-amber-800 transition-colors cursor-pointer"
+                aria-expanded={isOpen}
+              >
+                <span>{faq.q}</span>
+                <span className={`ml-4 text-amber-700 text-lg transition-transform duration-200 ${isOpen ? "rotate-45" : ""}`}>
+                  +
+                </span>
+              </button>
+              {isOpen && (
+                <div className="px-5 pb-5 text-support text-[#5A4450] leading-relaxed border-t border-[#F0DCE4] pt-3">
+                  {faq.a}
+                </div>
+              )}
+            </div>
+          );
+        })}
+      </div>
+    </section>
+  );
+}
+
+{/* ─────────────────────────────────────────────────────────────────────────
+    7. LUXURY FLOATING CLOSING CTA (Matching 21st.dev Bottom Section)
+────────────────────────────────────────────────────────────────────────── */}
+export function CulturalClosingCtaSection() {
+  return (
+    <section className="relative overflow-hidden rounded-[2.5rem] border border-[#24131E]/20 bg-gradient-to-r from-[#2B1522] via-[#24131E] to-[#1A0E16] p-8 sm:p-12 md:p-16 shadow-2xl text-white text-center">
+      <div className="relative z-10 max-w-2xl mx-auto space-y-4">
+        <div className="inline-flex items-center justify-center gap-2 rounded-full border border-gold/30 bg-gold/10 px-4 py-1 text-xs font-semibold text-gold">
+          <span>✦</span>
+          <span>INDIA&apos;S LIVING CULTURAL ARCHIVE</span>
+        </div>
+        <h2 className="font-serif text-3xl sm:text-5xl font-bold text-white tracking-tight">
+          Begin Your Civilizational Discovery
+        </h2>
+        <p className="text-support text-white/80 leading-relaxed max-w-lg mx-auto">
+          Step onto the crescent stone ghats of Varanasi or trace master handloom guilds with statutorily verified cultural intelligence.
+        </p>
+        <div className="pt-4 flex flex-wrap items-center justify-center gap-3">
+          <Link
+            href="/explore"
+            className="inline-flex min-h-12 items-center justify-center gap-2 rounded-full bg-gold px-8 text-support font-semibold text-on-gold hover:bg-gold-hover shadow-lg transition-all active:scale-95"
+          >
+            <span>Explore All Stories</span>
+            <span>→</span>
+          </Link>
+          <Link
+            href="/places"
+            className="inline-flex min-h-12 items-center justify-center rounded-full border border-white/20 bg-white/10 px-8 text-support font-semibold text-white hover:bg-white/15 transition-all"
+          >
+            <span>Launch Cultural Atlas</span>
+          </Link>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+{/* Default composite wrapper */}
+export function CulturalMeadowBoard({ userEmail }: { userEmail?: string | null } = {}) {
+  return (
+    <div className="space-y-16 md:space-y-24">
+      <CulturalHeroSection userEmail={userEmail} />
+      <CulturalBentoSection />
+      <CulturalConnectedChainSection />
+      <CulturalExpeditionSection />
+      <CulturalEvidenceReelSection />
+      <CulturalFaqSection />
+      <CulturalClosingCtaSection />
+    </div>
+  );
+}
+

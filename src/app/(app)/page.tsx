@@ -5,7 +5,16 @@ import { track } from "@/lib/analytics";
 import { CityCard, ConnectionCard, StoryCard } from "@/components/cards";
 import { FadeIn, StaggerContainer, StaggerItem } from "@/components/motion";
 import { Page, SectionTitle } from "@/components/ui";
-import { CulturalMeadowBoard } from "@/components/cultural-meadow-board";
+import {
+  CulturalHeroSection,
+  CulturalConnectedChainSection,
+  CulturalBentoSection,
+  CulturalExpeditionSection,
+  CulturalEvidenceReelSection,
+  CulturalFaqSection,
+  CulturalClosingCtaSection,
+} from "@/components/cultural-meadow-board";
+import { TOPIC_IMAGES } from "@/lib/content/topic-images";
 
 export default async function HomePage() {
   const { session, lang, t } = await pageContext();
@@ -18,19 +27,25 @@ export default async function HomePage() {
   await track("home_view", {}, session.analyticsId);
 
   return (
-    <Page className="pt-2">
-      {/* 21st.dev Fintech Flower Meadow Hero & Cultural Bento Discovery Board */}
-      <CulturalMeadowBoard userEmail={session.email} />
+    <Page className="pt-2 space-y-16 md:space-y-24">
+      {/* 1. Hero & AI Cultural Search Box */}
+      <CulturalHeroSection userEmail={session.email} />
 
-      {/* Start with a City (Pilot Cities) */}
-      <section className="mt-16 md:mt-20" aria-labelledby="cities-title">
-        <div className="flex items-baseline justify-between gap-4">
+      {/* 2. Start with a City (Pilot Cultural Ecosystems) */}
+      <section aria-labelledby="cities-title">
+        <div className="flex items-baseline justify-between gap-4 border-b border-[#F0DCE4] pb-3">
           <div>
-            <SectionTitle id="cities-title">Start with a city</SectionTitle>
-            <p className="mt-1 text-support text-secondary-text">Six pilot cultural ecosystems across India</p>
+            <div className="flex items-center gap-2 text-meta font-semibold uppercase tracking-[0.16em] text-amber-800">
+              <span>✦</span>
+              <span>Geographic Portals</span>
+            </div>
+            <div className="mt-1">
+              <SectionTitle id="cities-title">Start with a city</SectionTitle>
+            </div>
+            <p className="mt-1 text-support text-[#5A4450]">Six pilot cultural ecosystems across India</p>
           </div>
-          <Link href="/explore" className="inline-flex min-h-10 items-center text-support font-semibold text-forest hover:text-forest-hover hover:underline">
-            {t("home.viewAll", { count: cities.length })}
+          <Link href="/explore" className="inline-flex min-h-10 items-center text-support font-semibold text-amber-800 hover:text-amber-900 hover:underline">
+            {t("home.viewAll", { count: cities.length })} →
           </Link>
         </div>
 
@@ -79,19 +94,25 @@ export default async function HomePage() {
         </StaggerContainer>
       </section>
 
-      {/* Featured Flagship Stories */}
+      {/* 3. Featured Flagship Stories (Stories of the Day) */}
       {stories.length > 0 && (
-        <section className="mt-16 md:mt-20" aria-labelledby="flagship-title">
-          <div className="flex items-baseline justify-between gap-4">
+        <section aria-labelledby="flagship-title">
+          <div className="flex items-baseline justify-between gap-4 border-b border-[#F0DCE4] pb-3">
             <div>
-              <SectionTitle id="flagship-title">Stories of the Day</SectionTitle>
-              <p className="mt-1 text-support text-secondary-text">Curated, source-grounded cultural narratives</p>
+              <div className="flex items-center gap-2 text-meta font-semibold uppercase tracking-[0.16em] text-amber-800">
+                <span>✦</span>
+                <span>Curated Narratives</span>
+              </div>
+              <div className="mt-1">
+                <SectionTitle id="flagship-title">Stories of the Day</SectionTitle>
+              </div>
+              <p className="mt-1 text-support text-[#5A4450]">Source-grounded, verified cultural narratives across India</p>
             </div>
-            <Link href="/explore" className="inline-flex min-h-10 items-center text-support font-semibold text-forest hover:text-forest-hover hover:underline">
+            <Link href="/explore" className="inline-flex min-h-10 items-center text-support font-semibold text-amber-800 hover:text-amber-900 hover:underline">
               Explore stories →
             </Link>
           </div>
-          <StaggerContainer className="mt-6 grid gap-5 md:grid-cols-2" staggerDelay={0.08}>
+          <StaggerContainer className="mt-6 grid gap-6 sm:grid-cols-2 lg:grid-cols-2" staggerDelay={0.08}>
             {stories.slice(0, 2).map((s) => (
               <StaggerItem key={s.slug}>
                 <StoryCard
@@ -100,6 +121,7 @@ export default async function HomePage() {
                   eyebrow={s.citySlug ? s.citySlug.toUpperCase() : "FLAGSHIP STORY"}
                   title={s.title}
                   summary={s.orientation}
+                  image={TOPIC_IMAGES[s.slug] || s.hero}
                   meta="Approved Narrative · Verified Sources"
                   fixtureLabel={s.isFixture ? t("common.devFixture") : undefined}
                 />
@@ -109,17 +131,29 @@ export default async function HomePage() {
         </section>
       )}
 
-      {/* Meaningful Connections */}
-      <section className="mt-16 md:mt-20" aria-labelledby="connection-title">
-        <div className="flex items-baseline justify-between gap-4">
+      {/* 4. Follow an Unexpected Connection (Cross-disciplinary Syntheses) */}
+      <section className="space-y-8" aria-labelledby="connection-title">
+        <div className="flex items-baseline justify-between gap-4 border-b border-[#F0DCE4] pb-3">
           <div>
-            <SectionTitle id="connection-title">Follow an unexpected connection</SectionTitle>
-            <p className="mt-1 text-support text-secondary-text">
-              Discover how places, craft guilds, astronomy and ritual cross paths
+            <div className="flex items-center gap-2 text-meta font-semibold uppercase tracking-[0.16em] text-amber-800">
+              <span>✦</span>
+              <span>Living Syntheses</span>
+            </div>
+            <div className="mt-1">
+              <SectionTitle id="connection-title">Follow an unexpected connection</SectionTitle>
+            </div>
+            <p className="mt-1 text-support text-[#5A4450]">
+              Discover how physical places, craft guilds, astronomy, and sacred rituals cross paths
             </p>
           </div>
+          {featured && (
+            <Link href={`/connections/${featured.slug}`} className="text-support font-semibold text-amber-800 hover:text-amber-900 hover:underline">
+              View featured connection →
+            </Link>
+          )}
         </div>
-        <FadeIn delay={0.08} className="mt-6 max-w-2xl">
+
+        <FadeIn delay={0.08} className="max-w-3xl">
           {featured ? (
             <ConnectionCard
               featured
@@ -131,16 +165,25 @@ export default async function HomePage() {
               fixtureLabel={featured.isFixture ? t("common.devFixture") : undefined}
             />
           ) : (
-            <p className="rounded-2xl border border-dashed border-border bg-surface p-5 text-support text-muted">
+            <p className="rounded-2xl border border-dashed border-[#F0DCE4] bg-white p-5 text-support text-muted">
               {t("home.noConnection")}
             </p>
           )}
         </FadeIn>
+
+        {/* 5-Step Connected Discovery Node Chain */}
+        <CulturalConnectedChainSection />
       </section>
 
-      {/* Spatial Cultural Discovery Module (Interactive Map & Upcoming Trails) */}
+      {/* 5. Multi-Dimensional Living Heritage Bento Grid & Category Scrubber */}
+      <CulturalBentoSection />
+
+      {/* 6. Deep Cultural Immersion: Panchakroshi Sacred Circuit Expedition Calculator */}
+      <CulturalExpeditionSection />
+
+      {/* 7. Spatial Cultural Discovery Module (Interactive Map & Upcoming Trails) */}
       <FadeIn delay={0.12}>
-        <section className="mt-16 md:mt-24 rounded-[2.5rem] border border-[#24131E]/20 bg-gradient-to-br from-[#2B1522] via-[#24131E] to-[#1A0E16] p-8 sm:p-10 md:p-14 shadow-xl text-white">
+        <section className="rounded-[2.5rem] border border-[#24131E]/20 bg-gradient-to-br from-[#2B1522] via-[#24131E] to-[#1A0E16] p-8 sm:p-10 md:p-14 shadow-xl text-white">
           <div className="max-w-2xl">
             <div className="flex items-center gap-2 text-meta font-semibold uppercase tracking-[0.16em] text-amber-300">
               <span>✦</span>
@@ -169,6 +212,15 @@ export default async function HomePage() {
           </div>
         </section>
       </FadeIn>
+
+      {/* 8. Statutory Photographic Evidence Archive Reel */}
+      <CulturalEvidenceReelSection />
+
+      {/* 9. Methodology & Platform FAQs */}
+      <CulturalFaqSection />
+
+      {/* 10. Grand Editorial Closing Banner */}
+      <CulturalClosingCtaSection />
     </Page>
   );
 }
