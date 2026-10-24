@@ -288,10 +288,10 @@ export function ComingSoonClient({ lang }: { lang: string }) {
   }, [selectedFeature]);
 
   return (
-    <div className="min-h-screen bg-[#0C0B0A] text-[#F5F0E8] py-4">
+    <div className="min-h-screen py-4 text-[#20101B]">
       <div className="relative mx-auto w-full max-w-6xl space-y-16 px-4 pb-28 pt-2 sm:px-6 md:space-y-24 md:px-8">
       {/* ---------------- SECTION B: CINEMATIC HERO ---------------- */}
-      <section className="relative isolate overflow-hidden rounded-3xl border border-[#302C25] bg-[#171512] shadow-2xl">
+      <section className="relative isolate overflow-hidden rounded-[2.5rem] border border-[#F0DCE4] bg-white shadow-xl">
         <div className="absolute inset-0 -z-10 overflow-hidden">
           <Image
             src="/images/coming-soon/hero.jpg"
@@ -302,14 +302,14 @@ export function ComingSoonClient({ lang }: { lang: string }) {
             className="object-cover object-center scale-[1.01] transition-transform duration-1000 ease-out"
           />
           {/* Refined gradient scrim for 100% WCAG contrast */}
-          <div className="absolute inset-0 bg-gradient-to-t from-[#0C0B0A] via-[#0C0B0A]/75 to-[#0C0B0A]/40" />
-          <div className="absolute inset-0 bg-gradient-to-r from-[#0C0B0A]/90 via-[#0C0B0A]/50 to-transparent" />
+          <div className="absolute inset-0 bg-gradient-to-t from-[#20101B]/95 via-[#20101B]/65 to-[#20101B]/25" />
+          <div className="absolute inset-0 bg-gradient-to-r from-[#20101B]/90 via-[#20101B]/40 to-transparent" />
         </div>
 
         <div className="flex min-h-[520px] flex-col justify-between p-6 sm:p-10 md:min-h-[580px] md:p-14">
           {/* Eyebrow */}
           <FadeIn delay={0.05}>
-            <div className="inline-flex items-center gap-2 rounded-full border border-gold/30 bg-[#12100E]/85 px-3.5 py-1 text-meta font-semibold uppercase tracking-[0.2em] text-gold shadow-sm backdrop-blur-md">
+            <div className="inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/15 px-3.5 py-1 text-meta font-semibold uppercase tracking-[0.2em] text-white shadow-sm backdrop-blur-md">
               <span className="text-xs">✦</span>
               <span>TATTVACO · WHAT&apos;S NEXT</span>
             </div>
@@ -323,7 +323,7 @@ export function ComingSoonClient({ lang }: { lang: string }) {
                   The Next Chapter of <br className="hidden sm:inline" />
                   Cultural Discovery
                 </h1>
-                <p className="mt-4 max-w-xl text-body-lead text-[#F5F0E8]/90 leading-relaxed drop-shadow-sm">
+                <p className="mt-4 max-w-xl text-body-lead text-white/90 leading-relaxed drop-shadow-sm">
                   Go beyond places. Discover the stories, people and traditions that connect India&apos;s cultural universe.
                 </p>
 
@@ -331,7 +331,7 @@ export function ComingSoonClient({ lang }: { lang: string }) {
                 <div className="mt-8 flex flex-wrap items-center gap-3.5">
                   <a
                     href="#upcoming-features"
-                    className="inline-flex min-h-11 items-center justify-center gap-2 rounded-full bg-gold px-6 py-2.5 text-support font-semibold text-[#0c0b0a] shadow-md transition-all duration-200 hover:bg-gold-hover active:scale-[0.985]"
+                    className="inline-flex min-h-11 items-center justify-center gap-2 rounded-full bg-white px-6 py-2.5 text-support font-semibold text-[#20101B] shadow-md transition-all duration-200 hover:bg-[#FAF0F4] active:scale-[0.985]"
                   >
                     <span>Explore What&apos;s Coming</span>
                     <span className="text-xs font-bold">↓</span>
@@ -339,10 +339,10 @@ export function ComingSoonClient({ lang }: { lang: string }) {
 
                   <Link
                     href="/explore"
-                    className="inline-flex min-h-11 items-center justify-center gap-2 rounded-full border border-gold/40 bg-[#12100e]/80 px-6 py-2.5 text-support font-medium text-[#F5F0E8] shadow-sm backdrop-blur-md transition-all duration-200 hover:border-gold hover:bg-[#12100e] active:scale-[0.985]"
+                    className="inline-flex min-h-11 items-center justify-center gap-2 rounded-full border border-white/30 bg-white/10 px-6 py-2.5 text-support font-medium text-white shadow-sm backdrop-blur-md transition-all duration-200 hover:border-white/60 hover:bg-white/20 active:scale-[0.985]"
                   >
                     <span>Discover Today</span>
-                    <span className="text-xs text-gold">→</span>
+                    <span className="text-xs text-amber-300">→</span>
                   </Link>
                 </div>
               </FadeIn>
@@ -351,13 +351,13 @@ export function ComingSoonClient({ lang }: { lang: string }) {
             {/* Right side connected badge (matching reference image) */}
             <div className="hidden lg:col-span-4 lg:flex lg:justify-end">
               <FadeIn delay={0.15}>
-                <div className="rounded-2xl border border-gold/25 bg-[#171512]/90 p-5 text-right backdrop-blur-md shadow-lg space-y-1.5">
-                  <p className="text-[11px] font-semibold uppercase tracking-[0.25em] text-gold/90">PLACES</p>
-                  <p className="text-[11px] font-semibold uppercase tracking-[0.25em] text-[#F5F0E8]/85">PEOPLE</p>
-                  <p className="text-[11px] font-semibold uppercase tracking-[0.25em] text-[#F5F0E8]/85">TRADITIONS</p>
-                  <p className="text-[11px] font-semibold uppercase tracking-[0.25em] text-[#F5F0E8]/85">STORIES</p>
-                  <div className="pt-1 border-t border-gold/20">
-                    <p className="text-[11px] font-bold uppercase tracking-[0.28em] text-gold">ALL CONNECTED</p>
+                <div className="rounded-2xl border border-white/20 bg-white/10 p-5 text-right backdrop-blur-md shadow-lg space-y-1.5">
+                  <p className="text-[11px] font-semibold uppercase tracking-[0.25em] text-amber-300">PLACES</p>
+                  <p className="text-[11px] font-semibold uppercase tracking-[0.25em] text-white/85">PEOPLE</p>
+                  <p className="text-[11px] font-semibold uppercase tracking-[0.25em] text-white/85">TRADITIONS</p>
+                  <p className="text-[11px] font-semibold uppercase tracking-[0.25em] text-white/85">STORIES</p>
+                  <div className="pt-1 border-t border-white/20">
+                    <p className="text-[11px] font-bold uppercase tracking-[0.28em] text-amber-300">ALL CONNECTED</p>
                   </div>
                 </div>
               </FadeIn>
@@ -369,10 +369,10 @@ export function ComingSoonClient({ lang }: { lang: string }) {
       {/* ---------------- SECTION C: UPCOMING FEATURE CARDS ---------------- */}
       <section id="upcoming-features" className="scroll-mt-24 space-y-8">
         <div>
-          <h2 className="font-serif text-section md:text-section-lg font-semibold text-[#F5F0E8] tracking-tight">
+          <h2 className="font-serif text-section md:text-section-lg font-semibold text-[#20101B] tracking-tight">
             Coming to TattvaCo
           </h2>
-          <p className="mt-1 text-body text-[#B7B0A5]">
+          <p className="mt-1 text-body text-[#5A4450]">
             Six experiences. One deeper way to discover India.
           </p>
         </div>
@@ -382,10 +382,10 @@ export function ComingSoonClient({ lang }: { lang: string }) {
             <StaggerItem key={feat.id}>
               <article
                 onClick={() => setSelectedFeature(feat)}
-                className="group relative flex h-full flex-col overflow-hidden rounded-2xl border border-[#302C25] bg-[#171512] transition-all duration-300 hover:border-gold/50 hover:shadow-2xl hover:-translate-y-1 cursor-pointer focus-within:ring-2 focus-within:ring-gold"
+                className="group relative flex h-full flex-col overflow-hidden rounded-[2rem] border border-[#F0DCE4] bg-white transition-all duration-300 hover:border-amber-600/40 hover:shadow-xl hover:-translate-y-1 cursor-pointer focus-within:ring-2 focus-within:ring-amber-600 shadow-sm"
               >
                 {/* Card Media with Coming Soon Badge */}
-                <div className="relative aspect-[16/10] w-full overflow-hidden bg-stone">
+                <div className="relative aspect-[16/10] w-full overflow-hidden bg-[#FAF0F4]">
                   <Image
                     src={feat.image}
                     alt={feat.alt}
@@ -393,11 +393,11 @@ export function ComingSoonClient({ lang }: { lang: string }) {
                     sizes="(min-width: 1024px) 360px, (min-width: 768px) 50vw, 100vw"
                     className="object-cover transition-transform duration-500 ease-out group-hover:scale-105"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-[#171512] via-transparent to-transparent opacity-80" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent" />
 
                   {/* Gold Pill Badge */}
                   <div className="absolute right-3.5 top-3.5 z-10">
-                    <span className="inline-flex items-center rounded-full border border-gold/40 bg-[#12100e]/90 px-3 py-0.5 text-[11px] font-semibold uppercase tracking-wider text-gold shadow-sm backdrop-blur-md">
+                    <span className="inline-flex items-center rounded-full border border-amber-600/30 bg-amber-500/10 px-3 py-0.5 text-[11px] font-semibold uppercase tracking-wider text-amber-800 shadow-sm backdrop-blur-md">
                       {feat.badge}
                     </span>
                   </div>
@@ -406,23 +406,23 @@ export function ComingSoonClient({ lang }: { lang: string }) {
                 {/* Card Content */}
                 <div className="flex flex-1 flex-col justify-between p-6">
                   <div>
-                    <h3 className="font-serif text-card font-semibold text-[#F5F0E8] group-hover:text-gold transition-colors duration-200">
+                    <h3 className="font-serif text-card font-semibold text-[#20101B] group-hover:text-amber-800 transition-colors duration-200">
                       {feat.title}
                     </h3>
-                    <p className="mt-2.5 text-support text-[#B7B0A5] leading-relaxed">
+                    <p className="mt-2.5 text-support text-[#5A4450] leading-relaxed">
                       {feat.description}
                     </p>
                   </div>
 
                   {/* Card Action Button */}
-                  <div className="mt-6 flex items-center justify-between pt-4 border-t border-[#302C25]/80">
-                    <span className="text-meta font-medium text-gold group-hover:underline">
+                  <div className="mt-6 flex items-center justify-between pt-4 border-t border-[#F0DCE4]">
+                    <span className="text-meta font-medium text-amber-800 group-hover:underline">
                       Explore Preview
                     </span>
                     <button
                       type="button"
                       aria-label={`Preview ${feat.title}`}
-                      className="flex size-9 items-center justify-center rounded-full border border-[#302C25] bg-[#12100e] text-gold transition-all duration-200 group-hover:border-gold group-hover:bg-gold group-hover:text-[#0c0b0a] shadow-xs"
+                      className="flex size-9 items-center justify-center rounded-full border border-[#F0DCE4] bg-[#FAF0F4] text-[#20101B] transition-all duration-200 group-hover:bg-[#24131E] group-hover:text-white shadow-xs"
                     >
                       <IconArrow width={16} height={16} />
                     </button>
@@ -435,9 +435,9 @@ export function ComingSoonClient({ lang }: { lang: string }) {
       </section>
 
       {/* ---------------- SECTION E: CULTURAL CONNECTIONS INFOGRAPHIC ---------------- */}
-      <section className="relative isolate overflow-hidden rounded-3xl border border-gold/30 bg-[#14120f] shadow-2xl">
+      <section className="relative isolate overflow-hidden rounded-[2.5rem] border border-[#F0DCE4] bg-white shadow-sm">
         {/* Infographic Panoramic Background */}
-        <div className="absolute inset-0 -z-10 overflow-hidden opacity-35">
+        <div className="absolute inset-0 -z-10 overflow-hidden opacity-15">
           <Image
             src="/images/coming-soon/infographic-bg.jpg"
             alt="Panoramic sunset silhouette of Indian temple spires and domes"
@@ -445,16 +445,16 @@ export function ComingSoonClient({ lang }: { lang: string }) {
             sizes="100vw"
             className="object-cover object-center"
           />
-          <div className="absolute inset-0 bg-gradient-to-b from-[#14120f]/95 via-[#14120f]/80 to-[#14120f]/95" />
+          <div className="absolute inset-0 bg-gradient-to-b from-white/95 via-[#FFF5F8]/80 to-white/95" />
         </div>
 
         <div className="p-6 sm:p-10 md:p-12">
           {/* Header */}
           <div className="max-w-3xl">
-            <h2 className="font-serif text-section sm:text-section-lg font-semibold text-[#F5F0E8] tracking-tight">
+            <h2 className="font-serif text-section sm:text-section-lg font-semibold text-[#20101B] tracking-tight">
               One Journey. Many Cultural Connections.
             </h2>
-            <p className="mt-2 text-body text-[#B7B0A5]">
+            <p className="mt-2 text-body text-[#5A4450]">
               A place is just the beginning. Explore the people, traditions and stories that bring it to life.
             </p>
           </div>
@@ -466,21 +466,21 @@ export function ComingSoonClient({ lang }: { lang: string }) {
                 {/* Connecting arrow line */}
                 {idx < INFOGRAPHIC_STEPS.length - 1 && (
                   <div
-                    className="absolute left-[calc(50%+28px)] right-[calc(-50%+28px)] top-7 -z-10 border-t border-dashed border-gold/40"
+                    className="absolute left-[calc(50%+28px)] right-[calc(-50%+28px)] top-7 -z-10 border-t border-dashed border-amber-600/30"
                     aria-hidden="true"
                   />
                 )}
 
                 {/* Node Circle */}
-                <div className="flex size-14 items-center justify-center rounded-full border border-gold/50 bg-[#1e1c18] shadow-md transition-transform duration-300 hover:scale-110 hover:border-gold">
+                <div className="flex size-14 items-center justify-center rounded-full border border-amber-600/30 bg-[#FAF0F4] text-amber-800 shadow-sm transition-transform duration-300 hover:scale-110 hover:border-amber-600 hover:bg-white">
                   {item.icon}
                 </div>
 
                 {/* Step Info */}
-                <h3 className="mt-4 font-serif text-[15px] font-semibold text-[#F5F0E8]">
+                <h3 className="mt-4 font-serif text-[15px] font-semibold text-[#20101B]">
                   {item.title}
                 </h3>
-                <p className="mt-1 text-[13px] text-[#B7B0A5] leading-snug px-1">
+                <p className="mt-1 text-[13px] text-[#5A4450] leading-snug px-1">
                   {item.subtitle}
                 </p>
               </div>
@@ -488,8 +488,8 @@ export function ComingSoonClient({ lang }: { lang: string }) {
           </div>
 
           {/* Mobile Reflow (2x3 connected node sequence matching Reference B Mobile Inset) */}
-          <div className="mt-8 rounded-2xl border border-gold/25 bg-[#171512]/90 p-5 lg:hidden">
-            <h3 className="text-center font-serif text-[15px] font-semibold text-gold mb-6 tracking-wide">
+          <div className="mt-8 rounded-2xl border border-[#F0DCE4] bg-[#FAF0F4]/70 p-5 lg:hidden">
+            <h3 className="text-center font-serif text-[15px] font-semibold text-amber-800 mb-6 tracking-wide">
               One Journey. Many Connections.
             </h3>
             <div className="space-y-4">
@@ -497,13 +497,13 @@ export function ComingSoonClient({ lang }: { lang: string }) {
               <div className="grid grid-cols-3 items-center gap-2 text-center">
                 {INFOGRAPHIC_STEPS.slice(0, 3).map((item) => (
                   <div key={item.step} className="flex flex-col items-center">
-                    <div className="flex size-12 items-center justify-center rounded-full border border-gold/50 bg-[#1E1C18] text-gold shadow-xs">
+                    <div className="flex size-12 items-center justify-center rounded-full border border-amber-600/30 bg-white text-amber-800 shadow-xs">
                       {item.icon}
                     </div>
-                    <span className="mt-2 font-serif text-[12px] font-semibold text-[#F5F0E8]">
+                    <span className="mt-2 font-serif text-[12px] font-semibold text-[#20101B]">
                       {item.title}
                     </span>
-                    <span className="text-[10px] text-[#B7B0A5] line-clamp-1">
+                    <span className="text-[10px] text-[#5A4450] line-clamp-1">
                       {item.subtitle}
                     </span>
                   </div>
@@ -511,7 +511,7 @@ export function ComingSoonClient({ lang }: { lang: string }) {
               </div>
 
               {/* Connecting vertical indicator between Row 1 and Row 2 */}
-              <div className="flex justify-end pr-10 text-gold/60 text-xs">
+              <div className="flex justify-end pr-10 text-amber-800/60 text-xs">
                 <span>↓</span>
               </div>
 
@@ -519,13 +519,13 @@ export function ComingSoonClient({ lang }: { lang: string }) {
               <div className="grid grid-cols-3 items-center gap-2 text-center">
                 {INFOGRAPHIC_STEPS.slice(3, 6).map((item) => (
                   <div key={item.step} className="flex flex-col items-center">
-                    <div className="flex size-12 items-center justify-center rounded-full border border-gold/50 bg-[#1E1C18] text-gold shadow-xs">
+                    <div className="flex size-12 items-center justify-center rounded-full border border-amber-600/30 bg-white text-amber-800 shadow-xs">
                       {item.icon}
                     </div>
-                    <span className="mt-2 font-serif text-[12px] font-semibold text-[#F5F0E8]">
+                    <span className="mt-2 font-serif text-[12px] font-semibold text-[#20101B]">
                       {item.title}
                     </span>
-                    <span className="text-[10px] text-[#B7B0A5] line-clamp-1">
+                    <span className="text-[10px] text-[#5A4450] line-clamp-1">
                       {item.subtitle}
                     </span>
                   </div>
@@ -537,23 +537,23 @@ export function ComingSoonClient({ lang }: { lang: string }) {
       </section>
 
       {/* ---------------- SECTION F: RETURN TO DISCOVERY (BOTTOM CTA) ---------------- */}
-      <section className="rounded-3xl border border-[#302C25] bg-[#171512] p-8 sm:p-12 text-center shadow-xl">
+      <section className="rounded-[2.5rem] border border-[#F0DCE4] bg-gradient-to-b from-[#FFF5F8] via-[#FDF0F4] to-[#FCE7EF] p-8 sm:p-12 text-center shadow-sm">
         <div className="mx-auto max-w-2xl space-y-4">
-          <div className="inline-flex items-center gap-1.5 text-meta font-semibold uppercase tracking-widest text-gold">
+          <div className="inline-flex items-center gap-1.5 text-meta font-semibold uppercase tracking-widest text-amber-800">
             <span>✦</span>
             <span>EXPERIENCE TATTVACO TODAY</span>
           </div>
-          <h2 className="font-serif text-section sm:text-section-lg font-semibold text-[#F5F0E8]">
+          <h2 className="font-serif text-section sm:text-section-lg font-semibold text-[#20101B]">
             Begin Your Discovery With What Exists Today
           </h2>
-          <p className="text-body text-[#B7B0A5] leading-relaxed">
+          <p className="text-body text-[#5A4450] leading-relaxed">
             While these upcoming experiences are being crafted, immerse yourself in our curated flagship stories, explore the interactive river corridor atlas, or consult our AI cultural copilot grounded in statutory archives.
           </p>
 
           <div className="pt-4 flex flex-wrap items-center justify-center gap-3">
             <Link
               href="/explore"
-              className="inline-flex min-h-11 items-center justify-center gap-2 rounded-full bg-gold px-6 py-2.5 text-support font-semibold text-[#0c0b0a] shadow-xs transition-all duration-200 hover:bg-gold-hover active:scale-[0.985]"
+              className="inline-flex min-h-11 items-center justify-center gap-2 rounded-full bg-[#24131E] px-6 py-2.5 text-support font-semibold text-white shadow-xs transition-all duration-200 hover:bg-[#381C2E] active:scale-[0.985]"
             >
               <IconDiscover width={18} height={18} />
               <span>Explore Cultural Stories</span>
@@ -561,7 +561,7 @@ export function ComingSoonClient({ lang }: { lang: string }) {
 
             <Link
               href="/places"
-              className="inline-flex min-h-11 items-center justify-center gap-2 rounded-full border border-[#302C25] bg-[#1E1C18] px-6 py-2.5 text-support font-medium text-[#F5F0E8] shadow-2xs transition-all duration-200 hover:border-gold/40 hover:bg-[#25221D] active:scale-[0.985]"
+              className="inline-flex min-h-11 items-center justify-center gap-2 rounded-full border border-[#24131E]/15 bg-white px-6 py-2.5 text-support font-medium text-[#20101B] shadow-2xs transition-all duration-200 hover:bg-[#FAF0F4] active:scale-[0.985]"
             >
               <IconExplore width={18} height={18} />
               <span>Interactive Atlas</span>
@@ -569,7 +569,7 @@ export function ComingSoonClient({ lang }: { lang: string }) {
 
             <Link
               href="/ask"
-              className="inline-flex min-h-11 items-center justify-center gap-2 rounded-full border border-[#302C25] bg-[#1E1C18] px-6 py-2.5 text-support font-medium text-[#F5F0E8] shadow-2xs transition-all duration-200 hover:border-gold/40 hover:bg-[#25221D] active:scale-[0.985]"
+              className="inline-flex min-h-11 items-center justify-center gap-2 rounded-full border border-[#24131E]/15 bg-white px-6 py-2.5 text-support font-medium text-[#20101B] shadow-2xs transition-all duration-200 hover:bg-[#FAF0F4] active:scale-[0.985]"
             >
               <IconAsk width={18} height={18} />
               <span>Ask AI Copilot</span>
@@ -603,13 +603,13 @@ export function ComingSoonClient({ lang }: { lang: string }) {
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.96, y: 16 }}
               transition={{ duration: 0.3, ease: EASING_APPLE }}
-              className="relative z-10 flex max-h-[92vh] w-full max-w-5xl flex-col overflow-hidden rounded-3xl border border-gold/40 bg-[#14120f] shadow-2xl text-charcoal"
+              className="relative z-10 flex max-h-[92vh] w-full max-w-5xl flex-col overflow-hidden rounded-[2.5rem] border border-[#F0DCE4] bg-white shadow-2xl text-[#20101B]"
             >
               {/* Modal Top Header */}
-              <div className="flex items-center justify-between border-b border-border/80 bg-[#1a1714] px-6 py-4 sm:px-8">
+              <div className="flex items-center justify-between border-b border-[#F0DCE4] bg-[#FFF5F8] px-6 py-4 sm:px-8">
                 <div className="flex items-center gap-2">
-                  <span className="size-2 rounded-full bg-gold animate-pulse" />
-                  <span className="text-meta font-bold uppercase tracking-[0.2em] text-gold">
+                  <span className="size-2 rounded-full bg-[#24131E] animate-pulse" />
+                  <span className="text-meta font-bold uppercase tracking-[0.2em] text-[#5A4450]">
                     FEATURE PREVIEW
                   </span>
                 </div>
@@ -618,7 +618,7 @@ export function ComingSoonClient({ lang }: { lang: string }) {
                   onClick={() => setSelectedFeature(null)}
                   type="button"
                   aria-label="Close preview"
-                  className="flex size-9 items-center justify-center rounded-full border border-[#302C25] bg-[#1E1C18] text-[#B7B0A5] transition-colors hover:border-gold/50 hover:bg-[#25221D] hover:text-[#F5F0E8] focus:outline-none focus:ring-2 focus:ring-gold"
+                  className="flex size-9 items-center justify-center rounded-full border border-[#F0DCE4] bg-white text-[#5A4450] transition-colors hover:border-[#D9BDC9] hover:bg-[#FAF0F4] hover:text-[#20101B] focus:outline-none focus:ring-2 focus:ring-[#24131E]"
                 >
                   ✕
                 </button>
@@ -629,7 +629,7 @@ export function ComingSoonClient({ lang }: { lang: string }) {
                 <div className="grid grid-cols-1 gap-8 lg:grid-cols-12">
                   {/* Left Column: Visual Map / Route preview */}
                   <div className="lg:col-span-6 space-y-4">
-                    <div className="relative aspect-[16/10] w-full overflow-hidden rounded-2xl border border-border/80 bg-stone shadow-md">
+                    <div className="relative aspect-[16/10] w-full overflow-hidden rounded-2xl border border-[#F0DCE4] bg-stone shadow-md">
                       <Image
                         src={selectedFeature.image}
                         alt={selectedFeature.alt}
@@ -637,49 +637,49 @@ export function ComingSoonClient({ lang }: { lang: string }) {
                         sizes="(min-width: 1024px) 480px, 100vw"
                         className="object-cover"
                       />
-                      <div className="absolute inset-0 bg-gradient-to-t from-[#14120f] via-[#14120f]/40 to-transparent" />
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
 
                       {/* Route overlay pins for AI Cultural Trails */}
                       {selectedFeature.id === "ai-cultural-trails" ? (
                         <div className="absolute inset-0 pointer-events-none p-4">
                           {/* Jaipur pin */}
                           <div className="absolute left-[12%] top-[18%] flex flex-col items-start">
-                            <span className="size-2 rounded-full bg-gold shadow-[0_0_8px_#D6B36A] animate-ping" />
-                            <div className="mt-1 rounded-md border border-gold/40 bg-[#0C0B0A]/85 px-2 py-0.5 text-[10px] font-bold tracking-wider text-gold backdrop-blur-md">
-                              JAIPUR <span className="font-normal text-muted">· Architecture</span>
+                            <span className="size-2 rounded-full bg-amber-400 shadow-[0_0_8px_#D6B36A] animate-ping" />
+                            <div className="mt-1 rounded-md border border-[#F0DCE4] bg-white/95 px-2 py-0.5 text-[10px] font-bold tracking-wider text-[#20101B] backdrop-blur-md shadow-xs">
+                              JAIPUR <span className="font-normal text-[#705664]">· Architecture</span>
                             </div>
                           </div>
                           {/* Varanasi pin */}
                           <div className="absolute right-[14%] top-[22%] flex flex-col items-start">
-                            <span className="size-2 rounded-full bg-gold shadow-[0_0_8px_#D6B36A]" />
-                            <div className="mt-1 rounded-md border border-gold/40 bg-[#0C0B0A]/85 px-2 py-0.5 text-[10px] font-bold tracking-wider text-gold backdrop-blur-md">
-                              VARANASI <span className="font-normal text-muted">· Living Traditions</span>
+                            <span className="size-2 rounded-full bg-amber-400 shadow-[0_0_8px_#D6B36A]" />
+                            <div className="mt-1 rounded-md border border-[#F0DCE4] bg-white/95 px-2 py-0.5 text-[10px] font-bold tracking-wider text-[#20101B] backdrop-blur-md shadow-xs">
+                              VARANASI <span className="font-normal text-[#705664]">· Living Traditions</span>
                             </div>
                           </div>
                           {/* Hampi pin */}
                           <div className="absolute left-[18%] bottom-[20%] flex flex-col items-start">
-                            <span className="size-2 rounded-full bg-gold shadow-[0_0_8px_#D6B36A]" />
-                            <div className="mt-1 rounded-md border border-gold/40 bg-[#0C0B0A]/85 px-2 py-0.5 text-[10px] font-bold tracking-wider text-gold backdrop-blur-md">
-                              HAMPI <span className="font-normal text-muted">· History</span>
+                            <span className="size-2 rounded-full bg-amber-400 shadow-[0_0_8px_#D6B36A]" />
+                            <div className="mt-1 rounded-md border border-[#F0DCE4] bg-white/95 px-2 py-0.5 text-[10px] font-bold tracking-wider text-[#20101B] backdrop-blur-md shadow-xs">
+                              HAMPI <span className="font-normal text-[#705664]">· History</span>
                             </div>
                           </div>
                           {/* Madurai pin */}
                           <div className="absolute right-[16%] bottom-[14%] flex flex-col items-start">
-                            <span className="size-2 rounded-full bg-gold shadow-[0_0_8px_#D6B36A]" />
-                            <div className="mt-1 rounded-md border border-gold/40 bg-[#0C0B0A]/85 px-2 py-0.5 text-[10px] font-bold tracking-wider text-gold backdrop-blur-md">
-                              MADURAI <span className="font-normal text-muted">· Spirituality</span>
+                            <span className="size-2 rounded-full bg-amber-400 shadow-[0_0_8px_#D6B36A]" />
+                            <div className="mt-1 rounded-md border border-[#F0DCE4] bg-white/95 px-2 py-0.5 text-[10px] font-bold tracking-wider text-[#20101B] backdrop-blur-md shadow-xs">
+                              MADURAI <span className="font-normal text-[#705664]">· Spirituality</span>
                             </div>
                           </div>
                         </div>
                       ) : selectedFeature.routePoints ? (
                         <div className="absolute inset-x-4 bottom-4 space-y-2">
-                          <div className="flex flex-wrap items-center justify-between gap-1 text-[11px] font-semibold text-gold bg-[#12100e]/90 p-2.5 rounded-xl border border-gold/30 backdrop-blur-md">
+                          <div className="flex flex-wrap items-center justify-between gap-1 text-[11px] font-semibold text-[#20101B] bg-white/95 p-2.5 rounded-xl border border-[#F0DCE4] backdrop-blur-md shadow-xs">
                             {selectedFeature.routePoints.map((pt, i) => (
                               <div key={pt.city} className="flex items-center gap-1.5">
-                                <span className="size-1.5 rounded-full bg-gold" />
+                                <span className="size-1.5 rounded-full bg-[#24131E]" />
                                 <span>{pt.city}</span>
                                 {i < (selectedFeature.routePoints?.length ?? 0) - 1 && (
-                                  <span className="text-muted">→</span>
+                                  <span className="text-[#8E7582]">→</span>
                                 )}
                               </div>
                             ))}
@@ -690,17 +690,17 @@ export function ComingSoonClient({ lang }: { lang: string }) {
 
                     <div className="space-y-2">
                       <div className="flex items-center gap-2">
-                        <h3 id="preview-modal-title" className="font-serif text-section font-semibold text-[#F5F0E8]">
+                        <h3 id="preview-modal-title" className="font-serif text-section font-semibold text-[#20101B]">
                           {selectedFeature.title}
                         </h3>
-                        <span className="rounded-full border border-gold/40 bg-gold/15 px-2.5 py-0.5 text-[11px] font-semibold text-gold">
+                        <span className="rounded-full border border-[#F0DCE4] bg-[#FAF0F4] px-2.5 py-0.5 text-[11px] font-semibold text-[#24131E]">
                           {selectedFeature.badge}
                         </span>
                       </div>
-                      <p className="text-support text-gold font-medium">
+                      <p className="text-support text-[#5A4450] font-medium">
                         {selectedFeature.tagline}
                       </p>
-                      <p className="text-support text-[#B7B0A5] leading-relaxed">
+                      <p className="text-support text-[#705664] leading-relaxed">
                         {selectedFeature.problem}
                       </p>
                     </div>
@@ -709,14 +709,14 @@ export function ComingSoonClient({ lang }: { lang: string }) {
                   {/* Right Column: How it could work + Illustrative Journey */}
                   <div className="lg:col-span-6 space-y-6">
                     {/* How it could work */}
-                    <div className="rounded-2xl border border-[#302C25] bg-[#191714] p-5 space-y-3.5">
-                      <h4 className="text-support font-semibold uppercase tracking-wider text-[#F5F0E8]">
+                    <div className="rounded-2xl border border-[#F0DCE4] bg-[#FAF0F4]/70 p-5 space-y-3.5">
+                      <h4 className="text-support font-semibold uppercase tracking-wider text-[#20101B]">
                         How it could work
                       </h4>
                       <ol className="space-y-2.5">
                         {selectedFeature.howItWorks.map((step, idx) => (
-                          <li key={idx} className="flex items-start gap-3 text-support text-[#B7B0A5] leading-snug">
-                            <span className="flex size-5 shrink-0 items-center justify-center rounded-full border border-gold/40 bg-[#12100e] text-[11px] font-bold text-gold">
+                          <li key={idx} className="flex items-start gap-3 text-support text-[#5A4450] leading-snug">
+                            <span className="flex size-5 shrink-0 items-center justify-center rounded-full border border-[#F0DCE4] bg-white text-[11px] font-bold text-[#24131E]">
                               {idx + 1}
                             </span>
                             <span>{step}</span>
@@ -727,14 +727,14 @@ export function ComingSoonClient({ lang }: { lang: string }) {
 
                     {/* Illustrative journey */}
                     <div className="space-y-3">
-                      <h4 className="text-support font-semibold uppercase tracking-wider text-[#F5F0E8]">
+                      <h4 className="text-support font-semibold uppercase tracking-wider text-[#20101B]">
                         Illustrative journey
                       </h4>
                       <div className="grid grid-cols-2 gap-2.5 sm:grid-cols-4">
                         {selectedFeature.illustrativeSteps.map((step, idx) => (
                           <div
                             key={idx}
-                            className="group flex flex-col overflow-hidden rounded-xl border border-[#302C25] bg-[#171512] text-left shadow-xs transition-colors hover:border-gold/50"
+                            className="group flex flex-col overflow-hidden rounded-xl border border-[#F0DCE4] bg-white text-left shadow-xs transition-colors hover:border-[#24131E]/30"
                           >
                             {step.image && (
                               <div className="relative aspect-[4/3] w-full overflow-hidden bg-stone">
@@ -745,17 +745,17 @@ export function ComingSoonClient({ lang }: { lang: string }) {
                                   sizes="160px"
                                   className="object-cover transition-transform duration-300 group-hover:scale-105"
                                 />
-                                <div className="absolute inset-0 bg-gradient-to-t from-[#171512] via-transparent to-transparent opacity-60" />
+                                <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent opacity-60" />
                               </div>
                             )}
                             <div className="p-2.5 space-y-0.5">
-                              <span className="text-[9px] font-bold uppercase tracking-widest text-gold">
+                              <span className="text-[9px] font-bold uppercase tracking-widest text-[#705664]">
                                 Step {idx + 1}
                               </span>
-                              <h5 className="font-serif text-[12px] font-semibold text-[#F5F0E8] leading-snug line-clamp-1">
+                              <h5 className="font-serif text-[12px] font-semibold text-[#20101B] leading-snug line-clamp-1">
                                 {step.label}
                               </h5>
-                              <p className="text-[10px] text-[#89847C] line-clamp-2 leading-tight">
+                              <p className="text-[10px] text-[#705664] line-clamp-2 leading-tight">
                                 {step.desc}
                               </p>
                             </div>
@@ -765,13 +765,13 @@ export function ComingSoonClient({ lang }: { lang: string }) {
                     </div>
 
                     {/* Coming Soon Callout Note */}
-                    <div className="flex items-start gap-3 rounded-2xl border border-gold/30 bg-[#181511] p-4 text-left shadow-xs">
-                      <span className="flex size-7 shrink-0 items-center justify-center rounded-full bg-gold/20 text-gold text-xs">
+                    <div className="flex items-start gap-3 rounded-2xl border border-[#F0DCE4] bg-[#FAF0F4]/80 p-4 text-left shadow-xs">
+                      <span className="flex size-7 shrink-0 items-center justify-center rounded-full bg-[#24131E] text-white text-xs">
                         ✦
                       </span>
                       <div className="space-y-1">
-                        <p className="text-support font-semibold text-gold">Coming Soon</p>
-                        <p className="text-meta text-[#B7B0A5] leading-relaxed">
+                        <p className="text-support font-semibold text-[#20101B]">Coming Soon</p>
+                        <p className="text-meta text-[#5A4450] leading-relaxed">
                           We&apos;re building this experience to help you explore India more meaningfully. In the meantime, discover the cultural stories available today.
                         </p>
                       </div>
@@ -782,7 +782,7 @@ export function ComingSoonClient({ lang }: { lang: string }) {
                       <Link
                         href="/explore"
                         onClick={() => setSelectedFeature(null)}
-                        className="inline-flex w-full items-center justify-center gap-2 rounded-full bg-gold py-3 px-6 text-support font-semibold text-[#0c0b0a] shadow-md transition-all duration-200 hover:bg-gold-hover active:scale-[0.985]"
+                        className="inline-flex w-full items-center justify-center gap-2 rounded-full bg-[#24131E] py-3 px-6 text-support font-semibold text-white shadow-md transition-all duration-200 hover:bg-[#381C2E] active:scale-[0.985]"
                       >
                         <span>Continue Exploring TattvaCo</span>
                         <span className="text-xs">→</span>

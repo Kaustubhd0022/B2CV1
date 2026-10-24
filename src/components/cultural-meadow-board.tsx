@@ -540,16 +540,16 @@ export function CulturalHeroSection({ userEmail }: { userEmail?: string | null }
           </div>
         </div>
 
-        {/* ── Flower Meadow Base Stage with Floating 3D Antique Brass Elements ── */}
+        {/* ── Historical Thematic Base Stage with Floating Civilizational Badges ── */}
         <div className="relative mt-10 -mx-6 -mb-6 sm:-mx-10 sm:-mb-10 md:-mx-14 md:-mb-14 overflow-hidden rounded-b-[2.5rem] pt-32 sm:pt-48 md:pt-60">
           <div className="absolute inset-0 z-0">
             <Image
-              src="/images/flower-meadow-hero.jpg"
-              alt="Lush botanical flower meadow with pink lotus, marigolds, and floating antique brass astrolabes"
+              src="/images/historical-thematic-hero.jpg"
+              alt="Sacred ancient Indian riverfront ghats and temple architecture at dawn"
               fill
               priority
               sizes="(min-width: 1200px) 1400px, 100vw"
-              className="object-cover object-bottom"
+              className="object-cover object-center"
             />
             <div className="absolute inset-x-0 top-0 h-36 bg-gradient-to-b from-[#FFF5F8] to-transparent" />
           </div>
@@ -736,31 +736,29 @@ export function CulturalBentoSection() {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-12 gap-6">
-          {/* Card 1: Massive Dark Plum Bento Card (Sacred Geography of Panchakroshi) */}
-          <div className="md:col-span-7 flex flex-col justify-between rounded-[2rem] border border-[#24131E]/20 bg-[#1E101A] p-6 sm:p-8 shadow-xl text-white relative overflow-hidden group">
-            <div className="pointer-events-none absolute -right-20 -top-20 size-72 rounded-full bg-gold/10 blur-3xl" />
-
+          {/* Card 1: Luminous Rose/White Bento Card (Sacred Geography of Panchakroshi) */}
+          <div className="md:col-span-7 flex flex-col justify-between rounded-[2rem] border border-[#F0DCE4] bg-white p-6 sm:p-8 shadow-sm text-[#20101B] relative overflow-hidden group">
             <div>
               <div className="flex items-center justify-between gap-3">
-                <span className="inline-flex items-center gap-1.5 rounded-full border border-gold/40 bg-gold/10 px-3 py-1 text-[11px] font-semibold uppercase tracking-wider text-gold">
+                <span className="inline-flex items-center gap-1.5 rounded-full border border-[#24131E]/20 bg-[#FAF0F4] px-3 py-1 text-[11px] font-semibold uppercase tracking-wider text-[#24131E]">
                   <span>✦</span>
                   <span>Sacred Geography</span>
                 </span>
-                <span className="text-meta text-white/50 font-mono">ASI Protected Circuit</span>
+                <span className="text-meta text-[#6E5863] font-mono">ASI Protected Circuit</span>
               </div>
 
-              <h3 className="mt-4 font-serif text-2xl sm:text-3xl font-bold leading-tight text-white group-hover:text-gold transition-colors">
+              <h3 className="mt-4 font-serif text-2xl sm:text-3xl font-bold leading-tight text-[#20101B] group-hover:text-amber-800 transition-colors">
                 The Panchakroshi Cosmic Mandala
               </h3>
-              <p className="mt-2 text-support text-white/70 leading-relaxed max-w-xl">
+              <p className="mt-2 text-support text-[#5B4551] leading-relaxed max-w-xl">
                 The 50-mile circumambulation circuit encoding Varanasi as a living cosmic yantra between the Varuna and Assi rivers, featuring five traditional night halts.
               </p>
 
               {/* Interactive Station Switcher */}
-              <div className="mt-6 rounded-2xl border border-white/10 bg-white/5 p-4 backdrop-blur-md">
-                <div className="flex items-center justify-between text-xs text-white/60 pb-3 border-b border-white/10">
-                  <span className="font-semibold text-gold">Select Yatra Staging Post:</span>
-                  <span className="font-mono">{selectedStation + 1} of 5 Stations</span>
+              <div className="mt-6 rounded-2xl border border-[#F0DCE4] bg-[#FAF0F4]/70 p-4 shadow-sm backdrop-blur-md">
+                <div className="flex items-center justify-between text-xs text-[#6E5863] pb-3 border-b border-[#F0DCE4]">
+                  <span className="font-semibold text-[#20101B]">Select Yatra Staging Post:</span>
+                  <span className="font-mono text-amber-800 font-bold">{selectedStation + 1} of 5 Stations</span>
                 </div>
                 <div className="mt-3 flex gap-2 overflow-x-auto no-scrollbar pb-1">
                   {PANCHAKROSHI_STATIONS.map((s, idx) => (
@@ -770,8 +768,8 @@ export function CulturalBentoSection() {
                       onClick={() => setSelectedStation(idx)}
                       className={`cursor-pointer shrink-0 rounded-full px-3.5 py-1.5 text-xs font-semibold transition-all ${
                         selectedStation === idx
-                          ? "bg-gold text-[#12100E] shadow-sm scale-105"
-                          : "bg-white/10 text-white/80 hover:bg-white/20"
+                          ? "bg-[#24131E] text-white shadow-xs scale-105"
+                          : "bg-white border border-[#F0DCE4] text-[#20101B] hover:bg-[#FAF0F4]"
                       }`}
                     >
                       {s.num}. {s.name}
@@ -779,33 +777,33 @@ export function CulturalBentoSection() {
                   ))}
                 </div>
 
-                <div className="mt-4 pt-3 border-t border-white/10 space-y-1.5">
+                <div className="mt-4 pt-3 border-t border-[#F0DCE4] space-y-1.5">
                   <div className="flex items-baseline justify-between text-xs">
-                    <span className="font-serif text-base font-semibold text-white">
+                    <span className="font-serif text-base font-semibold text-[#20101B]">
                       {PANCHAKROSHI_STATIONS[selectedStation].name} ({PANCHAKROSHI_STATIONS[selectedStation].deity})
                     </span>
-                    <span className="text-gold font-mono text-[11px]">
+                    <span className="text-amber-800 font-mono text-[11px] font-semibold">
                       {PANCHAKROSHI_STATIONS[selectedStation].highlight}
                     </span>
                   </div>
-                  <p className="text-xs text-white/70 leading-relaxed">
+                  <p className="text-xs text-[#5B4551] leading-relaxed">
                     {PANCHAKROSHI_STATIONS[selectedStation].description}
                   </p>
-                  <p className="text-[11px] text-white/50 italic pt-1">
+                  <p className="text-[11px] text-[#7E6674] italic pt-1">
                     Statutory Evidence: {PANCHAKROSHI_STATIONS[selectedStation].statutory}
                   </p>
                 </div>
               </div>
             </div>
 
-            <div className="mt-8 pt-4 border-t border-white/10 flex flex-wrap items-center justify-between gap-3">
-              <div className="flex items-center gap-2 text-xs text-white/60">
-                <span className="size-2 rounded-full bg-emerald-400" />
+            <div className="mt-8 pt-4 border-t border-[#F0DCE4] flex flex-wrap items-center justify-between gap-3">
+              <div className="flex items-center gap-2 text-xs text-[#6E5863]">
+                <span className="size-2 rounded-full bg-emerald-600" />
                 <span>Verified by IGNCA Sacred Geography Monographs</span>
               </div>
               <Link
                 href="/stories/varanasi-panchakroshi-yatra"
-                className="inline-flex min-h-10 items-center justify-center gap-2 rounded-full bg-gold px-5 text-support font-semibold text-on-gold hover:bg-gold-hover transition-colors shadow-xs"
+                className="inline-flex min-h-10 items-center justify-center gap-2 rounded-full bg-[#24131E] px-5 text-support font-semibold text-white hover:bg-[#381C2E] transition-colors shadow-sm"
               >
                 <span>Read Full Yatra Story</span>
                 <span>→</span>
@@ -870,21 +868,21 @@ export function CulturalBentoSection() {
             </div>
           </div>
 
-          {/* Card 3: Acoustic Sanctuary & Banaras Gharana */}
-          <div className="md:col-span-6 flex flex-col justify-between rounded-[2rem] border border-[#24131E]/20 bg-[#161219] p-6 sm:p-8 shadow-xl text-white relative overflow-hidden group">
+          {/* Card 3: Acoustic Sanctuary & Banaras Gharana (Luminous Rose/White Style) */}
+          <div className="md:col-span-6 flex flex-col justify-between rounded-[2rem] border border-[#F0DCE4] bg-white p-6 sm:p-8 shadow-sm text-[#20101B] relative overflow-hidden group">
             <div>
               <div className="flex items-center justify-between gap-3">
-                <span className="inline-flex items-center gap-1.5 rounded-full border border-purple-400/30 bg-purple-900/30 px-3 py-1 text-[11px] font-semibold uppercase tracking-wider text-purple-300">
+                <span className="inline-flex items-center gap-1.5 rounded-full border border-purple-600/20 bg-purple-50 px-3 py-1 text-[11px] font-semibold uppercase tracking-wider text-purple-900">
                   <span>✦</span>
                   <span>Acoustic Tradition</span>
                 </span>
-                <span className="text-meta text-white/50 font-mono">UNESCO City of Music</span>
+                <span className="text-meta text-[#6E5863] font-mono">UNESCO City of Music</span>
               </div>
 
-              <h3 className="mt-4 font-serif text-2xl font-bold leading-tight text-white group-hover:text-purple-300 transition-colors">
+              <h3 className="mt-4 font-serif text-2xl font-bold leading-tight text-[#20101B] group-hover:text-purple-800 transition-colors">
                 Banaras Gharana & River Ragas
               </h3>
-              <p className="mt-2 text-support text-white/70 leading-relaxed">
+              <p className="mt-2 text-support text-[#5B4551] leading-relaxed">
                 The 200-year rhythmic lineage of Pandit Kanthe Maharaj, Kishan Maharaj, and Bismillah Khan, whose shehnai sounded the dawn over the Ganga.
               </p>
 
@@ -893,57 +891,57 @@ export function CulturalBentoSection() {
               </div>
             </div>
 
-            <div className="mt-8 pt-4 border-t border-white/10 flex items-center justify-between text-xs text-white/60">
+            <div className="mt-8 pt-4 border-t border-[#F0DCE4] flex items-center justify-between text-xs text-[#6E5863]">
               <span>Source: Sangeet Natak Akademi Archives</span>
-              <Link href="/stories/varanasi-music-banaras-gharana" className="text-purple-300 font-semibold hover:underline">
+              <Link href="/stories/varanasi-music-banaras-gharana" className="text-purple-800 font-semibold hover:underline">
                 Explore Gharana Lineage →
               </Link>
             </div>
           </div>
 
-          {/* Card 4: Cosmic Solar Observatory & Samrat Yantra */}
-          <div className="md:col-span-6 flex flex-col justify-between rounded-[2rem] border border-[#24131E]/20 bg-[#1E1417] p-6 sm:p-8 shadow-xl text-white relative overflow-hidden group">
+          {/* Card 4: Cosmic Solar Observatory & Samrat Yantra (Luminous Rose/White Style) */}
+          <div className="md:col-span-6 flex flex-col justify-between rounded-[2rem] border border-[#F0DCE4] bg-white p-6 sm:p-8 shadow-sm text-[#20101B] relative overflow-hidden group">
             <div>
               <div className="flex items-center justify-between gap-3">
-                <span className="inline-flex items-center gap-1.5 rounded-full border border-amber-400/30 bg-amber-900/30 px-3 py-1 text-[11px] font-semibold uppercase tracking-wider text-amber-300">
+                <span className="inline-flex items-center gap-1.5 rounded-full border border-amber-600/20 bg-amber-50 px-3 py-1 text-[11px] font-semibold uppercase tracking-wider text-amber-900">
                   <span>✦</span>
                   <span>Observational Astronomy</span>
                 </span>
-                <span className="text-meta text-white/50 font-mono">ASI Protected Monument</span>
+                <span className="text-meta text-[#6E5863] font-mono">ASI Protected Monument</span>
               </div>
 
-              <h3 className="mt-4 font-serif text-2xl font-bold leading-tight text-white group-hover:text-amber-300 transition-colors">
+              <h3 className="mt-4 font-serif text-2xl font-bold leading-tight text-[#20101B] group-hover:text-amber-800 transition-colors">
                 Man Mahal Astronomical Observatory
               </h3>
-              <p className="mt-2 text-support text-white/70 leading-relaxed">
+              <p className="mt-2 text-support text-[#5B4551] leading-relaxed">
                 Erected by Maharaja Sawai Jai Singh II atop Man Mandir Ghat in 1737 CE, featuring massive masonry sundials tracking equatorial time to two-second precision.
               </p>
 
-              <div className="mt-6 rounded-2xl border border-white/10 bg-white/5 p-4 backdrop-blur-md space-y-3">
+              <div className="mt-6 rounded-2xl border border-[#F0DCE4] bg-[#FAF0F4]/70 p-4 shadow-sm backdrop-blur-md space-y-3">
                 <div className="flex items-center justify-between text-xs">
-                  <span className="font-semibold text-amber-300">Samrat Yantra Solar Gnomon</span>
-                  <span className="font-mono text-white/70">Latitude 25° 18&apos; N</span>
+                  <span className="font-semibold text-amber-900">Samrat Yantra Solar Gnomon</span>
+                  <span className="font-mono text-[#6E5863]">Latitude 25° 18&apos; N</span>
                 </div>
                 <div className="grid grid-cols-3 gap-2 text-center text-xs">
-                  <div className="rounded-xl bg-black/40 p-2.5 border border-white/10">
-                    <div className="text-[10px] text-white/50 uppercase">Gnomon Angle</div>
-                    <div className="font-mono font-bold text-amber-400 mt-1">25° 18&apos;</div>
+                  <div className="rounded-xl bg-white p-2.5 border border-[#F0DCE4] shadow-2xs">
+                    <div className="text-[10px] text-[#7E6674] uppercase font-medium">Gnomon Angle</div>
+                    <div className="font-mono font-bold text-amber-800 mt-1">25° 18&apos;</div>
                   </div>
-                  <div className="rounded-xl bg-black/40 p-2.5 border border-white/10">
-                    <div className="text-[10px] text-white/50 uppercase">Time Accuracy</div>
-                    <div className="font-mono font-bold text-emerald-400 mt-1">± 2 Seconds</div>
+                  <div className="rounded-xl bg-white p-2.5 border border-[#F0DCE4] shadow-2xs">
+                    <div className="text-[10px] text-[#7E6674] uppercase font-medium">Time Accuracy</div>
+                    <div className="font-mono font-bold text-emerald-700 mt-1">± 2 Seconds</div>
                   </div>
-                  <div className="rounded-xl bg-black/40 p-2.5 border border-white/10">
-                    <div className="text-[10px] text-white/50 uppercase">Solstice Readout</div>
-                    <div className="font-mono font-bold text-purple-400 mt-1">Dakshinayana</div>
+                  <div className="rounded-xl bg-white p-2.5 border border-[#F0DCE4] shadow-2xs">
+                    <div className="text-[10px] text-[#7E6674] uppercase font-medium">Solstice Readout</div>
+                    <div className="font-mono font-bold text-purple-800 mt-1">Dakshinayana</div>
                   </div>
                 </div>
               </div>
             </div>
 
-            <div className="mt-8 pt-4 border-t border-white/10 flex items-center justify-between text-xs text-white/60">
+            <div className="mt-8 pt-4 border-t border-[#F0DCE4] flex items-center justify-between text-xs text-[#6E5863]">
               <span>Survey: Archaeological Survey of India</span>
-              <Link href="/places?city=varanasi&place=man-mandir-ghat" className="text-amber-300 font-semibold hover:underline">
+              <Link href="/places?city=varanasi&place=man-mandir-ghat" className="text-amber-800 font-semibold hover:underline">
                 View on Map Atlas →
               </Link>
             </div>
@@ -959,16 +957,16 @@ export function CulturalBentoSection() {
 ────────────────────────────────────────────────────────────────────────── */}
 export function CulturalConnectedChainSection() {
   return (
-    <section className="rounded-[2.5rem] border border-[#24131E]/20 bg-gradient-to-br from-[#2B1522] via-[#24131E] to-[#1A0E16] p-6 sm:p-8 md:p-10 shadow-xl text-white">
+    <section className="rounded-[2.5rem] border border-[#F0DCE4] bg-white p-6 sm:p-8 md:p-10 shadow-sm text-[#20101B]">
       <div className="max-w-2xl">
-        <div className="flex items-center gap-2 text-[11px] font-semibold uppercase tracking-[0.2em] text-amber-300">
-          <IconConnect width={17} height={17} className="text-amber-300" />
+        <div className="flex items-center gap-2 text-[11px] font-semibold uppercase tracking-[0.2em] text-amber-700">
+          <IconConnect width={17} height={17} className="text-amber-700" />
           <span>Connected Discovery Chain</span>
         </div>
-        <h2 className="mt-2 font-serif text-2xl sm:text-3xl font-bold text-white">
+        <h2 className="mt-2 font-serif text-2xl sm:text-3xl font-bold text-[#20101B]">
           Follow a Live Cultural Connection
         </h2>
-        <p className="mt-2 text-support text-white/80 leading-relaxed">
+        <p className="mt-2 text-support text-[#5A4450] leading-relaxed">
           Discover how sacred river geography directly breathes life into living temple rituals, master silk handloom mohallas, and classical music gharanas.
         </p>
       </div>
@@ -979,29 +977,29 @@ export function CulturalConnectedChainSection() {
           <Link
             key={step.step}
             href={step.href}
-            className="group relative flex flex-col justify-between rounded-2xl border border-white/10 bg-white/5 p-4 transition-all duration-300 hover:border-amber-400/50 hover:bg-white/10 hover:shadow-lg"
+            className="group relative flex flex-col justify-between rounded-2xl border border-[#F0DCE4] bg-[#FAF0F4]/60 p-4 transition-all duration-300 hover:border-amber-600/40 hover:bg-white hover:shadow-md"
           >
             <div>
               <div className="flex items-center justify-between">
-                <span className="font-mono text-xs font-bold text-amber-300 bg-amber-400/10 px-2 py-0.5 rounded-md border border-amber-400/25">
+                <span className="font-mono text-xs font-bold text-amber-800 bg-amber-500/10 px-2 py-0.5 rounded-md border border-amber-600/30">
                   Step {step.step}
                 </span>
-                <span className="text-[10px] uppercase font-semibold text-white/60 tracking-wider">
+                <span className="text-[10px] uppercase font-semibold text-[#7E6674] tracking-wider">
                   {step.tag}
                 </span>
               </div>
-              <p className="mt-3 text-[11px] font-semibold uppercase tracking-wider text-white/60">
+              <p className="mt-3 text-[11px] font-semibold uppercase tracking-wider text-[#7E6674]">
                 {step.label}
               </p>
-              <h3 className="mt-0.5 font-serif text-support font-bold text-white group-hover:text-amber-300 transition-colors leading-snug">
+              <h3 className="mt-0.5 font-serif text-support font-bold text-[#20101B] group-hover:text-amber-800 transition-colors leading-snug">
                 {step.title}
               </h3>
-              <p className="mt-2 text-meta text-white/70 leading-relaxed line-clamp-3">
+              <p className="mt-2 text-meta text-[#5A4450] leading-relaxed line-clamp-3">
                 {step.desc}
               </p>
             </div>
 
-            <div className="mt-4 pt-3 border-t border-white/10 flex items-center justify-between text-meta font-semibold text-amber-300">
+            <div className="mt-4 pt-3 border-t border-[#F0DCE4] flex items-center justify-between text-meta font-semibold text-amber-800">
               <span>Explore</span>
               <span className="transition-transform group-hover:translate-x-1">→</span>
             </div>
@@ -1059,26 +1057,26 @@ export function CulturalExpeditionSection() {
   }, [expeditionDays]);
 
   return (
-    <section aria-labelledby="expedition-slider-title" className="rounded-[2.5rem] border border-[#24131E]/20 bg-gradient-to-br from-[#2B1522] via-[#24131E] to-[#1A0E16] p-6 sm:p-10 md:p-14 shadow-2xl text-white">
+    <section aria-labelledby="expedition-slider-title" className="rounded-[2.5rem] border border-[#F0DCE4] bg-white p-6 sm:p-10 md:p-14 shadow-sm text-[#20101B]">
       <div className="max-w-3xl">
-        <div className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-[0.2em] text-gold">
+        <div className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-[0.2em] text-amber-700">
           <span>✦</span>
           <span>INTERACTIVE CULTURAL EXPEDITION CALCULATOR</span>
         </div>
-        <h2 id="expedition-slider-title" className="mt-2 font-serif text-2xl sm:text-4xl font-bold text-white tracking-tight">
+        <h2 id="expedition-slider-title" className="mt-2 font-serif text-2xl sm:text-4xl font-bold text-[#20101B] tracking-tight">
           Plan Your Living Heritage Circuit
         </h2>
-        <p className="mt-2 text-body text-white/70 leading-relaxed">
+        <p className="mt-2 text-body text-[#5A4450] leading-relaxed">
           Drag the expedition slider to calibrate your journey across verified ASI monuments, master weaving quarters, and sacred riverfront ghats.
         </p>
       </div>
 
       <div className="mt-10 grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
         <div className="lg:col-span-7 space-y-6">
-          <div className="rounded-2xl border border-white/10 bg-white/5 p-6 backdrop-blur-md space-y-4">
+          <div className="rounded-2xl border border-[#F0DCE4] bg-[#FAF0F4]/70 p-6 backdrop-blur-md space-y-4">
             <div className="flex items-baseline justify-between">
-              <span className="text-sm font-semibold text-white/80">Selected Journey Duration:</span>
-              <span className="font-serif text-2xl font-bold text-gold">
+              <span className="text-sm font-semibold text-[#20101B]">Selected Journey Duration:</span>
+              <span className="font-serif text-2xl font-bold text-amber-800">
                 {expeditionDays} {expeditionDays === 1 ? "Day" : "Days"}
               </span>
             </div>
@@ -1091,10 +1089,10 @@ export function CulturalExpeditionSection() {
                 step="1"
                 value={expeditionDays}
                 onChange={(e) => setExpeditionDays(parseInt(e.target.value, 10))}
-                className="w-full h-3 bg-white/15 rounded-lg appearance-none cursor-pointer accent-gold"
+                className="w-full h-3 bg-[#EAD5DE] rounded-lg appearance-none cursor-pointer accent-[#24131E]"
                 aria-label="Expedition Days Slider"
               />
-              <div className="flex justify-between text-xs text-white/50 font-mono px-1">
+              <div className="flex justify-between text-xs text-[#6E5863] font-mono px-1">
                 <span>1 Day (Riverfront)</span>
                 <span>3 Days</span>
                 <span>5 Days (Panchakroshi)</span>
@@ -1102,12 +1100,12 @@ export function CulturalExpeditionSection() {
               </div>
             </div>
 
-            <div className="pt-3 border-t border-white/10">
-              <div className="text-xs uppercase tracking-wider text-white/50">Expedition Profile</div>
-              <div className="mt-1 font-serif text-lg font-bold text-white">
+            <div className="pt-3 border-t border-[#F0DCE4]">
+              <div className="text-xs uppercase tracking-wider text-[#6E5863]">Expedition Profile</div>
+              <div className="mt-1 font-serif text-lg font-bold text-[#20101B]">
                 {expeditionMetrics.label}
               </div>
-              <div className="text-xs text-gold/90 mt-0.5">
+              <div className="text-xs text-amber-800 font-medium mt-0.5">
                 Intensity: {expeditionMetrics.intensity}
               </div>
             </div>
@@ -1116,14 +1114,14 @@ export function CulturalExpeditionSection() {
           <div className="flex flex-wrap items-center gap-3">
             <Link
               href="/places?city=varanasi"
-              className="inline-flex min-h-12 items-center justify-center gap-2 rounded-full bg-gold px-6 text-support font-semibold text-on-gold hover:bg-gold-hover shadow-md transition-all active:scale-95"
+              className="inline-flex min-h-12 items-center justify-center gap-2 rounded-full bg-[#24131E] px-6 text-support font-semibold text-white hover:bg-[#381C2E] shadow-sm transition-all active:scale-95"
             >
               <span>Plot Route on Cultural Atlas</span>
               <span>→</span>
             </Link>
             <Link
               href="/stories/varanasi-panchakroshi-yatra"
-              className="inline-flex min-h-12 items-center justify-center rounded-full border border-white/20 bg-white/10 px-6 text-support font-semibold text-white hover:bg-white/15 transition-all"
+              className="inline-flex min-h-12 items-center justify-center rounded-full border border-[#24131E]/15 bg-white px-6 text-support font-semibold text-[#20101B] hover:bg-[#FAF0F4] transition-all"
             >
               Read Verified Guide
             </Link>
@@ -1131,28 +1129,28 @@ export function CulturalExpeditionSection() {
         </div>
 
         <div className="lg:col-span-5 grid grid-cols-2 gap-4">
-          <div className="rounded-2xl border border-white/10 bg-white/5 p-5 backdrop-blur-md">
-            <div className="text-[11px] font-semibold uppercase tracking-wider text-gold">Sacred Tirthas</div>
-            <div className="mt-2 font-serif text-xl font-bold text-white">{expeditionMetrics.tirthas}</div>
-            <p className="mt-1 text-xs text-white/60">Ghats, kunds &amp; temples visited</p>
+          <div className="rounded-2xl border border-[#F0DCE4] bg-[#FAF0F4]/70 p-5 shadow-2xs">
+            <div className="text-[11px] font-semibold uppercase tracking-wider text-amber-800">Sacred Tirthas</div>
+            <div className="mt-2 font-serif text-xl font-bold text-[#20101B]">{expeditionMetrics.tirthas}</div>
+            <p className="mt-1 text-xs text-[#6E5863]">Ghats, kunds &amp; temples visited</p>
           </div>
 
-          <div className="rounded-2xl border border-white/10 bg-white/5 p-5 backdrop-blur-md">
-            <div className="text-[11px] font-semibold uppercase tracking-wider text-emerald-400">Statutory Citations</div>
-            <div className="mt-2 font-serif text-xl font-bold text-white">{expeditionMetrics.citations}</div>
-            <p className="mt-1 text-xs text-white/60">ASI &amp; UNESCO groundings</p>
+          <div className="rounded-2xl border border-[#F0DCE4] bg-[#FAF0F4]/70 p-5 shadow-2xs">
+            <div className="text-[11px] font-semibold uppercase tracking-wider text-emerald-700">Statutory Citations</div>
+            <div className="mt-2 font-serif text-xl font-bold text-[#20101B]">{expeditionMetrics.citations}</div>
+            <p className="mt-1 text-xs text-[#6E5863]">ASI &amp; UNESCO groundings</p>
           </div>
 
-          <div className="rounded-2xl border border-white/10 bg-white/5 p-5 backdrop-blur-md">
-            <div className="text-[11px] font-semibold uppercase tracking-wider text-rose-400">Master Guilds</div>
-            <div className="mt-2 font-serif text-xl font-bold text-white">{expeditionMetrics.guilds}</div>
-            <p className="mt-1 text-xs text-white/60">Karkhanas &amp; oral archives</p>
+          <div className="rounded-2xl border border-[#F0DCE4] bg-[#FAF0F4]/70 p-5 shadow-2xs">
+            <div className="text-[11px] font-semibold uppercase tracking-wider text-rose-700">Master Guilds</div>
+            <div className="mt-2 font-serif text-xl font-bold text-[#20101B]">{expeditionMetrics.guilds}</div>
+            <p className="mt-1 text-xs text-[#6E5863]">Karkhanas &amp; oral archives</p>
           </div>
 
-          <div className="rounded-2xl border border-white/10 bg-white/5 p-5 backdrop-blur-md">
-            <div className="text-[11px] font-semibold uppercase tracking-wider text-sky-400">Trail Footprint</div>
-            <div className="mt-2 font-serif text-xl font-bold text-white">{expeditionMetrics.distance}</div>
-            <p className="mt-1 text-xs text-white/60">Calculated parikrama span</p>
+          <div className="rounded-2xl border border-[#F0DCE4] bg-[#FAF0F4]/70 p-5 shadow-2xs">
+            <div className="text-[11px] font-semibold uppercase tracking-wider text-sky-800">Trail Footprint</div>
+            <div className="mt-2 font-serif text-xl font-bold text-[#20101B]">{expeditionMetrics.distance}</div>
+            <p className="mt-1 text-xs text-[#6E5863]">Calculated parikrama span</p>
           </div>
         </div>
       </div>
@@ -1241,29 +1239,29 @@ export function CulturalFaqSection() {
 ────────────────────────────────────────────────────────────────────────── */}
 export function CulturalClosingCtaSection() {
   return (
-    <section className="relative overflow-hidden rounded-[2.5rem] border border-[#24131E]/20 bg-gradient-to-r from-[#2B1522] via-[#24131E] to-[#1A0E16] p-8 sm:p-12 md:p-16 shadow-2xl text-white text-center">
+    <section className="relative overflow-hidden rounded-[2.5rem] border border-[#F0DCE4] bg-gradient-to-b from-[#FFF5F8] via-[#FDF0F4] to-[#FCE7EF] p-8 sm:p-12 md:p-16 shadow-sm text-[#20101B] text-center">
       <div className="relative z-10 max-w-2xl mx-auto space-y-4">
-        <div className="inline-flex items-center justify-center gap-2 rounded-full border border-gold/30 bg-gold/10 px-4 py-1 text-xs font-semibold text-gold">
+        <div className="inline-flex items-center justify-center gap-2 rounded-full border border-amber-600/30 bg-amber-500/10 px-4 py-1 text-xs font-semibold text-amber-800">
           <span>✦</span>
           <span>INDIA&apos;S LIVING CULTURAL ARCHIVE</span>
         </div>
-        <h2 className="font-serif text-3xl sm:text-5xl font-bold text-white tracking-tight">
+        <h2 className="font-serif text-3xl sm:text-5xl font-bold text-[#20101B] tracking-tight">
           Begin Your Civilizational Discovery
         </h2>
-        <p className="text-support text-white/80 leading-relaxed max-w-lg mx-auto">
+        <p className="text-support text-[#5A4450] leading-relaxed max-w-lg mx-auto">
           Step onto the crescent stone ghats of Varanasi or trace master handloom guilds with statutorily verified cultural intelligence.
         </p>
         <div className="pt-4 flex flex-wrap items-center justify-center gap-3">
           <Link
             href="/explore"
-            className="inline-flex min-h-12 items-center justify-center gap-2 rounded-full bg-gold px-8 text-support font-semibold text-on-gold hover:bg-gold-hover shadow-lg transition-all active:scale-95"
+            className="inline-flex min-h-12 items-center justify-center gap-2 rounded-full bg-[#24131E] px-8 text-support font-semibold text-white hover:bg-[#381C2E] shadow-sm transition-all active:scale-95"
           >
             <span>Explore All Stories</span>
             <span>→</span>
           </Link>
           <Link
             href="/places"
-            className="inline-flex min-h-12 items-center justify-center rounded-full border border-white/20 bg-white/10 px-8 text-support font-semibold text-white hover:bg-white/15 transition-all"
+            className="inline-flex min-h-12 items-center justify-center rounded-full border border-[#24131E]/15 bg-white px-8 text-support font-semibold text-[#20101B] hover:bg-[#FAF0F4] transition-all"
           >
             <span>Launch Cultural Atlas</span>
           </Link>
