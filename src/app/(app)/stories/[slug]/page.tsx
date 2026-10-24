@@ -456,28 +456,28 @@ export default async function StoryPage({
 
           {/* Continue Journey · Next Story in this Collection */}
           {related[0] && (
-            <section className="mt-14 rounded-3xl border border-gold/30 bg-gradient-to-br from-[#1a1714] via-[#161310] to-[#12100e] p-6 sm:p-8 shadow-md">
-              <div className="flex items-center gap-2 text-meta font-semibold uppercase tracking-wider text-gold">
+            <section className="mt-14 rounded-[2.5rem] border border-[#F0DCE4] bg-white/80 backdrop-blur-md p-6 sm:p-8 shadow-sm">
+              <div className="flex items-center gap-2 text-meta font-semibold uppercase tracking-wider text-amber-700">
                 <span>✦</span>
                 <span>Continue Your Journey · Next Story</span>
               </div>
-              <h2 className="mt-2 font-serif text-2xl font-bold text-charcoal sm:text-3xl">
+              <h2 className="mt-2 font-serif text-2xl font-bold text-[#20101B] sm:text-3xl">
                 {related[0].title}
               </h2>
-              <p className="mt-2 text-body text-secondary-text leading-relaxed">
+              <p className="mt-2 text-body text-[#5A4450] leading-relaxed">
                 {related[0].summary}
               </p>
               <div className="mt-6 flex flex-wrap items-center gap-3">
                 <Link
                   href={`/stories/${related[0].slug}`}
-                  className="inline-flex min-h-11 items-center justify-center rounded-full bg-forest px-6 text-support font-semibold text-on-forest hover:bg-forest-hover shadow-xs transition-colors"
+                  className="inline-flex min-h-11 items-center justify-center rounded-full bg-[#24131E] px-6 text-support font-semibold text-white hover:bg-[#381C2E] shadow-xs transition-colors"
                 >
                   Read Next Story →
                 </Link>
                 {city && (
                   <Link
                     href={`/places?city=${city.slug}`}
-                    className="inline-flex min-h-11 items-center justify-center rounded-full border border-border bg-surface px-5 text-support font-semibold text-charcoal hover:border-gold/40 transition-colors"
+                    className="inline-flex min-h-11 items-center justify-center rounded-full border border-[#24131E]/15 bg-white px-5 text-support font-semibold text-[#20101B] hover:border-amber-600/40 transition-colors"
                   >
                     Explore {cityName} on Cultural Map
                   </Link>
@@ -487,12 +487,12 @@ export default async function StoryPage({
           )}
 
           {/* Curiosity-Led Question Composer */}
-          <section className="mt-14 rounded-3xl border border-gold/30 bg-gradient-to-br from-[#171512] via-[#1a1714] to-[#12100d] p-6 sm:p-8 shadow-md">
-            <div className="flex items-center gap-2 text-meta font-semibold uppercase tracking-wider text-gold">
+          <section className="mt-14 rounded-[2.5rem] border border-[#F0DCE4] bg-white/80 backdrop-blur-md p-6 sm:p-8 shadow-sm">
+            <div className="flex items-center gap-2 text-meta font-semibold uppercase tracking-wider text-amber-700">
               <span>✦</span>
               <span>Curiosity-Led Exploration</span>
             </div>
-            <h2 className="mt-2 font-serif text-2xl font-semibold text-charcoal">
+            <h2 className="mt-2 font-serif text-2xl font-semibold text-[#20101B]">
               {t("story.goDeeper")}
             </h2>
             <div className="mt-4">

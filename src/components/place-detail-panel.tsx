@@ -302,17 +302,17 @@ export function PlaceDetailPanel({
         {/* Persistent Discovery Gateways: Related Flagship Story & Ask AI */}
         <div className="space-y-3 pt-3 border-t border-border/70">
           {place.relatedStorySlug && (
-            <div className="rounded-xl border border-gold/30 bg-gradient-to-br from-[#1a1714] to-[#12100d] p-4 shadow-xs space-y-1.5">
-              <span className="text-[11px] font-semibold uppercase tracking-wider text-gold flex items-center gap-1.5">
+            <div className="rounded-xl border border-[#F0DCE4] bg-white/90 backdrop-blur-xs p-4 shadow-xs space-y-1.5">
+              <span className="text-[11px] font-semibold uppercase tracking-wider text-amber-700 flex items-center gap-1.5">
                 <span>✦</span> Related Flagship Story
               </span>
-              <h4 className="font-serif text-support font-semibold text-charcoal leading-snug">
+              <h4 className="font-serif text-support font-semibold text-[#20101B] leading-snug">
                 {place.relatedStoryTitle}
               </h4>
               <div className="pt-1">
                 <Link
                   href={`/stories/${place.relatedStorySlug}`}
-                  className="inline-flex items-center gap-1 text-meta font-semibold text-gold hover:underline"
+                  className="inline-flex items-center gap-1 text-meta font-semibold text-amber-700 hover:text-[#20101B] hover:underline"
                 >
                   Read Complete Curated Story →
                 </Link>

@@ -49,13 +49,13 @@ export default async function AppLayout({ children }: { children: React.ReactNod
           <div className="flex items-center gap-2 sm:gap-3">
             <Link
               href="/explore"
-              className="hidden lg:flex items-center gap-2 rounded-full border border-[#24131E]/12 bg-white/70 px-3.5 py-1.5 text-meta text-[#5A4450] hover:text-[#20101B] hover:border-amber-600/40 transition-all duration-200"
-              aria-label="Search places and stories"
+              className="hidden lg:flex items-center gap-1.5 rounded-lg border border-[#24131E]/12 bg-white/80 px-3 py-1.5 text-xs font-medium text-[#5A4450] hover:text-[#20101B] hover:border-amber-600/40 transition-all duration-200 whitespace-nowrap shadow-2xs"
+              aria-label="Search"
             >
-              <svg className="size-3.5 text-amber-700" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <svg className="size-3.5 text-amber-700 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
               </svg>
-              <span>Search places, stories…</span>
+              <span>Search</span>
             </Link>
             <LanguageLink lang={lang} native={info.native} label={t("lang.change")} />
             <Link

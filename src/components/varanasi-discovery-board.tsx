@@ -638,16 +638,16 @@ export function VaranasiDiscoveryBoard({ userEmail }: { userEmail?: string | nul
       </section>
 
       {/* ── 4. Interactive Connected Cultural Journey (Place → Living Tradition → Craft → Story) ── */}
-      <section className="rounded-3xl border border-gold/25 bg-gradient-to-br from-[#171411] via-[#1b1713] to-[#12100d] p-6 sm:p-8 md:p-10 shadow-md">
+      <section className="rounded-[2.5rem] border border-[#F0DCE4] bg-white/80 backdrop-blur-md p-6 sm:p-8 md:p-10 shadow-sm">
         <div className="max-w-2xl">
-          <div className="flex items-center gap-2 text-[11px] font-semibold uppercase tracking-[0.2em] text-gold">
-            <IconConnect width={17} height={17} className="text-gold" />
+          <div className="flex items-center gap-2 text-[11px] font-semibold uppercase tracking-[0.2em] text-amber-700">
+            <IconConnect width={17} height={17} className="text-amber-700" />
             <span>Connected Discovery Chain</span>
           </div>
-          <h2 className="mt-2 font-serif text-2xl sm:text-3xl font-bold text-charcoal">
+          <h2 className="mt-2 font-serif text-2xl sm:text-3xl font-bold text-[#20101B]">
             Follow a Live Cultural Connection
           </h2>
-          <p className="mt-2 text-support text-secondary-text leading-relaxed">
+          <p className="mt-2 text-support text-[#5A4450] leading-relaxed">
             Discover how Varanasi&apos;s sacred river geography directly breathes life into living temple rituals, master silk handloom mohallas, and classical music gharanas.
           </p>
         </div>

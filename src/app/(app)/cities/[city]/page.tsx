@@ -385,12 +385,12 @@ export default async function CityPage({
           </div>
 
           {/* 3. Ask TattvaCo AI Module matching Reference Page 6 */}
-          <div className="rounded-2xl border border-gold/30 bg-gradient-to-br from-[#181512] via-[#1a1714] to-[#12100d] p-5 shadow-sm space-y-3">
-            <div className="flex items-center gap-2 text-[11px] font-semibold uppercase tracking-wider text-gold">
+          <div className="rounded-2xl border border-[#F0DCE4] bg-white/80 backdrop-blur-md p-5 shadow-sm space-y-3">
+            <div className="flex items-center gap-2 text-[11px] font-semibold uppercase tracking-wider text-amber-700">
               <span>✦</span>
               <span>Ask TattvaCo About {name}</span>
             </div>
-            <p className="text-meta text-muted leading-relaxed">
+            <p className="text-meta text-[#5A4450] leading-relaxed">
               Inquire into historical disputes, architectural secrets, or ritual philosophies.
             </p>
 
@@ -399,7 +399,7 @@ export default async function CityPage({
                 <li key={q}>
                   <Link
                     href={`/ask?q=${encodeURIComponent(q)}`}
-                    className="block rounded-lg border border-border/70 bg-surface-2/80 p-2 text-meta text-charcoal hover:border-gold hover:text-gold transition-colors shadow-2xs leading-snug"
+                    className="block rounded-lg border border-[#F0DCE4] bg-white/90 p-2 text-meta text-[#20101B] hover:border-amber-600/40 hover:text-amber-800 transition-colors shadow-2xs leading-snug"
                   >
                     {q} →
                   </Link>

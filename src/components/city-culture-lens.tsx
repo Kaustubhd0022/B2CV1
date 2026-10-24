@@ -142,23 +142,23 @@ export function CityCultureLens({ citySlug }: { citySlug: string }) {
   };
 
   return (
-    <section className="mt-12 rounded-3xl border border-gold/30 bg-gradient-to-br from-[#171411] via-[#1a1714] to-[#12100d] p-6 sm:p-8 shadow-md">
-      <div className="flex items-center justify-between border-b border-border/70 pb-3">
+    <section className="mt-12 rounded-[2.5rem] border border-[#F0DCE4] bg-white/80 backdrop-blur-md p-6 sm:p-8 shadow-sm">
+      <div className="flex items-center justify-between border-b border-[#F0DCE4] pb-3">
         <div>
-          <div className="flex items-center gap-2 text-[11px] font-semibold uppercase tracking-wider text-gold">
+          <div className="flex items-center gap-2 text-[11px] font-semibold uppercase tracking-wider text-amber-700">
             <span>✦</span>
             <span>Cultural Lens</span>
           </div>
-          <h2 className="mt-1 font-serif text-2xl font-semibold text-charcoal">
+          <h2 className="mt-1 font-serif text-2xl font-semibold text-[#20101B]">
             Plan Your Visit Through a Cultural Lens
           </h2>
         </div>
-        <span className="hidden sm:inline-block rounded-full bg-forest/80 px-3 py-1 text-[11px] font-semibold text-white">
+        <span className="hidden sm:inline-block rounded-full bg-[#24131E] px-3.5 py-1 text-[11px] font-semibold text-white">
           Contextual Guidance
         </span>
       </div>
 
-      <p className="mt-3 text-meta text-muted leading-relaxed">
+      <p className="mt-3 text-meta text-[#5A4450] leading-relaxed">
         Thoughtful cultural and architectural guidance to experience this ecosystem with authenticity, respect, and deep historical awareness.
       </p>
 

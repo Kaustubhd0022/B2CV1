@@ -136,27 +136,27 @@ export function StoryTimeline({ slug }: { slug: string }) {
   if (!milestones || milestones.length === 0) return null;
 
   return (
-    <section id="timeline-section" className="mt-14 rounded-3xl border border-gold/30 bg-gradient-to-br from-[#161310] via-[#1a1714] to-[#12100d] p-6 sm:p-8 shadow-md">
-      <div className="flex items-center gap-2 text-meta font-semibold uppercase tracking-wider text-gold">
+    <section id="timeline-section" className="mt-14 rounded-[2.5rem] border border-[#F0DCE4] bg-white/80 backdrop-blur-md p-6 sm:p-8 shadow-sm">
+      <div className="flex items-center gap-2 text-meta font-semibold uppercase tracking-wider text-amber-700">
         <span>✦</span>
         <span>A River Through Time</span>
       </div>
-      <h2 className="mt-2 font-serif text-2xl sm:text-3xl font-semibold text-charcoal">
+      <h2 className="mt-2 font-serif text-2xl sm:text-3xl font-semibold text-[#20101B]">
         Chronological Timeline of Heritage & Memory
       </h2>
-      <p className="mt-1 text-meta text-muted max-w-2xl">
+      <p className="mt-1 text-meta text-[#5A4450] max-w-2xl">
         Trace how philosophical, political, and architectural epochs shaped this cultural landmark over centuries.
       </p>
 
       <div className="mt-8 space-y-8 relative">
         {/* Continuous vertical timeline connector line */}
-        <div className="absolute top-4 bottom-4 left-[15px] sm:left-[19px] w-0.5 bg-gradient-to-b from-gold/60 via-gold/30 to-gold/10" />
+        <div className="absolute top-4 bottom-4 left-[15px] sm:left-[19px] w-0.5 bg-gradient-to-b from-amber-600/60 via-amber-600/30 to-amber-600/10" />
 
         {milestones.map((m, idx) => (
           <FadeIn key={m.era} duration={0.3} delay={idx * 0.08}>
             <div className="relative flex items-start gap-4 sm:gap-6 pl-1">
               {/* Timeline Node Circle */}
-              <div className="relative z-10 flex h-8 w-8 sm:h-10 sm:w-10 shrink-0 items-center justify-center rounded-full border-2 border-gold bg-[#12100e] text-xs sm:text-sm font-bold text-gold shadow-md">
+              <div className="relative z-10 flex h-8 w-8 sm:h-10 sm:w-10 shrink-0 items-center justify-center rounded-full border-2 border-amber-600 bg-white text-xs sm:text-sm font-bold text-amber-800 shadow-md">
                 {idx + 1}
               </div>
 

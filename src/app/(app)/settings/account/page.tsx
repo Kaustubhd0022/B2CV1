@@ -70,30 +70,30 @@ export default async function AccountPage({
       <BackLink href="/settings" label={t("settings.title")} />
 
       {/* 1. Explorer Profile Header Card matching Reference Page 9 */}
-      <div className="mt-3 rounded-3xl border border-gold/30 bg-gradient-to-br from-[#171411] via-[#1a1714] to-[#12100d] p-6 sm:p-8 shadow-md">
-        <div className="flex flex-wrap items-center justify-between gap-2 border-b border-white/10 pb-4">
-          <div className="flex items-center gap-2 text-[11px] font-semibold uppercase tracking-wider text-gold">
+      <div className="mt-3 rounded-[2.5rem] border border-[#F0DCE4] bg-white/80 backdrop-blur-md p-6 sm:p-8 shadow-sm">
+        <div className="flex flex-wrap items-center justify-between gap-2 border-b border-[#F0DCE4] pb-4">
+          <div className="flex items-center gap-2 text-[11px] font-semibold uppercase tracking-wider text-amber-700">
             <span>✦</span>
             <span>Cultural Explorer Profile</span>
           </div>
-          <span className="rounded-full bg-gold/15 border border-gold/30 px-3 py-0.5 text-meta font-semibold text-gold">
+          <span className="rounded-full bg-amber-500/10 border border-amber-600/30 px-3 py-0.5 text-meta font-semibold text-amber-800">
             {isGuest ? "Guest Mode" : "Verified Explorer"}
           </span>
         </div>
 
         <div className="mt-5 flex flex-col sm:flex-row sm:items-center gap-5">
-          <span className="flex size-16 shrink-0 items-center justify-center rounded-2xl bg-forest font-serif text-2xl font-bold text-on-forest shadow-md">
+          <span className="flex size-16 shrink-0 items-center justify-center rounded-2xl bg-[#24131E] font-serif text-2xl font-bold text-white shadow-md">
             {(session.email ?? "E").slice(0, 1).toUpperCase()}
           </span>
 
           <div className="min-w-0 flex-1">
-            <h1 className="font-serif text-2xl sm:text-3xl font-semibold text-charcoal break-all sm:break-normal">
+            <h1 className="font-serif text-2xl sm:text-3xl font-semibold text-[#20101B] break-all sm:break-normal">
               {session.email ?? (isGuest ? "Cultural Explorer (Guest)" : "Verified Explorer")}
             </h1>
-            <div className="mt-1 flex flex-wrap items-center gap-2 text-meta text-muted">
-              <span>Primary Language: <strong className="text-charcoal font-semibold">{currentLang.native}</strong></span>
+            <div className="mt-1 flex flex-wrap items-center gap-2 text-meta text-[#5A4450]">
+              <span>Primary Language: <strong className="text-[#20101B] font-semibold">{currentLang.native}</strong></span>
               <span>·</span>
-              <span>Access Role: <strong className="text-gold capitalize font-semibold">{session.role}</strong></span>
+              <span>Access Role: <strong className="text-amber-800 capitalize font-semibold">{session.role}</strong></span>
             </div>
           </div>
 

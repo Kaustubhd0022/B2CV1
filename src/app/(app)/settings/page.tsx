@@ -22,29 +22,29 @@ export default async function SettingsPage() {
   return (
     <Page className="max-w-2xl pt-2">
       {/* Explorer Profile Banner (Master Spec §12 Screen 10 / Reference Page 9) */}
-      <div className="rounded-3xl border border-gold/25 bg-gradient-to-br from-[#171512] via-[#1a1714] to-[#12100d] p-6 sm:p-8 shadow-md">
+      <div className="rounded-[2.5rem] border border-[#F0DCE4] bg-white/80 backdrop-blur-md p-6 sm:p-8 shadow-sm">
         <div className="flex items-center justify-between">
-          <div className="flex items-center gap-2 text-meta font-semibold uppercase tracking-wider text-gold">
+          <div className="flex items-center gap-2 text-meta font-semibold uppercase tracking-wider text-amber-700">
             <span>✦</span>
             <span>My Cultural Journey</span>
           </div>
-          <span className="rounded-full bg-gold/10 border border-gold/30 px-3 py-1 text-meta font-semibold text-gold">
+          <span className="rounded-full bg-amber-500/10 border border-amber-600/30 px-3 py-1 text-meta font-semibold text-amber-800">
             Explorer Profile
           </span>
         </div>
 
         <div className="mt-4 flex items-center gap-4">
-          <span className="flex size-14 items-center justify-center rounded-full bg-forest font-serif text-section font-semibold text-on-forest shadow-md">
+          <span className="flex size-14 items-center justify-center rounded-full bg-[#24131E] font-serif text-section font-semibold text-white shadow-md">
             {(session.email ?? "T").slice(0, 1).toUpperCase()}
           </span>
           <div>
-            <h1 className="font-serif text-page font-semibold text-charcoal break-all sm:break-normal">
+            <h1 className="font-serif text-page font-semibold text-[#20101B] break-all sm:break-normal">
               {session.email ?? "Cultural Explorer"}
             </h1>
-            <div className="mt-1 flex flex-wrap items-center gap-2 text-meta text-muted">
-              <span>Language: <strong className="text-charcoal font-semibold">{languageInfo(lang).native}</strong></span>
+            <div className="mt-1 flex flex-wrap items-center gap-2 text-meta text-[#5A4450]">
+              <span>Language: <strong className="text-[#20101B] font-semibold">{languageInfo(lang).native}</strong></span>
               <span>·</span>
-              <span>Role: <strong className="text-terracotta capitalize font-semibold">{session.role}</strong></span>
+              <span>Role: <strong className="text-amber-800 capitalize font-semibold">{session.role}</strong></span>
             </div>
           </div>
         </div>
