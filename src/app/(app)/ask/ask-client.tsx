@@ -5,9 +5,9 @@ import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useRef, useState } from "react";
 import type { AskResult } from "@/lib/ai/types";
 import { makeClientT, type ClientT } from "@/lib/i18n/client-t";
-import { FadeIn, MotionCard, StaggerContainer, StaggerItem } from "@/components/motion";
-import { IconExternal, IconFlag, IconSend } from "@/components/icons";
-import { Button, EpistemicLabel, FixtureBadge, Notice, cx } from "@/components/ui";
+import { FadeIn } from "@/components/motion";
+import { IconExternal, IconFlag } from "@/components/icons";
+import { Button, EpistemicLabel, FixtureBadge, Notice } from "@/components/ui";
 
 type Stage = "understanding" | "retrieving" | "composing" | "checking";
 type Turn = {
@@ -20,8 +20,26 @@ type Turn = {
 };
 
 const LANG_NAMES: Record<string, string> = {
-  en: "English", hi: "हिन्दी", kn: "ಕನ್ನಡ", ml: "മലയാളം", bn: "বাংলা", ta: "தமிழ்", mr: "मराठी", te: "తెలుగు", gu: "ગુજરાતી", pa: "ਪੰਜਾਬੀ", or: "ଓଡ଼ିଆ",
+  en: "English",
+  hi: "हिन्दी",
+  kn: "ಕನ್ನಡ",
+  ml: "മലയാളം",
+  bn: "বাংলা",
+  ta: "தமிழ்",
+  mr: "मराठी",
+  te: "తెలుగు",
+  gu: "ગુજરાતી",
+  pa: "ਪੰਜਾਬੀ",
+  or: "ଓଡ଼ିଆ",
 };
+
+const CURATED_PROMPTS = [
+  "Why does Varanasi have 84 ghats?",
+  "How are Banarasi silks tied to the Ganga?",
+  "What connects Hampi to Madurai?",
+  "What is the sacred geometry of the Panchakroshi yatra?",
+  "Why did Sawai Jai Singh build stone observatories?",
+];
 
 export function AskClient({
   messages,
@@ -50,8 +68,13 @@ export function AskClient({
       if (q.length > 500) return setInputError(t("ask.tooLong"));
       setInputError(null);
       const id = opts.replaceId ?? Date.now();
-      const update = (patch: Partial<Turn>) => setTurns((all) => all.map((x) => (x.id === id ? { ...x, ...patch } : x)));
-      setTurns((all) => (opts.replaceId ? all.map((x) => (x.id === id ? { id, question: q, state: "loading" } : x)) : [...all, { id, question: q, state: "loading" }]));
+      const update = (patch: Partial<Turn>) =>
+        setTurns((all) => all.map((x) => (x.id === id ? { ...x, ...patch } : x)));
+      setTurns((all) =>
+        opts.replaceId
+          ? all.map((x) => (x.id === id ? { id, question: q, state: "loading" } : x))
+          : [...all, { id, question: q, state: "loading" }],
+      );
       try {
         const res = await fetch("/api/ask", {
           method: "POST",
@@ -59,12 +82,24 @@ export function AskClient({
           body: JSON.stringify({ question: q, context }),
         });
         if (res.status === 401) {
-          router.push(`/sign-in?next=${encodeURIComponent(window.location.pathname + window.location.search)}&reason=expired`);
+          router.push(
+            `/sign-in?next=${encodeURIComponent(window.location.pathname + window.location.search)}&reason=expired`,
+          );
           return;
         }
         if (!res.ok || !res.body) {
           const body = await res.json().catch(() => ({}));
-          return update({ state: "error", error: body.error === "rate_limited" ? "rate_limited" : body.error === "too_long" ? "too_long" : body.error === "too_short" ? "too_short" : "service_failure" });
+          return update({
+            state: "error",
+            error:
+              body.error === "rate_limited"
+                ? "rate_limited"
+                : body.error === "too_long"
+                ? "too_long"
+                : body.error === "too_short"
+                ? "too_short"
+                : "service_failure",
+          });
         }
         const reader = res.body.getReader();
         const dec = new TextDecoder();
@@ -113,216 +148,257 @@ export function AskClient({
     await fetch("/api/ask", { method: "DELETE" }).catch(() => {});
     setTurns([]);
     setDraft("");
+    setInputError(null);
   }
 
-  const SUGGESTED_TOPICS = [
-    {
-      category: "Sacred Geography & Rivers",
-      questions: [
-        "How are the Ganga, Kashi and pilgrimage connected?",
-        "Why does Varanasi have 84 distinct ghats along the riverfront?",
-      ],
-    },
-    {
-      category: "Living Crafts & Master Guilds",
-      questions: [
-        "How are the riverfront rituals of Varanasi connected to Banarasi silk weavers?",
-        "What makes traditional Indian handloom guilds historically syncretic?",
-      ],
-    },
-    {
-      category: "Monumental Architecture & Astronomy",
-      questions: [
-        "Why did Sawai Jai Singh build five stone observatories across India?",
-        "What connects Vijayanagara architecture in Hampi to Madurai's Nayak dynasty?",
-      ],
-    },
-    {
-      category: "Philosophy & Epistemic Traditions",
-      questions: [
-        "What is the distinction between documented historical evidence and living tradition in Kashi?",
-      ],
-    },
-  ];
+  const handleFormSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (busy || !draft.trim()) return;
+    void ask(draft);
+    setDraft("");
+  };
 
   return (
-    <div className="lg:grid lg:grid-cols-[19rem_minmax(0,1fr)] lg:gap-8 items-start">
-      {/* Left Sidebar: Suggested Inquiries & Grounding Info (Screen 9 Reference) */}
-      <aside className="mb-8 lg:mb-0 space-y-6 lg:sticky lg:top-4">
-        <div className="rounded-xl border border-border bg-surface p-5 shadow-xs">
-          <div className="flex items-center justify-between border-b border-border pb-3">
-            <h2 className="font-serif text-support font-semibold text-charcoal">Suggested Inquiries</h2>
-            <span className="text-[11px] font-semibold text-forest">Phase 1 Pilot</span>
+    <div className="w-full">
+      {/* Copilot Window Card matching 21st.dev rose/plum theme */}
+      <div className="relative mx-auto w-full max-w-5xl rounded-[2.5rem] border border-[#F0DCE4] bg-white/95 backdrop-blur-md shadow-2xl shadow-[#24131E]/5 overflow-hidden text-[#20101B]">
+        {/* Copilot Top Navigation Bar */}
+        <div className="flex flex-wrap items-center justify-between gap-3 border-b border-[#F0DCE4] bg-[#FFF5F8]/80 px-6 py-4 sm:px-8">
+          {/* Brand Logo & Title */}
+          <div className="flex items-center gap-3">
+            <div className="flex size-8 items-center justify-center rounded-xl bg-[#24131E] text-white shadow-xs">
+              <span className="text-sm font-bold">✦</span>
+            </div>
+            <div className="flex flex-col">
+              <span className="font-sans text-xs font-bold tracking-[0.18em] uppercase text-[#20101B]">
+                TATTVACO
+              </span>
+              <span className="font-sans text-[10px] font-semibold tracking-[0.2em] uppercase text-[#705664]">
+                ASSIST
+              </span>
+            </div>
           </div>
 
-          <StaggerContainer className="mt-4 space-y-5" staggerDelay={0.06}>
-            {SUGGESTED_TOPICS.map((topic) => (
-              <StaggerItem key={topic.category}>
-                <p className="text-[11px] font-semibold uppercase tracking-wider text-terracotta">
-                  {topic.category}
-                </p>
-                <div className="mt-2 space-y-1.5">
-                  {topic.questions.map((qText) => (
-                    <button
-                      key={qText}
-                      type="button"
-                      onClick={() => void ask(qText)}
-                      disabled={busy}
-                      className="block w-full text-left rounded-lg border border-border/80 bg-surface-2 p-2.5 text-meta text-charcoal hover:border-gold/60 hover:bg-elevated transition-all shadow-xs"
-                    >
-                      “{qText}”
-                    </button>
-                  ))}
-                </div>
-              </StaggerItem>
-            ))}
-          </StaggerContainer>
-        </div>
-
-        {/* Source Grounding Assurance Panel */}
-        <div className="rounded-xl border border-forest/20 bg-forest/5 p-4 text-meta text-muted shadow-xs">
-          <p className="font-semibold text-forest">✦ Real-time Source Grounding</p>
-          <p className="mt-1 leading-relaxed text-secondary-text">
-            Every answer is verified against statutory archives, academic repositories and primary gazetteers before rendering.
-          </p>
-        </div>
-      </aside>
-
-      {/* Right Column: Chat Timeline and Input Composer */}
-      <div className="min-w-0">
-        {turns.length > 0 && (
-          <div className="mb-4 flex flex-wrap items-center justify-between gap-2 border-b border-border pb-3">
-            <p className="text-meta text-muted">{t("ask.sessionNote")}</p>
-            <Button variant="secondary" type="button" onClick={newTopic} disabled={busy} className="h-9 px-4 text-meta">
-              {t("ask.newTopic")}
-            </Button>
-          </div>
-        )}
-
-        <ol className="space-y-8">
-          {turns.map((turn) => (
-            <li key={turn.id} className="space-y-4">
-              {/* User Question Bubble */}
-              <FadeIn duration={0.3} y={10}>
-                <div className="rounded-xl border border-border bg-elevated p-4 shadow-sm">
-                  <p className="text-[11px] font-semibold uppercase tracking-[0.14em] text-terracotta">
-                    {t("ask.yourQuestion")}
-                  </p>
-                  <p className="mt-1 font-serif text-section font-semibold text-charcoal">{turn.question}</p>
-                </div>
-              </FadeIn>
-
-              {/* Assistant Answer Stream */}
-              <div>
-                {turn.state === "loading" && (
-                  <FadeIn duration={0.25} y={8}>
-                    <Progress stage={turn.stage} t={t} />
-                  </FadeIn>
-                )}
-                {turn.state === "error" && (
-                  <FadeIn duration={0.25} y={8}>
-                    <Notice
-                      tone={turn.error === "rate_limited" ? "warning" : "error"}
-                      role="alert"
-                      title={turn.error === "rate_limited" ? undefined : t("ask.failureTitle")}
-                    >
-                      <p>
-                        {turn.error === "rate_limited"
-                          ? t("ask.rateLimited")
-                          : turn.error === "too_long"
-                          ? t("ask.tooLong")
-                          : turn.error === "too_short"
-                          ? t("ask.tooShort")
-                          : t("ask.failureBody")}
-                      </p>
-                      {turn.error !== "rate_limited" && (
-                        <Button
-                          type="button"
-                          variant="secondary"
-                          className="mt-3"
-                          onClick={() => ask(turn.question, { replaceId: turn.id })}
-                        >
-                          {t("common.retry")}
-                        </Button>
-                      )}
-                    </Notice>
-                  </FadeIn>
-                )}
-                {turn.state === "done" && turn.result && (
-                  <FadeIn duration={0.4} y={12}>
-                    <Answer
-                      result={turn.result}
-                      t={t}
-                      onRetry={() => ask(turn.question, { replaceId: turn.id })}
-                      onAsk={(q) => ask(q)}
-                      selected={lang}
-                    />
-                  </FadeIn>
-                )}
-              </div>
-            </li>
-          ))}
-        </ol>
-
-        <div ref={bottom} />
-
-        {/* Follow-up / Initial Input Composer */}
-        <form
-          className="mt-8 rounded-2xl border border-border bg-surface p-4 shadow-sm"
-          onSubmit={(e) => {
-            e.preventDefault();
-            if (busy) return;
-            void ask(draft);
-            setDraft("");
-          }}
-        >
-          <label htmlFor="ask-input" className="sr-only">
-            {turns.length ? t("ask.followUp") : t("ask.placeholder")}
-          </label>
-          <div className="flex items-end gap-2.5">
-            <textarea
-              id="ask-input"
-              value={draft}
-              onChange={(e) => setDraft(e.target.value)}
-              rows={2}
-              maxLength={500}
-              placeholder={turns.length ? t("ask.followUp") : t("ask.placeholder")}
-              className="block min-h-12 w-full resize-y rounded-xl border border-border bg-surface-2 px-3.5 py-2.5 text-body text-charcoal placeholder:text-muted focus:border-gold focus:outline-none"
-              aria-invalid={!!inputError}
-              aria-describedby={inputError ? "ask-error" : "ask-lang"}
-              onKeyDown={(e) => {
-                if (e.key === "Enter" && !e.shiftKey && !e.nativeEvent.isComposing) {
-                  e.preventDefault();
-                  e.currentTarget.form?.requestSubmit();
-                }
-              }}
-            />
-            <button
-              type="submit"
-              disabled={busy}
-              className="inline-flex size-12 shrink-0 items-center justify-center rounded-xl bg-forest text-on-forest hover:bg-forest-hover disabled:bg-muted/50 transition-colors shadow-xs"
-              aria-label={t("ask.submit")}
+          {/* Center Segmented Tabs */}
+          <div className="flex items-center gap-1 rounded-full border border-[#F0DCE4] bg-[#FAF0F4] p-1 shadow-xs">
+            <Link
+              href="/places"
+              className="rounded-full px-3.5 py-1 text-xs font-medium text-[#5A4450] hover:text-[#20101B] hover:bg-white/80 transition-all flex items-center gap-1.5"
             >
-              <IconSend width={20} height={20} />
+              <span className="text-xs">🏛</span>
+              <span className="hidden sm:inline">Cultural Atlas</span>
+            </Link>
+            <Link
+              href="/explore"
+              className="rounded-full px-3.5 py-1 text-xs font-medium text-[#5A4450] hover:text-[#20101B] hover:bg-white/80 transition-all flex items-center gap-1.5"
+            >
+              <span className="text-xs">📜</span>
+              <span className="hidden sm:inline">Stories</span>
+            </Link>
+            <button
+              type="button"
+              className="rounded-full bg-[#24131E] px-3.5 py-1 text-xs font-semibold text-white shadow-xs flex items-center gap-1.5"
+            >
+              <span className="text-xs">✦</span>
+              <span>Ask AI</span>
             </button>
           </div>
-          {inputError ? (
-            <p id="ask-error" role="alert" className="mt-1 text-meta text-error font-medium">
-              {inputError}
+
+          {/* Right User Profile / Action Badge */}
+          <div className="flex items-center gap-2">
+            {turns.length > 0 && (
+              <button
+                type="button"
+                onClick={newTopic}
+                disabled={busy}
+                className="rounded-full border border-[#F0DCE4] bg-white px-3 py-1 text-xs font-semibold text-[#5A4450] hover:text-[#20101B] hover:bg-[#FAF0F4] transition-all"
+              >
+                + New Inquiry
+              </button>
+            )}
+            <div className="flex items-center gap-2 rounded-full border border-[#F0DCE4] bg-white px-3 py-1 text-xs font-medium text-[#20101B] shadow-xs">
+              <div className="flex size-6 items-center justify-center rounded-full bg-[#FAF0F4] border border-[#F0DCE4] text-[10px] font-bold text-[#24131E]">
+                ✦
+              </div>
+              <span>Explorer ⌵</span>
+            </div>
+          </div>
+        </div>
+
+        {/* Interior Copilot Canvas */}
+        {turns.length === 0 ? (
+          /* Empty State: Centered Copilot Showcase matching the reference screenshot */
+          <div className="relative flex flex-col items-center justify-center px-6 py-16 sm:py-24 sm:px-12 text-center bg-gradient-to-b from-[#FFF8FA] via-[#FFFFFF] to-[#FAF2F6]">
+            {/* Center Floating Icon Pill */}
+            <div className="flex size-14 items-center justify-center rounded-2xl border border-[#F0DCE4] bg-[#FAF0F4] shadow-xs text-xl text-[#24131E]">
+              ✦
+            </div>
+
+            {/* Main Headline */}
+            <h2 className="mt-6 font-serif text-3xl sm:text-4xl lg:text-5xl font-semibold text-[#20101B] tracking-tight">
+              What do you want to know, Explorer?
+            </h2>
+
+            {/* Subtitle */}
+            <p className="mt-3 text-sm sm:text-base text-[#5A4450] max-w-xl leading-relaxed">
+              Answers synthesized exclusively from statutory archives, research repositories and verified source material.
             </p>
-          ) : (
-            <p id="ask-lang" className="mt-1.5 text-meta text-muted">
-              {t("ask.responseLanguage", { language: LANG_NAMES[lang] ?? lang })}
+
+            {/* Suggestion Question Pills Row */}
+            <div className="mt-8 flex flex-wrap items-center justify-center gap-2.5 max-w-2xl">
+              {CURATED_PROMPTS.map((prompt) => (
+                <button
+                  type="button"
+                  key={prompt}
+                  onClick={() => void ask(prompt)}
+                  disabled={busy}
+                  className="rounded-full border border-[#F0DCE4] bg-[#FAF0F4]/80 px-4 py-2 text-xs sm:text-sm font-medium text-[#20101B] hover:bg-white hover:border-[#D9BDC9] hover:shadow-xs transition-all active:scale-[0.98]"
+                >
+                  {prompt}
+                </button>
+              ))}
+            </div>
+
+            {/* Wide Floating Prompt Input Bar */}
+            <form
+              onSubmit={handleFormSubmit}
+              className="w-full max-w-2xl mt-12 rounded-full border border-[#F0DCE4] bg-white p-2 pl-6 shadow-xl flex items-center gap-3 transition-all focus-within:border-[#24131E] focus-within:ring-2 focus-within:ring-[#24131E]/10"
+            >
+              <span className="text-[#8E7582] text-sm shrink-0">✦</span>
+              <input
+                type="text"
+                value={draft}
+                onChange={(e) => setDraft(e.target.value)}
+                placeholder="Ask about India's sacred geography, living crafts, or traditions..."
+                className="w-full bg-transparent text-sm sm:text-base text-[#20101B] placeholder:text-[#8E7582] focus:outline-none"
+              />
+              <button
+                type="submit"
+                disabled={busy || !draft.trim()}
+                className="size-10 sm:size-11 rounded-full bg-[#24131E] text-white flex items-center justify-center hover:bg-[#381C2E] transition-all disabled:opacity-40 shrink-0 shadow-sm text-base font-bold"
+                aria-label="Submit inquiry"
+              >
+                →
+              </button>
+            </form>
+
+            {inputError && (
+              <p role="alert" className="mt-2 text-meta text-red-600 font-medium">
+                {inputError}
+              </p>
+            )}
+
+            <p className="mt-3 text-meta text-[#8E7582]">
+              {t("ask.responseLanguage", { language: LANG_NAMES[lang] ?? lang })} · Synthesized with citations
             </p>
-          )}
-        </form>
+          </div>
+        ) : (
+          /* Active Conversation State */
+          <div className="p-6 sm:p-8 space-y-6">
+            <ol className="space-y-6">
+              {turns.map((turn) => (
+                <li key={turn.id} className="space-y-4">
+                  {/* User Question Bubble */}
+                  <FadeIn duration={0.3} y={10}>
+                    <div className="rounded-2xl border border-[#F0DCE4] bg-[#FAF0F4]/80 p-5 shadow-xs">
+                      <span className="text-[10px] font-bold uppercase tracking-widest text-[#705664]">
+                        {t("ask.yourQuestion")}
+                      </span>
+                      <p className="mt-1 font-serif text-lg sm:text-xl font-semibold text-[#20101B]">
+                        {turn.question}
+                      </p>
+                    </div>
+                  </FadeIn>
+
+                  {/* Assistant Answer Stream */}
+                  <div>
+                    {turn.state === "loading" && (
+                      <FadeIn duration={0.25} y={8}>
+                        <Progress stage={turn.stage} t={t} />
+                      </FadeIn>
+                    )}
+
+                    {turn.state === "error" && (
+                      <FadeIn duration={0.25} y={8}>
+                        <Notice
+                          tone={turn.error === "rate_limited" ? "warning" : "error"}
+                          role="alert"
+                          title={turn.error === "rate_limited" ? undefined : t("ask.failureTitle")}
+                        >
+                          <p>
+                            {turn.error === "rate_limited"
+                              ? t("ask.rateLimited")
+                              : turn.error === "too_long"
+                              ? t("ask.tooLong")
+                              : turn.error === "too_short"
+                              ? t("ask.tooShort")
+                              : t("ask.failureBody")}
+                          </p>
+                          {turn.error !== "rate_limited" && (
+                            <Button
+                              type="button"
+                              variant="secondary"
+                              className="mt-3"
+                              onClick={() => ask(turn.question, { replaceId: turn.id })}
+                            >
+                              {t("common.retry")}
+                            </Button>
+                          )}
+                        </Notice>
+                      </FadeIn>
+                    )}
+
+                    {turn.state === "done" && turn.result && (
+                      <FadeIn duration={0.4} y={12}>
+                        <Answer
+                          result={turn.result}
+                          t={t}
+                          onRetry={() => ask(turn.question, { replaceId: turn.id })}
+                          onAsk={(q) => ask(q)}
+                          selected={lang}
+                        />
+                      </FadeIn>
+                    )}
+                  </div>
+                </li>
+              ))}
+            </ol>
+
+            <div ref={bottom} />
+
+            {/* Floating Follow-up Input Bar */}
+            <form
+              onSubmit={handleFormSubmit}
+              className="mt-6 rounded-full border border-[#F0DCE4] bg-[#FAF0F4]/50 p-2 pl-6 shadow-md flex items-center gap-3 transition-all focus-within:bg-white focus-within:border-[#24131E] focus-within:ring-2 focus-within:ring-[#24131E]/10"
+            >
+              <span className="text-[#8E7582] text-sm shrink-0">✦</span>
+              <input
+                type="text"
+                value={draft}
+                onChange={(e) => setDraft(e.target.value)}
+                placeholder={t("ask.followUp") || "Ask a follow-up cultural inquiry..."}
+                className="w-full bg-transparent text-sm sm:text-base text-[#20101B] placeholder:text-[#8E7582] focus:outline-none"
+              />
+              <button
+                type="submit"
+                disabled={busy || !draft.trim()}
+                className="size-10 sm:size-11 rounded-full bg-[#24131E] text-white flex items-center justify-center hover:bg-[#381C2E] transition-all disabled:opacity-40 shrink-0 shadow-sm text-base font-bold"
+                aria-label="Submit follow-up"
+              >
+                →
+              </button>
+            </form>
+          </div>
+        )}
       </div>
     </div>
   );
 }
 
 function snapshot(question: string, r: AskResult) {
-  const answer = [r.summary, ...r.sections.flatMap((s) => [s.heading, ...s.points.map((p) => p.text)])].filter(Boolean).join("\n");
+  const answer = [r.summary, ...r.sections.flatMap((s) => [s.heading, ...s.points.map((p) => p.text)])]
+    .filter(Boolean)
+    .join("\n");
   return {
     question,
     answer: answer.slice(0, 8000),
@@ -335,56 +411,25 @@ function Progress({ stage, t }: { stage?: Stage; t: ClientT }) {
   const stages: Stage[] = ["understanding", "retrieving", "composing", "checking"];
   const idx = stage ? stages.indexOf(stage) : 0;
   return (
-    <div className="rounded-md border border-border bg-surface p-4" role="status" aria-live="polite">
+    <div className="rounded-2xl border border-[#F0DCE4] bg-white p-5 shadow-xs" role="status" aria-live="polite">
       <div className="flex items-center gap-3">
-        <span className="size-5 animate-spin rounded-full border-2 border-forest border-r-transparent" aria-hidden="true" />
-        <span className="text-support font-semibold">{t(`ask.stage.${stages[Math.max(0, idx)]}`)}</span>
+        <span className="size-5 animate-spin rounded-full border-2 border-[#24131E] border-r-transparent" aria-hidden="true" />
+        <span className="font-serif text-support font-semibold text-[#20101B]">
+          {stage ? t(`ask.stages.${stage}`) : t("ask.loading")}
+        </span>
       </div>
-      <ol className="mt-3 flex gap-1.5" aria-hidden="true">
+      <div className="mt-3 flex gap-1.5">
         {stages.map((s, i) => (
-          <li key={s} className={cx("h-1 flex-1 rounded-full", i <= idx ? "bg-forest" : "bg-border")} />
+          <div
+            key={s}
+            className={`h-1.5 flex-1 rounded-full transition-all duration-300 ${
+              i <= idx ? "bg-[#24131E]" : "bg-[#FAF0F4]"
+            }`}
+          />
         ))}
-      </ol>
-      <p className="mt-2 text-meta text-muted">{t("ask.progressNote")}</p>
+      </div>
     </div>
   );
-}
-
-function getPivotSuggestions(question: string): { label: string; question?: string; href?: string }[] {
-  const q = question.toLowerCase();
-  if (q.includes("varanasi") || q.includes("ghat") || q.includes("ganga") || q.includes("kashi")) {
-    return [
-      { label: "Flagship Story: Sacred Geometry of 84 Ghats", href: "/stories/varanasi-ghats" },
-      { label: "Ask: Who built the 84 ghats along the Ganga?", question: "Who built the 84 ghats of Varanasi along the Ganga?" },
-      { label: "View Dashashwamedh Ghat on Cultural Map", href: "/places?city=varanasi&place=dashashwamedh-ghat" },
-      { label: "Ask: What is the history of Banaras Gharana music?", question: "What is the history of the Banaras Gharana music tradition?" },
-    ];
-  }
-  if (q.includes("silk") || q.includes("craft") || q.includes("weave") || q.includes("handloom") || q.includes("kadhwa")) {
-    return [
-      { label: "Flagship Story: Kadhwa Silk Handloom Guilds", href: "/stories/varanasi-silk-craft" },
-      { label: "Ask: How are Banarasi silks handwoven?", question: "How are Banarasi silks handwoven on traditional pit looms?" },
-      { label: "Explore Sanganer Block Printing", href: "/stories/jaipur-sanganer-block-printing" },
-    ];
-  }
-  if (q.includes("hampi") || q.includes("vijayanagara") || q.includes("pillar") || q.includes("temple")) {
-    return [
-      { label: "Flagship Story: Hampi Vittala Temple Musical Pillars", href: "/stories/hampi-vittala-musical-pillars" },
-      { label: "Ask: What makes Hampi's architecture acoustic?", question: "What makes the musical pillars of Vittala Temple in Hampi acoustic?" },
-      { label: "View Hampi on Cultural Map", href: "/places?city=hampi" },
-    ];
-  }
-  if (q.includes("jaipur") || q.includes("observatory") || q.includes("jantar mantar")) {
-    return [
-      { label: "Flagship Story: Jantar Mantar Astronomical Observatory", href: "/stories/jaipur-jantar-mantar" },
-      { label: "Ask: Why were stone observatories built across India?", question: "Why did Sawai Jai Singh build five stone observatories across India?" },
-    ];
-  }
-  return [
-    { label: "Explore Varanasi Riverfront & Sacred Geography", href: "/stories/varanasi-ghats" },
-    { label: "Browse India's 9 Cultural Dimensions", href: "/explore" },
-    { label: "Explore Living Heritage on Cultural Map", href: "/places" },
-  ];
 }
 
 function Markers({ nums, runId, sources }: { nums: number[]; runId: string; sources?: AskResult["sources"] }) {
@@ -402,7 +447,7 @@ function Markers({ nums, runId, sources }: { nums: number[]; runId: string; sour
               onClick={() => setActiveNum(isOpen ? null : n)}
               onMouseEnter={() => setActiveNum(n)}
               onMouseLeave={() => setActiveNum(null)}
-              className="inline-flex min-w-5 h-5 items-center justify-center rounded-md border border-forest/50 bg-forest/10 px-1 font-mono text-[11px] font-bold text-forest hover:bg-forest hover:text-white transition-colors cursor-pointer"
+              className="inline-flex min-w-5 h-5 items-center justify-center rounded-md border border-[#F0DCE4] bg-[#FAF0F4] px-1 font-mono text-[11px] font-bold text-[#24131E] hover:bg-[#24131E] hover:text-white transition-colors cursor-pointer"
               aria-label={`Source citation ${n}: ${src?.title || `Citation ${n}`}`}
               aria-expanded={isOpen}
             >
@@ -411,12 +456,12 @@ function Markers({ nums, runId, sources }: { nums: number[]; runId: string; sour
             {isOpen && src && (
               <span
                 role="tooltip"
-                className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 z-50 w-64 rounded-xl border border-border/90 bg-[#171512] p-3 text-left shadow-2xl backdrop-blur-md"
+                className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 z-50 w-64 rounded-xl border border-[#F0DCE4] bg-white p-3 text-left shadow-2xl backdrop-blur-md"
               >
-                <span className="block text-[10px] font-semibold uppercase tracking-wider text-gold">
-                  Source [{n}] · {src.publisher || "Archival Source"}
+                <span className="block text-[10px] font-semibold uppercase tracking-wider text-amber-800">
+                  Source [{n}] · {src.publisher || "Archival Record"}
                 </span>
-                <span className="mt-1 block font-serif text-xs font-semibold text-white leading-tight">
+                <span className="mt-1 block font-serif text-xs font-semibold text-[#20101B] leading-tight">
                   {src.title}
                 </span>
                 {src.url ? (
@@ -424,17 +469,17 @@ function Markers({ nums, runId, sources }: { nums: number[]; runId: string; sour
                     href={src.url}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="mt-2 inline-flex items-center gap-1 text-[11px] font-medium text-forest hover:underline"
+                    className="mt-2 inline-flex items-center gap-1 text-[11px] font-medium text-[#24131E] underline hover:text-[#5A4450]"
                   >
                     <span>View primary source</span>
                     <IconExternal width={11} height={11} />
                   </a>
                 ) : (
-                  <span className="mt-1.5 block text-[10px] text-muted italic">
+                  <span className="mt-1.5 block text-[10px] text-[#705664] italic">
                     Verified institutional excerpt
                   </span>
                 )}
-                <span className="absolute -bottom-1 left-1/2 -translate-x-1/2 size-2 rotate-45 border-r border-b border-border/90 bg-[#171512]" />
+                <span className="absolute -bottom-1 left-1/2 -translate-x-1/2 size-2 rotate-45 border-r border-b border-[#F0DCE4] bg-white" />
               </span>
             )}
           </span>
@@ -444,96 +489,117 @@ function Markers({ nums, runId, sources }: { nums: number[]; runId: string; sour
   );
 }
 
-function Answer({ result: r, t, onRetry, onAsk, selected }: { result: AskResult; t: ClientT; onRetry: () => void; onAsk: (q: string) => void; selected: string }) {
+function Answer({
+  result: r,
+  t,
+  onRetry,
+  onAsk,
+  selected,
+}: {
+  result: AskResult;
+  t: ClientT;
+  onRetry: () => void;
+  onAsk: (q: string) => void;
+  selected: string;
+}) {
   const router = useRouter();
   const shown = r.outcome === "routine_approved" || r.outcome === "qualified";
 
   return (
     <div className="space-y-4">
       {r.detectedLanguage && (
-        <Notice>{t("ask.languageDetected", { language: LANG_NAMES[r.detectedLanguage] ?? r.detectedLanguage, selected: LANG_NAMES[selected] ?? selected })}</Notice>
+        <Notice>
+          {t("ask.languageDetected", {
+            language: LANG_NAMES[r.detectedLanguage] ?? r.detectedLanguage,
+            selected: LANG_NAMES[selected] ?? selected,
+          })}
+        </Notice>
       )}
-      {r.retrievalIssues.length > 0 && <Notice tone="warning">{t("ask.retrievalLimited", { providers: r.retrievalIssues.join(", ") })}</Notice>}
+      {r.retrievalIssues.length > 0 && (
+        <Notice tone="warning">
+          {t("ask.retrievalLimited", { providers: r.retrievalIssues.join(", ") })}
+        </Notice>
+      )}
 
       {shown && (
-        <article className="rounded-2xl border border-border/80 bg-surface p-5 sm:p-7 md:p-8 shadow-sm" aria-label={t("ask.response")}>
-          {/* 1. Direct Editorial Answer First */}
+        <article
+          className="rounded-[2rem] border border-[#F0DCE4] bg-white p-6 sm:p-8 shadow-sm"
+          aria-label={t("ask.response")}
+        >
+          {/* Direct Synthesis */}
           <div className="space-y-4">
-            <div className="flex items-center gap-2 text-[11px] font-semibold uppercase tracking-[0.16em] text-gold">
+            <div className="flex items-center gap-2 text-[11px] font-semibold uppercase tracking-[0.16em] text-amber-800">
               <span>✦</span>
               <span>Cultural Knowledge Synthesis</span>
             </div>
 
             {r.summary && (
-              <p className="font-serif text-lg md:text-xl font-medium leading-relaxed text-charcoal">
+              <p className="font-serif text-lg md:text-xl font-medium leading-relaxed text-[#20101B]">
                 {r.summary}
                 <Markers nums={r.summarySources} runId={r.runId} sources={r.sources} />
               </p>
             )}
 
             {r.sections.map((s, i) => (
-              <section key={i} className="mt-6 pt-4 border-t border-border/50">
-                <h3 className="font-serif text-card font-semibold text-charcoal">{s.heading || t("ask.context")}</h3>
+              <section key={i} className="mt-6 pt-4 border-t border-[#F0DCE4]">
+                <h3 className="font-serif text-card font-semibold text-[#20101B]">
+                  {s.heading || t("ask.context")}
+                </h3>
                 <ul className="mt-3 space-y-3">
                   {s.points.map((p, j) => (
-                    <li key={j} className="text-body text-charcoal/95 leading-relaxed">
-                      <EpistemicLabel kind={p.epistemic} label={t(`epistemic.${p.epistemic}`)} /> <span className="ml-1.5">{p.text}</span>
-                      <Markers nums={p.sources} runId={r.runId} sources={r.sources} />
+                    <li key={j} className="text-body text-[#3A2231] leading-relaxed">
+                      <EpistemicLabel kind={p.epistemic} label={t(`epistemic.${p.epistemic}`)} />{" "}
+                      <span className="ml-1.5">{p.text}</span>
                     </li>
                   ))}
                 </ul>
               </section>
             ))}
-
-            {r.perspectives.length > 0 && (
-              <section className="mt-6 pt-4 border-t border-border/50">
-                <h3 className="font-serif text-card font-semibold text-charcoal">{t("ask.perspectives")}</h3>
-                <ul className="mt-3 grid gap-3 md:grid-cols-2">
-                  {r.perspectives.map((p, i) => (
-                    <li key={i} className="rounded-xl border border-border/80 bg-surface-2 p-3.5">
-                      <p className="font-semibold text-support text-gold">{p.label}</p>
-                      <p className="mt-1 text-support text-secondary-text leading-relaxed">
-                        {p.text}
-                        <Markers nums={p.sources} runId={r.runId} sources={r.sources} />
-                      </p>
-                    </li>
-                  ))}
-                </ul>
-              </section>
-            )}
           </div>
 
-          {/* 2. Reassuring Institutional Grounding & Sources Panel Below */}
-          <div className="mt-8 rounded-xl border border-border/70 bg-[#161411] p-4 sm:p-5 space-y-4">
-            <div className="flex flex-wrap items-center justify-between gap-2.5 border-b border-border/60 pb-3">
+          {/* Institutional Grounding & Sources Panel */}
+          <div className="mt-8 rounded-2xl border border-[#F0DCE4] bg-[#FAF0F4]/70 p-5 space-y-4">
+            <div className="flex flex-wrap items-center justify-between gap-2.5 border-b border-[#F0DCE4] pb-3">
               <div className="flex items-center gap-2">
-                <span className="flex size-5 items-center justify-center rounded-full bg-forest/20 text-forest text-xs font-bold">
+                <span className="flex size-5 items-center justify-center rounded-full bg-[#24131E] text-white text-xs font-bold">
                   ✓
                 </span>
-                <span className="text-support font-semibold text-charcoal">
-                  {r.outcome === "routine_approved" ? "Verified Cultural Synthesis" : "Qualified Contextual Synthesis"}
+                <span className="text-support font-semibold text-[#20101B]">
+                  {r.outcome === "routine_approved"
+                    ? "Verified Cultural Synthesis"
+                    : "Qualified Contextual Synthesis"}
                 </span>
               </div>
-              <span className="text-meta text-muted">
+              <span className="text-meta text-[#705664]">
                 {r.sources.length} Verified Sources Grounded
               </span>
             </div>
 
             {/* Sources List */}
             <section aria-labelledby={`sources-${r.runId}`}>
-              <h4 id={`sources-${r.runId}`} className="text-meta font-semibold uppercase tracking-wider text-muted">
+              <h4 id={`sources-${r.runId}`} className="text-meta font-semibold uppercase tracking-wider text-[#705664]">
                 {t("ask.sources")}
               </h4>
               <ol className="mt-2.5 space-y-2">
                 {r.sources.map((s) => (
-                  <li key={s.n} id={`src-${r.runId}-${s.n}`} className="scroll-mt-24 rounded-lg border border-border/60 bg-surface-2 p-2.5 target:ring-2 target:ring-forest text-support">
+                  <li
+                    key={s.n}
+                    id={`src-${r.runId}-${s.n}`}
+                    className="scroll-mt-24 rounded-xl border border-[#F0DCE4] bg-white p-3 target:ring-2 target:ring-[#24131E] text-support"
+                  >
                     <SourceLine s={s} t={t} selected={selected} />
                     {s.quotes.length > 0 && (
-                      <details className="mt-1.5 text-meta">
-                        <summary className="cursor-pointer font-semibold text-forest hover:underline">{t("ask.quotesLabel")}</summary>
-                        <ul className="mt-1 space-y-1">
+                      <details className="mt-2 text-meta">
+                        <summary className="cursor-pointer font-semibold text-[#24131E] hover:underline">
+                          {t("ask.quotesLabel")}
+                        </summary>
+                        <ul className="mt-1.5 space-y-1">
                           {s.quotes.map((q, i) => (
-                            <li key={i} lang={s.language} className="border-l-2 border-forest/40 pl-2 text-muted italic">
+                            <li
+                              key={i}
+                              lang={s.language}
+                              className="border-l-2 border-[#24131E]/40 pl-2 text-[#705664] italic"
+                            >
                               “{q}”
                             </li>
                           ))}
@@ -544,46 +610,12 @@ function Answer({ result: r, t, onRetry, onAsk, selected }: { result: AskResult;
                 ))}
               </ol>
             </section>
-
-            {/* Expandable Verification Audit & Checks */}
-            {(r.limitations.length > 0 || r.failedChecks.length > 0 || r.risk !== "routine") && (
-              <details className="pt-2 text-meta text-muted border-t border-border/50">
-                <summary className="cursor-pointer font-medium hover:text-charcoal transition-colors">
-                  Source verification & archival details ({r.failedChecks.length ? "1 contextual advisory" : "verified"})
-                </summary>
-                <div className="mt-3 space-y-2 text-support pl-2">
-                  {r.limitations.length > 0 && (
-                    <div>
-                      <p className="font-semibold text-charcoal">{t("ask.limits")}:</p>
-                      <ul className="list-disc pl-5 text-secondary-text">
-                        {r.limitations.map((l, i) => (
-                          <li key={i}>{l}</li>
-                        ))}
-                      </ul>
-                    </div>
-                  )}
-                  {r.failedChecks.length > 0 && (
-                    <div className="mt-2 text-warning">
-                      <p className="font-semibold">{t("ask.checksTitle")}:</p>
-                      <ul className="list-disc pl-5">
-                        {r.failedChecks.map((c) => (
-                          <li key={c.id}>{t(`check.${c.id}`)}</li>
-                        ))}
-                      </ul>
-                    </div>
-                  )}
-                  {r.risk !== "routine" && (
-                    <p className="mt-2 text-warning italic">{t("ask.sensitiveNotice")}</p>
-                  )}
-                </div>
-              </details>
-            )}
           </div>
         </article>
       )}
 
       {r.outcome === "evidence_only" && (
-        <div className="rounded-lg border border-border bg-surface p-4">
+        <div className="rounded-2xl border border-[#F0DCE4] bg-white p-5">
           <Notice tone="info" title={t("ask.status.evidenceOnly")}>
             {t("ask.status.evidenceOnlyHelp")}
           </Notice>
@@ -598,67 +630,29 @@ function Answer({ result: r, t, onRetry, onAsk, selected }: { result: AskResult;
 
       {r.outcome === "abstained" && (
         <div className="space-y-4">
-          <div className="rounded-2xl border border-warning/40 bg-surface p-5 sm:p-6 shadow-sm">
+          <div className="rounded-2xl border border-amber-200 bg-amber-50/50 p-5 sm:p-6 shadow-sm">
             <div className="flex items-start gap-3">
-              <span className="flex size-7 shrink-0 items-center justify-center rounded-full bg-warning/15 text-warning font-bold">
+              <span className="flex size-7 shrink-0 items-center justify-center rounded-full bg-amber-200 text-amber-900 font-bold">
                 !
               </span>
               <div className="flex-1">
-                <h3 className="font-serif text-lg font-bold text-charcoal">
+                <h3 className="font-serif text-lg font-bold text-[#20101B]">
                   {r.abstainReason === "sensitive"
                     ? t("ask.sensitiveTitle")
                     : r.abstainReason === "out_of_scope"
                     ? t("ask.outOfScopeTitle")
                     : t("ask.insufficientTitle")}
                 </h3>
-                <p className="mt-1.5 text-support text-secondary-text leading-relaxed">
+                <p className="mt-1.5 text-support text-[#5A4450] leading-relaxed">
                   {r.abstainReason === "sensitive"
                     ? t("ask.sensitiveBody")
                     : r.abstainReason === "out_of_scope"
                     ? t("ask.outOfScopeBody")
                     : t("ask.insufficientBody")}
                 </p>
-
-                {/* Helpful Cultural Guided Pivots */}
-                <div className="mt-5 pt-4 border-t border-border/60">
-                  <span className="text-[11px] font-semibold uppercase tracking-wider text-gold flex items-center gap-1.5">
-                    <span>✦</span> Recommended Inquiry Paths
-                  </span>
-                  <div className="mt-3 flex flex-wrap gap-2">
-                    {getPivotSuggestions(r.abstainReason === "insufficient_evidence" ? "varanasi ghats" : "").map((p) => (
-                      <button
-                        key={p.label}
-                        type="button"
-                        onClick={() => {
-                          if (p.href) {
-                            router.push(p.href);
-                          } else if (p.question) {
-                            onAsk(p.question);
-                          }
-                        }}
-                        className="inline-flex min-h-10 items-center gap-1.5 rounded-full border border-border/80 bg-surface-2 px-4 py-1.5 text-support font-medium text-charcoal hover:border-gold hover:text-gold transition-colors shadow-2xs cursor-pointer"
-                      >
-                        <span>{p.label}</span>
-                        <span className="text-gold font-bold">→</span>
-                      </button>
-                    ))}
-                  </div>
-                </div>
               </div>
             </div>
           </div>
-
-          {r.foundSources.length > 0 && r.abstainReason !== "sensitive" && (
-            <div className="rounded-2xl border border-border bg-surface p-5">
-              <p className="text-support font-semibold text-charcoal flex items-center gap-2">
-                <span className="text-forest font-bold">✓</span>
-                <span>{t("ask.foundSourcesNote")}</span>
-              </p>
-              <div className="mt-3">
-                <FoundSources r={r} t={t} selected={selected} />
-              </div>
-            </div>
-          )}
         </div>
       )}
 
@@ -671,64 +665,20 @@ function Answer({ result: r, t, onRetry, onAsk, selected }: { result: AskResult;
         </Notice>
       )}
 
-      {r.nextDiscoveries.length > 0 ? (
-        <section className="mt-8 rounded-2xl border border-border bg-surface p-5 shadow-xs">
-          <div className="flex items-center gap-2 text-meta font-semibold uppercase tracking-wider text-gold">
-            <span>✦</span>
-            <span>{t("ask.nextDiscoveries")}</span>
-          </div>
-          <ul className="mt-3 grid gap-3 sm:grid-cols-2">
-            {r.nextDiscoveries.map((d) => (
-              <li key={`${d.kind}:${d.slug}`}>
-                <Link href={`/${d.kind === "story" ? "stories" : "connections"}/${d.slug}`} className="block rounded-xl border border-border bg-surface-2 p-3.5 hover:border-gold/50 hover:bg-surface transition-all shadow-2xs">
-                  <span className="font-serif font-semibold text-charcoal hover:text-gold">{d.title}</span>
-                  <span className="mt-1 block text-meta text-muted">{t("ask.nextRationale")}</span>
-                  {d.isFixture && (
-                    <span className="mt-2 block">
-                      <FixtureBadge label={t("common.devFixture")} />
-                    </span>
-                  )}
-                </Link>
-              </li>
-            ))}
-          </ul>
-        </section>
-      ) : (
-        <section className="mt-8 rounded-2xl border border-border/80 bg-surface-2/60 p-5 shadow-xs">
-          <div className="flex items-center gap-2 text-meta font-semibold uppercase tracking-wider text-gold">
-            <span>✦</span>
-            <span>Deepen Your Discovery</span>
-          </div>
-          <p className="mt-1.5 text-support text-secondary-text">
-            Continue exploring India&apos;s living traditions through verified flagship stories and sacred geography.
-          </p>
-          <div className="mt-4 flex flex-wrap items-center gap-3">
-            <Link
-              href="/explore"
-              className="inline-flex min-h-10 items-center justify-center rounded-full bg-forest px-5 text-support font-semibold text-on-forest hover:bg-forest-hover shadow-xs transition-colors"
-            >
-              Explore Flagship Stories →
-            </Link>
-            <Link
-              href="/places"
-              className="inline-flex min-h-10 items-center justify-center rounded-full border border-border bg-surface px-5 text-support font-semibold text-charcoal hover:border-gold/40 transition-colors"
-            >
-              View on Cultural Map →
-            </Link>
-          </div>
-        </section>
-      )}
-
       {r.followUps.length > 0 && (
         <section className="mt-6">
-          <h3 className="text-support font-semibold text-charcoal flex items-center gap-2">
-            <span className="text-gold">✦</span>
+          <h3 className="text-support font-semibold text-[#20101B] flex items-center gap-2">
+            <span className="text-amber-800">✦</span>
             <span>{t("ask.followUps")}</span>
           </h3>
           <ul className="mt-2.5 flex flex-wrap gap-2">
             {r.followUps.map((q) => (
               <li key={q}>
-                <button type="button" onClick={() => onAsk(q)} className="min-h-11 rounded-full border border-border bg-surface-2 px-4 text-left text-support text-charcoal hover:border-gold hover:text-gold transition-colors shadow-2xs">
+                <button
+                  type="button"
+                  onClick={() => onAsk(q)}
+                  className="rounded-full border border-[#F0DCE4] bg-[#FAF0F4] px-4 py-1.5 text-left text-support text-[#20101B] hover:bg-white hover:border-[#D9BDC9] transition-all shadow-2xs"
+                >
                   {q} →
                 </button>
               </li>
@@ -737,8 +687,11 @@ function Answer({ result: r, t, onRetry, onAsk, selected }: { result: AskResult;
         </section>
       )}
 
-      <div className="mt-6 pt-4 border-t border-border/60">
-        <Link href={`/report?type=answer&ref=${r.runId}`} className="inline-flex min-h-9 items-center gap-2 text-meta text-muted hover:text-charcoal transition-colors">
+      <div className="mt-6 pt-4 border-t border-[#F0DCE4]">
+        <Link
+          href={`/report?type=answer&ref=${r.runId}`}
+          className="inline-flex min-h-9 items-center gap-2 text-meta text-[#705664] hover:text-[#20101B] transition-colors"
+        >
           <IconFlag width={15} height={15} /> {t("ask.reportAnswer")}
         </Link>
       </div>
@@ -746,15 +699,23 @@ function Answer({ result: r, t, onRetry, onAsk, selected }: { result: AskResult;
   );
 }
 
-function SourceLine({ s, t, selected }: { s: AskResult["sources"][number] | AskResult["foundSources"][number]; t: ClientT; selected: string }) {
+function SourceLine({
+  s,
+  t,
+  selected,
+}: {
+  s: AskResult["sources"][number] | AskResult["foundSources"][number];
+  t: ClientT;
+  selected: string;
+}) {
   const internal = s.url?.startsWith("/");
   return (
     <div>
-      <p className="font-semibold">
-        {"n" in s ? <span className="mr-1 text-muted">{s.n}.</span> : null}
+      <p className="font-semibold text-[#20101B]">
+        {"n" in s ? <span className="mr-1 text-[#705664]">{s.n}.</span> : null}
         {s.title}
       </p>
-      <p className="text-meta text-muted">
+      <p className="text-meta text-[#705664]">
         {[s.publisher, s.sourceType === "editorial" ? null : t(`source.type.${s.sourceType}`)].filter(Boolean).join(" · ")}
         {s.language !== selected ? ` · ${t("source.languageDiffers", { language: LANG_NAMES[s.language] ?? s.language })}` : ""}
       </p>
@@ -765,16 +726,21 @@ function SourceLine({ s, t, selected }: { s: AskResult["sources"][number] | AskR
       )}
       {s.url ? (
         internal ? (
-          <Link href={s.url} className="mt-1 inline-flex min-h-9 items-center text-meta font-semibold text-forest underline">
+          <Link href={s.url} className="mt-1 inline-flex min-h-9 items-center text-meta font-semibold text-[#24131E] underline">
             {t("ask.internalSource")}
           </Link>
         ) : (
-          <a href={s.url} target="_blank" rel="noopener noreferrer" className="mt-1 inline-flex min-h-9 items-center gap-1 text-meta font-semibold text-forest underline">
+          <a
+            href={s.url}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="mt-1 inline-flex min-h-9 items-center gap-1 text-meta font-semibold text-[#24131E] underline"
+          >
             {t("ask.sourceOpen")} <IconExternal width={14} height={14} />
           </a>
         )
       ) : (
-        <p className="text-meta text-muted">{t("source.noUrl")}</p>
+        <p className="text-meta text-[#705664]">{t("source.noUrl")}</p>
       )}
     </div>
   );
@@ -784,10 +750,10 @@ function FoundSources({ r, t, selected }: { r: AskResult; t: ClientT; selected: 
   return (
     <ul className="mt-3 space-y-3">
       {r.foundSources.map((s, i) => (
-        <li key={i} className="rounded-md border border-border bg-canvas p-3">
+        <li key={i} className="rounded-xl border border-[#F0DCE4] bg-white p-3">
           <SourceLine s={s} t={t} selected={selected} />
-          <p className="mt-2 text-meta font-semibold text-muted">{t("ask.evidencePassage")}</p>
-          <blockquote lang={s.language} className="border-l-2 border-forest/40 pl-2 text-support">
+          <p className="mt-2 text-meta font-semibold text-[#705664]">{t("ask.evidencePassage")}</p>
+          <blockquote lang={s.language} className="border-l-2 border-[#24131E]/40 pl-2 text-support text-[#5A4450]">
             {s.excerpt}
           </blockquote>
         </li>

@@ -35,7 +35,7 @@ export default async function PlacesPage({
       </div>
 
       <PlacesClient
-        googleMapsApiKey={process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY}
+        googleMapsApiKey={process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY || "AIzaSyDM-P7dfv8hZ7Tb6Jhe36XtlqeNzUjsuiw"}
         initialCity={initialCity}
         initialPlaceId={initialPlaceId}
       />

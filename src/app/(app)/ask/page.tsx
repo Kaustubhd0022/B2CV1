@@ -15,29 +15,14 @@ export default async function AskPage({ searchParams }: { searchParams: Promise<
   const messages = clientMessages(lang, ["ask.", "check.", "epistemic.", "source.type.", "source.noUrl", "source.languageDiffers", "common."]);
 
   return (
-    <Page className="max-w-6xl pt-2">
-      <div className="rounded-[2.5rem] border border-[#F0DCE4] bg-white/80 backdrop-blur-md p-8 sm:p-10 shadow-sm">
-        <div className="flex items-center gap-2 text-meta font-semibold uppercase tracking-wider text-amber-700">
-          <span>✦</span>
-          <span>AI Cultural Assistant</span>
-        </div>
-        <h1 className="mt-2 font-serif text-page font-semibold text-[#20101B] md:text-page-lg">
-          {t("ask.title")}
-        </h1>
-        <p className="mt-2 max-w-2xl text-body text-[#5A4450] leading-relaxed">
-          {t("ask.subtitle")} Every response is synthesized exclusively from statutory archives, research repositories and verified source material.
-        </p>
-      </div>
-
+    <Page className="max-w-6xl py-4 sm:py-6">
       {!getProvider() && (
-        <Notice className="mt-4" tone="info">
+        <Notice className="mb-6" tone="info">
           {t("ask.notConfigured")}
         </Notice>
       )}
 
-      <div className="mt-8">
-        <AskClient messages={messages} lang={lang} initialQuestion={q} context={context} />
-      </div>
+      <AskClient messages={messages} lang={lang} initialQuestion={q} context={context} />
     </Page>
   );
 }

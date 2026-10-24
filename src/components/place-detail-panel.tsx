@@ -39,10 +39,10 @@ export function PlaceDetailPanel({
 
   return (
     <aside
-      className={`min-w-0 flex flex-col bg-surface border border-border/80 shadow-md ${
+      className={`min-w-0 flex flex-col bg-white border border-[#F0DCE4] shadow-sm ${
         isMobileDrawer
           ? "w-full max-h-[85vh] rounded-t-3xl overflow-y-auto"
-          : "rounded-2xl overflow-hidden h-full max-h-[calc(100vh-140px)] overflow-y-auto"
+          : "rounded-[2rem] overflow-hidden h-full max-h-[calc(100vh-140px)] overflow-y-auto"
       }`}
       aria-label={`Detailed cultural overview of ${place.name}`}
     >
