@@ -6,7 +6,7 @@ import { IconEye, IconEyeOff, IconGoogle } from "@/components/icons";
 import { Notice } from "@/components/ui";
 import { SubmitButton } from "@/components/submit-button";
 import { LANGUAGES, type LanguageCode } from "@/lib/i18n/languages";
-import { startEmail, startPhone } from "../sign-in/actions";
+import { startEmail } from "../sign-in/actions";
 
 export interface SignUpCardProps {
   next: string;
@@ -18,18 +18,14 @@ export interface SignUpCardProps {
   activeLanguage: string;
 }
 
-type Channel = "email" | "phone";
-
 export function SignUpCard({
   next,
   errorMessage,
   googleConfigured,
   emailConfigured,
-  smsConfigured,
   devOutbox,
   activeLanguage,
 }: SignUpCardProps) {
-  const [channel, setChannel] = useState<Channel>("email");
   const [showPassword, setShowPassword] = useState(false);
   const [selectedLanguage, setSelectedLanguage] = useState<LanguageCode>(
     (activeLanguage as LanguageCode) || "en"
@@ -39,7 +35,7 @@ export function SignUpCard({
     "mt-1 block w-full h-9 rounded-xl border border-[#E9D5DF] bg-white px-3 py-1.5 text-xs text-[#20101B] placeholder:text-[#9A8492] transition-all focus:border-amber-600 focus:outline-none focus:ring-1.5 focus:ring-amber-500/20 disabled:opacity-60 shadow-2xs";
 
   return (
-    <div className="w-full max-w-[350px] rounded-2xl border border-[#F0DCE4] bg-white/95 p-4.5 sm:p-5 shadow-xl backdrop-blur-xl">
+    <div className="w-full max-w-[340px] rounded-2xl border border-[#F0DCE4] bg-white/95 p-4.5 sm:p-5 shadow-xl backdrop-blur-xl">
       {/* Brand Header */}
       <div className="text-left">
         <div className="flex items-center justify-between">
@@ -68,37 +64,8 @@ export function SignUpCard({
       )}
 
       {/* Form Content */}
-      <div className="mt-3 space-y-2.5">
-        {/* Channel selector pill */}
-        <div className="flex items-center justify-between text-[11px] font-medium text-[#5A4550]">
-          <span>Sign up using:</span>
-          <div className="flex items-center gap-1 rounded-full bg-[#FAF0F4] p-0.5 border border-[#F0DCE4]">
-            <button
-              type="button"
-              onClick={() => setChannel("email")}
-              className={`rounded-full px-2.5 py-0.5 text-[10px] font-semibold transition-all cursor-pointer ${
-                channel === "email"
-                  ? "bg-[#24131E] text-white shadow-2xs"
-                  : "text-[#7E6674] hover:text-[#20101B]"
-              }`}
-            >
-              Email
-            </button>
-            <button
-              type="button"
-              onClick={() => setChannel("phone")}
-              className={`rounded-full px-2.5 py-0.5 text-[10px] font-semibold transition-all cursor-pointer ${
-                channel === "phone"
-                  ? "bg-[#24131E] text-white shadow-2xs"
-                  : "text-[#7E6674] hover:text-[#20101B]"
-              }`}
-            >
-              Mobile (+91)
-            </button>
-          </div>
-        </div>
-
-        <form action={channel === "email" ? startEmail : startPhone} className="space-y-2" noValidate>
+      <div className="mt-3.5 space-y-2.5">
+        <form action={startEmail} className="space-y-2.5" noValidate>
           <input type="hidden" name="next" value={next} />
           <input type="hidden" name="language" value={selectedLanguage} />
 
@@ -117,43 +84,21 @@ export function SignUpCard({
             </label>
           </div>
 
-          {/* 2. Contact input */}
-          {channel === "email" ? (
-            <div>
-              <label className="block text-[11px] font-semibold text-[#20101B]">
-                Email Address
-                <input
-                  name="email"
-                  type="email"
-                  autoComplete="email"
-                  required
-                  placeholder="name@example.org"
-                  className={inputCls}
-                  disabled={!emailConfigured}
-                />
-              </label>
-            </div>
-          ) : (
-            <div>
-              <label className="block text-[11px] font-semibold text-[#20101B]">
-                Mobile Number (India)
-                <div className="relative mt-1">
-                  <span className="absolute inset-y-0 left-0 flex items-center pl-2.5 text-[11px] font-semibold text-[#5A4550]">
-                    🇮🇳 +91
-                  </span>
-                  <input
-                    name="phone"
-                    type="tel"
-                    autoComplete="tel"
-                    required
-                    placeholder="98765 43210"
-                    className={`${inputCls} pl-14`}
-                    disabled={!smsConfigured}
-                  />
-                </div>
-              </label>
-            </div>
-          )}
+          {/* 2. Email Address */}
+          <div>
+            <label className="block text-[11px] font-semibold text-[#20101B]">
+              Email Address
+              <input
+                name="email"
+                type="email"
+                autoComplete="email"
+                required
+                placeholder="name@example.org"
+                className={inputCls}
+                disabled={!emailConfigured}
+              />
+            </label>
+          </div>
 
           {/* 3. Regional Language */}
           <div>

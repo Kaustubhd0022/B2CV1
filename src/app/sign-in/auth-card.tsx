@@ -6,7 +6,7 @@ import { IconEye, IconEyeOff, IconGoogle } from "@/components/icons";
 import { Notice } from "@/components/ui";
 import { SubmitButton } from "@/components/submit-button";
 import { LANGUAGES } from "@/lib/i18n/languages";
-import { startEmail, startPhone } from "./actions";
+import { startEmail } from "./actions";
 
 export interface AuthCardProps {
   next: string;
@@ -20,19 +20,16 @@ export interface AuthCardProps {
 }
 
 type AuthMode = "sign-in" | "forgot-password";
-type Channel = "email" | "phone";
 
 export function AuthCard({
   next,
   errorMessage,
   googleConfigured,
   emailConfigured,
-  smsConfigured,
   devOutbox,
   activeLanguage,
 }: AuthCardProps) {
   const [mode, setMode] = useState<AuthMode>("sign-in");
-  const [channel, setChannel] = useState<Channel>("email");
   const [showPassword, setShowPassword] = useState(false);
   const [authWithOtp, setAuthWithOtp] = useState(false);
 
@@ -40,24 +37,24 @@ export function AuthCard({
     "mt-1 block w-full h-9 rounded-xl border border-[#E9D5DF] bg-white px-3 py-1.5 text-xs text-[#20101B] placeholder:text-[#9A8492] transition-all focus:border-amber-600 focus:outline-none focus:ring-1.5 focus:ring-amber-500/20 disabled:opacity-60 shadow-2xs";
 
   return (
-    <div className="w-full max-w-[350px] rounded-2xl border border-[#F0DCE4] bg-white/95 p-4.5 sm:p-5 shadow-xl backdrop-blur-xl">
-      {/* Brand & Mode Header */}
+    <div className="w-full max-w-[340px] rounded-2xl border border-[#F0DCE4] bg-white/95 p-4.5 sm:p-5 shadow-xl backdrop-blur-xl">
+      {/* Brand Header */}
       <div className="text-left">
         <div className="flex items-center justify-between">
           <span className="inline-flex items-center gap-1 rounded-full bg-amber-500/10 border border-amber-600/30 px-2 py-0.5 text-[10px] font-semibold text-amber-800">
             <span>✦</span>
             <span>Cultural Explorer</span>
           </span>
-          <span className="text-[10px] font-medium text-[#7E6674]">Phase 1 Discovery</span>
+          <span className="text-[10px] font-medium text-[#7E6674]">Phase 1</span>
         </div>
 
         <h2 className="mt-2 font-serif text-xl font-bold tracking-tight text-[#20101B]">
-          {mode === "sign-in" ? "Welcome Back" : "Reset Access"}
+          {mode === "sign-in" ? "Welcome Back" : "Reset Password"}
         </h2>
         <p className="mt-0.5 text-[11px] text-[#5A4550] leading-snug">
           {mode === "sign-in"
             ? "Sign in to access your saved cultural stories and trails."
-            : "Enter your registered email or phone for a recovery code."}
+            : "Enter your registered email to receive a recovery code."}
         </p>
       </div>
 
@@ -71,128 +68,75 @@ export function AuthCard({
       )}
 
       {/* ─────────────────────────────────────────────────────────────
-          1. SIGN IN VIEW (Compact & Focused)
+          1. SIGN IN VIEW (Email + Password + Google)
          ───────────────────────────────────────────────────────────── */}
       {mode === "sign-in" && (
-        <div className="mt-3 space-y-2.5">
-          {/* Channel selector pill */}
-          <div className="flex items-center justify-between text-[11px] font-medium text-[#5A4550]">
-            <span>Sign in with:</span>
-            <div className="flex items-center gap-1 rounded-full bg-[#FAF0F4] p-0.5 border border-[#F0DCE4]">
-              <button
-                type="button"
-                onClick={() => setChannel("email")}
-                className={`rounded-full px-2.5 py-0.5 text-[10px] font-semibold transition-all cursor-pointer ${
-                  channel === "email"
-                    ? "bg-[#24131E] text-white shadow-2xs"
-                    : "text-[#7E6674] hover:text-[#20101B]"
-                }`}
-              >
-                Email
-              </button>
-              <button
-                type="button"
-                onClick={() => setChannel("phone")}
-                className={`rounded-full px-2.5 py-0.5 text-[10px] font-semibold transition-all cursor-pointer ${
-                  channel === "phone"
-                    ? "bg-[#24131E] text-white shadow-2xs"
-                    : "text-[#7E6674] hover:text-[#20101B]"
-                }`}
-              >
-                Mobile (+91)
-              </button>
-            </div>
-          </div>
-
-          <form action={channel === "email" ? startEmail : startPhone} className="space-y-2.5" noValidate>
+        <div className="mt-3.5 space-y-2.5">
+          <form action={startEmail} className="space-y-2.5" noValidate>
             <input type="hidden" name="next" value={next} />
 
-            {/* Email Channel */}
-            {channel === "email" ? (
-              <>
-                <div>
-                  <label className="block text-[11px] font-semibold text-[#20101B]">
-                    Email Address
-                    <input
-                      name="email"
-                      type="email"
-                      autoComplete="email"
-                      required
-                      placeholder="name@example.org"
-                      className={inputCls}
-                      disabled={!emailConfigured}
-                    />
-                  </label>
-                </div>
+            {/* Email Address */}
+            <div>
+              <label className="block text-[11px] font-semibold text-[#20101B]">
+                Email Address
+                <input
+                  name="email"
+                  type="email"
+                  autoComplete="email"
+                  required
+                  placeholder="name@example.org"
+                  className={inputCls}
+                  disabled={!emailConfigured}
+                />
+              </label>
+            </div>
 
-                {!authWithOtp && (
-                  <div>
-                    <div className="flex items-center justify-between">
-                      <label className="text-[11px] font-semibold text-[#20101B]">Password</label>
-                      <button
-                        type="button"
-                        onClick={() => setMode("forgot-password")}
-                        className="text-[10px] font-semibold text-amber-800 hover:text-amber-900 hover:underline cursor-pointer"
-                      >
-                        Forgot Password?
-                      </button>
-                    </div>
-                    <div className="relative mt-1">
-                      <input
-                        name="password"
-                        type={showPassword ? "text" : "password"}
-                        autoComplete="current-password"
-                        placeholder="Enter your password"
-                        className={`${inputCls} pr-8`}
-                      />
-                      <button
-                        type="button"
-                        onClick={() => setShowPassword(!showPassword)}
-                        className="absolute inset-y-0 right-0 flex items-center pr-2.5 text-[#7E6674] hover:text-[#20101B] cursor-pointer"
-                        aria-label={showPassword ? "Hide password" : "Show password"}
-                      >
-                        {showPassword ? <IconEyeOff width={15} height={15} /> : <IconEye width={15} height={15} />}
-                      </button>
-                    </div>
-                  </div>
-                )}
-
-                <div className="flex items-center justify-between pt-0.5">
+            {/* Password */}
+            {!authWithOtp && (
+              <div>
+                <div className="flex items-center justify-between">
+                  <label className="text-[11px] font-semibold text-[#20101B]">Password</label>
                   <button
                     type="button"
-                    onClick={() => setAuthWithOtp(!authWithOtp)}
-                    className="text-[10.5px] font-medium text-[#7E6674] hover:text-[#20101B] underline cursor-pointer"
+                    onClick={() => setMode("forgot-password")}
+                    className="text-[10px] font-semibold text-amber-800 hover:text-amber-900 hover:underline cursor-pointer"
                   >
-                    {authWithOtp ? "← Use Password" : "Sign in with One-Time Code (OTP)"}
+                    Forgot Password?
                   </button>
                 </div>
-              </>
-            ) : (
-              /* Phone Channel */
-              <div>
-                <label className="block text-[11px] font-semibold text-[#20101B]">
-                  Mobile Number (India)
-                  <div className="relative mt-1">
-                    <span className="absolute inset-y-0 left-0 flex items-center pl-2.5 text-[11px] font-semibold text-[#5A4550]">
-                      🇮🇳 +91
-                    </span>
-                    <input
-                      name="phone"
-                      type="tel"
-                      autoComplete="tel"
-                      required
-                      placeholder="98765 43210"
-                      className={`${inputCls} pl-14`}
-                      disabled={!smsConfigured}
-                    />
-                  </div>
-                </label>
-                <p className="mt-1 text-[10px] text-[#7E6674]">We will send a 6-digit verification code.</p>
+                <div className="relative mt-1">
+                  <input
+                    name="password"
+                    type={showPassword ? "text" : "password"}
+                    autoComplete="current-password"
+                    placeholder="Enter your password"
+                    className={`${inputCls} pr-8`}
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setShowPassword(!showPassword)}
+                    className="absolute inset-y-0 right-0 flex items-center pr-2.5 text-[#7E6674] hover:text-[#20101B] cursor-pointer"
+                    aria-label={showPassword ? "Hide password" : "Show password"}
+                  >
+                    {showPassword ? <IconEyeOff width={15} height={15} /> : <IconEye width={15} height={15} />}
+                  </button>
+                </div>
               </div>
             )}
 
+            {/* OTP Alternative toggle */}
+            <div className="flex items-center justify-between pt-0.5">
+              <button
+                type="button"
+                onClick={() => setAuthWithOtp(!authWithOtp)}
+                className="text-[10.5px] font-medium text-[#7E6674] hover:text-[#20101B] underline cursor-pointer"
+              >
+                {authWithOtp ? "← Use Password" : "Sign in with Email OTP instead"}
+              </button>
+            </div>
+
             <SubmitButton className="w-full !min-h-9 !h-9 !py-1.5 !px-3 !rounded-xl text-xs font-semibold mt-1">
-              {channel === "email" && !authWithOtp ? "Sign In →" : "Get Verification Code →"}
+              {!authWithOtp ? "Sign In →" : "Send Email Code →"}
             </SubmitButton>
           </form>
 
@@ -224,7 +168,7 @@ export function AuthCard({
             </button>
           )}
 
-          {/* Bottom Link: Redirect to Create Account Page */}
+          {/* Bottom Redirect to Create Account Page */}
           <div className="pt-1 text-center">
             <p className="text-[11px] text-[#5A4550]">
               New to TattvaCo?{" "}
@@ -240,61 +184,29 @@ export function AuthCard({
       )}
 
       {/* ─────────────────────────────────────────────────────────────
-          2. FORGOT PASSWORD VIEW (Compact)
+          2. FORGOT PASSWORD VIEW (Email-based)
          ───────────────────────────────────────────────────────────── */}
       {mode === "forgot-password" && (
         <div className="mt-3 space-y-2.5">
           <div className="rounded-xl bg-[#FFF5F8] p-2.5 border border-[#F0DCE4] text-[11px] text-[#5A4550] leading-snug">
-            Enter your registered email or phone to receive a one-time recovery code.
+            Enter your registered email address to receive a secure recovery code.
           </div>
 
-          <form action={channel === "email" ? startEmail : startPhone} className="space-y-2.5" noValidate>
+          <form action={startEmail} className="space-y-2.5" noValidate>
             <input type="hidden" name="next" value={next} />
 
-            {channel === "email" ? (
-              <div>
-                <label className="block text-[11px] font-semibold text-[#20101B]">
-                  Your Registered Email
-                  <input
-                    name="email"
-                    type="email"
-                    autoComplete="email"
-                    required
-                    placeholder="name@example.org"
-                    className={inputCls}
-                  />
-                </label>
-              </div>
-            ) : (
-              <div>
-                <label className="block text-[11px] font-semibold text-[#20101B]">
-                  Your Registered Mobile Number
-                  <div className="relative mt-1">
-                    <span className="absolute inset-y-0 left-0 flex items-center pl-2.5 text-[11px] font-semibold text-[#5A4550]">
-                      🇮🇳 +91
-                    </span>
-                    <input
-                      name="phone"
-                      type="tel"
-                      autoComplete="tel"
-                      required
-                      placeholder="98765 43210"
-                      className={`${inputCls} pl-14`}
-                    />
-                  </div>
-                </label>
-              </div>
-            )}
-
-            <div className="flex items-center gap-1.5 pt-0.5 text-[10.5px]">
-              <span className="text-[#7E6674]">Method:</span>
-              <button
-                type="button"
-                onClick={() => setChannel(channel === "email" ? "phone" : "email")}
-                className="font-semibold text-amber-800 hover:underline cursor-pointer"
-              >
-                Use {channel === "email" ? "Mobile Number" : "Email"} instead
-              </button>
+            <div>
+              <label className="block text-[11px] font-semibold text-[#20101B]">
+                Your Registered Email
+                <input
+                  name="email"
+                  type="email"
+                  autoComplete="email"
+                  required
+                  placeholder="name@example.org"
+                  className={inputCls}
+                />
+              </label>
             </div>
 
             <SubmitButton className="w-full !min-h-9 !h-9 !py-1.5 !px-3 !rounded-xl text-xs font-semibold mt-1">
