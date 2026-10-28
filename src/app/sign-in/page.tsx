@@ -156,7 +156,7 @@ export default async function SignInPage({ searchParams }: { searchParams: Promi
           </div>
 
           {/* Right Column: Reimagined Cultural Auth Card */}
-          <div className="w-full max-w-[420px] lg:shrink-0 flex justify-center py-4 lg:py-0">
+          <div className="w-full max-w-[360px] lg:shrink-0 flex justify-center py-4 lg:py-0">
             <AuthCard
               next={next}
               errorMessage={error ? t(error) : undefined}
