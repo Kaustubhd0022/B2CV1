@@ -378,222 +378,222 @@ export function CulturalHeroSection({
 
   return (
 
-      <section className="relative isolate overflow-hidden rounded-[2.5rem] border border-[#F0DCE4] bg-gradient-to-b from-[#FFF5F8] via-[#FDF0F4] to-[#FCE7EF] p-6 sm:p-10 md:p-14 shadow-xl transition-all">
-        {/* Soft atmospheric ambient light rings */}
-        <div className="pointer-events-none absolute -top-40 -left-40 size-[500px] rounded-full bg-rose-200/40 blur-3xl" aria-hidden="true" />
-        <div className="pointer-events-none absolute top-1/3 -right-40 size-[450px] rounded-full bg-amber-100/50 blur-3xl" aria-hidden="true" />
+    <section className="relative isolate overflow-hidden rounded-[2.5rem] border border-[#F0DCE4] bg-gradient-to-b from-[#FFF5F8] via-[#FDF0F4] to-[#FCE7EF] p-6 sm:p-10 md:p-14 shadow-xl transition-all">
+      {/* Soft atmospheric ambient light rings */}
+      <div className="pointer-events-none absolute -top-40 -left-40 size-[500px] rounded-full bg-rose-200/40 blur-3xl" aria-hidden="true" />
+      <div className="pointer-events-none absolute top-1/3 -right-40 size-[450px] rounded-full bg-amber-100/50 blur-3xl" aria-hidden="true" />
 
-        {/* Top Header Row: Sparkle Badge & IST Ritual Clock */}
-        <div className="relative z-20 flex flex-wrap items-center justify-between gap-3 pb-8 border-b border-[#24131E]/10">
-          <div className="flex flex-wrap items-center gap-2.5">
-            <div className="inline-flex items-center gap-2 rounded-full border border-[#24131E]/15 bg-white/70 px-4 py-1.5 text-[11px] font-semibold uppercase tracking-[0.2em] text-[#24131E] shadow-sm backdrop-blur-md">
-              <span className="text-amber-600">✦</span>
-              <span>INDIA&apos;S LIVING CULTURAL ARCHIVE & ATLAS</span>
-            </div>
-            <UserProfileMenu
-              user={user ?? (userEmail ? { email: userEmail, role: "user" } : null)}
-              variant="hero"
-            />
+      {/* Top Header Row: Sparkle Badge & IST Ritual Clock */}
+      <div className="relative z-20 flex flex-wrap items-center justify-between gap-3 pb-8 border-b border-[#24131E]/10">
+        <div className="flex flex-wrap items-center gap-2.5">
+          <div className="inline-flex items-center gap-2 rounded-full border border-[#24131E]/15 bg-white/70 px-4 py-1.5 text-[11px] font-semibold uppercase tracking-[0.2em] text-[#24131E] shadow-sm backdrop-blur-md">
+            <span className="text-amber-600">✦</span>
+            <span>INDIA&apos;S LIVING CULTURAL ARCHIVE & ATLAS</span>
           </div>
-
-          <div className="inline-flex items-center gap-2.5 rounded-full border border-[#24131E]/12 bg-white/75 px-4 py-1.5 text-xs font-medium text-[#24131E] shadow-xs backdrop-blur-md">
-            <span className="size-2 rounded-full bg-amber-500 animate-pulse" />
-            <span className="font-mono font-semibold">{currentTime || "10:45:00 AM"} IST</span>
-            <span className="text-[#24131E]/30">·</span>
-            <span className="hidden sm:inline font-sans text-[#24131E]/80">
-              {ritualPhase.name}: <span className="font-semibold text-amber-700">{ritualPhase.phase}</span>
-            </span>
-          </div>
+          <UserProfileMenu
+            user={user ?? (userEmail ? { email: userEmail, role: "user" } : null)}
+            variant="hero"
+          />
         </div>
 
-        {/* Hero Title & Refined Editorial Typography */}
-        <div className="relative z-20 mt-8 max-w-3xl text-left">
-          <p className="flex items-center gap-2 text-xs font-bold uppercase tracking-[0.22em] text-amber-800">
-            <span className="size-1.5 rounded-full bg-amber-600" />
-            <span>Sacred Geography · Living Crafts · Acoustic Traditions</span>
-          </p>
-          <h1 className="mt-4 font-serif text-3xl sm:text-5xl md:text-6xl font-bold leading-[1.08] text-[#20101B] tracking-tight">
-            Discover the Sacred Geographies & Living Heritage of India
-          </h1>
-          <p className="mt-4 max-w-2xl text-base sm:text-lg text-[#5A4550] leading-relaxed font-normal">
-            Trace 84 riverfront tirthas, master handloom guilds, ancient astronomical observatories, and Vedic acoustic traditions across verified statutory sources.
-          </p>
+        <div className="inline-flex items-center gap-2.5 rounded-full border border-[#24131E]/12 bg-white/75 px-4 py-1.5 text-xs font-medium text-[#24131E] shadow-xs backdrop-blur-md">
+          <span className="size-2 rounded-full bg-amber-500 animate-pulse" />
+          <span className="font-mono font-semibold">{currentTime || "10:45:00 AM"} IST</span>
+          <span className="text-[#24131E]/30">·</span>
+          <span className="hidden sm:inline font-sans text-[#24131E]/80">
+            {ritualPhase.name}: <span className="font-semibold text-amber-700">{ritualPhase.phase}</span>
+          </span>
         </div>
+      </div>
 
-        {/* ── Discovery Board Columns: Featured Story + AI Inquiry + Vital Metrics ── */}
-        <div className="relative z-20 mt-10 rounded-3xl border border-white/80 bg-white/75 p-5 sm:p-7 md:p-8 shadow-xl backdrop-blur-xl">
-          <div className="grid gap-6 lg:grid-cols-[1.1fr_1fr]">
-            {/* Left Column: Featured Varanasi Story Prop Card with Gold Star Accent */}
-            <div className="group relative flex flex-col justify-between overflow-hidden rounded-2xl border border-[#24131E]/12 bg-white p-5 sm:p-6 shadow-sm">
-              <div className="absolute top-4 right-4 flex items-center justify-center size-8 rounded-full bg-amber-500/10 border border-amber-600/30 text-amber-700 text-sm shadow-xs backdrop-blur-md">
-                ✦
-              </div>
+      {/* Hero Title & Refined Editorial Typography */}
+      <div className="relative z-20 mt-8 max-w-3xl text-left">
+        <p className="flex items-center gap-2 text-xs font-bold uppercase tracking-[0.22em] text-amber-800">
+          <span className="size-1.5 rounded-full bg-amber-600" />
+          <span>Sacred Geography · Living Crafts · Acoustic Traditions</span>
+        </p>
+        <h1 className="mt-4 font-serif text-3xl sm:text-5xl md:text-6xl font-bold leading-[1.08] text-[#20101B] tracking-tight">
+          Discover the Sacred Geographies & Living Heritage of India
+        </h1>
+        <p className="mt-4 max-w-2xl text-base sm:text-lg text-[#5A4550] leading-relaxed font-normal">
+          Trace 84 riverfront tirthas, master handloom guilds, ancient astronomical observatories, and Vedic acoustic traditions across verified statutory sources.
+        </p>
+      </div>
 
-              <div>
-                <div className="flex items-center gap-2 text-[11px] font-semibold uppercase tracking-wider text-amber-700">
-                  <span>✦</span>
-                  <span>Curated Flagship Narrative</span>
-                </div>
-                <h2 className="mt-2.5 font-serif text-2xl font-bold text-[#20101B] group-hover:text-amber-800 transition-colors leading-tight">
-                  The Crescent Riverfront: Sacred Geometry of Varanasi&apos;s 84 Ghats
-                </h2>
-                <p className="mt-2 text-support text-[#5A4550] leading-relaxed">
-                  Trace how 84 monumental stone tirthas, master silk guilds, and twilight fire rituals form an unbroken civilizational axis along the north-flowing Ganga.
-                </p>
-              </div>
-
-              <div className="mt-6 pt-4 border-t border-[#F0DCE4] flex flex-wrap items-center justify-between gap-3">
-                <div className="flex flex-wrap items-center gap-2">
-                  <StatutoryEvidenceBadge type="asi" title="ASI Protected Riverfront" />
-                  <StatutoryEvidenceBadge type="gi" title="GI Registry #99" />
-                </div>
-                <div className="flex items-center gap-2">
-                  <Link
-                    href="/stories/varanasi-ghats-architecture-and-river"
-                    className="inline-flex min-h-10 items-center justify-center gap-2 rounded-full bg-[#24131E] px-5 text-support font-semibold text-white hover:bg-[#381C2E] shadow-xs transition-colors"
-                  >
-                    Read Narrative →
-                  </Link>
-                  <Link
-                    href="/places?city=varanasi"
-                    className="inline-flex min-h-10 items-center justify-center rounded-full border border-[#24131E]/15 bg-white px-4 text-support font-medium text-[#24131E] hover:bg-[#FAF0F4] transition-colors"
-                  >
-                    View on Map
-                  </Link>
-                </div>
-              </div>
+      {/* ── Discovery Board Columns: Featured Story + AI Inquiry + Vital Metrics ── */}
+      <div className="relative z-20 mt-10 rounded-3xl border border-white/80 bg-white/75 p-5 sm:p-7 md:p-8 shadow-xl backdrop-blur-xl">
+        <div className="grid gap-6 lg:grid-cols-[1.1fr_1fr]">
+          {/* Left Column: Featured Varanasi Story Prop Card with Gold Star Accent */}
+          <div className="group relative flex flex-col justify-between overflow-hidden rounded-2xl border border-[#24131E]/12 bg-white p-5 sm:p-6 shadow-sm">
+            <div className="absolute top-4 right-4 flex items-center justify-center size-8 rounded-full bg-amber-500/10 border border-amber-600/30 text-amber-700 text-sm shadow-xs backdrop-blur-md">
+              ✦
             </div>
 
-            {/* Right Column: Cultural AI Inquiry Box + 2x2 Vital Cultural Metrics */}
-            <div className="flex flex-col justify-between space-y-5">
-              {/* Cultural AI Copilot Inquiry Box with Seed Prompts */}
-              <form
-                action="/ask"
-                method="get"
-                onSubmit={(e) => {
-                  if (!inquiryText.trim()) e.preventDefault();
-                }}
-                className="rounded-2xl border border-[#F0DCE4] bg-[#FAF0F4]/60 p-4 shadow-xs"
-              >
-                <label htmlFor="board-inquiry" className="block text-meta font-semibold uppercase tracking-wider text-amber-800">
-                  Ask TattvaCo Cultural AI
-                </label>
-                <div className="mt-2 flex items-center gap-2">
-                  <div className="relative flex-1">
-                    <IconSearch
-                      className="pointer-events-none absolute left-3.5 top-1/2 -translate-y-1/2 text-muted"
-                      width={17}
-                      height={17}
-                    />
-                    <input
-                      id="board-inquiry"
-                      name="q"
-                      value={inquiryText}
-                      onChange={(e) => setInquiryText(e.target.value)}
-                      placeholder="Ask anything about Varanasi's ghats, silks, or music…"
-                      className="block w-full min-h-11 rounded-full border border-[#F0DCE4] bg-white pl-10 pr-4 text-support text-[#20101B] placeholder:text-[#8D7882] focus:border-amber-600 focus:outline-none focus:ring-2 focus:ring-amber-500/20"
-                    />
-                  </div>
+            <div>
+              <div className="flex items-center gap-2 text-[11px] font-semibold uppercase tracking-wider text-amber-700">
+                <span>✦</span>
+                <span>Curated Flagship Narrative</span>
+              </div>
+              <h2 className="mt-2.5 font-serif text-2xl font-bold text-[#20101B] group-hover:text-amber-800 transition-colors leading-tight">
+                The Crescent Riverfront: Sacred Geometry of Varanasi&apos;s 84 Ghats
+              </h2>
+              <p className="mt-2 text-support text-[#5A4550] leading-relaxed">
+                Trace how 84 monumental stone tirthas, master silk guilds, and twilight fire rituals form an unbroken civilizational axis along the north-flowing Ganga.
+              </p>
+            </div>
+
+            <div className="mt-6 pt-4 border-t border-[#F0DCE4] flex flex-wrap items-center justify-between gap-3">
+              <div className="flex flex-wrap items-center gap-2">
+                <StatutoryEvidenceBadge type="asi" title="ASI Protected Riverfront" />
+                <StatutoryEvidenceBadge type="gi" title="GI Registry #99" />
+              </div>
+              <div className="flex items-center gap-2">
+                <Link
+                  href="/stories/varanasi-ghats-architecture-and-river"
+                  className="inline-flex min-h-10 items-center justify-center gap-2 rounded-full bg-[#24131E] px-5 text-support font-semibold text-white hover:bg-[#381C2E] shadow-xs transition-colors"
+                >
+                  Read Narrative →
+                </Link>
+                <Link
+                  href="/places?city=varanasi"
+                  className="inline-flex min-h-10 items-center justify-center rounded-full border border-[#24131E]/15 bg-white px-4 text-support font-medium text-[#24131E] hover:bg-[#FAF0F4] transition-colors"
+                >
+                  View on Map
+                </Link>
+              </div>
+            </div>
+          </div>
+
+          {/* Right Column: Cultural AI Inquiry Box + 2x2 Vital Cultural Metrics */}
+          <div className="flex flex-col justify-between space-y-5">
+            {/* Cultural AI Copilot Inquiry Box with Seed Prompts */}
+            <form
+              action="/ask"
+              method="get"
+              onSubmit={(e) => {
+                if (!inquiryText.trim()) e.preventDefault();
+              }}
+              className="rounded-2xl border border-[#F0DCE4] bg-[#FAF0F4]/60 p-4 shadow-xs"
+            >
+              <label htmlFor="board-inquiry" className="block text-meta font-semibold uppercase tracking-wider text-amber-800">
+                Ask TattvaCo Cultural AI
+              </label>
+              <div className="mt-2 flex items-center gap-2">
+                <div className="relative flex-1">
+                  <IconSearch
+                    className="pointer-events-none absolute left-3.5 top-1/2 -translate-y-1/2 text-muted"
+                    width={17}
+                    height={17}
+                  />
+                  <input
+                    id="board-inquiry"
+                    name="q"
+                    value={inquiryText}
+                    onChange={(e) => setInquiryText(e.target.value)}
+                    placeholder="Ask anything about Varanasi's ghats, silks, or music…"
+                    className="block w-full min-h-11 rounded-full border border-[#F0DCE4] bg-white pl-10 pr-4 text-support text-[#20101B] placeholder:text-[#8D7882] focus:border-amber-600 focus:outline-none focus:ring-2 focus:ring-amber-500/20"
+                  />
+                </div>
+                <button
+                  type="submit"
+                  className="inline-flex min-h-11 items-center justify-center rounded-full bg-[#24131E] px-5 text-support font-semibold text-white hover:bg-[#381C2E] transition-colors shadow-xs shrink-0"
+                >
+                  Ask ✦
+                </button>
+              </div>
+
+              {/* Seed prompts */}
+              <div className="mt-3 flex flex-wrap items-center gap-1.5">
+                <span className="text-[11px] text-[#7E6674]">Try:</span>
+                {[
+                  "Why does Varanasi have 84 ghats?",
+                  "How are Banarasi silks tied to the Ganga?",
+                  "Banaras Gharana music history",
+                ].map((seed) => (
                   <button
-                    type="submit"
-                    className="inline-flex min-h-11 items-center justify-center rounded-full bg-[#24131E] px-5 text-support font-semibold text-white hover:bg-[#381C2E] transition-colors shadow-xs shrink-0"
+                    key={seed}
+                    type="button"
+                    onClick={() => setInquiryText(seed)}
+                    className="cursor-pointer rounded-full border border-[#F0DCE4] bg-white px-2.5 py-0.5 text-[11px] text-[#5A4450] hover:text-amber-800 hover:border-amber-600/40 transition-colors"
                   >
-                    Ask ✦
+                    {seed}
                   </button>
-                </div>
+                ))}
+              </div>
+            </form>
 
-                {/* Seed prompts */}
-                <div className="mt-3 flex flex-wrap items-center gap-1.5">
-                  <span className="text-[11px] text-[#7E6674]">Try:</span>
-                  {[
-                    "Why does Varanasi have 84 ghats?",
-                    "How are Banarasi silks tied to the Ganga?",
-                    "Banaras Gharana music history",
-                  ].map((seed) => (
-                    <button
-                      key={seed}
-                      type="button"
-                      onClick={() => setInquiryText(seed)}
-                      className="cursor-pointer rounded-full border border-[#F0DCE4] bg-white px-2.5 py-0.5 text-[11px] text-[#5A4450] hover:text-amber-800 hover:border-amber-600/40 transition-colors"
-                    >
-                      {seed}
-                    </button>
-                  ))}
-                </div>
-              </form>
-
-              {/* Quantitative Cultural Vital Metrics (2x2 Grid) */}
-              <div className="grid grid-cols-2 gap-3">
-                <div className="rounded-xl border border-[#F0DCE4] bg-white p-3.5 shadow-2xs">
-                  <span className="font-serif text-2xl font-bold text-amber-700">84 Ghats</span>
-                  <p className="text-meta text-[#5A4450] mt-0.5">Crescent stone riverfront axis</p>
-                </div>
-                <div className="rounded-xl border border-[#F0DCE4] bg-white p-3.5 shadow-2xs">
-                  <span className="font-serif text-2xl font-bold text-amber-700">3,000+ Yrs</span>
-                  <p className="text-meta text-[#5A4450] mt-0.5">Unbroken living urban memory</p>
-                </div>
-                <div className="rounded-xl border border-[#F0DCE4] bg-white p-3.5 shadow-2xs">
-                  <span className="font-serif text-2xl font-bold text-amber-700">1,000+ Looms</span>
-                  <p className="text-meta text-[#5A4450] mt-0.5">Ansari master silk weavers</p>
-                </div>
-                <div className="rounded-xl border border-[#F0DCE4] bg-white p-3.5 shadow-2xs">
-                  <span className="font-serif text-2xl font-bold text-amber-700">UNESCO</span>
-                  <p className="text-meta text-[#5A4450] mt-0.5">Creative city of musical heritage</p>
-                </div>
+            {/* Quantitative Cultural Vital Metrics (2x2 Grid) */}
+            <div className="grid grid-cols-2 gap-3">
+              <div className="rounded-xl border border-[#F0DCE4] bg-white p-3.5 shadow-2xs">
+                <span className="font-serif text-2xl font-bold text-amber-700">84 Ghats</span>
+                <p className="text-meta text-[#5A4450] mt-0.5">Crescent stone riverfront axis</p>
+              </div>
+              <div className="rounded-xl border border-[#F0DCE4] bg-white p-3.5 shadow-2xs">
+                <span className="font-serif text-2xl font-bold text-amber-700">3,000+ Yrs</span>
+                <p className="text-meta text-[#5A4450] mt-0.5">Unbroken living urban memory</p>
+              </div>
+              <div className="rounded-xl border border-[#F0DCE4] bg-white p-3.5 shadow-2xs">
+                <span className="font-serif text-2xl font-bold text-amber-700">1,000+ Looms</span>
+                <p className="text-meta text-[#5A4450] mt-0.5">Ansari master silk weavers</p>
+              </div>
+              <div className="rounded-xl border border-[#F0DCE4] bg-white p-3.5 shadow-2xs">
+                <span className="font-serif text-2xl font-bold text-amber-700">UNESCO</span>
+                <p className="text-meta text-[#5A4450] mt-0.5">Creative city of musical heritage</p>
               </div>
             </div>
           </div>
         </div>
+      </div>
 
-        {/* ── Historical Thematic Base Stage with Floating Civilizational Badges ── */}
-        <div className="relative mt-10 -mx-6 -mb-6 sm:-mx-10 sm:-mb-10 md:-mx-14 md:-mb-14 overflow-hidden rounded-b-[2.5rem] pt-32 sm:pt-48 md:pt-60">
-          <div className="absolute inset-0 z-0">
-            <Image
-              src="/images/historical-thematic-hero.jpg"
-              alt="Sacred ancient Indian riverfront ghats and temple architecture at dawn"
-              fill
-              priority
-              sizes="(min-width: 1200px) 1400px, 100vw"
-              className="object-cover object-center"
-            />
-            <div className="absolute inset-x-0 top-0 h-36 bg-gradient-to-b from-[#FFF5F8] to-transparent" />
+      {/* ── Historical Thematic Base Stage with Floating Civilizational Badges ── */}
+      <div className="relative mt-10 -mx-6 -mb-6 sm:-mx-10 sm:-mb-10 md:-mx-14 md:-mb-14 overflow-hidden rounded-b-[2.5rem] pt-32 sm:pt-48 md:pt-60">
+        <div className="absolute inset-0 z-0">
+          <Image
+            src="/images/historical-thematic-hero.jpg"
+            alt="Sacred ancient Indian riverfront ghats and temple architecture at dawn"
+            fill
+            priority
+            sizes="(min-width: 1200px) 1400px, 100vw"
+            className="object-cover object-center"
+          />
+          <div className="absolute inset-x-0 top-0 h-36 bg-gradient-to-b from-[#FFF5F8] to-transparent" />
+        </div>
+
+        {/* Floating Pill Highlights over the meadow */}
+        <div className="relative z-10 px-6 pb-8 sm:px-10 sm:pb-12 flex flex-wrap items-center justify-between gap-4">
+          <div className="flex flex-wrap items-center gap-3">
+            <div className="inline-flex items-center gap-2 rounded-full border border-white/80 bg-white/85 px-4 py-2 text-xs font-semibold text-[#24131E] shadow-lg backdrop-blur-md animate-float-slow">
+              <span className="flex size-5 items-center justify-center rounded-full bg-amber-500/20 text-amber-800 text-[11px] font-bold">
+                84
+              </span>
+              <span>Sacred Stone Tirthas</span>
+            </div>
+            <div className="inline-flex items-center gap-2 rounded-full border border-white/80 bg-white/85 px-4 py-2 text-xs font-semibold text-[#24131E] shadow-lg backdrop-blur-md animate-float-medium">
+              <span className="flex size-5 items-center justify-center rounded-full bg-rose-500/20 text-rose-800 text-[11px] font-bold">
+                GI
+              </span>
+              <span>Application #99 Standards</span>
+            </div>
+            <div className="hidden md:inline-flex items-center gap-2 rounded-full border border-white/80 bg-white/85 px-4 py-2 text-xs font-semibold text-[#24131E] shadow-lg backdrop-blur-md animate-float-reverse">
+              <span className="flex size-5 items-center justify-center rounded-full bg-emerald-500/20 text-emerald-800 text-[11px] font-bold">
+                50
+              </span>
+              <span>Puranic Miles Cosmic Yantra</span>
+            </div>
           </div>
 
-          {/* Floating Pill Highlights over the meadow */}
-          <div className="relative z-10 px-6 pb-8 sm:px-10 sm:pb-12 flex flex-wrap items-center justify-between gap-4">
-            <div className="flex flex-wrap items-center gap-3">
-              <div className="inline-flex items-center gap-2 rounded-full border border-white/80 bg-white/85 px-4 py-2 text-xs font-semibold text-[#24131E] shadow-lg backdrop-blur-md animate-float-slow">
-                <span className="flex size-5 items-center justify-center rounded-full bg-amber-500/20 text-amber-800 text-[11px] font-bold">
-                  84
-                </span>
-                <span>Sacred Stone Tirthas</span>
-              </div>
-              <div className="inline-flex items-center gap-2 rounded-full border border-white/80 bg-white/85 px-4 py-2 text-xs font-semibold text-[#24131E] shadow-lg backdrop-blur-md animate-float-medium">
-                <span className="flex size-5 items-center justify-center rounded-full bg-rose-500/20 text-rose-800 text-[11px] font-bold">
-                  GI
-                </span>
-                <span>Application #99 Standards</span>
-              </div>
-              <div className="hidden md:inline-flex items-center gap-2 rounded-full border border-white/80 bg-white/85 px-4 py-2 text-xs font-semibold text-[#24131E] shadow-lg backdrop-blur-md animate-float-reverse">
-                <span className="flex size-5 items-center justify-center rounded-full bg-emerald-500/20 text-emerald-800 text-[11px] font-bold">
-                  50
-                </span>
-                <span>Puranic Miles Cosmic Yantra</span>
-              </div>
-            </div>
-
-            <div className="flex items-center gap-3">
-              <Link
-                href="/stories/varanasi-panchakroshi-yatra"
-                className="inline-flex min-h-11 items-center justify-center gap-2 rounded-full bg-[#24131E] px-6 text-xs font-semibold text-white shadow-xl hover:bg-[#381C2E] transition-all active:scale-95"
-              >
-                <span>Explore Flagship Story</span>
-                <span>→</span>
-              </Link>
-            </div>
+          <div className="flex items-center gap-3">
+            <Link
+              href="/stories/varanasi-panchakroshi-yatra"
+              className="inline-flex min-h-11 items-center justify-center gap-2 rounded-full bg-[#24131E] px-6 text-xs font-semibold text-white shadow-xl hover:bg-[#381C2E] transition-all active:scale-95"
+            >
+              <span>Explore Flagship Story</span>
+              <span>→</span>
+            </Link>
           </div>
         </div>
-      </section>
+      </div>
+    </section>
   );
 }
 
@@ -642,17 +642,15 @@ export function CulturalBentoSection() {
                 key={scrubber.id}
                 type="button"
                 onClick={() => setActiveCategory(scrubber.id)}
-                className={`cursor-pointer whitespace-nowrap rounded-full px-4 py-2 text-support font-semibold transition-all shadow-2xs flex items-center gap-2 ${
-                  isActive
+                className={`cursor-pointer whitespace-nowrap rounded-full px-4 py-2 text-support font-semibold transition-all shadow-2xs flex items-center gap-2 ${isActive
                     ? "bg-[#24131E] text-white shadow-xs"
                     : "border border-[#F0DCE4] bg-white text-[#20101B] hover:border-amber-600/40 hover:bg-[#FAF0F4]"
-                }`}
+                  }`}
               >
                 <span>{scrubber.label}</span>
                 <span
-                  className={`text-[11px] px-2 py-0.5 rounded-full ${
-                    isActive ? "bg-white/20 text-white" : "bg-[#FAF0F4] text-[#7E6674]"
-                  }`}
+                  className={`text-[11px] px-2 py-0.5 rounded-full ${isActive ? "bg-white/20 text-white" : "bg-[#FAF0F4] text-[#7E6674]"
+                    }`}
                 >
                   {scrubber.count}
                 </span>
@@ -771,11 +769,10 @@ export function CulturalBentoSection() {
                       key={s.num}
                       type="button"
                       onClick={() => setSelectedStation(idx)}
-                      className={`cursor-pointer shrink-0 rounded-full px-3.5 py-1.5 text-xs font-semibold transition-all ${
-                        selectedStation === idx
+                      className={`cursor-pointer shrink-0 rounded-full px-3.5 py-1.5 text-xs font-semibold transition-all ${selectedStation === idx
                           ? "bg-[#24131E] text-white shadow-xs scale-105"
                           : "bg-white border border-[#F0DCE4] text-[#20101B] hover:bg-[#FAF0F4]"
-                      }`}
+                        }`}
                     >
                       {s.num}. {s.name}
                     </button>
@@ -1276,7 +1273,7 @@ export function CulturalClosingCtaSection() {
   );
 }
 
-{/* Default composite wrapper */}
+{/* Default composite wrapper */ }
 export function CulturalMeadowBoard({
   userEmail,
   user,

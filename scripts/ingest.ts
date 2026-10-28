@@ -1,5 +1,11 @@
-import { closeDb } from "@/lib/db/client";
-import { ingestContent } from "@/lib/content/ingest";
+import { existsSync } from "node:fs";
+
+if (existsSync(".env")) {
+  process.loadEnvFile(".env");
+}
+
+const { closeDb } = await import("@/lib/db/client");
+const { ingestContent } = await import("@/lib/content/ingest");
 
 const publishFixtures = process.argv.includes("--publish-fixtures");
 const report = await ingestContent({ publishFixtures });
