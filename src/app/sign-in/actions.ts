@@ -53,9 +53,15 @@ async function begin(channel: Channel, target: string, next: string) {
   redirect("/sign-in/verify");
 }
 
+import { isLanguageCode } from "@/lib/i18n/languages";
+
 export async function startEmail(formData: FormData) {
   const next = safeNext(formData.get("next"));
   const email = normalizeEmail(String(formData.get("email") ?? ""));
+  const lang = String(formData.get("language") ?? "");
+  if (isLanguageCode(lang)) {
+    (await cookies()).set("tc-language", lang, { path: "/", maxAge: 365 * 86400, sameSite: "lax" });
+  }
   if (!email) redirect(`/sign-in?error=invalid_email&next=${encodeURIComponent(next)}`);
   await begin("email", email, next);
 }
@@ -63,6 +69,10 @@ export async function startEmail(formData: FormData) {
 export async function startPhone(formData: FormData) {
   const next = safeNext(formData.get("next"));
   const phone = normalizePhone(String(formData.get("phone") ?? ""));
+  const lang = String(formData.get("language") ?? "");
+  if (isLanguageCode(lang)) {
+    (await cookies()).set("tc-language", lang, { path: "/", maxAge: 365 * 86400, sameSite: "lax" });
+  }
   if (!phone) redirect(`/sign-in?error=invalid_phone&next=${encodeURIComponent(next)}`);
   await begin("phone", phone, next);
 }

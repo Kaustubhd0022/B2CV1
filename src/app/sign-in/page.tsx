@@ -7,11 +7,7 @@ import { oauthConfigured } from "@/lib/auth/oauth";
 import { safeNext } from "@/lib/auth/normalize";
 import { translator, type MessageKey } from "@/lib/i18n/t";
 import { isLanguageCode, LANGUAGES } from "@/lib/i18n/languages";
-import { Notice } from "@/components/ui";
-import { SubmitButton } from "@/components/submit-button";
 import {
-  IconApple,
-  IconGoogle,
   IconPlaces,
   IconPeople,
   IconFestivals,
@@ -20,7 +16,7 @@ import {
   IconHistory,
   IconBeliefs,
 } from "@/components/icons";
-import { startEmail, startPhone } from "./actions";
+import { AuthCard } from "./auth-card";
 
 export const metadata: Metadata = { title: "Sign in" };
 
@@ -159,186 +155,20 @@ export default async function SignInPage({ searchParams }: { searchParams: Promi
             </div>
           </div>
 
-          {/* Right Column: Floating Dark Authentication Card (Compact Desktop Size) */}
-          <div className="w-full max-w-[370px] lg:shrink-0">
-            <div className="rounded-3xl border border-border bg-surface p-6 shadow-xl">
-              <div className="text-left">
-                <span className="inline-block rounded-full bg-forest/10 border border-forest/20 px-2.5 py-0.5 text-xs font-semibold text-forest">
-                  Welcome to TattvaCo
-                </span>
-                <h2 className="mt-2 font-serif text-2xl font-semibold text-charcoal">{t("auth.title")}</h2>
-                <p className="mt-1 text-xs text-muted leading-snug">{t("auth.subtitle")}</p>
-              </div>
-
-              {/* Status and Error Notices (removed demo and expired notices as requested) */}
-              {error && (
-                <div className="mt-3" aria-live="polite">
-                  <Notice tone="error" role="alert">
-                    {t(error)}
-                  </Notice>
-                </div>
-              )}
-
-              {/* OAuth Providers */}
-              <div className="mt-4 grid gap-2">
-                {google ? (
-                  <a
-                    href={`/auth/google${q}`}
-                    className="flex min-h-11 items-center justify-center gap-3 rounded-xl border border-border bg-surface px-4 text-sm font-semibold text-charcoal shadow-xs transition-all hover:bg-surface-2 hover:border-charcoal/30"
-                  >
-                    <IconGoogle className="size-5 shrink-0" />
-                    <span>{t("auth.google")}</span>
-                  </a>
-                ) : (
-                  <ProviderUnavailable
-                    provider="google"
-                    label={t("auth.google")}
-                    note={t("auth.providerUnavailable", { provider: "Google" })}
-                  />
-                )}
-                {apple ? (
-                  <a
-                    href={`/auth/apple${q}`}
-                    className="flex min-h-11 items-center justify-center gap-3 rounded-xl bg-black px-4 text-sm font-semibold text-white shadow-xs transition-all hover:bg-neutral-900"
-                  >
-                    <IconApple className="size-5 shrink-0" />
-                    <span>{t("auth.apple")}</span>
-                  </a>
-                ) : (
-                  <ProviderUnavailable
-                    provider="apple"
-                    label={t("auth.apple")}
-                    note={t("auth.providerUnavailable", { provider: "Apple" })}
-                  />
-                )}
-              </div>
-
-              {/* Divider */}
-              <div className="my-3 flex items-center gap-3 text-xs text-muted" aria-hidden="true">
-                <span className="h-px flex-1 bg-border" />
-                <span>{t("auth.or")}</span>
-                <span className="h-px flex-1 bg-border" />
-              </div>
-
-              {/* Email Login Form */}
-              <form action={startEmail} className="space-y-2.5" noValidate>
-                <input type="hidden" name="next" value={next} />
-                <label className="block text-xs font-medium text-charcoal">
-                  {t("auth.email")}
-                  <input
-                    name="email"
-                    type="email"
-                    autoComplete="email"
-                    inputMode="email"
-                    required
-                    placeholder="name@example.org"
-                    className={input}
-                    disabled={!email}
-                  />
-                </label>
-                <SubmitButton className="w-full !min-h-10 !py-2 text-sm" disabled={!email}>
-                  {t("auth.emailContinue")}
-                </SubmitButton>
-                {!email && <p className="text-xs text-muted">{t("auth.providerUnavailable", { provider: "Email" })}</p>}
-              </form>
-
-              {/* Phone Login Form */}
-              <form action={startPhone} className="mt-3.5 space-y-2.5" noValidate>
-                <input type="hidden" name="next" value={next} />
-                <label className="block text-xs font-medium text-charcoal">
-                  {t("auth.phone")}
-                  <input
-                    name="phone"
-                    type="tel"
-                    autoComplete="tel"
-                    inputMode="tel"
-                    required
-                    className={input}
-                    placeholder="+91"
-                    aria-describedby="phone-hint"
-                    disabled={!phone}
-                  />
-                </label>
-                <p id="phone-hint" className="text-[11px] text-muted">
-                  {t("auth.phoneHint")}
-                </p>
-                <SubmitButton variant="secondary" className="w-full !min-h-10 !py-2 text-sm" disabled={!phone}>
-                  {t("auth.phoneContinue")}
-                </SubmitButton>
-                {!phone && <p className="text-xs text-muted">{t("auth.providerUnavailable", { provider: "SMS" })}</p>}
-              </form>
-
-              {/* Recovery & Legal Note */}
-              <div className="mt-3.5 border-t border-border pt-2.5 text-center">
-                <p className="text-[11px] text-muted">
-                  {t("auth.terms")}{" "}
-                  <Link href="/policies" className="text-gold underline font-medium hover:text-gold-hover">
-                    {t("settings.terms")}
-                  </Link>
-                </p>
-                {devOutbox && (
-                  <Notice tone="warning" className="mt-2 text-left text-xs">
-                    {t("auth.devOutbox")}
-                  </Notice>
-                )}
-              </div>
-
-              {/* Language Switcher Bar */}
-              <div className="mt-3 border-t border-border pt-2">
-                <p className="text-center text-[10px] font-medium uppercase tracking-wider text-muted">
-                  Preview in Your Language
-                </p>
-                <nav aria-label={t("lang.change")} className="mt-2 flex flex-wrap justify-center gap-x-2.5 gap-y-1 text-meta">
-                  {LANGUAGES.map((l) => (
-                    <Link
-                      key={l.code}
-                      href={`/sign-in?hl=${l.code}&next=${encodeURIComponent(next)}`}
-                      lang={l.code}
-                      aria-current={l.code === hl ? "true" : undefined}
-                      className={l.code === hl ? "font-semibold text-forest underline" : "text-muted hover:text-charcoal"}
-                    >
-                      {l.native}
-                    </Link>
-                  ))}
-                </nav>
-              </div>
-            </div>
+          {/* Right Column: Reimagined Cultural Auth Card */}
+          <div className="w-full max-w-[420px] lg:shrink-0 flex justify-center py-4 lg:py-0">
+            <AuthCard
+              next={next}
+              errorMessage={error ? t(error) : undefined}
+              googleConfigured={google}
+              emailConfigured={email}
+              smsConfigured={phone}
+              devOutbox={devOutbox}
+              activeLanguage={hl}
+            />
           </div>
         </div>
       </div>
-    </div>
-  );
-}
-
-function ProviderUnavailable({
-  provider,
-  label,
-  note,
-}: {
-  provider: "google" | "apple";
-  label: string;
-  note: string;
-}) {
-  return (
-    <div>
-      <button
-        type="button"
-        disabled
-        title={note}
-        className={`flex min-h-11 w-full cursor-not-allowed items-center justify-center gap-3 rounded-xl border px-4 text-sm font-semibold shadow-xs transition-all ${
-          provider === "apple"
-            ? "border-transparent bg-black text-white hover:bg-black"
-            : "border-border bg-surface text-charcoal hover:bg-surface"
-        }`}
-      >
-        {provider === "google" ? (
-          <IconGoogle className="size-5 shrink-0" />
-        ) : (
-          <IconApple className="size-5 shrink-0" />
-        )}
-        <span>{label}</span>
-      </button>
-      <p className="mt-1 text-[11px] text-muted">{note}</p>
     </div>
   );
 }
