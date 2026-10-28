@@ -25,6 +25,7 @@ import {
   CulturalMediaReel,
   type CulturalMediaItem,
 } from "./media";
+import { UserProfileMenu, type UserSessionData } from "./user-profile-menu";
 
 const BANARAS_GHARANA_TRACK: AcousticTrack = {
   id: "track-banaras-gharana",
@@ -321,7 +322,13 @@ const FAQS = [
   },
 ];
 
-export function CulturalHeroSection({ userEmail }: { userEmail?: string | null } = {}) {
+export function CulturalHeroSection({
+  userEmail,
+  user,
+}: {
+  userEmail?: string | null;
+  user?: UserSessionData | null;
+} = {}) {
   const [inquiryText, setInquiryText] = useState("");
   const [currentTime, setCurrentTime] = useState<string>("");
   const [ritualPhase, setRitualPhase] = useState<{ name: string; phase: string }>({
@@ -383,12 +390,10 @@ export function CulturalHeroSection({ userEmail }: { userEmail?: string | null }
               <span className="text-amber-600">✦</span>
               <span>INDIA&apos;S LIVING CULTURAL ARCHIVE & ATLAS</span>
             </div>
-            {userEmail && (
-              <div className="hidden sm:inline-flex items-center gap-2 rounded-full border border-[#24131E]/10 bg-white/60 px-3 py-1 text-[11px] font-medium text-[#24131E]">
-                <span className="size-2 rounded-full bg-emerald-600" />
-                <span>{userEmail.split("@")[0]}</span>
-              </div>
-            )}
+            <UserProfileMenu
+              user={user ?? (userEmail ? { email: userEmail, role: "user" } : null)}
+              variant="hero"
+            />
           </div>
 
           <div className="inline-flex items-center gap-2.5 rounded-full border border-[#24131E]/12 bg-white/75 px-4 py-1.5 text-xs font-medium text-[#24131E] shadow-xs backdrop-blur-md">
@@ -1272,10 +1277,16 @@ export function CulturalClosingCtaSection() {
 }
 
 {/* Default composite wrapper */}
-export function CulturalMeadowBoard({ userEmail }: { userEmail?: string | null } = {}) {
+export function CulturalMeadowBoard({
+  userEmail,
+  user,
+}: {
+  userEmail?: string | null;
+  user?: UserSessionData | null;
+} = {}) {
   return (
     <div className="space-y-16 md:space-y-24">
-      <CulturalHeroSection userEmail={userEmail} />
+      <CulturalHeroSection userEmail={userEmail} user={user} />
       <CulturalBentoSection />
       <CulturalConnectedChainSection />
       <CulturalExpeditionSection />

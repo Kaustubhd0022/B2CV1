@@ -29,7 +29,7 @@ export default async function HomePage() {
   return (
     <Page className="pt-2 space-y-16 md:space-y-24">
       {/* 1. Hero & AI Cultural Search Box */}
-      <CulturalHeroSection userEmail={session.email} />
+      <CulturalHeroSection userEmail={session.email} user={session} />
 
       {/* 2. Start with a City (Pilot Cultural Ecosystems) */}
       <section aria-labelledby="cities-title">

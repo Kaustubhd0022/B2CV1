@@ -4,10 +4,11 @@ import { languageInfo } from "@/lib/i18n/languages";
 import { gatePassed } from "@/lib/i18n/readiness";
 import { uiCoverage } from "@/lib/i18n/t";
 import { LanguageLink, MainNav } from "@/components/nav";
+import { UserProfileMenu } from "@/components/user-profile-menu";
 import { config } from "@/lib/config";
 
 export default async function AppLayout({ children }: { children: React.ReactNode }) {
-  const { lang, t } = await pageContext();
+  const { session, lang, t } = await pageContext();
   const info = languageInfo(lang);
   const coverage = uiCoverage(lang);
   const labels = {
@@ -64,6 +65,16 @@ export default async function AppLayout({ children }: { children: React.ReactNod
             >
               Cultural Atlas →
             </Link>
+            <UserProfileMenu
+              user={session}
+              labels={{
+                profile: t("settings.title"),
+                account: t("settings.account"),
+                settings: t("settings.title"),
+                signOut: t("auth.signOut"),
+                signIn: "Sign In / Register",
+              }}
+            />
           </div>
         </div>
         {lang !== "en" && (coverage < 1 || !gatePassed(lang)) && (

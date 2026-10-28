@@ -10,7 +10,8 @@ import { languageInfo } from "@/lib/i18n/languages";
 import { BackLink, Notice, Page, SectionTitle } from "@/components/ui";
 import { SubmitButton } from "@/components/submit-button";
 import { EpistemicLegend } from "@/components/evidence";
-import { IconLanguage, IconPrivacy, IconReport } from "@/components/icons";
+import { IconLanguage, IconPrivacy, IconReport, IconSignOut } from "@/components/icons";
+import { signOut } from "@/app/sign-in/actions";
 
 export const metadata: Metadata = {
   title: "Cultural Explorer Account & Journey · TattvaCo",
@@ -106,12 +107,22 @@ export default async function AccountPage({
                 Sign In / Register
               </Link>
             ) : (
-              <Link
-                href="/settings"
-                className="inline-flex min-h-10 items-center justify-center rounded-full border border-border bg-surface px-4 text-meta font-semibold text-charcoal hover:bg-surface-2 transition-colors"
-              >
-                Settings Overview
-              </Link>
+              <div className="flex flex-wrap items-center gap-2">
+                <Link
+                  href="/settings"
+                  className="inline-flex min-h-10 items-center justify-center rounded-full border border-border bg-surface px-4 text-meta font-semibold text-charcoal hover:bg-surface-2 transition-colors"
+                >
+                  Settings Overview
+                </Link>
+                <form action={signOut}>
+                  <SubmitButton variant="secondary" className="text-rose-700 hover:text-rose-800 hover:border-rose-300">
+                    <span className="flex items-center gap-1.5">
+                      <IconSignOut width={14} height={14} />
+                      <span>{t("auth.signOut")}</span>
+                    </span>
+                  </SubmitButton>
+                </form>
+              </div>
             )}
           </div>
         </div>
@@ -225,6 +236,14 @@ export default async function AccountPage({
         </div>
 
         <div className="flex flex-wrap gap-3 pt-2">
+          <form action={signOut}>
+            <SubmitButton variant="secondary" className="text-rose-700 hover:text-rose-800 hover:border-rose-300">
+              <span className="flex items-center gap-1.5">
+                <IconSignOut width={14} height={14} />
+                <span>{t("auth.signOut")}</span>
+              </span>
+            </SubmitButton>
+          </form>
           <form action={signOutEverywhere}>
             <SubmitButton variant="secondary">
               Sign Out All Sessions
