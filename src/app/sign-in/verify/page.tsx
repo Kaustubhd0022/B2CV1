@@ -37,17 +37,8 @@ export default async function VerifyPage({ searchParams }: { searchParams: Promi
           <strong className="font-semibold text-[#20101B]">
             {maskTarget(pending.channel, pending.target)}
           </strong>
-          . New accounts are automatically registered!
+          . Please check your inbox and enter the code below.
         </p>
-
-        {/* Demo/Screen Code Display */}
-        {pending.demoCode && (
-          <div className="mt-3.5 rounded-xl border border-amber-600/30 bg-amber-500/10 p-3 text-center" role="status">
-            <p className="text-[10px] font-semibold uppercase tracking-wider text-amber-800">Your Verification Code</p>
-            <p className="mt-1 font-mono text-2xl font-bold tracking-[0.25em] text-[#20101B]">{pending.demoCode}</p>
-            <p className="mt-1 text-[10px] text-[#7E6674]">Valid for {config().auth.otpMinutes} minutes.</p>
-          </div>
-        )}
 
         {/* Error Notices */}
         <div className="mt-3" aria-live="polite">
@@ -78,10 +69,10 @@ export default async function VerifyPage({ searchParams }: { searchParams: Promi
                 autoComplete="one-time-code"
                 pattern="[0-9 ]{6,7}"
                 maxLength={7}
-                defaultValue={pending.demoCode ?? ""}
+                placeholder="• • • • • •"
                 required
                 autoFocus
-                className="mt-1 block w-full h-11 rounded-xl border border-[#E9D5DF] bg-white px-3 text-center font-mono text-xl font-bold tracking-[0.35em] text-[#20101B] focus:border-amber-600 focus:outline-none focus:ring-1.5 focus:ring-amber-500/20 shadow-2xs"
+                className="mt-1 block w-full h-11 rounded-xl border border-[#E9D5DF] bg-white px-3 text-center font-mono text-xl font-bold tracking-[0.35em] text-[#20101B] placeholder:text-[#BFAEB9] focus:border-amber-600 focus:outline-none focus:ring-1.5 focus:ring-amber-500/20 shadow-2xs"
               />
             </label>
           </div>

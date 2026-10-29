@@ -39,13 +39,46 @@ export async function pendingVerification() {
 
 async function begin(channel: Channel, target: string, next: string) {
   await track("auth_start", { method: channel });
+
+  // 1. Real Supabase Auth: send email OTP through Supabase
+  if (channel === "email" && process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY) {
+    try {
+      const supabase = await createSupabaseServer();
+      const appUrl = config().appUrl;
+      const { error: supaErr } = await supabase.auth.signInWithOtp({
+        email: target,
+        options: {
+          shouldCreateUser: true,
+          emailRedirectTo: `${appUrl}/auth/callback?next=${encodeURIComponent(next)}`,
+        },
+      });
+
+      if (supaErr) {
+        redirect(`/sign-in?error=delivery&next=${encodeURIComponent(next)}`);
+      }
+
+      // Real OTP sent to user's email; no code displayed on screen
+      (await cookies()).set(PENDING, sign(JSON.stringify({ channel, target, next })), {
+        httpOnly: true,
+        secure: config().isProd,
+        sameSite: "lax",
+        path: "/sign-in",
+        maxAge: config().auth.otpMinutes * 60,
+      });
+      redirect("/sign-in/verify");
+    } catch (err) {
+      if ((err as Error).message === "NEXT_REDIRECT") throw err;
+    }
+  }
+
+  // 2. Direct Challenge Fallback
   const r = await startChallenge(channel, target);
   if (!r.ok) {
     await track("auth_failure", { method: channel, reason: r.error });
     const error = r.error === "rate_limited" ? "too_many" : r.error === "not_configured" ? "unavailable" : "delivery";
     redirect(`/sign-in?error=${error}&next=${encodeURIComponent(next)}`);
   }
-  (await cookies()).set(PENDING, sign(JSON.stringify({ channel, target, next, demoCode: r.demoCode })), {
+  (await cookies()).set(PENDING, sign(JSON.stringify({ channel, target, next })), {
     httpOnly: true,
     secure: config().isProd,
     sameSite: "lax",

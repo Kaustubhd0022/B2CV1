@@ -12,7 +12,7 @@ function onScreen(code: string): DeliveryResult {
   const c = config();
   if (c.isProd && !c.demoMode) return { ok: false, reason: "not_configured" };
   log.info("demo_screen.delivered");
-  return { ok: true, demoCode: code };
+  return { ok: true };
 }
 
 export const DEV_OUTBOX = path.join(process.cwd(), ".dev-outbox", "outbox.jsonl");
