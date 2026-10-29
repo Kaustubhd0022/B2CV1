@@ -102,6 +102,11 @@ export async function createAccount(formData: FormData) {
   const password = String(formData.get("password") ?? "");
   const lang = String(formData.get("language") ?? "");
 
+  const ndaAgreed = formData.get("nda_agreed") === "true" || formData.get("nda_agreed") === "on";
+  if (!ndaAgreed) {
+    redirect(`/sign-up?error=nda_required&next=${encodeURIComponent(next)}`);
+  }
+
   if (!email) {
     redirect(`/sign-up?error=invalid_email&next=${encodeURIComponent(next)}`);
   }
@@ -117,7 +122,13 @@ export async function createAccount(formData: FormData) {
         email,
         password,
         options: {
-          data: { name: name || undefined, language: lang },
+          data: {
+            name: name || undefined,
+            language: lang,
+            nda_agreed: true,
+            nda_agreed_at: new Date().toISOString(),
+            nda_version: "1.0",
+          },
         },
       });
 
@@ -245,20 +256,9 @@ export async function signInAction(formData: FormData) {
           redirect(next || "/");
         }
 
-        // If new user detected in Supabase Auth, auto-create account
+        // If credentials invalid / user does not exist, redirect to sign-up to accept the NDA
         if (supaErr && supaErr.message.toLowerCase().includes("invalid login credentials")) {
-          if (password.length >= 8) {
-            const { data: newSupaUser, error: signUpErr } = await supabase.auth.signUp({
-              email,
-              password,
-            });
-            if (!signUpErr && newSupaUser.user) {
-              if (await currentSession()) await endSession();
-              await startSession(newSupaUser.user.id);
-              await track("auth_success", { method: "supabase_auto_signup", new_account: true });
-              redirect(next || "/");
-            }
-          }
+          redirect(`/sign-up?error=account_not_found&email=${encodeURIComponent(email)}&next=${encodeURIComponent(next)}`);
         }
       }
     } catch (err) {
@@ -279,30 +279,9 @@ export async function signInAction(formData: FormData) {
     .where(eq(schema.users.email, email))
     .limit(1);
 
-  // ─── IF NEW USER DETECTED: CREATE ACCOUNT FIRST IN SUPABASE ───
+  // If user does not exist in Supabase Postgres, direct them to sign-up with NDA
   if (!user) {
-    if (password.length >= 8) {
-      // Create new account automatically in Supabase Postgres
-      const derivedName = email.split("@")[0].replace(/[._-]/g, " ").replace(/\b\w/g, (c) => c.toUpperCase());
-      const [newUser] = await db
-        .insert(schema.users)
-        .values({
-          name: derivedName,
-          email,
-          passwordHash: hashPassword(password),
-          emailVerifiedAt: new Date(),
-        })
-        .returning({ id: schema.users.id });
-
-      if (await currentSession()) await endSession();
-      await startSession(newUser.id);
-      await track("auth_success", { method: "password_auto_signup", new_account: true });
-      redirect(next || "/");
-    } else {
-      // Password was too short for a new account: start OTP challenge to create & verify securely
-      await begin("email", email, next);
-      return;
-    }
+    redirect(`/sign-up?error=account_not_found&email=${encodeURIComponent(email)}&next=${encodeURIComponent(next)}`);
   }
 
   // User exists: verify password

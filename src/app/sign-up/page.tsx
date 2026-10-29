@@ -25,6 +25,8 @@ const ERRORS: Record<string, string> = {
   email_exists: "An account with this email already exists. Please sign in.",
   oauth_failed: "Authentication failed. Please try again.",
   link_conflict: "An account with this email is already linked.",
+  nda_required: "You must review and agree to the Non-Disclosure Agreement before creating your account.",
+  account_not_found: "No account found for this email. Please review the Non-Disclosure Agreement below to create your passport.",
 };
 
 export default async function SignUpPage({
@@ -36,6 +38,7 @@ export default async function SignUpPage({
   const hl = isLanguageCode(sp.hl) ? sp.hl : "en";
   const next = safeNext(sp.next);
   const errorMessage = sp.error ? (ERRORS[sp.error] ?? "An error occurred. Please try again.") : undefined;
+  const initialEmail = sp.email ?? "";
   const google = oauthConfigured("google");
   const email = emailConfigured();
 
@@ -153,6 +156,7 @@ export default async function SignUpPage({
               googleConfigured={google}
               emailConfigured={email}
               activeLanguage={hl}
+              initialEmail={initialEmail}
             />
           </div>
         </div>
