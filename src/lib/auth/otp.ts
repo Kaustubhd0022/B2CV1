@@ -86,9 +86,17 @@ export async function verifyChallenge(channel: Channel, target: string, code: st
       .where(eq(schema.users.id, existing.id));
     return { ok: true, userId: existing.id, created: false };
   }
+  const derivedName =
+    channel === "email"
+      ? target.split("@")[0].replace(/[._-]/g, " ").replace(/\b\w/g, (c) => c.toUpperCase())
+      : "Cultural Explorer";
   const [user] = await db
     .insert(schema.users)
-    .values(channel === "email" ? { email: target, emailVerifiedAt: now, ...role } : { phone: target, phoneVerifiedAt: now })
+    .values(
+      channel === "email"
+        ? { name: derivedName, email: target, emailVerifiedAt: now, ...role }
+        : { name: derivedName, phone: target, phoneVerifiedAt: now },
+    )
     .returning({ id: schema.users.id });
   return { ok: true, userId: user.id, created: true };
 }

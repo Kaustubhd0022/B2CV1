@@ -10,7 +10,7 @@ export async function GET(request: NextRequest, ctx: { params: Promise<{ provide
   const { provider } = await ctx.params;
   if (provider !== "google" && provider !== "apple") return NextResponse.json({ error: "not_found" }, { status: 404 });
   const p = provider as OAuthProvider;
-  if (!oauthConfigured(p)) return NextResponse.redirect(new URL("/sign-in?error=unavailable", request.url));
+  if (!oauthConfigured(p)) return NextResponse.redirect(new URL(`/sign-in?error=${p}_not_configured`, request.url));
 
   const state = generateState();
   const next = safeNext(request.nextUrl.searchParams.get("next"));
@@ -30,7 +30,7 @@ export async function GET(request: NextRequest, ctx: { params: Promise<{ provide
   if (p === "google") {
     const verifier = generateCodeVerifier();
     jar.set("tc_oauth_verifier_google", verifier, base);
-    url = googleClient().createAuthorizationURL(state, verifier, ["openid", "email"]);
+    url = googleClient().createAuthorizationURL(state, verifier, ["openid", "email", "profile"]);
   } else {
     url = appleClient().createAuthorizationURL(state, ["email"]);
     url.searchParams.set("response_mode", "form_post");

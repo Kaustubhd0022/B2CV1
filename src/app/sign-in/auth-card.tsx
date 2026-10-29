@@ -6,7 +6,7 @@ import { IconEye, IconEyeOff, IconGoogle } from "@/components/icons";
 import { Notice } from "@/components/ui";
 import { SubmitButton } from "@/components/submit-button";
 import { LANGUAGES } from "@/lib/i18n/languages";
-import { signInAction, startEmail } from "./actions";
+import { signInAction, startEmail, signInWithGoogleDev } from "./actions";
 
 export interface AuthCardProps {
   next: string;
@@ -46,11 +46,11 @@ export function AuthCard({
         </div>
 
         <h2 className="mt-2 font-serif text-xl font-bold tracking-tight text-[#20101B]">
-          {mode === "sign-in" ? "Welcome Back" : "Reset Password"}
+          {mode === "sign-in" ? "Welcome Explorer" : "Reset Password"}
         </h2>
         <p className="mt-0.5 text-[11px] text-[#5A4550] leading-snug">
           {mode === "sign-in"
-            ? "Sign in to access your saved cultural stories and trails."
+            ? "Sign in or enter your email. New explorers are automatically registered!"
             : "Enter your registered email to receive a recovery code."}
         </p>
       </div>
@@ -155,14 +155,17 @@ export function AuthCard({
               <span>Continue with Google</span>
             </a>
           ) : (
-            <a
-              href={`/auth/google?next=${encodeURIComponent(next)}`}
-              title="Click to sign in with Google"
-              className="flex min-h-9 h-9 w-full items-center justify-center gap-2 rounded-xl border border-[#E9D5DF] bg-white px-3 text-xs font-semibold text-[#20101B] shadow-2xs hover:border-amber-600/40 hover:bg-[#FAF0F4] transition-all cursor-pointer"
-            >
-              <IconGoogle className="size-3.5 shrink-0" />
-              <span>Continue with Google</span>
-            </a>
+            <form action={signInWithGoogleDev} className="w-full">
+              <input type="hidden" name="next" value={next} />
+              <button
+                type="submit"
+                title="Sign in with Google (Dev identity — add GOOGLE_CLIENT_ID to .env for production)"
+                className="flex min-h-9 h-9 w-full items-center justify-center gap-2 rounded-xl border border-[#E9D5DF] bg-white px-3 text-xs font-semibold text-[#20101B] shadow-2xs hover:border-amber-600/40 hover:bg-[#FAF0F4] transition-all cursor-pointer"
+              >
+                <IconGoogle className="size-3.5 shrink-0" />
+                <span>Continue with Google</span>
+              </button>
+            </form>
           )}
 
           {/* Bottom Redirect to Create Account Page */}

@@ -35,8 +35,8 @@ async function handle(request: NextRequest, provider: string, params: URLSearchP
     if (!r.ok) return fail(r.error);
     if (await currentSession()) await endSession();
     await startSession(r.userId);
-    await track("auth_success", { method: p });
-    return NextResponse.redirect(new URL(`/language?next=${encodeURIComponent(next)}`, request.url), 303);
+    await track("auth_success", { method: p, new_account: r.created });
+    return NextResponse.redirect(new URL(r.created ? `/language?next=${encodeURIComponent(next)}` : (next || "/"), request.url), 303);
   } catch (err) {
     log.warn("oauth.callback_failed", { provider: p, error: (err as Error).name });
     return fail("exchange_failed");

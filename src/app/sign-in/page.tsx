@@ -27,6 +27,8 @@ const ERRORS: Record<string, string> = {
   delivery: "Failed to send code. Please try again.",
   unavailable: "Service temporarily unavailable.",
   oauth_failed: "Authentication failed. Please try again.",
+  google_not_configured: "Google Sign-In is not yet configured. Please add GOOGLE_CLIENT_ID and GOOGLE_CLIENT_SECRET in .env.",
+  apple_not_configured: "Apple Sign-In is not configured.",
   link_conflict: "An account with this email is already linked.",
   expired_code: "Code expired. Please request a new code.",
 };

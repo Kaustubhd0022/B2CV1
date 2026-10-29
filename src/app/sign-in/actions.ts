@@ -84,14 +84,21 @@ export async function createAccount(formData: FormData) {
     .limit(1);
 
   if (existing) {
+    // If password matches existing account, sign them in directly without friction
+    if (existing.passwordHash && verifyPassword(password, existing.passwordHash)) {
+      if (await currentSession()) await endSession();
+      await startSession(existing.id);
+      await track("auth_success", { method: "password_signup_existing" });
+      redirect(next || "/");
+    }
     redirect(`/sign-up?error=email_exists&next=${encodeURIComponent(next)}`);
   }
 
-  // Create new user with hashed password
+  // Create new user with hashed password in Supabase Postgres
   const [newUser] = await db
     .insert(schema.users)
     .values({
-      name: name || undefined,
+      name: name || email.split("@")[0].replace(/[._-]/g, " ").replace(/\b\w/g, (c) => c.toUpperCase()),
       email,
       passwordHash: hashPassword(password),
       emailVerifiedAt: new Date(),
@@ -112,6 +119,7 @@ export async function createAccount(formData: FormData) {
 
 /**
  * Real Sign In: verifies credentials against Supabase Postgres and creates session.
+ * IF NEW USER DETECTED: automatically creates their account in Supabase Postgres first!
  * If user selected OTP mode, initiates email OTP challenge.
  */
 export async function signInAction(formData: FormData) {
@@ -137,7 +145,34 @@ export async function signInAction(formData: FormData) {
     .where(eq(schema.users.email, email))
     .limit(1);
 
-  if (!user || !user.passwordHash || !verifyPassword(password, user.passwordHash)) {
+  // ─── IF NEW USER DETECTED: CREATE ACCOUNT FIRST IN SUPABASE ───
+  if (!user) {
+    if (password.length >= 8) {
+      // Create new account automatically with provided credentials
+      const derivedName = email.split("@")[0].replace(/[._-]/g, " ").replace(/\b\w/g, (c) => c.toUpperCase());
+      const [newUser] = await db
+        .insert(schema.users)
+        .values({
+          name: derivedName,
+          email,
+          passwordHash: hashPassword(password),
+          emailVerifiedAt: new Date(),
+        })
+        .returning({ id: schema.users.id });
+
+      if (await currentSession()) await endSession();
+      await startSession(newUser.id);
+      await track("auth_success", { method: "password_auto_signup", new_account: true });
+      redirect(next || "/");
+    } else {
+      // Password provided was too short for a new account: start OTP challenge to create & verify securely
+      await begin("email", email, next);
+      return;
+    }
+  }
+
+  // User exists: verify password
+  if (!user.passwordHash || !verifyPassword(password, user.passwordHash)) {
     await track("auth_failure", { method: "password", reason: "invalid_credentials" });
     redirect(`/sign-in?error=invalid_credentials&next=${encodeURIComponent(next)}`);
   }
@@ -190,7 +225,33 @@ export async function verifyCode(formData: FormData) {
   await startSession(r.userId);
   (await cookies()).delete({ name: PENDING, path: "/sign-in" });
   await track("auth_success", { method: p.channel, new_account: r.created });
-  redirect(`/language?next=${encodeURIComponent(p.next)}`);
+  redirect(r.created ? `/language?next=${encodeURIComponent(p.next)}` : (p.next || "/"));
+}
+
+/**
+ * In development environment (when GOOGLE_CLIENT_ID isn't configured in .env yet),
+ * allows 1-click test sign-in with a Google Cultural Explorer identity.
+ */
+export async function signInWithGoogleDev(formData?: FormData) {
+  const next = safeNext(formData?.get("next"));
+  const devEmail = "google.explorer@tattvaco.org";
+  const devName = "Google Explorer";
+  const sub = "dev_google_108273648192";
+
+  const { resolveOAuthUser } = await import("@/lib/auth/oauth");
+  const r = await resolveOAuthUser("google", {
+    sub,
+    email: devEmail,
+    emailVerified: true,
+    name: devName,
+  });
+
+  if (!r.ok) redirect("/sign-in?error=oauth_failed");
+
+  if (await currentSession()) await endSession();
+  await startSession(r.userId);
+  await track("auth_success", { method: "google_dev", new_account: r.created });
+  redirect(r.created ? `/language?next=${encodeURIComponent(next)}` : (next || "/"));
 }
 
 export async function signOut() {

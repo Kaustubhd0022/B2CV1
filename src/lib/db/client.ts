@@ -27,7 +27,12 @@ const MIGRATIONS = path.join(process.cwd(), "drizzle");
 async function init(): Promise<DB> {
   const c = config();
   if (c.db.url) {
-    const pool = new Pool({ connectionString: c.db.url, max: 10 });
+    const isSupabase = c.db.url.includes("supabase") || c.db.url.includes("pooler");
+    const pool = new Pool({
+      connectionString: c.db.url,
+      max: 10,
+      ssl: isSupabase ? { rejectUnauthorized: false } : undefined,
+    });
     const db = drizzlePg(pool, { schema });
     holder.close = () => pool.end();
     // Production applies migrations explicitly (npm run db:migrate); dev auto-applies.
@@ -99,7 +104,12 @@ export async function closeDb() {
 export async function runMigrations() {
   const c = config();
   if (c.db.url) {
-    const pool = new Pool({ connectionString: c.db.url, max: 1 });
+    const isSupabase = c.db.url.includes("supabase") || c.db.url.includes("pooler");
+    const pool = new Pool({
+      connectionString: c.db.url,
+      max: 1,
+      ssl: isSupabase ? { rejectUnauthorized: false } : undefined,
+    });
     await migratePg(drizzlePg(pool), { migrationsFolder: MIGRATIONS });
     await pool.end();
   } else {
