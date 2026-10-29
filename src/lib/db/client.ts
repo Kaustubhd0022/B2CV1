@@ -30,8 +30,14 @@ async function init(): Promise<DB> {
     const isSupabase = c.db.url.includes("supabase") || c.db.url.includes("pooler");
     const pool = new Pool({
       connectionString: c.db.url,
-      max: 10,
+      max: isSupabase ? 5 : 10,
+      idleTimeoutMillis: 15000,
+      connectionTimeoutMillis: 10000,
+      keepAlive: true,
       ssl: isSupabase ? { rejectUnauthorized: false } : undefined,
+    });
+    pool.on("error", (err) => {
+      console.warn("PostgreSQL connection error (handled):", err.message);
     });
     const db = drizzlePg(pool, { schema });
     holder.close = () => pool.end();

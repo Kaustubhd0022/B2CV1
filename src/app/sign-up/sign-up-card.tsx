@@ -6,7 +6,7 @@ import { IconEye, IconEyeOff, IconGoogle } from "@/components/icons";
 import { Notice } from "@/components/ui";
 import { SubmitButton } from "@/components/submit-button";
 import { LANGUAGES, type LanguageCode } from "@/lib/i18n/languages";
-import { createAccount, signInWithGoogleDev } from "../sign-in/actions";
+import { createAccount, signInWithGoogle } from "../sign-in/actions";
 
 export interface SignUpCardProps {
   next: string;
@@ -153,28 +153,17 @@ export function SignUpCard({
           <span className="h-px flex-1 bg-[#E9D5DF]" />
         </div>
 
-        {/* Google Sign-in Option */}
-        {googleConfigured ? (
-          <a
-            href={`/auth/google?next=${encodeURIComponent(next)}`}
+        {/* Google Sign-in Option (Supabase + Google OAuth) */}
+        <form action={signInWithGoogle} className="w-full">
+          <input type="hidden" name="next" value={next} />
+          <button
+            type="submit"
             className="flex min-h-9 h-9 w-full items-center justify-center gap-2 rounded-xl border border-[#E9D5DF] bg-white px-3 text-xs font-semibold text-[#20101B] shadow-2xs hover:border-amber-600/40 hover:bg-[#FAF0F4] transition-all cursor-pointer"
           >
             <IconGoogle className="size-3.5 shrink-0" />
             <span>Continue with Google</span>
-          </a>
-        ) : (
-          <form action={signInWithGoogleDev} className="w-full">
-            <input type="hidden" name="next" value={next} />
-            <button
-              type="submit"
-              title="Register with Google (Dev identity — add GOOGLE_CLIENT_ID to .env for production)"
-              className="flex min-h-9 h-9 w-full items-center justify-center gap-2 rounded-xl border border-[#E9D5DF] bg-white px-3 text-xs font-semibold text-[#20101B] shadow-2xs hover:border-amber-600/40 hover:bg-[#FAF0F4] transition-all cursor-pointer"
-            >
-              <IconGoogle className="size-3.5 shrink-0" />
-              <span>Continue with Google</span>
-            </button>
-          </form>
-        )}
+          </button>
+        </form>
 
         {/* Bottom Link: Redirect to Sign In Page */}
         <div className="pt-1 text-center">
