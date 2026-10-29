@@ -21,8 +21,11 @@ export async function POST(request: NextRequest) {
   }
 
   const s = await currentSession();
-  const userId = s?.userId || "explorer";
-  const role = s?.role || "user";
+  if (!s) {
+    return NextResponse.redirect(new URL(`/sign-in?next=${encodeURIComponent(next)}`, request.url), 303);
+  }
+  const userId = s.userId;
+  const role = s.role;
 
   const response = NextResponse.redirect(new URL(next, request.url), 303);
 

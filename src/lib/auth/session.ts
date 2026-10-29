@@ -175,17 +175,30 @@ export async function currentSession(): Promise<SessionUser | null> {
   }
 
   if (!token) {
-    // Frictionless guest explorer access (defaults to en or user's selected language)
-    const lang = isLanguageCode(langCookie) ? langCookie : "en";
-    return {
-      sessionId: toDeterministicUuid(`guest-${langCookie || "en"}`),
-      analyticsId: "anon-explorer",
-      userId: toDeterministicUuid(`guest-user-${langCookie || "en"}`),
-      role: "user",
-      email: "explorer@tattvaco.org",
-      phone: null,
-      language: lang,
-    };
+    // Check if valid Supabase SSR auth user exists
+    if (process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY) {
+      try {
+        const { createClient: createSupabaseServer } = await import("@/lib/supabase/server");
+        const supabase = await createSupabaseServer();
+        const {
+          data: { user },
+        } = await supabase.auth.getUser();
+        if (user) {
+          const lang = isLanguageCode(langCookie) ? langCookie : "en";
+          return {
+            sessionId: user.id,
+            analyticsId: `sb_${user.id.slice(0, 12)}`,
+            userId: user.id,
+            role: "user",
+            email: user.email ?? null,
+            phone: user.phone ?? null,
+            language: lang,
+          };
+        }
+      } catch {}
+    }
+    // No session: unauthenticated
+    return null;
   }
 
   // 1. Try stateless cryptographic verification first (works across serverless lambdas)
@@ -195,6 +208,16 @@ export async function currentSession(): Promise<SessionUser | null> {
     if (isLanguageCode(langCookie)) {
       signedUser.language = langCookie;
     }
+    try {
+      const db = await getDb();
+      const [u] = await db
+        .select({ email: schema.users.email, phone: schema.users.phone })
+        .from(schema.users)
+        .where(eq(schema.users.id, signedUser.userId))
+        .limit(1);
+      if (u?.email) signedUser.email = u.email;
+      if (u?.phone) signedUser.phone = u.phone;
+    } catch {}
     return signedUser;
   }
 
@@ -222,14 +245,25 @@ async function requestedPath() {
 /** Protects a page (FR-01). Redirects to sign-in preserving the destination. */
 export async function requireUser(): Promise<SessionUser> {
   const s = await currentSession();
-  if (!s) redirect(`/sign-in?next=${encodeURIComponent(await requestedPath())}&reason=expired`);
+  if (!s) {
+    try {
+      (await cookies()).delete(SESSION_COOKIE);
+    } catch {}
+    const p = await requestedPath();
+    const nextQuery = p && p !== "/" ? `?next=${encodeURIComponent(p)}&reason=expired` : "?reason=expired";
+    redirect(`/sign-in${nextQuery}`);
+  }
   return s;
 }
 
 /** Protects a page and ensures a session language has been chosen. */
 export async function requireUserWithLanguage(): Promise<SessionUser & { language: LanguageCode }> {
   const s = await requireUser();
-  if (!s.language) redirect(`/language?next=${encodeURIComponent(await requestedPath())}`);
+  if (!s.language) {
+    const p = await requestedPath();
+    const nextQuery = p && p !== "/" ? `?next=${encodeURIComponent(p)}` : "";
+    redirect(`/language${nextQuery}`);
+  }
   return s as SessionUser & { language: LanguageCode };
 }
 

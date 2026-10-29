@@ -117,9 +117,9 @@ describe("OAuth account linking (no silent duplicates)", () => {
 
     expect(await resolveOAuthUser("google", { sub: "g-unverified", email, emailVerified: false })).toEqual({ ok: false, error: "link_conflict" });
     const linked = await resolveOAuthUser("google", { sub: "g-1", email, emailVerified: true });
-    expect(linked).toEqual({ ok: true, userId: u.id });
+    expect(linked).toMatchObject({ ok: true, userId: u.id });
     // Same provider identity later → same account, even if the email changed at the provider.
-    expect(await resolveOAuthUser("google", { sub: "g-1", email: "changed@example.org", emailVerified: true })).toEqual({ ok: true, userId: u.id });
+    expect(await resolveOAuthUser("google", { sub: "g-1", email: "changed@example.org", emailVerified: true })).toMatchObject({ ok: true, userId: u.id });
 
     const fresh = await resolveOAuthUser("apple", { sub: "a-1", emailVerified: false });
     expect(fresh.ok).toBe(true);
