@@ -32,6 +32,10 @@ async function init(): Promise<DB> {
     holder.close = () => pool.end();
     // Production applies migrations explicitly (npm run db:migrate); dev auto-applies.
     if (!c.isProd) await migratePg(db, { migrationsFolder: MIGRATIONS });
+    try {
+      await pool.query('ALTER TABLE "users" ADD COLUMN IF NOT EXISTS "name" text;');
+      await pool.query('ALTER TABLE "users" ADD COLUMN IF NOT EXISTS "password_hash" text;');
+    } catch {}
     return db;
   }
   const dir = c.db.pgliteDir === ":memory:" ? undefined : path.resolve(c.db.pgliteDir);
@@ -46,6 +50,12 @@ async function init(): Promise<DB> {
   const db = drizzlePglite(client, { schema }) as unknown as DB;
   try {
     await client.query('SELECT 1 FROM "users" LIMIT 1');
+    try {
+      await client.exec('ALTER TABLE "users" ADD COLUMN IF NOT EXISTS "name" text;');
+      await client.exec('ALTER TABLE "users" ADD COLUMN IF NOT EXISTS "password_hash" text;');
+    } catch (colErr) {
+      console.warn("Notice: could not ensure users columns:", colErr);
+    }
   } catch {
     try {
       await migratePglite(db as never, { migrationsFolder: MIGRATIONS });

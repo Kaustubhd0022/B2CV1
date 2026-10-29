@@ -197,8 +197,10 @@ CREATE TABLE "sources" (
 --> statement-breakpoint
 CREATE TABLE "users" (
 	"id" uuid PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
+	"name" text,
 	"email" text,
 	"email_verified_at" timestamp with time zone,
+	"password_hash" text,
 	"phone" text,
 	"phone_verified_at" timestamp with time zone,
 	"role" "user_role" DEFAULT 'user' NOT NULL,

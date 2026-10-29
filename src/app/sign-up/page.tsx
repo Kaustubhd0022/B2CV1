@@ -19,15 +19,12 @@ import { SignUpCard } from "./sign-up-card";
 
 export const metadata: Metadata = { title: "Create an Account · TattvaCo" };
 
-const ERRORS: Record<string, MessageKey> = {
-  invalid_email: "auth.invalidEmail",
-  invalid_phone: "auth.invalidPhone",
-  too_many: "auth.tooMany",
-  delivery: "auth.deliveryFailed",
-  unavailable: "common.notConfigured",
-  oauth_failed: "auth.failed",
-  link_conflict: "auth.linkConflict",
-  expired_code: "auth.codeExpired",
+const ERRORS: Record<string, string> = {
+  invalid_email: "Please enter a valid email address.",
+  invalid_password: "Password must be at least 8 characters.",
+  email_exists: "An account with this email already exists. Please sign in.",
+  oauth_failed: "Authentication failed. Please try again.",
+  link_conflict: "An account with this email is already linked.",
 };
 
 export default async function SignUpPage({
@@ -37,16 +34,10 @@ export default async function SignUpPage({
 }) {
   const sp = await searchParams;
   const hl = isLanguageCode(sp.hl) ? sp.hl : "en";
-  const t = translator(hl);
   const next = safeNext(sp.next);
-  const error = sp.error ? ERRORS[sp.error] : undefined;
+  const errorMessage = sp.error ? (ERRORS[sp.error] ?? "An error occurred. Please try again.") : undefined;
   const google = oauthConfigured("google");
   const email = emailConfigured();
-  const phone = smsConfigured();
-  const devOutbox =
-    !config().isProd &&
-    (config().auth.email.provider === "dev-outbox" ||
-      config().auth.sms.provider === "dev-outbox");
 
   const pilotCities = [
     { slug: "varanasi", name: "Varanasi", state: "Uttar Pradesh", img: "/images/dev/varanasi-card.jpg" },
@@ -158,11 +149,9 @@ export default async function SignUpPage({
           <div className="w-full max-w-[360px] lg:shrink-0 flex justify-center py-4 lg:py-0">
             <SignUpCard
               next={next}
-              errorMessage={error ? t(error) : undefined}
+              errorMessage={errorMessage}
               googleConfigured={google}
               emailConfigured={email}
-              smsConfigured={phone}
-              devOutbox={devOutbox}
               activeLanguage={hl}
             />
           </div>

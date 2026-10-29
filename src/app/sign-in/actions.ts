@@ -2,12 +2,15 @@
 
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
+import { eq } from "drizzle-orm";
 import { config } from "@/lib/config";
-import { hmac, safeEqualHex } from "@/lib/auth/crypto";
+import { hmac, safeEqualHex, hashPassword, verifyPassword } from "@/lib/auth/crypto";
 import { normalizeEmail, normalizePhone, safeNext } from "@/lib/auth/normalize";
 import { startChallenge, verifyChallenge, type Channel } from "@/lib/auth/otp";
 import { currentSession, endSession, startSession } from "@/lib/auth/session";
+import { getDb, schema } from "@/lib/db/client";
 import { track } from "@/lib/analytics";
+import { isLanguageCode } from "@/lib/i18n/languages";
 
 /**
  * The address/number being verified is kept in a short-lived, httpOnly, signed cookie —
@@ -42,7 +45,6 @@ async function begin(channel: Channel, target: string, next: string) {
     const error = r.error === "rate_limited" ? "too_many" : r.error === "not_configured" ? "unavailable" : "delivery";
     redirect(`/sign-in?error=${error}&next=${encodeURIComponent(next)}`);
   }
-  // Demo mode only: the code travels in this signed, httpOnly cookie so the verify page can show it.
   (await cookies()).set(PENDING, sign(JSON.stringify({ channel, target, next, demoCode: r.demoCode })), {
     httpOnly: true,
     secure: config().isProd,
@@ -53,7 +55,100 @@ async function begin(channel: Channel, target: string, next: string) {
   redirect("/sign-in/verify");
 }
 
-import { isLanguageCode } from "@/lib/i18n/languages";
+/**
+ * Real Account Creation: registers user in Supabase Postgres with hashed password
+ * and starts an active session immediately.
+ */
+export async function createAccount(formData: FormData) {
+  const next = safeNext(formData.get("next"));
+  const name = String(formData.get("name") ?? "").trim();
+  const rawEmail = String(formData.get("email") ?? "");
+  const email = normalizeEmail(rawEmail);
+  const password = String(formData.get("password") ?? "");
+  const lang = String(formData.get("language") ?? "");
+
+  if (!email) {
+    redirect(`/sign-up?error=invalid_email&next=${encodeURIComponent(next)}`);
+  }
+  if (!password || password.length < 8) {
+    redirect(`/sign-up?error=invalid_password&next=${encodeURIComponent(next)}`);
+  }
+
+  const db = await getDb();
+
+  // Check if user already exists with this email
+  const [existing] = await db
+    .select({ id: schema.users.id, passwordHash: schema.users.passwordHash })
+    .from(schema.users)
+    .where(eq(schema.users.email, email))
+    .limit(1);
+
+  if (existing) {
+    redirect(`/sign-up?error=email_exists&next=${encodeURIComponent(next)}`);
+  }
+
+  // Create new user with hashed password
+  const [newUser] = await db
+    .insert(schema.users)
+    .values({
+      name: name || undefined,
+      email,
+      passwordHash: hashPassword(password),
+      emailVerifiedAt: new Date(),
+    })
+    .returning({ id: schema.users.id });
+
+  if (isLanguageCode(lang)) {
+    (await cookies()).set("tc-language", lang, { path: "/", maxAge: 365 * 86400, sameSite: "lax" });
+  }
+
+  // Clear existing session if any and start fresh session
+  if (await currentSession()) await endSession();
+  await startSession(newUser.id);
+  await track("auth_success", { method: "password_signup", new_account: true });
+
+  redirect(next || "/");
+}
+
+/**
+ * Real Sign In: verifies credentials against Supabase Postgres and creates session.
+ * If user selected OTP mode, initiates email OTP challenge.
+ */
+export async function signInAction(formData: FormData) {
+  const next = safeNext(formData.get("next"));
+  const email = normalizeEmail(String(formData.get("email") ?? ""));
+  const password = String(formData.get("password") ?? "");
+  const useOtp = formData.get("auth_mode") === "otp";
+
+  if (!email) {
+    redirect(`/sign-in?error=invalid_email&next=${encodeURIComponent(next)}`);
+  }
+
+  // If user requested OTP flow (or password is empty)
+  if (useOtp || !password) {
+    await begin("email", email, next);
+    return;
+  }
+
+  const db = await getDb();
+  const [user] = await db
+    .select({ id: schema.users.id, passwordHash: schema.users.passwordHash })
+    .from(schema.users)
+    .where(eq(schema.users.email, email))
+    .limit(1);
+
+  if (!user || !user.passwordHash || !verifyPassword(password, user.passwordHash)) {
+    await track("auth_failure", { method: "password", reason: "invalid_credentials" });
+    redirect(`/sign-in?error=invalid_credentials&next=${encodeURIComponent(next)}`);
+  }
+
+  // Password matches: start session immediately
+  if (await currentSession()) await endSession();
+  await startSession(user.id);
+  await track("auth_success", { method: "password" });
+
+  redirect(next || "/");
+}
 
 export async function startEmail(formData: FormData) {
   const next = safeNext(formData.get("next"));
@@ -91,7 +186,6 @@ export async function verifyCode(formData: FormData) {
     await track("auth_failure", { method: p.channel, reason: r.error });
     redirect(`/sign-in/verify?error=${r.error}`);
   }
-  // A fresh session per sign-in: no previous session (or its AI context) is reused.
   if (await currentSession()) await endSession();
   await startSession(r.userId);
   (await cookies()).delete({ name: PENDING, path: "/sign-in" });

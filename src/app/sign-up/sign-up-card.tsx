@@ -6,15 +6,13 @@ import { IconEye, IconEyeOff, IconGoogle } from "@/components/icons";
 import { Notice } from "@/components/ui";
 import { SubmitButton } from "@/components/submit-button";
 import { LANGUAGES, type LanguageCode } from "@/lib/i18n/languages";
-import { startEmail } from "../sign-in/actions";
+import { createAccount } from "../sign-in/actions";
 
 export interface SignUpCardProps {
   next: string;
   errorMessage?: string;
   googleConfigured: boolean;
   emailConfigured: boolean;
-  smsConfigured: boolean;
-  devOutbox: boolean;
   activeLanguage: string;
 }
 
@@ -23,7 +21,6 @@ export function SignUpCard({
   errorMessage,
   googleConfigured,
   emailConfigured,
-  devOutbox,
   activeLanguage,
 }: SignUpCardProps) {
   const [showPassword, setShowPassword] = useState(false);
@@ -43,7 +40,7 @@ export function SignUpCard({
             <span>✦</span>
             <span>Cultural Explorer Passport</span>
           </span>
-          <span className="text-[10px] font-medium text-[#7E6674]">Phase 1</span>
+          <span className="text-[10px] font-medium text-[#7E6674]">New Passport</span>
         </div>
 
         <h2 className="mt-2 font-serif text-xl font-bold tracking-tight text-[#20101B]">
@@ -65,7 +62,7 @@ export function SignUpCard({
 
       {/* Form Content */}
       <div className="mt-3.5 space-y-2.5">
-        <form action={startEmail} className="space-y-2.5" noValidate>
+        <form action={createAccount} className="space-y-2.5" noValidate>
           <input type="hidden" name="next" value={next} />
           <input type="hidden" name="language" value={selectedLanguage} />
 
@@ -95,7 +92,6 @@ export function SignUpCard({
                 required
                 placeholder="name@example.org"
                 className={inputCls}
-                disabled={!emailConfigured}
               />
             </label>
           </div>
@@ -158,25 +154,13 @@ export function SignUpCard({
         </div>
 
         {/* Google Sign-in Option */}
-        {googleConfigured ? (
-          <a
-            href={`/auth/google?next=${encodeURIComponent(next)}`}
-            className="flex min-h-9 h-9 w-full items-center justify-center gap-2 rounded-xl border border-[#E9D5DF] bg-white px-3 text-xs font-semibold text-[#20101B] shadow-2xs hover:border-amber-600/40 hover:bg-[#FAF0F4] transition-all cursor-pointer"
-          >
-            <IconGoogle className="size-3.5 shrink-0" />
-            <span>Continue with Google</span>
-          </a>
-        ) : (
-          <button
-            type="button"
-            disabled
-            title="Google sign-in is not configured in this environment"
-            className="flex min-h-9 h-9 w-full cursor-not-allowed items-center justify-center gap-2 rounded-xl border border-[#E9D5DF]/60 bg-[#FAF0F4]/60 px-3 text-xs font-semibold text-[#7E6674] opacity-75"
-          >
-            <IconGoogle className="size-3.5 shrink-0 grayscale opacity-60" />
-            <span>Continue with Google (Offline)</span>
-          </button>
-        )}
+        <a
+          href={`/auth/google?next=${encodeURIComponent(next)}`}
+          className="flex min-h-9 h-9 w-full items-center justify-center gap-2 rounded-xl border border-[#E9D5DF] bg-white px-3 text-xs font-semibold text-[#20101B] shadow-2xs hover:border-amber-600/40 hover:bg-[#FAF0F4] transition-all cursor-pointer"
+        >
+          <IconGoogle className="size-3.5 shrink-0" />
+          <span>Continue with Google</span>
+        </a>
 
         {/* Bottom Link: Redirect to Sign In Page */}
         <div className="pt-1 text-center">
@@ -201,11 +185,6 @@ export function SignUpCard({
           </Link>
           .
         </p>
-        {devOutbox && (
-          <Notice tone="warning" className="mt-1.5 text-left text-[10px] py-1 px-2">
-            Dev Mode: Codes written to local outbox.
-          </Notice>
-        )}
       </div>
     </div>
   );

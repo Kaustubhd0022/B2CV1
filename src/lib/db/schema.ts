@@ -31,9 +31,11 @@ export const userRole = pgEnum("user_role", ["user", "editor"]);
 
 export const users = pgTable("users", {
   id: uuid("id").primaryKey().defaultRandom(),
+  name: text("name"),
   // Purpose: sign-in identifier and verification target. Nullable: a user may use phone only.
   email: text("email").unique(),
   emailVerifiedAt: ts("email_verified_at"),
+  passwordHash: text("password_hash"),
   // Purpose: sign-in identifier (E.164). Nullable.
   phone: text("phone").unique(),
   phoneVerifiedAt: ts("phone_verified_at"),

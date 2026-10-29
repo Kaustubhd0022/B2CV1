@@ -20,15 +20,15 @@ import { AuthCard } from "./auth-card";
 
 export const metadata: Metadata = { title: "Sign in" };
 
-const ERRORS: Record<string, MessageKey> = {
-  invalid_email: "auth.invalidEmail",
-  invalid_phone: "auth.invalidPhone",
-  too_many: "auth.tooMany",
-  delivery: "auth.deliveryFailed",
-  unavailable: "common.notConfigured",
-  oauth_failed: "auth.failed",
-  link_conflict: "auth.linkConflict",
-  expired_code: "auth.codeExpired",
+const ERRORS: Record<string, string> = {
+  invalid_email: "Please enter a valid email address.",
+  invalid_credentials: "Incorrect email or password. Please try again.",
+  too_many: "Too many attempts. Please try again later.",
+  delivery: "Failed to send code. Please try again.",
+  unavailable: "Service temporarily unavailable.",
+  oauth_failed: "Authentication failed. Please try again.",
+  link_conflict: "An account with this email is already linked.",
+  expired_code: "Code expired. Please request a new code.",
 };
 
 const input =
@@ -38,14 +38,10 @@ export default async function SignInPage({ searchParams }: { searchParams: Promi
   const sp = await searchParams;
   // The interface language can be previewed before sign-in; nothing is stored.
   const hl = isLanguageCode(sp.hl) ? sp.hl : "en";
-  const t = translator(hl);
   const next = safeNext(sp.next);
-  const error = sp.error ? ERRORS[sp.error] : undefined;
+  const errorMessage = sp.error ? (ERRORS[sp.error] ?? "An error occurred. Please try again.") : undefined;
   const google = oauthConfigured("google");
-  const apple = oauthConfigured("apple");
   const email = emailConfigured();
-  const phone = smsConfigured();
-  const devOutbox = !config().isProd && (config().auth.email.provider === "dev-outbox" || config().auth.sms.provider === "dev-outbox");
   const q = `?next=${encodeURIComponent(next)}`;
 
   const pilotCities = [
@@ -159,11 +155,9 @@ export default async function SignInPage({ searchParams }: { searchParams: Promi
           <div className="w-full max-w-[360px] lg:shrink-0 flex justify-center py-4 lg:py-0">
             <AuthCard
               next={next}
-              errorMessage={error ? t(error) : undefined}
+              errorMessage={errorMessage}
               googleConfigured={google}
               emailConfigured={email}
-              smsConfigured={phone}
-              devOutbox={devOutbox}
               activeLanguage={hl}
             />
           </div>
