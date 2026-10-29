@@ -26,7 +26,7 @@ const ERRORS: Record<string, string> = {
   oauth_failed: "Authentication failed. Please try again.",
   link_conflict: "An account with this email is already linked.",
   nda_required: "You must review and agree to the Non-Disclosure Agreement before creating your account.",
-  account_not_found: "No account found for this email. Please review the Non-Disclosure Agreement below to create your passport.",
+  account_not_found: "Sorry, passport not found. Please create and apply for your passport first.",
 };
 
 export default async function SignUpPage({
