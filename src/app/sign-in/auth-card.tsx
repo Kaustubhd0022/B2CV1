@@ -15,6 +15,7 @@ export interface AuthCardProps {
   googleConfigured: boolean;
   emailConfigured: boolean;
   activeLanguage: string;
+  onBeginTransition?: () => void;
 }
 
 type AuthMode = "sign-in" | "forgot-password";
@@ -25,13 +26,14 @@ export function AuthCard({
   googleConfigured,
   emailConfigured,
   activeLanguage,
+  onBeginTransition,
 }: AuthCardProps) {
   const [mode, setMode] = useState<AuthMode>("sign-in");
   const [showPassword, setShowPassword] = useState(false);
   const [authWithOtp, setAuthWithOtp] = useState(false);
 
   const inputCls =
-    "mt-1 block w-full h-9 rounded-xl border border-[#E9D5DF] bg-white px-3 py-1.5 text-xs text-[#20101B] placeholder:text-[#9A8492] transition-all focus:border-amber-600 focus:outline-none focus:ring-1.5 focus:ring-amber-500/20 disabled:opacity-60 shadow-2xs";
+    "mt-1 block w-full h-9 rounded-xl border border-[#E9D5DF] bg-white px-3 py-1.5 text-xs text-[#20101B] placeholder:text-[#9A8492] transition-all duration-200 focus:border-amber-600 focus:outline-none focus:ring-2 focus:ring-amber-500/25 focus:shadow-[0_0_12px_rgba(198,125,40,0.18)] disabled:opacity-60 shadow-2xs";
 
   return (
     <div className="w-full max-w-[340px] rounded-2xl border border-[#F0DCE4] bg-white/95 p-4.5 sm:p-5 shadow-xl backdrop-blur-xl">
@@ -69,7 +71,12 @@ export function AuthCard({
          ───────────────────────────────────────────────────────────── */}
       {mode === "sign-in" && (
         <div className="mt-3.5 space-y-2.5">
-          <form action={signInAction} className="space-y-2.5" noValidate>
+          <form
+            action={signInAction}
+            onSubmit={() => onBeginTransition?.()}
+            className="space-y-2.5"
+            noValidate
+          >
             <input type="hidden" name="next" value={next} />
             {authWithOtp && <input type="hidden" name="auth_mode" value="otp" />}
 
@@ -133,8 +140,11 @@ export function AuthCard({
               </button>
             </div>
 
-            <SubmitButton className="w-full !min-h-9 !h-9 !py-1.5 !px-3 !rounded-xl text-xs font-semibold mt-1">
-              {!authWithOtp ? "Sign In →" : "Send Email Code →"}
+            <SubmitButton className="group w-full !min-h-9 !h-9 !py-1.5 !px-3 !rounded-xl text-xs font-semibold mt-1 transition-all active:scale-[0.98]">
+              <span className="inline-flex items-center justify-center gap-1.5">
+                <span>{!authWithOtp ? "Sign In" : "Send Email Code"}</span>
+                <span className="inline-block transition-transform duration-200 group-hover:translate-x-1">→</span>
+              </span>
             </SubmitButton>
           </form>
 
@@ -146,13 +156,17 @@ export function AuthCard({
           </div>
 
           {/* Google Sign-in Option (Supabase + Google OAuth) */}
-          <form action={signInWithGoogle} className="w-full">
+          <form
+            action={signInWithGoogle}
+            onSubmit={() => onBeginTransition?.()}
+            className="w-full"
+          >
             <input type="hidden" name="next" value={next} />
             <button
               type="submit"
-              className="flex min-h-9 h-9 w-full items-center justify-center gap-2 rounded-xl border border-[#E9D5DF] bg-white px-3 text-xs font-semibold text-[#20101B] shadow-2xs hover:border-amber-600/40 hover:bg-[#FAF0F4] transition-all cursor-pointer"
+              className="group flex min-h-9 h-9 w-full items-center justify-center gap-2 rounded-xl border border-[#E9D5DF] bg-white px-3 text-xs font-semibold text-[#20101B] shadow-2xs hover:border-amber-600/40 hover:bg-[#FAF0F4] transition-all cursor-pointer active:scale-[0.98]"
             >
-              <IconGoogle className="size-3.5 shrink-0" />
+              <IconGoogle className="size-3.5 shrink-0 transition-transform duration-200 group-hover:scale-110" />
               <span>Continue with Google</span>
             </button>
           </form>
