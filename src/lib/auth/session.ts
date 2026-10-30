@@ -6,7 +6,8 @@ import { config } from "@/lib/config";
 import { getDb, schema } from "@/lib/db/client";
 import { createHash } from "node:crypto";
 import { isLanguageCode, type LanguageCode } from "@/lib/i18n/languages";
-import { hmac, randomToken, safeEqualHex, sha256 } from "./crypto";
+import { hmac, randomToken, sha256 } from "./crypto";
+import { readSignedToken, signingSecret } from "./signed-token";
 
 export const SESSION_COOKIE = "tc_session";
 
@@ -28,26 +29,17 @@ function toDeterministicUuid(str: string): string {
 /* ---------------- Stateless signed session helpers (resilient across serverless lambdas) ---------------- */
 
 export function createSignedToken(userId: string, role: "user" | "editor" = "user", language: LanguageCode = "en", days = 14) {
-  const secret = config().auth.secret || "dev-only-secret-do-not-use-in-production";
   const expiresAt = Date.now() + days * 86_400_000;
   const payload = `${userId}:${role}:${language}:${expiresAt}`;
-  const sig = hmac(secret, payload);
+  const sig = hmac(signingSecret(), payload);
   return `tc_${Buffer.from(payload).toString("base64url")}.${sig}`;
 }
 
 export function verifySignedToken(token: string): SessionUser | null {
   try {
-    if (!token.startsWith("tc_") || !token.includes(".")) return null;
-    const [prefixedPayload, sig] = token.split(".");
-    const b64 = prefixedPayload.replace(/^tc_/, "");
-    const payload = Buffer.from(b64, "base64url").toString("utf-8");
-    const [userId, role, lang, expStr] = payload.split(":");
-    const expiresAt = Number(expStr);
-    if (!userId || !expStr || Number.isNaN(expiresAt) || expiresAt < Date.now()) return null;
-
-    const secret = config().auth.secret || "dev-only-secret-do-not-use-in-production";
-    const expectedSig = hmac(secret, payload);
-    if (!safeEqualHex(sig, expectedSig)) return null;
+    const verified = readSignedToken(token);
+    if (!verified) return null;
+    const { userId, role, lang, sig } = verified;
 
     const finalUserId = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(userId)
       ? userId
