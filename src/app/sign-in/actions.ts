@@ -2,16 +2,17 @@
 
 import { cookies, headers } from "next/headers";
 import { redirect } from "next/navigation";
-import { desc, eq } from "drizzle-orm";
+import { eq } from "drizzle-orm";
 import { config } from "@/lib/config";
 import { hmac, safeEqualHex, hashPassword, verifyPassword } from "@/lib/auth/crypto";
 import { normalizeEmail, normalizePhone, safeNext } from "@/lib/auth/normalize";
-import { getLatestActiveChallenge, startChallenge, verifyChallenge, type Channel } from "@/lib/auth/otp";
+import { startChallenge, verifyChallenge, type Channel } from "@/lib/auth/otp";
 import { currentSession, endSession, startSession } from "@/lib/auth/session";
 import { getDb, schema } from "@/lib/db/client";
 import { track } from "@/lib/analytics";
 import { isLanguageCode } from "@/lib/i18n/languages";
-import { notifyLegalOfNdaAcceptance } from "@/lib/legal/nda-notifier";
+import { recordNdaAcceptance } from "@/lib/legal/nda-record";
+import { resolveSupabaseAccount } from "@/lib/auth/supabase-account";
 
 /**
  * The address/number being verified is kept in a short-lived, httpOnly, signed cookie —
@@ -26,8 +27,6 @@ function unsign(value: string | undefined): {
   channel: Channel;
   target: string;
   next: string;
-  challengeId?: string;
-  startedAt?: number;
   demoCode?: string;
 } | null {
   if (!value) return null;
@@ -59,15 +58,13 @@ async function begin(channel: Channel, target: string, next: string) {
   // Clear any stale active session before starting fresh verification
   if (await currentSession()) await endSession();
 
-  // Create unified secure challenge delivering 6-digit OTP code and direct confirmation link
+  // Create the challenge (rate limiting) and deliver the 6-digit code
   const r = await startChallenge(channel, target);
   if (!r.ok) {
     await track("auth_failure", { method: channel, reason: r.error });
     const error = r.error === "rate_limited" ? "too_many" : r.error === "not_configured" ? "unavailable" : "delivery";
     redirect(`/sign-in?error=${error}&next=${encodeURIComponent(next)}`);
   }
-
-  const activeChallenge = await getLatestActiveChallenge(channel, target);
 
   (await cookies()).set(
     PENDING,
@@ -76,8 +73,6 @@ async function begin(channel: Channel, target: string, next: string) {
         channel,
         target,
         next,
-        challengeId: activeChallenge?.id,
-        startedAt: Date.now(),
         demoCode: "demoCode" in r ? r.demoCode : undefined,
       })
     ),
@@ -152,10 +147,16 @@ export async function createAccount(formData: FormData) {
         if (msg.includes("already registered") || msg.includes("user already registered")) {
           redirect(`/sign-up?error=email_exists&email=${encodeURIComponent(email)}&next=${encodeURIComponent(next)}`);
         }
-        redirect(`/sign-up?error=invalid_credentials&next=${encodeURIComponent(next)}`);
+        redirect(`/sign-up?error=delivery&next=${encodeURIComponent(next)}`);
+      }
+
+      // Supabase hides existing emails: it reports success, sends nothing, and returns no identities.
+      if (supaData.user?.identities?.length === 0) {
+        redirect(`/sign-up?error=email_exists&email=${encodeURIComponent(email)}&next=${encodeURIComponent(next)}`);
       }
 
       if (supaData.user) {
+        let accountId = supaData.user.id;
         if (isLanguageCode(lang)) {
           (await cookies()).set("tc-language", lang, { path: "/", maxAge: 365 * 86400, sameSite: "lax" });
         }
@@ -169,7 +170,9 @@ export async function createAccount(formData: FormData) {
             .where(eq(schema.users.email, email))
             .limit(1);
 
-          if (!existing) {
+          if (existing) {
+            accountId = existing.id;
+          } else {
             await db.insert(schema.users).values({
               id: supaData.user.id,
               name: name || email.split("@")[0].replace(/[._-]/g, " ").replace(/\b\w/g, (c) => c.toUpperCase()),
@@ -180,11 +183,11 @@ export async function createAccount(formData: FormData) {
           }
         } catch {}
 
-        // Dispatch signed NDA undertaking and user details to legal@donvanzara.com
-        await notifyLegalOfNdaAcceptance({
+        // Record the signed NDA undertaking
+        await recordNdaAcceptance({
           name: name || email.split("@")[0],
           email,
-          userId: supaData.user.id,
+          userId: accountId,
           language: lang,
           ip,
           userAgent,
@@ -195,7 +198,7 @@ export async function createAccount(formData: FormData) {
         if (!supaData.session) {
           (await cookies()).set(
             PENDING,
-            sign(JSON.stringify({ channel: "email", target: email, next, startedAt: Date.now() })),
+            sign(JSON.stringify({ channel: "email", target: email, next })),
             {
               httpOnly: true,
               secure: config().isProd,
@@ -208,13 +211,15 @@ export async function createAccount(formData: FormData) {
         }
 
         if (await currentSession()) await endSession();
-        await startSession(supaData.user.id);
+        await startSession(accountId);
         await track("auth_success", { method: "supabase_auth_signup", new_account: true });
         redirect(next || "/");
       }
     } catch (err) {
       if ((err as Error).message === "NEXT_REDIRECT") throw err;
     }
+    // Never fall through to the local path below: it would create a verified account unverified.
+    redirect(`/sign-up?error=delivery&next=${encodeURIComponent(next)}`);
   }
 
   const db = await getDb();
@@ -241,8 +246,8 @@ export async function createAccount(formData: FormData) {
     })
     .returning({ id: schema.users.id });
 
-  // Dispatch signed NDA undertaking and user details to legal@donvanzara.com
-  await notifyLegalOfNdaAcceptance({
+  // Record the signed NDA undertaking
+  await recordNdaAcceptance({
     name: name || email.split("@")[0],
     email,
     userId: newUser.id,
@@ -293,8 +298,10 @@ export async function signInAction(formData: FormData) {
         });
 
         if (!supaErr && supaUser.user) {
+          const account = await resolveSupabaseAccount(supaUser.user);
+          if (!account.ok) redirect(`/sign-in?error=${account.error}`);
           if (await currentSession()) await endSession();
-          await startSession(supaUser.user.id);
+          await startSession(account.userId);
           await track("auth_success", { method: "supabase_password" });
           redirect(next || "/");
         }
@@ -305,7 +312,7 @@ export async function signInAction(formData: FormData) {
           if (msg.includes("email not confirmed") || msg.includes("email link is invalid")) {
             (await cookies()).set(
               PENDING,
-              sign(JSON.stringify({ channel: "email", target: email, next, startedAt: Date.now() })),
+              sign(JSON.stringify({ channel: "email", target: email, next })),
               {
                 httpOnly: true,
                 secure: config().isProd,
@@ -399,79 +406,6 @@ export async function resendCode() {
 }
 
 /**
- * Real-time verification poller: checks if the user has confirmed their email
- * via magic link on phone or another browser tab.
- *
- * FULL SECURITY GATING:
- * 1. Checks ONLY if THIS specific challenge has been consumed (`consumedAt IS NOT NULL`).
- * 2. NEVER checks past `emailVerifiedAt` or stale sessions.
- * 3. If the challenge has NOT been consumed, returns `{ verified: false }`.
- * 4. User is strictly gated and cannot bypass OTP without typing the code or clicking the link.
- */
-export async function checkVerificationStatus(): Promise<{ verified: boolean; next?: string }> {
-  const p = await pendingVerification();
-  if (!p) {
-    return { verified: false };
-  }
-
-  try {
-    const db = await getDb();
-    let challenge = null;
-
-    if (p.challengeId) {
-      const [found] = await db
-        .select({
-          id: schema.otpChallenges.id,
-          consumedAt: schema.otpChallenges.consumedAt,
-          createdAt: schema.otpChallenges.createdAt,
-        })
-        .from(schema.otpChallenges)
-        .where(eq(schema.otpChallenges.id, p.challengeId))
-        .limit(1);
-      challenge = found;
-    } else {
-      const th = hmac(config().auth.secret, `${p.channel}:${p.target}`);
-      const [found] = await db
-        .select({
-          id: schema.otpChallenges.id,
-          consumedAt: schema.otpChallenges.consumedAt,
-          createdAt: schema.otpChallenges.createdAt,
-        })
-        .from(schema.otpChallenges)
-        .where(eq(schema.otpChallenges.targetHash, th))
-        .orderBy(desc(schema.otpChallenges.createdAt))
-        .limit(1);
-      challenge = found;
-    }
-
-    // ONLY IF this specific challenge was consumed (e.g. by tapping the link on mobile phone)
-    if (challenge && challenge.consumedAt !== null) {
-      if (p.startedAt && challenge.consumedAt.getTime() < p.startedAt - 5000) {
-        // Consumed before this verification session began; ignore stale challenge
-        return { verified: false };
-      }
-
-      const col = p.channel === "email" ? schema.users.email : schema.users.phone;
-      const [user] = await db
-        .select({ id: schema.users.id })
-        .from(schema.users)
-        .where(eq(col, p.target))
-        .limit(1);
-
-      if (user) {
-        if (await currentSession()) await endSession();
-        await startSession(user.id);
-        await clearPendingCookie();
-        return { verified: true, next: p.next || "/" };
-      }
-    }
-  } catch {}
-
-  // Gated: Return false so the user must enter the 6-digit code or tap link
-  return { verified: false };
-}
-
-/**
  * Async resend action for rich client interaction without jarring page reloads.
  */
 export async function resendVerificationAction(): Promise<{ ok: boolean; error?: string }> {
@@ -481,18 +415,9 @@ export async function resendVerificationAction(): Promise<{ ok: boolean; error?:
   const r = await startChallenge(p.channel, p.target);
   if (!r.ok) return { ok: false, error: r.error };
 
-  const activeChallenge = await getLatestActiveChallenge(p.channel, p.target);
   (await cookies()).set(
     PENDING,
-    sign(
-      JSON.stringify({
-        channel: p.channel,
-        target: p.target,
-        next: p.next,
-        challengeId: activeChallenge?.id,
-        startedAt: Date.now(),
-      })
-    ),
+    sign(JSON.stringify({ channel: p.channel, target: p.target, next: p.next })),
     {
       httpOnly: true,
       secure: config().isProd,
@@ -530,19 +455,14 @@ export async function verifyCode(formData: FormData) {
       }
 
       if (!verifyRes.error && verifyRes.data.user) {
-        // Sync verified status to local public.users
-        try {
-          const db = await getDb();
-          await db
-            .update(schema.users)
-            .set({ emailVerifiedAt: new Date() })
-            .where(eq(schema.users.email, p.target));
-        } catch {}
+        const account = await resolveSupabaseAccount(verifyRes.data.user);
+        if (!account.ok) redirect(`/sign-in?error=${account.error}`);
 
         if (await currentSession()) await endSession();
-        await startSession(verifyRes.data.user.id);
+        await startSession(account.userId);
         await clearPendingCookie();
-        redirect(p.next || "/");
+        await track("auth_success", { method: "supabase_otp", new_account: account.created });
+        redirect(account.created ? `/language?next=${encodeURIComponent(p.next)}` : (p.next || "/"));
       }
     } catch (err) {
       if ((err as Error).message === "NEXT_REDIRECT") throw err;

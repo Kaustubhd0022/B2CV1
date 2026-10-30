@@ -5,7 +5,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "motion/react";
 import { PassportSeal3D } from "./passport-seal-3d";
-import { checkVerificationStatus, resendVerificationAction, verifyCode } from "../actions";
+import { resendVerificationAction, verifyCode } from "../actions";
 
 interface VerifyCardProps {
   target: string;
@@ -43,9 +43,9 @@ export function VerifyCard({
   );
   const [noticeMsg, setNoticeMsg] = useState<string | null>(
     initialNotice === "code_resent"
-      ? "✓ A fresh verification link & code has been dispatched to your inbox."
+      ? "✓ A fresh verification code has been sent to your inbox."
       : initialNotice === "email_not_confirmed"
-      ? "✉ Please confirm your email using the link or 6-digit code sent to you."
+      ? "✉ Please confirm your email using the 6-digit code sent to you."
       : null
   );
 
@@ -67,37 +67,6 @@ export function VerifyCard({
     }, 1000);
     return () => clearInterval(timer);
   }, [cooldown]);
-
-  // ─────────────────────────────────────────────────────────────────────────────
-  // Real-Time Poller: Listens for Magic Link confirmation in the user's email
-  // If the user clicks the link in their email on another tab or mobile phone,
-  // this poller auto-detects it and unlocks their passport immediately!
-  // ─────────────────────────────────────────────────────────────────────────────
-  useEffect(() => {
-    if (status === "verified") return;
-
-    let isSubscribed = true;
-    const interval = setInterval(async () => {
-      try {
-        const res = await checkVerificationStatus();
-        if (res.verified && isSubscribed) {
-          setStatus("verified");
-          setNoticeMsg("✦ Email confirmed! Unlocking your Cultural Explorer Passport...");
-          setErrorMsg(null);
-          setTimeout(() => {
-            window.location.href = res.next || next || "/";
-          }, 1200);
-        }
-      } catch {
-        // Polling network blip - continue listening gracefully
-      }
-    }, 2500);
-
-    return () => {
-      isSubscribed = false;
-      clearInterval(interval);
-    };
-  }, [status, next]);
 
   // Handle single digit input
   const handleDigitChange = (index: number, val: string) => {
@@ -186,7 +155,7 @@ export function VerifyCard({
       try {
         const res = await resendVerificationAction();
         if (res.ok) {
-          setNoticeMsg("✓ A fresh verification link & code was sent to your email.");
+          setNoticeMsg("✓ A fresh verification code was sent to your email.");
           setErrorMsg(null);
           setCooldown(60);
         } else {
@@ -270,7 +239,7 @@ export function VerifyCard({
           Dual-Path Clarification (Solves the "Link vs Code" Mismatch)
          ───────────────────────────────────────────────────────────── */}
       <div className="mt-5 space-y-3">
-        {/* Method A: Direct Magic Link with Live Beacon */}
+        {/* Inbox shortcut with live beacon */}
         <div className="rounded-2xl border border-amber-500/25 bg-gradient-to-r from-amber-950/40 via-amber-900/20 to-transparent p-3.5 sm:p-4">
           <div className="flex items-start justify-between gap-2">
             <div className="flex items-center gap-2">
@@ -279,7 +248,7 @@ export function VerifyCard({
                 <span className="relative inline-flex rounded-full size-2.5 bg-emerald-500" />
               </span>
               <span className="text-[12px] font-semibold uppercase tracking-wider text-amber-200">
-                1-Tap Email Link Active
+                Code Sent
               </span>
             </div>
             <a
@@ -294,7 +263,7 @@ export function VerifyCard({
           </div>
 
           <p className="mt-2 text-xs text-white/85 leading-relaxed">
-            Check your inbox for the 6-digit code. If opening email on your mobile phone, tapping the confirmation link will <strong>auto-sync and unlock</strong> your passport across all your devices.
+            Check your inbox for the 6-digit code and enter it below.
           </p>
         </div>
 
@@ -410,7 +379,7 @@ export function VerifyCard({
           {isPendingResend
             ? "Sending fresh email..."
             : cooldown > 0
-            ? `Resend link & code in ${cooldown}s`
+            ? `Resend code in ${cooldown}s`
             : "Didn't receive it? Resend now"}
         </button>
 
@@ -425,7 +394,7 @@ export function VerifyCard({
 
       {/* Troubleshooting hint */}
       <p className="mt-3 text-[11px] text-white/40 text-center">
-        Tip: Check your spam or promotions folder if the email doesn't appear within 30 seconds.
+        Tip: Check your spam or promotions folder if the email doesn&apos;t appear within 30 seconds.
       </p>
     </div>
   );

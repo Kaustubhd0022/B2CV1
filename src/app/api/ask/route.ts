@@ -2,6 +2,7 @@ import { NextResponse, type NextRequest } from "next/server";
 import { eq } from "drizzle-orm";
 import { config } from "@/lib/config";
 import { currentSession } from "@/lib/auth/session";
+import { hasAcceptedNda } from "@/lib/legal/nda-record";
 import { getDb, schema } from "@/lib/db/client";
 import { getConnection, getStory } from "@/lib/content/repo";
 import { runAsk, validateQuestion } from "@/lib/ai/pipeline";
@@ -19,6 +20,7 @@ export const maxDuration = 120;
 export async function POST(request: NextRequest) {
   const session = await currentSession();
   if (!session) return NextResponse.json({ error: "unauthenticated" }, { status: 401 });
+  if (!(await hasAcceptedNda(session.userId))) return NextResponse.json({ error: "nda_required" }, { status: 403 });
   if (!session.language) return NextResponse.json({ error: "language_required" }, { status: 400 });
   const lang = session.language;
 

@@ -22,6 +22,7 @@ export const metadata: Metadata = { title: "Create an Account · TattvaCo" };
 const ERRORS: Record<string, string> = {
   invalid_email: "Please enter a valid email address.",
   invalid_password: "Password must be at least 8 characters.",
+  delivery: "We could not send your verification email. Please try again shortly.",
   email_exists: "An account with this email already exists. Please sign in.",
   oauth_failed: "Authentication failed. Please try again.",
   link_conflict: "An account with this email is already linked.",

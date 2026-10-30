@@ -24,6 +24,13 @@ export function proxy(request: NextRequest) {
   const headers = new Headers(request.headers);
   headers.set("x-tc-path", pathname + search);
 
+  // Supabase falls back to its Site URL when it rejects redirect_to; the code still has to be exchanged.
+  if (pathname === "/" && request.nextUrl.searchParams.has("code")) {
+    const url = request.nextUrl.clone();
+    url.pathname = "/auth/callback";
+    return NextResponse.redirect(url);
+  }
+
   const isPublic = PUBLIC_PREFIXES.some((p) => pathname === p || pathname.startsWith(p));
   const rawToken = request.cookies.get(SESSION_COOKIE)?.value;
   const hasAuth = Boolean(rawToken && readSignedToken(rawToken));

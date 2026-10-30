@@ -1,10 +1,24 @@
 import { expect, test, type Page } from "@playwright/test";
 import { readFileSync } from "node:fs";
 
+async function continueInLanguage(page: Page) {
+  await page.getByRole("button", { name: /^Continue/ }).click();
+  await page.waitForURL((url) => !url.pathname.startsWith("/language"));
+  if (new URL(page.url()).pathname === "/nda") {
+    await page.getByRole("button", { name: "I Agree and Continue" }).click();
+    await page.waitForURL((url) => url.pathname !== "/nda");
+  }
+}
+
 function codeFor(email: string) {
   const lines = readFileSync(".dev-outbox/outbox.jsonl", "utf8").trim().split("\n").map((l) => JSON.parse(l));
   return lines.filter((l) => l.to === email).at(-1).code as string;
 }
+
+// The dev server's hot reload can restart pages mid-test; it plays no part in these journeys.
+test.beforeEach(async ({ page }) => {
+  await page.routeWebSocket(/webpack-hmr/, () => {});
+});
 
 let n = 0;
 async function signIn(page: Page, startPath = "/") {
@@ -13,12 +27,13 @@ async function signIn(page: Page, startPath = "/") {
   await expect(page).toHaveURL(/\/sign-in/);
   // Dev server compiles on first hit and may reload once; wait until the page has settled.
   await page.waitForLoadState("networkidle");
-  await page.getByLabel("Email address").fill(email);
-  await page.getByRole("button", { name: "Continue with email" }).click();
+  await page.locator('input[name="email"]').fill(email);
+  await page.getByRole("button", { name: "Sign in with Email OTP instead" }).click();
+  await page.getByRole("button", { name: "Send Email Code" }).click();
   await expect(page).toHaveURL(/\/sign-in\/verify/);
   await page.waitForLoadState("networkidle");
-  await page.getByLabel("Verification code").fill(codeFor(email));
-  await page.getByRole("button", { name: "Verify and continue" }).click();
+  // Typing the sixth digit submits the form.
+  await page.getByLabel("Digit 1").pressSequentially(codeFor(email));
   await expect(page).toHaveURL(/\/language/);
   await page.waitForLoadState("networkidle");
   return email;
@@ -31,7 +46,7 @@ test("core journey: sign in → language → city → story → source → conne
   // 3. Language selection (all 11 listed, with honest readiness labels).
   await expect(page.getByRole("radio")).toHaveCount(11);
   await expect(page.getByText("Preview — not yet quality-validated").first()).toBeVisible();
-  await page.getByRole("button", { name: "Continue in selected language" }).click();
+  await continueInLanguage(page);
   await expect(page.getByRole("heading", { name: "There is more to every story." })).toBeVisible();
 
   // Browse and Ask are both present on Home.
@@ -94,7 +109,7 @@ test("core journey: sign in → language → city → story → source → conne
 
 test("shared link preserves the destination through sign-in", async ({ page }) => {
   await signIn(page, "/s/story/kochi-shore-operated-fishing-nets");
-  await page.getByRole("button", { name: "Continue in selected language" }).click();
+  await continueInLanguage(page);
   await expect(page).toHaveURL(/\/stories\/kochi-shore-operated-fishing-nets/);
   await expect(page.getByText("Contested").first()).toBeVisible();
 });
@@ -102,7 +117,7 @@ test("shared link preserves the destination through sign-in", async ({ page }) =
 test("selected language is respected and never silently replaced", async ({ page }) => {
   await signIn(page);
   await page.getByLabel(/हिन्दी/).check();
-  await page.getByRole("button", { name: "Continue in selected language" }).click();
+  await continueInLanguage(page);
   await expect(page.locator("html")).toHaveAttribute("lang", "hi");
   await expect(page.getByText(/Parts of the interface are not yet available in हिन्दी/)).toBeVisible();
   await expect(page.getByRole("heading", { name: "हर कहानी में और भी बहुत कुछ है।" })).toBeVisible();
@@ -116,7 +131,7 @@ test("selected language is respected and never silently replaced", async ({ page
 
 test("unavailable content, unknown routes and the editorial area for non-editors", async ({ page }) => {
   await signIn(page);
-  await page.getByRole("button", { name: "Continue in selected language" }).click();
+  await continueInLanguage(page);
   await page.goto("/stories/does-not-exist");
   await expect(page.getByRole("heading", { name: "This story is unavailable" })).toBeVisible();
   await page.goto("/cities/atlantis");
@@ -127,7 +142,7 @@ test("unavailable content, unknown routes and the editorial area for non-editors
 
 test("ask validates input and handles insufficient evidence honestly", async ({ page }) => {
   await signIn(page);
-  await page.getByRole("button", { name: "Continue in selected language" }).click();
+  await continueInLanguage(page);
   await page.goto("/ask");
   await page.getByRole("button", { name: "Ask" }).click();
   await expect(page.getByText("Please enter a question of at least 3 characters.")).toBeVisible();

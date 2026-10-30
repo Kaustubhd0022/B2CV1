@@ -209,31 +209,4 @@ describe("demo mode (on-screen codes)", () => {
     process.env = saved;
     resetConfigForTests();
   });
-
-  it("consumes an active challenge and authenticates via /auth/confirm link", async () => {
-    const { GET } = await import("@/app/auth/confirm/route");
-    const { NextRequest } = await import("next/server");
-    const { getLatestActiveChallenge } = await import("@/lib/auth/otp");
-    const { hmac } = await import("@/lib/auth/crypto");
-    const { config } = await import("@/lib/config");
-
-    const email = `link-${Date.now()}@example.org`;
-    await startChallenge("email", email);
-    const activeChallenge = await getLatestActiveChallenge("email", email);
-    expect(activeChallenge).not.toBeNull();
-
-    const c = config();
-    const th = hmac(c.auth.secret, `email:${email}`);
-    const token = hmac(c.auth.secret, `${activeChallenge!.id}:${th}`);
-    const confirmUrl = `https://tattvaco.org/auth/confirm?cid=${activeChallenge!.id}&token=${token}&channel=email&target=${encodeURIComponent(email)}&next=/explore`;
-
-    const req = new NextRequest(confirmUrl);
-    const res = await GET(req);
-    expect(res.status).toBe(307);
-    expect(res.headers.get("location")).toBe("https://tattvaco.org/explore");
-
-    const db = await getDb();
-    const [cAfter] = await db.select().from(schema.otpChallenges).where(eq(schema.otpChallenges.id, activeChallenge!.id));
-    expect(cAfter?.consumedAt).not.toBeNull();
-  });
 });

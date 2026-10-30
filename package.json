@@ -16,6 +16,7 @@
     "seed:dev": "tsx --conditions=react-server scripts/ingest.ts --publish-fixtures",
     "editor:grant": "tsx --conditions=react-server scripts/grant-editor.ts",
     "sources:check": "tsx --conditions=react-server scripts/check-sources.ts",
+    "legal:nda-export": "tsx --conditions=react-server scripts/export-nda.ts",
     "maintenance:purge": "tsx --conditions=react-server scripts/purge.ts",
     "eval": "tsx --conditions=react-server scripts/eval.ts",
     "clean": "rm -rf .next test-results"

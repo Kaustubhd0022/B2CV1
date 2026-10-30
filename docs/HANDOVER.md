@@ -45,7 +45,7 @@ gates open. Everything below is from code that was run and tests that were execu
 | Production refuses to boot without DATABASE_URL / AUTH_SECRET | `next start` run |
 | Live answers via Groq (`openai/gpt-oss-120b`): 6 evaluation cases incl. a Hindi answer grounded in Hindi + English Wikipedia with verbatim quotes | `npm run eval` (all 6 met expectations) |
 
-**Not verified live:** a real Claude answer (no Anthropic key), Google/Apple sign-in, Resend email, Twilio SMS,
+**Not verified live:** a real Claude answer (no Anthropic key), Google/Apple sign-in, Supabase email, Twilio SMS,
 PostgreSQL server (only embedded Postgres), deployment.
 
 ## C. Architecture
@@ -84,7 +84,7 @@ Production: [DEPLOYMENT.md](DEPLOYMENT.md).
 
 ## G. Outstanding dependencies
 See the final summary in the conversation and the lists below.
-* **Credentials / services:** Anthropic API key; email provider (Resend or other) + verified domain;
+* **Credentials / services:** Anthropic API key; SMTP provider for Supabase Auth + verified domain;
   SMS provider (Twilio or other; India DLT registration); Google OAuth client; Apple Services ID + key;
   PostgreSQL; HTTPS hosting; Wikimedia contact User-Agent.
 * **Content:** 18–24 researched, editorially approved flagship stories (6 cities); connections;

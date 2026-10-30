@@ -18,7 +18,7 @@ Browser ──► src/proxy.ts (session-cookie gate, destination preservation)
                      │
                      ▼
               PostgreSQL (prod) / PGlite (dev, tests)        External (optional, configured by env):
-              18 tables, migrations in drizzle/              Anthropic API · Wikipedia API · Resend · Twilio
+              18 tables, migrations in drizzle/              Anthropic API · Wikipedia API · Supabase Auth · Twilio
                                                              Google / Apple OAuth
 ```
 

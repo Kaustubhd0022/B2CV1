@@ -39,7 +39,11 @@ function llmProvider(): "anthropic" | "groq" | "gemini" | "auto" | "none" | "scr
 
 function load() {
   const isVercel = Boolean(process.env.VERCEL);
-  const rawUrl = process.env.APP_URL || (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : "http://localhost:3000");
+  // VERCEL_URL is unique per deployment, so production must use its stable domain: auth redirects
+  // have to return to the host the visitor is on (PKCE cookies) and be on Supabase's allow list.
+  const vercelHost =
+    (process.env.VERCEL_ENV === "production" && process.env.VERCEL_PROJECT_PRODUCTION_URL) || process.env.VERCEL_URL;
+  const rawUrl = process.env.APP_URL || (vercelHost ? `https://${vercelHost}` : "http://localhost:3000");
   const normalizedUrl = rawUrl.startsWith("http") ? rawUrl : `https://${rawUrl}`;
   const rawPglite = process.env.PGLITE_DIR || (isVercel ? "/tmp/pglite" : ".data/pglite");
 
@@ -65,13 +69,10 @@ function load() {
       secret: process.env.AUTH_SECRET ?? (isProd ? "" : "dev-only-insecure-secret-change-me"),
       email: {
         provider: (process.env.EMAIL_PROVIDER ?? (isProd ? "" : "dev-outbox")) as
-          | "resend"
           | "supabase"
           | "dev-outbox"
           | "screen"
           | "",
-        resendApiKey: process.env.RESEND_API_KEY,
-        from: process.env.EMAIL_FROM ?? "TattvaCo <no-reply@example.com>",
       },
       sms: {
         provider: (process.env.SMS_PROVIDER ?? (isProd ? "" : "dev-outbox")) as
