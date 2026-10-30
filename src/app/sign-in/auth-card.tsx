@@ -52,7 +52,7 @@ export function AuthCard({
         </h2>
         <p className="mt-0.5 text-[11px] text-[#5A4550] leading-snug">
           {mode === "sign-in"
-            ? "Sign in or enter your email. New explorers are automatically registered!"
+            ? "Sign in to your Cultural Explorer Passport across living traditions."
             : "Enter your registered email to receive a recovery code."}
         </p>
       </div>

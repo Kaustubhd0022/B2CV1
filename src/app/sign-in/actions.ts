@@ -2,11 +2,11 @@
 
 import { cookies, headers } from "next/headers";
 import { redirect } from "next/navigation";
-import { eq } from "drizzle-orm";
+import { desc, eq } from "drizzle-orm";
 import { config } from "@/lib/config";
 import { hmac, safeEqualHex, hashPassword, verifyPassword } from "@/lib/auth/crypto";
 import { normalizeEmail, normalizePhone, safeNext } from "@/lib/auth/normalize";
-import { startChallenge, verifyChallenge, type Channel } from "@/lib/auth/otp";
+import { getLatestActiveChallenge, startChallenge, verifyChallenge, type Channel } from "@/lib/auth/otp";
 import { currentSession, endSession, startSession } from "@/lib/auth/session";
 import { getDb, schema } from "@/lib/db/client";
 import { track } from "@/lib/analytics";
@@ -22,7 +22,14 @@ const PENDING = "tc_pending";
 function sign(payload: string) {
   return `${Buffer.from(payload).toString("base64url")}.${hmac(config().auth.secret, payload)}`;
 }
-function unsign(value: string | undefined): { channel: Channel; target: string; next: string; demoCode?: string } | null {
+function unsign(value: string | undefined): {
+  channel: Channel;
+  target: string;
+  next: string;
+  challengeId?: string;
+  startedAt?: number;
+  demoCode?: string;
+} | null {
   if (!value) return null;
   const [b64, mac] = value.split(".");
   const payload = Buffer.from(b64 ?? "", "base64url").toString();
@@ -38,54 +45,50 @@ export async function pendingVerification() {
   return unsign((await cookies()).get(PENDING)?.value);
 }
 
+export async function clearPendingCookie() {
+  try {
+    const jar = await cookies();
+    jar.delete({ name: PENDING, path: "/" });
+    jar.delete({ name: PENDING, path: "/sign-in" });
+  } catch {}
+}
+
 async function begin(channel: Channel, target: string, next: string) {
   await track("auth_start", { method: channel });
 
-  // 1. Real Supabase Auth: send email OTP through Supabase
-  if (channel === "email" && process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY) {
-    try {
-      const supabase = await createSupabaseServer();
-      const appUrl = config().appUrl;
-      const { error: supaErr } = await supabase.auth.signInWithOtp({
-        email: target,
-        options: {
-          shouldCreateUser: true,
-          emailRedirectTo: `${appUrl}/auth/callback?next=${encodeURIComponent(next)}`,
-        },
-      });
+  // Clear any stale active session before starting fresh verification
+  if (await currentSession()) await endSession();
 
-      if (supaErr) {
-        redirect(`/sign-in?error=delivery&next=${encodeURIComponent(next)}`);
-      }
-
-      // Real OTP sent to user's email; no code displayed on screen
-      (await cookies()).set(PENDING, sign(JSON.stringify({ channel, target, next })), {
-        httpOnly: true,
-        secure: config().isProd,
-        sameSite: "lax",
-        path: "/sign-in",
-        maxAge: config().auth.otpMinutes * 60,
-      });
-      redirect("/sign-in/verify");
-    } catch (err) {
-      if ((err as Error).message === "NEXT_REDIRECT") throw err;
-    }
-  }
-
-  // 2. Direct Challenge Fallback
+  // Create unified secure challenge delivering 6-digit OTP code and direct confirmation link
   const r = await startChallenge(channel, target);
   if (!r.ok) {
     await track("auth_failure", { method: channel, reason: r.error });
     const error = r.error === "rate_limited" ? "too_many" : r.error === "not_configured" ? "unavailable" : "delivery";
     redirect(`/sign-in?error=${error}&next=${encodeURIComponent(next)}`);
   }
-  (await cookies()).set(PENDING, sign(JSON.stringify({ channel, target, next })), {
-    httpOnly: true,
-    secure: config().isProd,
-    sameSite: "lax",
-    path: "/sign-in",
-    maxAge: config().auth.otpMinutes * 60,
-  });
+
+  const activeChallenge = await getLatestActiveChallenge(channel, target);
+
+  (await cookies()).set(
+    PENDING,
+    sign(
+      JSON.stringify({
+        channel,
+        target,
+        next,
+        challengeId: activeChallenge?.id,
+        startedAt: Date.now(),
+        demoCode: "demoCode" in r ? r.demoCode : undefined,
+      })
+    ),
+    {
+      httpOnly: true,
+      secure: config().isProd,
+      sameSite: "lax",
+      path: "/",
+      maxAge: config().auth.otpMinutes * 60,
+    }
+  );
   redirect("/sign-in/verify");
 }
 
@@ -147,26 +150,7 @@ export async function createAccount(formData: FormData) {
       if (supaErr) {
         const msg = supaErr.message.toLowerCase();
         if (msg.includes("already registered") || msg.includes("user already registered")) {
-          const { data: logInData, error: logInErr } = await supabase.auth.signInWithPassword({
-            email,
-            password,
-          });
-          if (!logInErr && logInData.user) {
-            if (await currentSession()) await endSession();
-            await startSession(logInData.user.id);
-            redirect(next || "/");
-          }
-          if (logInErr && logInErr.message.toLowerCase().includes("email not confirmed")) {
-            (await cookies()).set(PENDING, sign(JSON.stringify({ channel: "email", target: email, next })), {
-              httpOnly: true,
-              secure: config().isProd,
-              sameSite: "lax",
-              path: "/sign-in",
-              maxAge: config().auth.otpMinutes * 60,
-            });
-            redirect("/sign-in/verify?notice=email_not_confirmed");
-          }
-          redirect(`/sign-up?error=email_exists&next=${encodeURIComponent(next)}`);
+          redirect(`/sign-up?error=email_exists&email=${encodeURIComponent(email)}&next=${encodeURIComponent(next)}`);
         }
         redirect(`/sign-up?error=invalid_credentials&next=${encodeURIComponent(next)}`);
       }
@@ -209,13 +193,17 @@ export async function createAccount(formData: FormData) {
 
         // If email confirmation is required, session is null until user confirms via email OTP or link
         if (!supaData.session) {
-          (await cookies()).set(PENDING, sign(JSON.stringify({ channel: "email", target: email, next })), {
-            httpOnly: true,
-            secure: config().isProd,
-            sameSite: "lax",
-            path: "/sign-in",
-            maxAge: config().auth.otpMinutes * 60,
-          });
+          (await cookies()).set(
+            PENDING,
+            sign(JSON.stringify({ channel: "email", target: email, next, startedAt: Date.now() })),
+            {
+              httpOnly: true,
+              secure: config().isProd,
+              sameSite: "lax",
+              path: "/",
+              maxAge: config().auth.otpMinutes * 60,
+            }
+          );
           redirect("/sign-in/verify?signup=1");
         }
 
@@ -233,20 +221,13 @@ export async function createAccount(formData: FormData) {
 
   // Check if user already exists with this email in Supabase Postgres
   const [existing] = await db
-    .select({ id: schema.users.id, passwordHash: schema.users.passwordHash })
+    .select({ id: schema.users.id })
     .from(schema.users)
     .where(eq(schema.users.email, email))
     .limit(1);
 
   if (existing) {
-    // If password matches existing account, sign them in directly without friction
-    if (existing.passwordHash && verifyPassword(password, existing.passwordHash)) {
-      if (await currentSession()) await endSession();
-      await startSession(existing.id);
-      await track("auth_success", { method: "password_signup_existing" });
-      redirect(next || "/");
-    }
-    redirect(`/sign-up?error=email_exists&next=${encodeURIComponent(next)}`);
+    redirect(`/sign-up?error=email_exists&email=${encodeURIComponent(email)}&next=${encodeURIComponent(next)}`);
   }
 
   // Create new user with hashed password in Supabase Postgres
@@ -303,24 +284,8 @@ export async function signInAction(formData: FormData) {
       const supabase = await createSupabaseServer();
 
       if (useOtp || !password) {
-        const appUrl = config().appUrl;
-        const { error: otpErr } = await supabase.auth.signInWithOtp({
-          email,
-          options: {
-            shouldCreateUser: true,
-            emailRedirectTo: `${appUrl}/auth/callback?next=${encodeURIComponent(next)}`,
-          },
-        });
-        if (!otpErr) {
-          (await cookies()).set(PENDING, sign(JSON.stringify({ channel: "email", target: email, next })), {
-            httpOnly: true,
-            secure: config().isProd,
-            sameSite: "lax",
-            path: "/sign-in",
-            maxAge: config().auth.otpMinutes * 60,
-          });
-          redirect("/sign-in/verify");
-        }
+        await begin("email", email, next);
+        return;
       } else {
         const { data: supaUser, error: supaErr } = await supabase.auth.signInWithPassword({
           email,
@@ -338,13 +303,17 @@ export async function signInAction(formData: FormData) {
           const msg = supaErr.message.toLowerCase();
           // If email is not confirmed, send fresh verification code and redirect to verify screen
           if (msg.includes("email not confirmed") || msg.includes("email link is invalid")) {
-            (await cookies()).set(PENDING, sign(JSON.stringify({ channel: "email", target: email, next })), {
-              httpOnly: true,
-              secure: config().isProd,
-              sameSite: "lax",
-              path: "/sign-in",
-              maxAge: config().auth.otpMinutes * 60,
-            });
+            (await cookies()).set(
+              PENDING,
+              sign(JSON.stringify({ channel: "email", target: email, next, startedAt: Date.now() })),
+              {
+                httpOnly: true,
+                secure: config().isProd,
+                sameSite: "lax",
+                path: "/",
+                maxAge: config().auth.otpMinutes * 60,
+              }
+            );
             try {
               await supabase.auth.resend({
                 type: "signup",
@@ -426,96 +395,79 @@ export async function resendCode() {
   const p = await pendingVerification();
   if (!p) redirect("/sign-in");
 
-  if (p.channel === "email" && process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY) {
-    try {
-      const supabase = await createSupabaseServer();
-      const appUrl = config().appUrl;
-      const { error: resendErr } = await supabase.auth.resend({
-        type: "signup",
-        email: p.target,
-        options: {
-          emailRedirectTo: `${appUrl}/auth/callback?next=${encodeURIComponent(p.next)}`,
-        },
-      });
-
-      if (resendErr) {
-        await supabase.auth.signInWithOtp({
-          email: p.target,
-          options: {
-            shouldCreateUser: true,
-            emailRedirectTo: `${appUrl}/auth/callback?next=${encodeURIComponent(p.next)}`,
-          },
-        });
-      }
-      redirect("/sign-in/verify?notice=code_resent");
-    } catch (err) {
-      if ((err as Error).message === "NEXT_REDIRECT") throw err;
-    }
-  }
-
   await begin(p.channel, p.target, p.next);
 }
 
 /**
  * Real-time verification poller: checks if the user has confirmed their email
- * via magic link / email button in another browser tab, phone, or mailbox client.
- * Returns verified: true and redirect target as soon as email confirmation occurs.
+ * via magic link on phone or another browser tab.
+ *
+ * FULL SECURITY GATING:
+ * 1. Checks ONLY if THIS specific challenge has been consumed (`consumedAt IS NOT NULL`).
+ * 2. NEVER checks past `emailVerifiedAt` or stale sessions.
+ * 3. If the challenge has NOT been consumed, returns `{ verified: false }`.
+ * 4. User is strictly gated and cannot bypass OTP without typing the code or clicking the link.
  */
 export async function checkVerificationStatus(): Promise<{ verified: boolean; next?: string }> {
-  // 1. If user already has an active authenticated session
-  const sess = await currentSession();
   const p = await pendingVerification();
-  if (sess) {
-    if (p) {
-      try {
-        (await cookies()).delete({ name: PENDING, path: "/sign-in" });
-      } catch {}
-    }
-    return { verified: true, next: p?.next || "/" };
-  }
-
   if (!p) {
     return { verified: false };
   }
 
-  // 2. Check if user's email was marked verified in database by /auth/callback
-  if (p.channel === "email") {
-    try {
-      const db = await getDb();
+  try {
+    const db = await getDb();
+    let challenge = null;
+
+    if (p.challengeId) {
+      const [found] = await db
+        .select({
+          id: schema.otpChallenges.id,
+          consumedAt: schema.otpChallenges.consumedAt,
+          createdAt: schema.otpChallenges.createdAt,
+        })
+        .from(schema.otpChallenges)
+        .where(eq(schema.otpChallenges.id, p.challengeId))
+        .limit(1);
+      challenge = found;
+    } else {
+      const th = hmac(config().auth.secret, `${p.channel}:${p.target}`);
+      const [found] = await db
+        .select({
+          id: schema.otpChallenges.id,
+          consumedAt: schema.otpChallenges.consumedAt,
+          createdAt: schema.otpChallenges.createdAt,
+        })
+        .from(schema.otpChallenges)
+        .where(eq(schema.otpChallenges.targetHash, th))
+        .orderBy(desc(schema.otpChallenges.createdAt))
+        .limit(1);
+      challenge = found;
+    }
+
+    // ONLY IF this specific challenge was consumed (e.g. by tapping the link on mobile phone)
+    if (challenge && challenge.consumedAt !== null) {
+      if (p.startedAt && challenge.consumedAt.getTime() < p.startedAt - 5000) {
+        // Consumed before this verification session began; ignore stale challenge
+        return { verified: false };
+      }
+
+      const col = p.channel === "email" ? schema.users.email : schema.users.phone;
       const [user] = await db
-        .select({ id: schema.users.id, emailVerifiedAt: schema.users.emailVerifiedAt })
+        .select({ id: schema.users.id })
         .from(schema.users)
-        .where(eq(schema.users.email, p.target))
+        .where(eq(col, p.target))
         .limit(1);
 
-      if (user && user.emailVerifiedAt) {
+      if (user) {
+        if (await currentSession()) await endSession();
         await startSession(user.id);
-        (await cookies()).delete({ name: PENDING, path: "/sign-in" });
+        await clearPendingCookie();
         return { verified: true, next: p.next || "/" };
       }
-    } catch {}
-
-    // 3. Check Supabase server user session if present
-    if (process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY) {
-      try {
-        const supabase = await createSupabaseServer();
-        const { data } = await supabase.auth.getUser();
-        if (data.user && data.user.email?.toLowerCase() === p.target.toLowerCase()) {
-          try {
-            const db = await getDb();
-            await db
-              .update(schema.users)
-              .set({ emailVerifiedAt: new Date() })
-              .where(eq(schema.users.email, p.target));
-          } catch {}
-          await startSession(data.user.id);
-          (await cookies()).delete({ name: PENDING, path: "/sign-in" });
-          return { verified: true, next: p.next || "/" };
-        }
-      } catch {}
     }
-  }
+  } catch {}
 
+  // Gated: Return false so the user must enter the 6-digit code or tap link
   return { verified: false };
 }
 
@@ -526,35 +478,30 @@ export async function resendVerificationAction(): Promise<{ ok: boolean; error?:
   const p = await pendingVerification();
   if (!p) return { ok: false, error: "expired" };
 
-  if (p.channel === "email" && process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY) {
-    try {
-      const supabase = await createSupabaseServer();
-      const appUrl = config().appUrl;
-      const { error: resendErr } = await supabase.auth.resend({
-        type: "signup",
-        email: p.target,
-        options: {
-          emailRedirectTo: `${appUrl}/auth/callback?next=${encodeURIComponent(p.next)}`,
-        },
-      });
-
-      if (resendErr) {
-        await supabase.auth.signInWithOtp({
-          email: p.target,
-          options: {
-            shouldCreateUser: true,
-            emailRedirectTo: `${appUrl}/auth/callback?next=${encodeURIComponent(p.next)}`,
-          },
-        });
-      }
-      return { ok: true };
-    } catch (err) {
-      return { ok: false, error: (err as Error).message };
-    }
-  }
-
   const r = await startChallenge(p.channel, p.target);
-  return { ok: r.ok, error: r.ok ? undefined : r.error };
+  if (!r.ok) return { ok: false, error: r.error };
+
+  const activeChallenge = await getLatestActiveChallenge(p.channel, p.target);
+  (await cookies()).set(
+    PENDING,
+    sign(
+      JSON.stringify({
+        channel: p.channel,
+        target: p.target,
+        next: p.next,
+        challengeId: activeChallenge?.id,
+        startedAt: Date.now(),
+      })
+    ),
+    {
+      httpOnly: true,
+      secure: config().isProd,
+      sameSite: "lax",
+      path: "/",
+      maxAge: config().auth.otpMinutes * 60,
+    }
+  );
+  return { ok: true };
 }
 
 export async function verifyCode(formData: FormData) {
@@ -594,7 +541,7 @@ export async function verifyCode(formData: FormData) {
 
         if (await currentSession()) await endSession();
         await startSession(verifyRes.data.user.id);
-        (await cookies()).delete({ name: PENDING, path: "/sign-in" });
+        await clearPendingCookie();
         redirect(p.next || "/");
       }
     } catch (err) {
@@ -610,7 +557,7 @@ export async function verifyCode(formData: FormData) {
   }
   if (await currentSession()) await endSession();
   await startSession(r.userId);
-  (await cookies()).delete({ name: PENDING, path: "/sign-in" });
+  await clearPendingCookie();
   await track("auth_success", { method: p.channel, new_account: r.created });
   redirect(r.created ? `/language?next=${encodeURIComponent(p.next)}` : (p.next || "/"));
 }
@@ -684,5 +631,6 @@ export async function signOut() {
     } catch {}
   }
   await endSession();
+  await clearPendingCookie();
   redirect("/sign-in");
 }

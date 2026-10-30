@@ -16,14 +16,14 @@ export const metadata: Metadata = {
 export default async function VerifyPage({
   searchParams,
 }: {
-  searchParams: Promise<{ error?: string; notice?: string; signup?: string }>;
+  searchParams: Promise<{ error?: string; notice?: string; signup?: string; preview?: string }>;
 }) {
-  const { error, notice, signup } = await searchParams;
+  const { error, notice, signup, preview } = await searchParams;
   let pending = await pendingVerification();
 
-  // In non-production or dev mode, allow visual inspection even if cookie has expired
+  // Explicit preview fallback only in dev environment
   if (!pending) {
-    if (!config().isProd) {
+    if (preview === "1" && !config().isProd) {
       pending = {
         channel: "email",
         target: "dh@tattvaco.com",

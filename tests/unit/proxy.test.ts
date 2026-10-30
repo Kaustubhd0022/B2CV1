@@ -51,4 +51,15 @@ describe("proxy session gate", () => {
   it("forwards a signed-in visitor away from the sign-in page", () => {
     expect(visit("/sign-in", `tc_session=${createSignedToken(USER_ID)}`).location).toBe("https://tattvaco.test/");
   });
+
+  it("allows signed-in visitors to stay on /sign-in when explicitly switching accounts", () => {
+    expect(visit("/sign-in?switch=1", `tc_session=${createSignedToken(USER_ID)}`).passedThrough).toBe(true);
+    expect(visit("/sign-in?prompt=select_account", `tc_session=${createSignedToken(USER_ID)}`).passedThrough).toBe(true);
+  });
+
+  it("neutralizes open redirect attempts when forwarding authenticated visitors", () => {
+    expect(visit("/sign-in?next=//evil.com", `tc_session=${createSignedToken(USER_ID)}`).location).toBe("https://tattvaco.test/");
+    expect(visit("/sign-in?next=/sign-in", `tc_session=${createSignedToken(USER_ID)}`).location).toBe("https://tattvaco.test/");
+    expect(visit("/sign-in?next=/sign-up", `tc_session=${createSignedToken(USER_ID)}`).location).toBe("https://tattvaco.test/");
+  });
 });

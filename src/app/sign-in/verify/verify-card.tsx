@@ -294,7 +294,7 @@ export function VerifyCard({
           </div>
 
           <p className="mt-2 text-xs text-white/85 leading-relaxed">
-            Tap the confirmation button in your email. This window will <strong>auto-detect</strong> it and unlock your passport instantly — no typing needed.
+            Check your inbox for the 6-digit code. If opening email on your mobile phone, tapping the confirmation link will <strong>auto-sync and unlock</strong> your passport across all your devices.
           </p>
         </div>
 

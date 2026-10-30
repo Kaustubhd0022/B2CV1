@@ -1,5 +1,6 @@
 import { NextResponse, type NextRequest } from "next/server";
 import { readSignedToken } from "@/lib/auth/signed-token";
+import { safeNext } from "@/lib/auth/normalize";
 
 const SESSION_COOKIE = "tc_session";
 
@@ -33,19 +34,24 @@ export function proxy(request: NextRequest) {
     }
     const url = request.nextUrl.clone();
     url.pathname = "/sign-in";
-    if (pathname !== "/") {
-      url.search = `?next=${encodeURIComponent(pathname + search)}`;
+    const target = pathname + search;
+    if (target !== "/") {
+      url.search = `?next=${encodeURIComponent(target)}`;
     } else {
       url.search = "";
     }
     return NextResponse.redirect(url);
   }
 
-  // If already authenticated and visiting /sign-in or /sign-up without explicit reason or error, redirect to product
-  const hasReasonOrError = request.nextUrl.searchParams.has("reason") || request.nextUrl.searchParams.has("error");
-  if (hasAuth && (pathname === "/sign-in" || pathname === "/sign-up") && !hasReasonOrError) {
+  // If already authenticated and visiting /sign-in or /sign-up without explicit reason, error, or switch intent, redirect to product
+  const allowAuthPage =
+    request.nextUrl.searchParams.has("reason") ||
+    request.nextUrl.searchParams.has("error") ||
+    request.nextUrl.searchParams.has("switch") ||
+    request.nextUrl.searchParams.has("prompt");
+  if (hasAuth && (pathname === "/sign-in" || pathname === "/sign-up") && !allowAuthPage) {
     const next = request.nextUrl.searchParams.get("next");
-    const dest = next && next.startsWith("/") && !next.startsWith("//") ? next : "/";
+    const dest = safeNext(next, "/");
     return NextResponse.redirect(new URL(dest, request.url));
   }
 

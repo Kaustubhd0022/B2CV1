@@ -58,7 +58,11 @@ export async function GET(request: NextRequest) {
 
     // Start application session
     await startSession(user.id);
-    return NextResponse.redirect(new URL(next || "/", request.url));
+    const res = NextResponse.redirect(new URL(next || "/", request.url));
+    res.cookies.delete("tc_pending");
+    res.cookies.delete({ name: "tc_pending", path: "/sign-in" });
+    res.cookies.delete({ name: "tc_pending", path: "/" });
+    return res;
   }
 
   // Return to sign in if exchange failed

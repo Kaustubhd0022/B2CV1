@@ -25,6 +25,6 @@ export function safeNext(next: unknown, fallback = "/"): string {
   if (typeof next !== "string" || !next.startsWith("/") || next.startsWith("//") || next.startsWith("/\\")) {
     return fallback;
   }
-  if (next.startsWith("/sign-in") || next.startsWith("/api/")) return fallback;
+  if (next.startsWith("/sign-in") || next.startsWith("/sign-up") || next.startsWith("/api/")) return fallback;
   return next.slice(0, 512);
 }

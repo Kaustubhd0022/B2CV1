@@ -133,8 +133,17 @@ export async function setSessionLanguage(sessionId: string, language: LanguageCo
 
 /* ---------------- Request-bound helpers ---------------- */
 
-export async function startSession(userId: string, role: "user" | "editor" = "user", language: LanguageCode = "en") {
-  const signedToken = createSignedToken(userId, role, language, config().auth.sessionDays);
+export async function startSession(userId: string, role: "user" | "editor" = "user", language?: LanguageCode) {
+  let lang = language;
+  if (!lang) {
+    try {
+      const jar = await cookies();
+      const cookieLang = jar.get("tc-language")?.value;
+      if (isLanguageCode(cookieLang)) lang = cookieLang;
+    } catch {}
+  }
+  const finalLang: LanguageCode = lang || "en";
+  const signedToken = createSignedToken(userId, role, finalLang, config().auth.sessionDays);
   const expiresAt = new Date(Date.now() + config().auth.sessionDays * 86_400_000);
 
   try {
@@ -149,7 +158,7 @@ export async function startSession(userId: string, role: "user" | "editor" = "us
 
   try {
     const db = await getDb();
-    await db.insert(schema.sessions).values({ tokenHash: sha256(signedToken), userId, expiresAt, language });
+    await db.insert(schema.sessions).values({ tokenHash: sha256(signedToken), userId, expiresAt, language: finalLang });
   } catch {}
 }
 
@@ -177,6 +186,9 @@ export async function currentSession(): Promise<SessionUser | null> {
         } = await supabase.auth.getUser();
         if (user) {
           const lang = isLanguageCode(langCookie) ? langCookie : "en";
+          try {
+            await startSession(user.id, "user", lang);
+          } catch {}
           return {
             sessionId: user.id,
             analyticsId: `sb_${user.id.slice(0, 12)}`,
@@ -227,6 +239,8 @@ export async function endSession() {
   const token = jar.get(SESSION_COOKIE)?.value;
   if (token) await deleteSessionByToken(token);
   jar.delete(SESSION_COOKIE);
+  jar.delete({ name: "tc_pending", path: "/" });
+  jar.delete({ name: "tc_pending", path: "/sign-in" });
 }
 
 /** Path the user was trying to reach; set by src/proxy.ts. */
