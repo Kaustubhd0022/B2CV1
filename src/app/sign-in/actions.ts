@@ -456,6 +456,107 @@ export async function resendCode() {
   await begin(p.channel, p.target, p.next);
 }
 
+/**
+ * Real-time verification poller: checks if the user has confirmed their email
+ * via magic link / email button in another browser tab, phone, or mailbox client.
+ * Returns verified: true and redirect target as soon as email confirmation occurs.
+ */
+export async function checkVerificationStatus(): Promise<{ verified: boolean; next?: string }> {
+  // 1. If user already has an active authenticated session
+  const sess = await currentSession();
+  const p = await pendingVerification();
+  if (sess) {
+    if (p) {
+      try {
+        (await cookies()).delete({ name: PENDING, path: "/sign-in" });
+      } catch {}
+    }
+    return { verified: true, next: p?.next || "/" };
+  }
+
+  if (!p) {
+    return { verified: false };
+  }
+
+  // 2. Check if user's email was marked verified in database by /auth/callback
+  if (p.channel === "email") {
+    try {
+      const db = await getDb();
+      const [user] = await db
+        .select({ id: schema.users.id, emailVerifiedAt: schema.users.emailVerifiedAt })
+        .from(schema.users)
+        .where(eq(schema.users.email, p.target))
+        .limit(1);
+
+      if (user && user.emailVerifiedAt) {
+        await startSession(user.id);
+        (await cookies()).delete({ name: PENDING, path: "/sign-in" });
+        return { verified: true, next: p.next || "/" };
+      }
+    } catch {}
+
+    // 3. Check Supabase server user session if present
+    if (process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY) {
+      try {
+        const supabase = await createSupabaseServer();
+        const { data } = await supabase.auth.getUser();
+        if (data.user && data.user.email?.toLowerCase() === p.target.toLowerCase()) {
+          try {
+            const db = await getDb();
+            await db
+              .update(schema.users)
+              .set({ emailVerifiedAt: new Date() })
+              .where(eq(schema.users.email, p.target));
+          } catch {}
+          await startSession(data.user.id);
+          (await cookies()).delete({ name: PENDING, path: "/sign-in" });
+          return { verified: true, next: p.next || "/" };
+        }
+      } catch {}
+    }
+  }
+
+  return { verified: false };
+}
+
+/**
+ * Async resend action for rich client interaction without jarring page reloads.
+ */
+export async function resendVerificationAction(): Promise<{ ok: boolean; error?: string }> {
+  const p = await pendingVerification();
+  if (!p) return { ok: false, error: "expired" };
+
+  if (p.channel === "email" && process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY) {
+    try {
+      const supabase = await createSupabaseServer();
+      const appUrl = config().appUrl;
+      const { error: resendErr } = await supabase.auth.resend({
+        type: "signup",
+        email: p.target,
+        options: {
+          emailRedirectTo: `${appUrl}/auth/callback?next=${encodeURIComponent(p.next)}`,
+        },
+      });
+
+      if (resendErr) {
+        await supabase.auth.signInWithOtp({
+          email: p.target,
+          options: {
+            shouldCreateUser: true,
+            emailRedirectTo: `${appUrl}/auth/callback?next=${encodeURIComponent(p.next)}`,
+          },
+        });
+      }
+      return { ok: true };
+    } catch (err) {
+      return { ok: false, error: (err as Error).message };
+    }
+  }
+
+  const r = await startChallenge(p.channel, p.target);
+  return { ok: r.ok, error: r.ok ? undefined : r.error };
+}
+
 export async function verifyCode(formData: FormData) {
   const p = await pendingVerification();
   if (!p) redirect("/sign-in?error=expired_code");
