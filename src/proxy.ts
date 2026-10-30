@@ -1,4 +1,5 @@
 import { NextResponse, type NextRequest } from "next/server";
+import { readSignedToken } from "@/lib/auth/signed-token";
 
 const SESSION_COOKIE = "tc_session";
 
@@ -10,26 +11,12 @@ const PUBLIC_PREFIXES = [
   "/policies",
 ];
 
-function isTokenFormatValid(token: string | undefined): boolean {
-  if (!token) return false;
-  if (!token.startsWith("tc_") || !token.includes(".")) return false;
-  try {
-    const [prefixedPayload] = token.split(".");
-    const b64 = prefixedPayload.replace(/^tc_/, "");
-    const payload = Buffer.from(b64, "base64url").toString("utf-8");
-    const [, , , expStr] = payload.split(":");
-    const expiresAt = Number(expStr);
-    if (!expStr || Number.isNaN(expiresAt) || expiresAt < Date.now()) return false;
-    return true;
-  } catch {
-    return false;
-  }
-}
-
 /**
  * First line of defense: All product pages (including home page /) are protected.
  * Unauthenticated users are redirected to /sign-in (preserving the intended destination in ?next=).
  * Only authentication routes, oauth callbacks, health check, and policies are publicly accessible.
+ * Every sign-in path issues tc_session, so a verified tc_session is the only proof of auth here;
+ * sb-* cookies can outlive the session or belong to an unconfirmed signup, so they don't count.
  */
 export function proxy(request: NextRequest) {
   const { pathname, search } = request.nextUrl;
@@ -38,11 +25,7 @@ export function proxy(request: NextRequest) {
 
   const isPublic = PUBLIC_PREFIXES.some((p) => pathname === p || pathname.startsWith(p));
   const rawToken = request.cookies.get(SESSION_COOKIE)?.value;
-  const hasValidSessionCookie = Boolean(rawToken && isTokenFormatValid(rawToken));
-  const hasSupabaseCookie = request.cookies
-    .getAll()
-    .some((c) => c.name.startsWith("sb-") && c.name.includes("-auth-token"));
-  const hasAuth = hasValidSessionCookie || hasSupabaseCookie;
+  const hasAuth = Boolean(rawToken && readSignedToken(rawToken));
 
   if (!isPublic && !hasAuth) {
     if (pathname.startsWith("/api/")) {
