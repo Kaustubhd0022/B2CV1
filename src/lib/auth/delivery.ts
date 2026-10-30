@@ -28,7 +28,13 @@ async function devOutbox(channel: "email" | "phone", to: string, code: string): 
 
 export function emailConfigured() {
   const e = config().auth.email;
-  return e.provider === "dev-outbox" || e.provider === "screen" || (e.provider === "resend" && !!e.resendApiKey);
+  return (
+    e.provider === "dev-outbox" ||
+    e.provider === "screen" ||
+    (e.provider === "resend" && !!e.resendApiKey) ||
+    e.provider === "supabase" ||
+    Boolean(process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY)
+  );
 }
 
 export function smsConfigured() {
@@ -44,6 +50,30 @@ export async function sendEmailCode(to: string, code: string, minutes: number): 
   const e = config().auth.email;
   if (e.provider === "dev-outbox") return devOutbox("email", to, code);
   if (e.provider === "screen") return onScreen(code);
+
+  if (e.provider === "supabase" || (!e.resendApiKey && process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY)) {
+    try {
+      const { createClient } = await import("@/lib/supabase/server");
+      const supabase = await createClient();
+      const appUrl = config().appUrl;
+      const { error } = await supabase.auth.signInWithOtp({
+        email: to,
+        options: {
+          shouldCreateUser: true,
+          emailRedirectTo: `${appUrl}/auth/callback`,
+        },
+      });
+      if (error) {
+        log.warn("supabase.email_error", { error: error.message });
+        return { ok: false, reason: "provider_error" };
+      }
+      return { ok: true };
+    } catch (err) {
+      log.warn("supabase.email_error", { error: (err as Error).name });
+      return { ok: false, reason: "provider_error" };
+    }
+  }
+
   if (e.provider !== "resend" || !e.resendApiKey) return { ok: false, reason: "not_configured" };
   try {
     const res = await fetch("https://api.resend.com/emails", {

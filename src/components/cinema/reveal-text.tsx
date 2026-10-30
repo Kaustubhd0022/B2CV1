@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { motion, useReducedMotion } from "motion/react";
 import { EASING, MOTION_TIMINGS } from "@/lib/motion.config";
 import type { ReactNode } from "react";
@@ -139,15 +140,20 @@ export function CinematicBrandHeader() {
   if (reducedMotion) {
     return (
       <div>
-        <div className="flex items-center gap-2.5">
-          <span className="flex size-9 items-center justify-center rounded-full border border-gold/40 bg-forest/80 text-gold shadow-xs">
+        <div className="flex items-center gap-3">
+          <span className="flex size-9 items-center justify-center rounded-full border border-gold/40 bg-forest/80 text-gold shadow-xs shrink-0">
             ✦
           </span>
-          <span className="font-serif text-section font-semibold tracking-wider text-white">
-            TATTVACO
-          </span>
+          <Image
+            src="/images/tattvaco-logo.png"
+            alt="TattvaCo"
+            width={160}
+            height={42}
+            priority
+            className="h-8 w-auto object-contain brightness-105"
+          />
         </div>
-        <p className="mt-6 text-meta font-semibold uppercase tracking-[0.16em] text-gold">
+        <p className="mt-5 text-meta font-semibold uppercase tracking-[0.16em] text-gold">
           Culture Lives in Connections
         </p>
       </div>
@@ -156,7 +162,7 @@ export function CinematicBrandHeader() {
 
   return (
     <div>
-      <div className="flex items-center gap-2.5">
+      <div className="flex items-center gap-3">
         <motion.span
           initial={{ scale: 0.6, rotate: -45, opacity: 0 }}
           animate={{ scale: 1, rotate: 0, opacity: 1 }}
@@ -165,26 +171,33 @@ export function CinematicBrandHeader() {
             delay: MOTION_TIMINGS.brandTitleStart,
             ease: EASING.natural,
           }}
-          className="flex size-9 items-center justify-center rounded-full border border-gold/40 bg-forest/80 text-gold shadow-md"
+          className="flex size-9 items-center justify-center rounded-full border border-gold/40 bg-forest/80 text-gold shadow-md shrink-0"
         >
           ✦
         </motion.span>
-        <motion.span
-          initial={{ opacity: 0, letterSpacing: "0.35em", x: -8 }}
-          animate={{ opacity: 1, letterSpacing: "0.15em", x: 0 }}
+        <motion.div
+          initial={{ opacity: 0, x: -10, scale: 0.95 }}
+          animate={{ opacity: 1, x: 0, scale: 1 }}
           transition={{
             duration: MOTION_TIMINGS.brandTitleDuration,
             delay: MOTION_TIMINGS.brandTitleStart + 0.1,
             ease: EASING.natural,
           }}
-          className="font-serif text-section font-semibold text-white tracking-widest"
+          className="relative flex items-center"
         >
-          TATTVACO
-        </motion.span>
+          <Image
+            src="/images/tattvaco-logo.png"
+            alt="TattvaCo"
+            width={160}
+            height={42}
+            priority
+            className="h-8 w-auto object-contain brightness-105 drop-shadow-sm"
+          />
+        </motion.div>
       </div>
 
       {/* Tagline reveals with wide tracking */}
-      <div className="overflow-hidden mt-6">
+      <div className="overflow-hidden mt-5">
         <motion.p
           initial={{ opacity: 0, y: "100%", letterSpacing: "0.25em" }}
           animate={{ opacity: 1, y: 0, letterSpacing: "0.16em" }}

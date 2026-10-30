@@ -118,10 +118,12 @@ export async function createAccount(formData: FormData) {
   if (process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY) {
     try {
       const supabase = await createSupabaseServer();
+      const appUrl = config().appUrl;
       const { data: supaData, error: supaErr } = await supabase.auth.signUp({
         email,
         password,
         options: {
+          emailRedirectTo: `${appUrl}/auth/callback?next=${encodeURIComponent(next)}`,
           data: {
             name: name || undefined,
             language: lang,
@@ -133,7 +135,8 @@ export async function createAccount(formData: FormData) {
       });
 
       if (supaErr) {
-        if (supaErr.message.toLowerCase().includes("already registered")) {
+        const msg = supaErr.message.toLowerCase();
+        if (msg.includes("already registered") || msg.includes("user already registered")) {
           const { data: logInData, error: logInErr } = await supabase.auth.signInWithPassword({
             email,
             password,
@@ -142,6 +145,16 @@ export async function createAccount(formData: FormData) {
             if (await currentSession()) await endSession();
             await startSession(logInData.user.id);
             redirect(next || "/");
+          }
+          if (logInErr && logInErr.message.toLowerCase().includes("email not confirmed")) {
+            (await cookies()).set(PENDING, sign(JSON.stringify({ channel: "email", target: email, next })), {
+              httpOnly: true,
+              secure: config().isProd,
+              sameSite: "lax",
+              path: "/sign-in",
+              maxAge: config().auth.otpMinutes * 60,
+            });
+            redirect("/sign-in/verify?notice=email_not_confirmed");
           }
           redirect(`/sign-up?error=email_exists&next=${encodeURIComponent(next)}`);
         }
@@ -152,6 +165,39 @@ export async function createAccount(formData: FormData) {
         if (isLanguageCode(lang)) {
           (await cookies()).set("tc-language", lang, { path: "/", maxAge: 365 * 86400, sameSite: "lax" });
         }
+
+        // Sync user to local database
+        try {
+          const db = await getDb();
+          const [existing] = await db
+            .select({ id: schema.users.id })
+            .from(schema.users)
+            .where(eq(schema.users.email, email))
+            .limit(1);
+
+          if (!existing) {
+            await db.insert(schema.users).values({
+              id: supaData.user.id,
+              name: name || email.split("@")[0].replace(/[._-]/g, " ").replace(/\b\w/g, (c) => c.toUpperCase()),
+              email,
+              passwordHash: hashPassword(password),
+              emailVerifiedAt: supaData.session ? new Date() : null,
+            });
+          }
+        } catch {}
+
+        // If email confirmation is required, session is null until user confirms via email OTP or link
+        if (!supaData.session) {
+          (await cookies()).set(PENDING, sign(JSON.stringify({ channel: "email", target: email, next })), {
+            httpOnly: true,
+            secure: config().isProd,
+            sameSite: "lax",
+            path: "/sign-in",
+            maxAge: config().auth.otpMinutes * 60,
+          });
+          redirect("/sign-in/verify?signup=1");
+        }
+
         if (await currentSession()) await endSession();
         await startSession(supaData.user.id);
         await track("auth_success", { method: "supabase_auth_signup", new_account: true });
@@ -256,9 +302,33 @@ export async function signInAction(formData: FormData) {
           redirect(next || "/");
         }
 
-        // If credentials invalid / user does not exist, redirect to sign-up to accept the NDA
-        if (supaErr && supaErr.message.toLowerCase().includes("invalid login credentials")) {
-          redirect(`/sign-up?error=account_not_found&email=${encodeURIComponent(email)}&next=${encodeURIComponent(next)}`);
+        if (supaErr) {
+          const msg = supaErr.message.toLowerCase();
+          // If email is not confirmed, send fresh verification code and redirect to verify screen
+          if (msg.includes("email not confirmed") || msg.includes("email link is invalid")) {
+            (await cookies()).set(PENDING, sign(JSON.stringify({ channel: "email", target: email, next })), {
+              httpOnly: true,
+              secure: config().isProd,
+              sameSite: "lax",
+              path: "/sign-in",
+              maxAge: config().auth.otpMinutes * 60,
+            });
+            try {
+              await supabase.auth.resend({
+                type: "signup",
+                email,
+                options: {
+                  emailRedirectTo: `${config().appUrl}/auth/callback?next=${encodeURIComponent(next)}`,
+                },
+              });
+            } catch {}
+            redirect(`/sign-in/verify?notice=email_not_confirmed`);
+          }
+
+          // If credentials invalid / user does not exist, redirect to sign-up to accept the NDA
+          if (msg.includes("invalid login credentials")) {
+            redirect(`/sign-up?error=account_not_found&email=${encodeURIComponent(email)}&next=${encodeURIComponent(next)}`);
+          }
         }
       }
     } catch (err) {
@@ -323,26 +393,74 @@ export async function startPhone(formData: FormData) {
 export async function resendCode() {
   const p = await pendingVerification();
   if (!p) redirect("/sign-in");
+
+  if (p.channel === "email" && process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY) {
+    try {
+      const supabase = await createSupabaseServer();
+      const appUrl = config().appUrl;
+      const { error: resendErr } = await supabase.auth.resend({
+        type: "signup",
+        email: p.target,
+        options: {
+          emailRedirectTo: `${appUrl}/auth/callback?next=${encodeURIComponent(p.next)}`,
+        },
+      });
+
+      if (resendErr) {
+        await supabase.auth.signInWithOtp({
+          email: p.target,
+          options: {
+            shouldCreateUser: true,
+            emailRedirectTo: `${appUrl}/auth/callback?next=${encodeURIComponent(p.next)}`,
+          },
+        });
+      }
+      redirect("/sign-in/verify?notice=code_resent");
+    } catch (err) {
+      if ((err as Error).message === "NEXT_REDIRECT") throw err;
+    }
+  }
+
   await begin(p.channel, p.target, p.next);
 }
 
 export async function verifyCode(formData: FormData) {
   const p = await pendingVerification();
   if (!p) redirect("/sign-in?error=expired_code");
-  const code = String(formData.get("code") ?? "").trim();
+  const code = String(formData.get("code") ?? "").trim().replace(/\s+/g, "");
 
   // 1. If Supabase Anon Key is configured, verify via Supabase Auth
-  if (process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY) {
+  if (process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY && p.channel === "email") {
     try {
       const supabase = await createSupabaseServer();
-      const { data, error } = await supabase.auth.verifyOtp({
+
+      // Try signup confirmation OTP first, then email OTP
+      let verifyRes = await supabase.auth.verifyOtp({
         email: p.target,
         token: code,
-        type: "email",
+        type: "signup",
       });
-      if (!error && data.user) {
+
+      if (verifyRes.error) {
+        verifyRes = await supabase.auth.verifyOtp({
+          email: p.target,
+          token: code,
+          type: "email",
+        });
+      }
+
+      if (!verifyRes.error && verifyRes.data.user) {
+        // Sync verified status to local public.users
+        try {
+          const db = await getDb();
+          await db
+            .update(schema.users)
+            .set({ emailVerifiedAt: new Date() })
+            .where(eq(schema.users.email, p.target));
+        } catch {}
+
         if (await currentSession()) await endSession();
-        await startSession(data.user.id);
+        await startSession(verifyRes.data.user.id);
         (await cookies()).delete({ name: PENDING, path: "/sign-in" });
         redirect(p.next || "/");
       }

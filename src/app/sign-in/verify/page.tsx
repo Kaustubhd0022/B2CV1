@@ -10,8 +10,12 @@ import { pendingVerification, resendCode, verifyCode } from "../actions";
 
 export const metadata: Metadata = { title: "Verify OTP — TattvaCo" };
 
-export default async function VerifyPage({ searchParams }: { searchParams: Promise<{ error?: string }> }) {
-  const { error } = await searchParams;
+export default async function VerifyPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ error?: string; notice?: string; signup?: string }>;
+}) {
+  const { error, notice, signup } = await searchParams;
   const pending = await pendingVerification();
   if (!pending) redirect("/sign-in?error=expired_code");
   const t = translator("en");
@@ -19,29 +23,45 @@ export default async function VerifyPage({ searchParams }: { searchParams: Promi
 
   return (
     <main className="flex min-h-dvh flex-col items-center justify-center bg-[#FAF7F2] px-4 py-8 text-[#20101B]">
-      <div className="w-full max-w-[360px] rounded-2xl border border-[#F0DCE4] bg-white/95 p-5 shadow-xl backdrop-blur-xl">
+      <div className="w-full max-w-[380px] rounded-2xl border border-[#F0DCE4] bg-white/95 p-5 sm:p-6 shadow-xl backdrop-blur-xl">
         {/* Brand Header */}
         <div className="flex items-center justify-between">
           <span className="inline-flex items-center gap-1 rounded-full bg-amber-500/10 border border-amber-600/30 px-2 py-0.5 text-[10px] font-semibold text-amber-800">
             <span>✦</span>
             <span>Cultural Explorer Passport</span>
           </span>
-          <span className="text-[10px] font-medium text-[#7E6674]">One-Time Passcode</span>
+          <span className="text-[10px] font-medium text-[#7E6674]">Verify {channelLabel}</span>
         </div>
 
         <h1 className="mt-2.5 font-serif text-xl font-bold tracking-tight text-[#20101B]">
-          Enter Verification Code
+          {signup === "1" ? "Verify Your Passport Email" : "Enter Verification Code"}
         </h1>
         <p className="mt-1 text-xs text-[#5A4550] leading-snug">
           We sent a 6-digit verification code to{" "}
           <strong className="font-semibold text-[#20101B]">
             {maskTarget(pending.channel, pending.target)}
           </strong>
-          . Please check your inbox and enter the code below.
+          . Enter the code below or click the link in your email to activate your passport.
         </p>
 
-        {/* Error Notices */}
-        <div className="mt-3" aria-live="polite">
+        {/* Notices */}
+        <div className="mt-3 space-y-2" aria-live="polite">
+          {signup === "1" && (
+            <div className="rounded-xl border border-amber-200 bg-amber-50/80 px-3 py-2 text-[11px] text-amber-900 leading-normal">
+              ✦ <strong>Passport created!</strong> Please verify your email below to activate and begin your journey.
+            </div>
+          )}
+          {notice === "email_not_confirmed" && (
+            <div className="rounded-xl border border-amber-200 bg-amber-50/80 px-3 py-2 text-[11px] text-amber-900 leading-normal">
+              ✉ We sent a fresh verification code to your email. Please enter it below.
+            </div>
+          )}
+          {notice === "code_resent" && (
+            <div className="rounded-xl border border-emerald-200 bg-emerald-50/80 px-3 py-2 text-[11px] text-emerald-900 leading-normal">
+              ✓ A fresh verification code has been dispatched to your inbox.
+            </div>
+          )}
+
           {error === "invalid" && (
             <Notice tone="error" role="alert" className="text-xs py-1.5 px-2.5">
               {t("auth.codeInvalid")}

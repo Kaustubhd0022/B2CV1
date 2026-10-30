@@ -66,6 +66,7 @@ function load() {
       email: {
         provider: (process.env.EMAIL_PROVIDER ?? (isProd ? "" : "dev-outbox")) as
           | "resend"
+          | "supabase"
           | "dev-outbox"
           | "screen"
           | "",

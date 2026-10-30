@@ -78,6 +78,10 @@ const SESSION_STORAGE_KEY = "tc_cinema_intro_seen_v1";
 export function isFirstSessionVisit(): boolean {
   if (typeof window === "undefined") return false;
   try {
+    const search = window.location.search;
+    if (search.includes("intro") || search.includes("replay")) {
+      return true;
+    }
     const hasSeen = sessionStorage.getItem(SESSION_STORAGE_KEY);
     if (!hasSeen) {
       sessionStorage.setItem(SESSION_STORAGE_KEY, "true");
