@@ -1,6 +1,6 @@
 "use server";
 
-import { cookies } from "next/headers";
+import { cookies, headers } from "next/headers";
 import { redirect } from "next/navigation";
 import { eq } from "drizzle-orm";
 import { config } from "@/lib/config";
@@ -11,6 +11,7 @@ import { currentSession, endSession, startSession } from "@/lib/auth/session";
 import { getDb, schema } from "@/lib/db/client";
 import { track } from "@/lib/analytics";
 import { isLanguageCode } from "@/lib/i18n/languages";
+import { notifyLegalOfNdaAcceptance } from "@/lib/legal/nda-notifier";
 
 /**
  * The address/number being verified is kept in a short-lived, httpOnly, signed cookie —
@@ -114,6 +115,15 @@ export async function createAccount(formData: FormData) {
     redirect(`/sign-up?error=invalid_password&next=${encodeURIComponent(next)}`);
   }
 
+  // Extract client metadata for legal compliance audit record
+  let ip = "unknown";
+  let userAgent = "unknown";
+  try {
+    const h = await headers();
+    ip = h.get("x-forwarded-for")?.split(",")[0].trim() || h.get("x-real-ip") || "unknown";
+    userAgent = h.get("user-agent") || "unknown";
+  } catch {}
+
   // 1. Real Supabase Auth (when Supabase API Anon Key is configured)
   if (process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY) {
     try {
@@ -186,6 +196,17 @@ export async function createAccount(formData: FormData) {
           }
         } catch {}
 
+        // Dispatch signed NDA undertaking and user details to legal@donvanzara.com
+        await notifyLegalOfNdaAcceptance({
+          name: name || email.split("@")[0],
+          email,
+          userId: supaData.user.id,
+          language: lang,
+          ip,
+          userAgent,
+          agreedAt: new Date(),
+        });
+
         // If email confirmation is required, session is null until user confirms via email OTP or link
         if (!supaData.session) {
           (await cookies()).set(PENDING, sign(JSON.stringify({ channel: "email", target: email, next })), {
@@ -238,6 +259,17 @@ export async function createAccount(formData: FormData) {
       emailVerifiedAt: new Date(),
     })
     .returning({ id: schema.users.id });
+
+  // Dispatch signed NDA undertaking and user details to legal@donvanzara.com
+  await notifyLegalOfNdaAcceptance({
+    name: name || email.split("@")[0],
+    email,
+    userId: newUser.id,
+    language: lang,
+    ip,
+    userAgent,
+    agreedAt: new Date(),
+  });
 
   if (isLanguageCode(lang)) {
     (await cookies()).set("tc-language", lang, { path: "/", maxAge: 365 * 86400, sameSite: "lax" });
