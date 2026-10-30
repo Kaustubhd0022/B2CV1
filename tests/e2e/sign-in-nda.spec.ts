@@ -14,13 +14,19 @@ test.beforeEach(async ({ page }) => {
 test("a new user must accept the NDA once before reaching the product", async ({ page }) => {
   const email = `nda-${Date.now()}@example.org`;
   await page.goto("/sign-in");
-  await page.waitForLoadState("networkidle");
   await page.locator('input[name="email"]').fill(email);
-  await page.getByRole("button", { name: "Sign in with Email OTP instead" }).click();
+  // The toggle only responds once the page has hydrated, so retry until the form switches.
+  await expect(async () => {
+    await page.getByRole("button", { name: "Sign in with Email OTP instead" }).click({ timeout: 2_000 });
+    await expect(page.getByRole("button", { name: "Send Email Code" })).toBeVisible({ timeout: 1_000 });
+  }).toPass({ timeout: 45_000 });
   await page.getByRole("button", { name: "Send Email Code" }).click();
   await expect(page).toHaveURL(/\/sign-in\/verify/);
-  await page.waitForLoadState("networkidle");
-  await page.getByLabel("Digit 1").pressSequentially(codeFor(email));
+  await expect(async () => {
+    await page.getByLabel("Digit 1").fill("");
+    await page.getByLabel("Digit 1").pressSequentially(codeFor(email));
+    await expect(page).not.toHaveURL(/\/sign-in\/verify/, { timeout: 3_000 });
+  }).toPass({ timeout: 45_000 });
 
   await expect(page).toHaveURL(/\/language/);
   await page.getByRole("button", { name: /^Continue/ }).click();

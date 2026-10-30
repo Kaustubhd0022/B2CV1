@@ -16,15 +16,21 @@ async function continueInLanguage(page: Page) {
 
 async function signInAs(page: Page, email: string) {
   await page.goto("/sign-in");
-  await page.waitForLoadState("networkidle");
   await page.locator('input[name="email"]').fill(email);
-  await page.getByRole("button", { name: "Sign in with Email OTP instead" }).click();
+  // The toggle only responds once the page has hydrated, so retry until the form switches.
+  await expect(async () => {
+    await page.getByRole("button", { name: "Sign in with Email OTP instead" }).click({ timeout: 2_000 });
+    await expect(page.getByRole("button", { name: "Send Email Code" })).toBeVisible({ timeout: 1_000 });
+  }).toPass({ timeout: 45_000 });
   await page.getByRole("button", { name: "Send Email Code" }).click();
   await expect(page).toHaveURL(/verify/);
   const code = readFileSync(".dev-outbox/outbox.jsonl", "utf8").trim().split("\n").map((l) => JSON.parse(l)).filter((l) => l.to === email).at(-1).code;
-  await page.waitForLoadState("networkidle");
   // Typing the sixth digit submits the form.
-  await page.getByLabel("Digit 1").pressSequentially(code);
+  await expect(async () => {
+    await page.getByLabel("Digit 1").fill("");
+    await page.getByLabel("Digit 1").pressSequentially(code);
+    await expect(page).not.toHaveURL(/\/sign-in\/verify/, { timeout: 3_000 });
+  }).toPass({ timeout: 45_000 });
   await continueInLanguage(page);
   await expect(page).toHaveURL(/localhost:\d+\/$/);
 }
