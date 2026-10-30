@@ -67,6 +67,11 @@ async function init(): Promise<DB> {
     } catch (colErr) {
       console.warn("Notice: could not ensure users columns:", colErr);
     }
+    try {
+      await migratePglite(db as never, { migrationsFolder: MIGRATIONS });
+    } catch (migrateErr) {
+      console.warn("Notice: could not apply new migrations to the existing PGlite database:", migrateErr);
+    }
   } catch {
     try {
       await migratePglite(db as never, { migrationsFolder: MIGRATIONS });

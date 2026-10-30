@@ -33,43 +33,21 @@ export async function startChallenge(channel: Channel, target: string): Promise<
     .update(schema.otpChallenges)
     .set({ consumedAt: new Date() })
     .where(and(eq(schema.otpChallenges.targetHash, th), isNull(schema.otpChallenges.consumedAt)));
-  const [inserted] = await db
+  await db
     .insert(schema.otpChallenges)
     .values({
       channel,
       targetHash: th,
       codeHash: codeHash(th, code),
       expiresAt: new Date(Date.now() + c.auth.otpMinutes * 60_000),
-    })
-    .returning({ id: schema.otpChallenges.id });
-
-  const confirmToken = hmac(c.auth.secret, `${inserted.id}:${th}`);
-  const confirmUrl = `${c.appUrl}/auth/confirm?cid=${inserted.id}&token=${confirmToken}&channel=${channel}&target=${encodeURIComponent(target)}`;
+    });
 
   const sent =
     channel === "email"
-      ? await sendEmailCode(target, code, c.auth.otpMinutes, confirmUrl)
+      ? await sendEmailCode(target, code)
       : await sendSmsCode(target, code, c.auth.otpMinutes);
   if (!sent.ok) return { ok: false, error: sent.reason };
   return sent.demoCode ? { ok: true, demoCode: sent.demoCode } : { ok: true };
-}
-
-export async function getLatestActiveChallenge(channel: Channel, target: string) {
-  const db = await getDb();
-  const th = targetHash(channel, target);
-  const [c] = await db
-    .select()
-    .from(schema.otpChallenges)
-    .where(and(eq(schema.otpChallenges.targetHash, th)))
-    .orderBy(desc(schema.otpChallenges.createdAt))
-    .limit(1);
-  return c ?? null;
-}
-
-export async function getChallengeById(id: string) {
-  const db = await getDb();
-  const [c] = await db.select().from(schema.otpChallenges).where(eq(schema.otpChallenges.id, id)).limit(1);
-  return c ?? null;
 }
 
 export type VerifyResult = { ok: true; userId: string; created: boolean } | { ok: false; error: "invalid" | "expired" | "locked" };

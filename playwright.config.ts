@@ -20,7 +20,7 @@ export default defineConfig({
     { name: "desktop", use: { ...devices["Desktop Chrome"], viewport: { width: 1280, height: 900 } } },
   ],
   webServer: {
-    command: `rm -rf .data/e2e && PGLITE_DIR=.data/e2e npm run seed:dev && PGLITE_DIR=.data/e2e DEV_EDITOR_EMAILS=editor@e2e.test DEMO_MODE=false EMAIL_PROVIDER=dev-outbox SMS_PROVIDER=dev-outbox LLM_PROVIDER=none RETRIEVAL_PROVIDERS=corpus npx next dev -p ${PORT}`,
+    command: `rm -rf .data/e2e && DATABASE_URL= PGLITE_DIR=.data/e2e npm run seed:dev && DATABASE_URL= NEXT_PUBLIC_SUPABASE_ANON_KEY= PGLITE_DIR=.data/e2e DEV_EDITOR_EMAILS=editor@e2e.test DEMO_MODE=false EMAIL_PROVIDER=dev-outbox SMS_PROVIDER=dev-outbox LLM_PROVIDER=none RETRIEVAL_PROVIDERS=corpus npx next dev -p ${PORT}`,
     url: `http://localhost:${PORT}/api/health`,
     reuseExistingServer: false,
     timeout: 180_000,

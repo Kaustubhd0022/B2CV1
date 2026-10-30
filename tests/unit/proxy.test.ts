@@ -33,6 +33,10 @@ describe("proxy session gate", () => {
     expect(visit("/", cookie).location).toBe("https://tattvaco.test/sign-in");
   });
 
+  it("hands an auth code that Supabase returned to the Site URL over to the callback", () => {
+    expect(visit("/?code=abc").location).toBe("https://tattvaco.test/auth/callback?code=abc");
+  });
+
   it("keeps the destination when a stale cookie is bounced from a deep link", () => {
     expect(visit("/explore?x=1", "sb-project-auth-token=stale").location).toBe(
       "https://tattvaco.test/sign-in?next=%2Fexplore%3Fx%3D1",

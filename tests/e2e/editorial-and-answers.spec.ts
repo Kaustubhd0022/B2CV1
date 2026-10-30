@@ -1,19 +1,44 @@
 import { expect, test, type Page } from "@playwright/test";
 import { readFileSync } from "node:fs";
 
+async function continueInLanguage(page: Page) {
+  // Only new accounts choose a language; returning editors go straight to the product.
+  await page.waitForURL((url) => !url.pathname.startsWith("/sign-in"));
+  if (new URL(page.url()).pathname === "/language") {
+    await page.getByRole("button", { name: /^Continue/ }).click();
+    await page.waitForURL((url) => !url.pathname.startsWith("/language"));
+  }
+  if (new URL(page.url()).pathname === "/nda") {
+    await page.getByRole("button", { name: "I Agree and Continue" }).click();
+    await page.waitForURL((url) => url.pathname !== "/nda");
+  }
+}
+
 async function signInAs(page: Page, email: string) {
   await page.goto("/sign-in");
-  await page.waitForLoadState("networkidle");
-  await page.getByLabel("Email address").fill(email);
-  await page.getByRole("button", { name: "Continue with email" }).click();
+  await page.locator('input[name="email"]').fill(email);
+  // The toggle only responds once the page has hydrated, so retry until the form switches.
+  await expect(async () => {
+    await page.getByRole("button", { name: "Sign in with Email OTP instead" }).click({ timeout: 2_000 });
+    await expect(page.getByRole("button", { name: "Send Email Code" })).toBeVisible({ timeout: 1_000 });
+  }).toPass({ timeout: 45_000 });
+  await page.getByRole("button", { name: "Send Email Code" }).click();
   await expect(page).toHaveURL(/verify/);
   const code = readFileSync(".dev-outbox/outbox.jsonl", "utf8").trim().split("\n").map((l) => JSON.parse(l)).filter((l) => l.to === email).at(-1).code;
-  await page.waitForLoadState("networkidle");
-  await page.getByLabel("Verification code").fill(code);
-  await page.getByRole("button", { name: "Verify and continue" }).click();
-  await page.getByRole("button", { name: "Continue in selected language" }).click();
+  // Typing the sixth digit submits the form.
+  await expect(async () => {
+    await page.getByLabel("Digit 1").fill("");
+    await page.getByLabel("Digit 1").pressSequentially(code);
+    await expect(page).not.toHaveURL(/\/sign-in\/verify/, { timeout: 3_000 });
+  }).toPass({ timeout: 45_000 });
+  await continueInLanguage(page);
   await expect(page).toHaveURL(/localhost:\d+\/$/);
 }
+
+// The dev server's hot reload can restart pages mid-test; it plays no part in these journeys.
+test.beforeEach(async ({ page }) => {
+  await page.routeWebSocket(/webpack-hmr/, () => {});
+});
 
 test.describe.configure({ mode: "serial" });
 

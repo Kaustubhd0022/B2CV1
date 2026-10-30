@@ -401,3 +401,21 @@ export const analyticsEvents = pgTable(
   },
   (t) => [index("analytics_name_idx").on(t.name, t.createdAt)],
 );
+
+/** Evidence of each NDA acceptance. No foreign key: the record must outlive the account. */
+export const ndaAcceptances = pgTable(
+  "nda_acceptances",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
+    userId: uuid("user_id").notNull(),
+    // Purpose: identifying the signer for the Company's legal record.
+    name: text("name"),
+    email: text("email"),
+    version: text("version").notNull(),
+    language: text("language"),
+    ip: text("ip"),
+    userAgent: text("user_agent"),
+    agreedAt: ts("agreed_at").notNull().defaultNow(),
+  },
+  (t) => [index("nda_acceptances_user_idx").on(t.userId, t.version)],
+);

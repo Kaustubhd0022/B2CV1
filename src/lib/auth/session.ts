@@ -6,6 +6,7 @@ import { config } from "@/lib/config";
 import { getDb, schema } from "@/lib/db/client";
 import { createHash } from "node:crypto";
 import { isLanguageCode, type LanguageCode } from "@/lib/i18n/languages";
+import { hasAcceptedNda } from "@/lib/legal/nda-record";
 import { hmac, randomToken, sha256 } from "./crypto";
 import { readSignedToken, signingSecret } from "./signed-token";
 
@@ -133,7 +134,16 @@ export async function setSessionLanguage(sessionId: string, language: LanguageCo
 
 /* ---------------- Request-bound helpers ---------------- */
 
-export async function startSession(userId: string, role: "user" | "editor" = "user", language?: LanguageCode) {
+export async function startSession(userId: string, role?: "user" | "editor", language?: LanguageCode) {
+  let finalRole = role;
+  if (!finalRole) {
+    // The role is carried in the signed token, so it has to come from the account at sign-in.
+    try {
+      const db = await getDb();
+      const [account] = await db.select({ role: schema.users.role }).from(schema.users).where(eq(schema.users.id, userId)).limit(1);
+      finalRole = account?.role;
+    } catch {}
+  }
   let lang = language;
   if (!lang) {
     try {
@@ -143,7 +153,7 @@ export async function startSession(userId: string, role: "user" | "editor" = "us
     } catch {}
   }
   const finalLang: LanguageCode = lang || "en";
-  const signedToken = createSignedToken(userId, role, finalLang, config().auth.sessionDays);
+  const signedToken = createSignedToken(userId, finalRole ?? "user", finalLang, config().auth.sessionDays);
   const expiresAt = new Date(Date.now() + config().auth.sessionDays * 86_400_000);
 
   try {
@@ -187,7 +197,7 @@ export async function currentSession(): Promise<SessionUser | null> {
         if (user) {
           const lang = isLanguageCode(langCookie) ? langCookie : "en";
           try {
-            await startSession(user.id, "user", lang);
+            await startSession(user.id, undefined, lang);
           } catch {}
           return {
             sessionId: user.id,
@@ -258,6 +268,11 @@ export async function requireUser(): Promise<SessionUser> {
     const p = await requestedPath();
     const nextQuery = p && p !== "/" ? `?next=${encodeURIComponent(p)}&reason=expired` : "?reason=expired";
     redirect(`/sign-in${nextQuery}`);
+  }
+  // Every sign-in path can create an account, so the NDA is enforced here rather than at sign-up.
+  if (!(await hasAcceptedNda(s.userId))) {
+    const p = await requestedPath();
+    redirect(p && p !== "/" ? `/nda?next=${encodeURIComponent(p)}` : "/nda");
   }
   return s;
 }

@@ -3,8 +3,7 @@ import type { EmailOtpType } from "@supabase/supabase-js";
 import { createClient } from "@/lib/supabase/server";
 import { startSession } from "@/lib/auth/session";
 import { safeNext } from "@/lib/auth/normalize";
-import { getDb, schema } from "@/lib/db/client";
-import { eq } from "drizzle-orm";
+import { resolveSupabaseAccount } from "@/lib/auth/supabase-account";
 
 export async function GET(request: NextRequest) {
   const requestUrl = new URL(request.url);
@@ -29,35 +28,13 @@ export async function GET(request: NextRequest) {
   }
 
   if (user) {
-    const db = await getDb();
-    // Ensure user row in public.users is present and marked verified
-    const [existing] = await db
-      .select({ id: schema.users.id })
-      .from(schema.users)
-      .where(eq(schema.users.id, user.id))
-      .limit(1);
-
-    if (!existing && user.email) {
-      const name =
-        user.user_metadata?.full_name ||
-        user.user_metadata?.name ||
-        user.email.split("@")[0].replace(/[._-]/g, " ").replace(/\b\w/g, (c) => c.toUpperCase());
-
-      await db.insert(schema.users).values({
-        id: user.id,
-        name,
-        email: user.email,
-        emailVerifiedAt: new Date(),
-      });
-    } else if (existing) {
-      await db
-        .update(schema.users)
-        .set({ emailVerifiedAt: new Date() })
-        .where(eq(schema.users.id, user.id));
+    const account = await resolveSupabaseAccount(user);
+    if (!account.ok) {
+      return NextResponse.redirect(new URL(`/sign-in?error=${account.error}`, request.url));
     }
 
     // Start application session
-    await startSession(user.id);
+    await startSession(account.userId);
     const res = NextResponse.redirect(new URL(next || "/", request.url));
     res.cookies.delete("tc_pending");
     res.cookies.delete({ name: "tc_pending", path: "/sign-in" });

@@ -21,10 +21,14 @@ approved (OD-09, OD-12).
 9. Schedule `npm run sources:check` (daily) and, once retention is approved,
    `npm run maintenance:purge -- --apply`.
 
+## Migration order
+Run `npm run db:migrate` **before** deploying code that needs a new table: production does not auto-apply migrations.
+With `DATABASE_URL` in `.env`, `next dev` applies new migrations to that database as soon as it starts.
+
 ## Provider configuration checklist
 | Integration | Needed | Where |
 |---|---|---|
-| Email codes | `EMAIL_PROVIDER=resend`, `RESEND_API_KEY`, verified sender domain in `EMAIL_FROM` | resend.com |
+| Email codes | `EMAIL_PROVIDER=supabase`, `NEXT_PUBLIC_SUPABASE_ANON_KEY`; custom SMTP (the default mailer only reaches team members, 2/hour); Magic Link and Confirm signup templates must include `{{ .Token }}` | Supabase dashboard → Authentication |
 | SMS codes | `SMS_PROVIDER=twilio`, account SID, auth token, sender number (DLT registration for India) | twilio.com |
 | Google | OAuth client (web); redirect URI `${APP_URL}/auth/google/callback`; scopes openid, email | Google Cloud console |
 | Apple | Services ID (`APPLE_CLIENT_ID`), team ID, key ID, .p8 key; return URL `${APP_URL}/auth/apple/callback` | Apple Developer |

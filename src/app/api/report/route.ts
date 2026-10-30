@@ -1,5 +1,6 @@
 import { NextResponse, type NextRequest } from "next/server";
 import { currentSession } from "@/lib/auth/session";
+import { hasAcceptedNda } from "@/lib/legal/nda-record";
 import { createReport, ReportInputSchema } from "@/lib/reports";
 import { rateLimit } from "@/lib/ratelimit";
 import { track } from "@/lib/analytics";
@@ -7,6 +8,7 @@ import { track } from "@/lib/analytics";
 export async function POST(request: NextRequest) {
   const session = await currentSession();
   if (!session) return NextResponse.json({ error: "unauthenticated" }, { status: 401 });
+  if (!(await hasAcceptedNda(session.userId))) return NextResponse.json({ error: "nda_required" }, { status: 403 });
   if (!rateLimit(`report:${session.sessionId}`, 10, 60 * 60_000).ok) {
     return NextResponse.json({ error: "rate_limited" }, { status: 429 });
   }
