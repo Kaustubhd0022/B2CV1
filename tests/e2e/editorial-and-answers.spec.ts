@@ -35,9 +35,16 @@ async function signInAs(page: Page, email: string) {
   await expect(page).toHaveURL(/localhost:\d+\/$/);
 }
 
-// The dev server's hot reload can restart pages mid-test; it plays no part in these journeys.
+// The dev server can tell pages to restart in a loop. React needs this socket to start, so keep it
+// connected and drop only that message.
 test.beforeEach(async ({ page }) => {
-  await page.routeWebSocket(/webpack-hmr/, () => {});
+  await page.routeWebSocket(/\/_next\/hmr/, (ws) => {
+    const server = ws.connectToServer();
+    ws.onMessage((message) => server.send(message));
+    server.onMessage((message) => {
+      if (!String(message).includes('"type":"restart"')) ws.send(message);
+    });
+  });
 });
 
 test.describe.configure({ mode: "serial" });
