@@ -1,401 +1,248 @@
 "use client";
 
-import { useEffect, useRef, useState, useTransition } from "react";
+import { useCallback, useEffect, useRef, useState, useTransition } from "react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
-import { motion, AnimatePresence } from "motion/react";
-import { PassportSeal3D } from "./passport-seal-3d";
+import { useFormStatus } from "react-dom";
+import { useReducedMotion } from "motion/react";
+import { Notice } from "@/components/ui";
+import { PassportStamp3D } from "./passport-stamp-3d";
 import { resendVerificationAction, verifyCode } from "../actions";
+
+const STAMP_LANDS_MS = 320;
+const EMPTY_CODE = ["", "", "", "", "", ""];
+
+const ERRORS: Record<string, string> = {
+  invalid: "That code is incorrect. Check it and try again, or send a new one.",
+  expired: "That code has expired. Send a new one below.",
+  locked: "Too many incorrect attempts. Wait a moment, then send a new code.",
+};
+
+const NOTICES: Record<string, string> = {
+  code_resent: "We sent you a new code.",
+  email_not_confirmed: "Confirm your email with the 6-digit code we sent you.",
+};
 
 interface VerifyCardProps {
   target: string;
   maskedTarget: string;
   channel: "email" | "phone";
-  next: string;
   initialNotice?: string;
   initialError?: string;
   isSignUp?: boolean;
 }
 
-export function VerifyCard({
-  target,
-  maskedTarget,
-  channel,
-  next,
-  initialNotice,
-  initialError,
-  isSignUp,
-}: VerifyCardProps) {
-  const router = useRouter();
-  const [digits, setDigits] = useState<string[]>(["", "", "", "", "", ""]);
+/** Reports when the server action ends without leaving this page, which means the code was rejected. */
+function ActionSettled({ onSettled }: { onSettled: () => void }) {
+  const { pending } = useFormStatus();
+  const wasPending = useRef(false);
+  useEffect(() => {
+    if (wasPending.current && !pending) onSettled();
+    wasPending.current = pending;
+  }, [pending, onSettled]);
+  return null;
+}
+
+function mailboxLink(email: string) {
+  const domain = email.split("@")[1]?.toLowerCase() ?? "";
+  if (domain.includes("gmail") || domain.includes("google")) {
+    return { label: "Open Gmail", url: "https://mail.google.com/mail/u/0/#inbox" };
+  }
+  if (domain.includes("outlook") || domain.includes("hotmail") || domain.includes("live")) {
+    return { label: "Open Outlook", url: "https://outlook.live.com/mail/0/" };
+  }
+  if (domain.includes("yahoo")) {
+    return { label: "Open Yahoo Mail", url: "https://mail.yahoo.com/" };
+  }
+  return null;
+}
+
+export function VerifyCard({ target, maskedTarget, channel, initialNotice, initialError, isSignUp }: VerifyCardProps) {
+  const reduced = useReducedMotion();
+  const [digits, setDigits] = useState<string[]>(EMPTY_CODE);
+  const [checking, setChecking] = useState(false);
+  const [attempt, setAttempt] = useState(0);
+  const [errorHidden, setErrorHidden] = useState(false);
+  const [resendError, setResendError] = useState<string | null>(null);
+  const [notice, setNotice] = useState<string | null>(initialNotice ? (NOTICES[initialNotice] ?? null) : null);
+  const [cooldown, setCooldown] = useState(60);
+  const [isResending, startResend] = useTransition();
   const inputRefs = useRef<(HTMLInputElement | null)[]>([]);
   const formRef = useRef<HTMLFormElement>(null);
 
-  const [status, setStatus] = useState<"waiting" | "verifying" | "verified">("waiting");
-  const [errorMsg, setErrorMsg] = useState<string | null>(
-    initialError === "invalid"
-      ? "Invalid 6-digit code. Please check your email or request a fresh one."
-      : initialError === "expired"
-      ? "This code has expired. We can send you a new one below."
-      : initialError === "locked"
-      ? "Too many incorrect attempts. Please wait a moment before trying again."
-      : null
-  );
-  const [noticeMsg, setNoticeMsg] = useState<string | null>(
-    initialNotice === "code_resent"
-      ? "✓ A fresh verification code has been sent to your inbox."
-      : initialNotice === "email_not_confirmed"
-      ? "✉ Please confirm your email using the 6-digit code sent to you."
-      : null
-  );
+  const code = digits.join("");
+  const filled = digits.filter(Boolean).length;
+  const urlError = !errorHidden && initialError ? (ERRORS[initialError] ?? null) : null;
+  const error = resendError ?? urlError;
+  const mailbox = channel === "email" ? mailboxLink(target) : null;
 
-  // Resend countdown timer (default 60s)
-  const [cooldown, setCooldown] = useState(60);
-  const [isPendingResend, startResend] = useTransition();
-  const [isSubmitting, setIsSubmitting] = useState(false);
-
-  // Focus first input box on load
   useEffect(() => {
     inputRefs.current[0]?.focus();
-  }, []);
+  }, [attempt]);
 
-  // Cooldown countdown
   useEffect(() => {
     if (cooldown <= 0) return;
-    const timer = setInterval(() => {
-      setCooldown((prev) => (prev > 0 ? prev - 1 : 0));
-    }, 1000);
+    const timer = setInterval(() => setCooldown((prev) => Math.max(prev - 1, 0)), 1000);
     return () => clearInterval(timer);
   }, [cooldown]);
 
-  // Handle single digit input
-  const handleDigitChange = (index: number, val: string) => {
-    // Clean to numeric only
-    const clean = val.replace(/[^0-9]/g, "");
+  const handleRejected = useCallback(() => {
+    setChecking(false);
+    setDigits(EMPTY_CODE);
+    setErrorHidden(false);
+    setAttempt((prev) => prev + 1);
+  }, []);
+
+  // The stamp lands before the code is sent, so the press answers the last digit.
+  const submitWhenStamped = () => {
+    setChecking(true);
+    setTimeout(() => formRef.current?.requestSubmit(), reduced ? 0 : STAMP_LANDS_MS);
+  };
+
+  const applyCode = (raw: string, startAt: number) => {
+    const next = [...digits];
+    raw.split("").forEach((digit, offset) => {
+      if (startAt + offset < 6) next[startAt + offset] = digit;
+    });
+    setDigits(next);
+    setErrorHidden(true);
+    setResendError(null);
+    const complete = next.every(Boolean);
+    if (complete) submitWhenStamped();
+    else inputRefs.current[Math.min(startAt + raw.length, 5)]?.focus();
+  };
+
+  const handleChange = (index: number, value: string) => {
+    const clean = value.replace(/\D/g, "");
     if (!clean) {
-      const nextDigits = [...digits];
-      nextDigits[index] = "";
-      setDigits(nextDigits);
+      setDigits((prev) => prev.map((digit, i) => (i === index ? "" : digit)));
       return;
     }
-
-    // Handle multiple digits pasted into a single box
-    if (clean.length > 1) {
-      handlePastedCode(clean);
-      return;
-    }
-
-    const nextDigits = [...digits];
-    nextDigits[index] = clean;
-    setDigits(nextDigits);
-
-    // Auto-advance to next box
-    if (index < 5 && clean) {
-      inputRefs.current[index + 1]?.focus();
-    }
-
-    // If 6 digits complete, auto-submit
-    const complete = nextDigits.join("");
-    if (complete.length === 6 && !nextDigits.includes("")) {
-      triggerSubmit();
-    }
+    // Two digits means typing over a filled box; more means browser autofill.
+    applyCode(clean.length === 2 ? clean[1] : clean, clean.length > 2 ? 0 : index);
   };
 
-  // Backspace auto-retreat
   const handleKeyDown = (index: number, e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === "Backspace") {
-      if (!digits[index] && index > 0) {
-        inputRefs.current[index - 1]?.focus();
-      }
-    } else if (e.key === "ArrowLeft" && index > 0) {
-      inputRefs.current[index - 1]?.focus();
-    } else if (e.key === "ArrowRight" && index < 5) {
-      inputRefs.current[index + 1]?.focus();
-    }
+    if (e.key === "Backspace" && !digits[index] && index > 0) inputRefs.current[index - 1]?.focus();
+    if (e.key === "ArrowLeft" && index > 0) inputRefs.current[index - 1]?.focus();
+    if (e.key === "ArrowRight" && index < 5) inputRefs.current[index + 1]?.focus();
   };
 
-  // Handle clipboard paste of 6-digit code
   const handlePaste = (e: React.ClipboardEvent) => {
     e.preventDefault();
-    const pasted = e.clipboardData.getData("text");
-    handlePastedCode(pasted);
+    const clean = e.clipboardData.getData("text").replace(/\D/g, "").slice(0, 6);
+    if (clean) applyCode(clean, 0);
   };
 
-  const handlePastedCode = (raw: string) => {
-    const clean = raw.replace(/[^0-9]/g, "").slice(0, 6);
-    if (!clean) return;
-
-    const nextDigits = [...digits];
-    for (let i = 0; i < 6; i++) {
-      nextDigits[i] = clean[i] || "";
-    }
-    setDigits(nextDigits);
-
-    // Focus last filled index or next empty
-    const nextFocus = Math.min(clean.length, 5);
-    inputRefs.current[nextFocus]?.focus();
-
-    if (clean.length === 6) {
-      triggerSubmit();
-    }
-  };
-
-  const triggerSubmit = () => {
-    setStatus("verifying");
-    setIsSubmitting(true);
-    setTimeout(() => {
-      formRef.current?.requestSubmit();
-    }, 150);
-  };
-
-  // Resend action
   const handleResend = () => {
-    if (cooldown > 0 || isPendingResend) return;
+    if (cooldown > 0 || isResending) return;
     startResend(async () => {
-      try {
-        const res = await resendVerificationAction();
-        if (res.ok) {
-          setNoticeMsg("✓ A fresh verification code was sent to your email.");
-          setErrorMsg(null);
-          setCooldown(60);
-        } else {
-          setErrorMsg("Could not resend at this moment. Please try again shortly.");
-        }
-      } catch {
-        setErrorMsg("Failed to dispatch code. Please try again.");
+      setNotice(null);
+      setResendError(null);
+      setErrorHidden(true);
+      const res = await resendVerificationAction().catch(() => ({ ok: false, error: "failed" }));
+      if (res.ok) {
+        setNotice("We sent you a new code.");
+        setCooldown(60);
+      } else if (res.error === "rate_limited") {
+        setResendError("Too many codes requested. Wait a few minutes, then try again.");
+      } else {
+        setResendError("We could not send a new code. Try again in a moment.");
       }
     });
   };
 
-  // Detect mailbox provider for quick 1-tap open
-  const getMailboxLink = (email: string) => {
-    const domain = email.split("@")[1]?.toLowerCase() || "";
-    if (domain.includes("gmail") || domain.includes("google")) {
-      return {
-        label: "Open Gmail",
-        url: "https://mail.google.com/mail/u/0/#search/from%3Atattvaco+OR+from%3Asupabase+OR+verify",
-      };
-    }
-    if (domain.includes("outlook") || domain.includes("hotmail") || domain.includes("live")) {
-      return {
-        label: "Open Outlook",
-        url: "https://outlook.live.com/mail/0/",
-      };
-    }
-    if (domain.includes("yahoo")) {
-      return {
-        label: "Open Yahoo Mail",
-        url: "https://mail.yahoo.com/",
-      };
-    }
-    return {
-      label: "Open Mail App",
-      url: `mailto:${email}`,
-    };
-  };
-
-  const mailbox = getMailboxLink(target);
-  const fullCode = digits.join("");
-
   return (
-    <div className="relative w-full max-w-[460px] rounded-3xl border border-[#C9822B]/35 bg-[#141E18]/90 p-6 sm:p-8 shadow-[0_25px_65px_rgba(0,0,0,0.7)] backdrop-blur-2xl text-white">
-      {/* ─────────────────────────────────────────────────────────────
-          Top 3D Cultural Talisman Animation Stage
-         ───────────────────────────────────────────────────────────── */}
-      <div className="flex flex-col items-center">
-        <PassportSeal3D status={status} className="mb-3" />
-
-        {/* Brand Chip */}
-        <div className="inline-flex items-center gap-1.5 rounded-full border border-amber-500/30 bg-amber-500/10 px-3 py-1 text-[11px] font-semibold text-amber-300">
+    <div className="w-full max-w-[360px] rounded-2xl border border-[#F0DCE4] bg-white/95 p-4.5 shadow-xl backdrop-blur-xl sm:p-5">
+      <div className="flex items-center justify-between">
+        <span className="inline-flex items-center gap-1 rounded-full border border-amber-600/30 bg-amber-500/10 px-2 py-0.5 text-[10px] font-semibold text-amber-800">
           <span>✦</span>
           <span>Cultural Explorer Passport</span>
-          <span>✦</span>
-        </div>
-
-        {/* Heading */}
-        <h1 className="mt-3 font-serif text-2xl sm:text-[26px] font-bold tracking-tight text-white text-center">
-          {status === "verified"
-            ? "Passport Verified!"
-            : isSignUp
-            ? "Activate Your Passport"
-            : "Verify Your Email"}
-        </h1>
-
-        {/* Target display with Edit link */}
-        <div className="mt-1.5 flex items-center justify-center gap-1.5 text-xs text-white/80">
-          <span>Sent to:</span>
-          <span className="font-mono font-semibold text-amber-200">{maskedTarget}</span>
-          <Link
-            href="/sign-in"
-            className="text-[11px] text-amber-400 hover:text-amber-300 underline underline-offset-2 ml-1"
-            title="Use a different email address"
-          >
-            Change
-          </Link>
-        </div>
+        </span>
+        <span className="text-[10px] font-medium text-[#7E6674]">{isSignUp ? "New Passport" : "Sign in"}</span>
       </div>
 
-      {/* ─────────────────────────────────────────────────────────────
-          Dual-Path Clarification (Solves the "Link vs Code" Mismatch)
-         ───────────────────────────────────────────────────────────── */}
-      <div className="mt-5 space-y-3">
-        {/* Inbox shortcut with live beacon */}
-        <div className="rounded-2xl border border-amber-500/25 bg-gradient-to-r from-amber-950/40 via-amber-900/20 to-transparent p-3.5 sm:p-4">
-          <div className="flex items-start justify-between gap-2">
-            <div className="flex items-center gap-2">
-              <span className="relative flex size-2.5">
-                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
-                <span className="relative inline-flex rounded-full size-2.5 bg-emerald-500" />
-              </span>
-              <span className="text-[12px] font-semibold uppercase tracking-wider text-amber-200">
-                Code Sent
-              </span>
-            </div>
-            <a
-              href={mailbox.url}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-1 rounded-lg border border-amber-500/40 bg-amber-500/20 px-2.5 py-1 text-[11px] font-medium text-amber-200 hover:bg-amber-500/30 transition-colors"
-            >
-              <span>{mailbox.label}</span>
-              <span className="text-[10px]">↗</span>
-            </a>
-          </div>
+      <PassportStamp3D filled={filled} pressed={checking} attempt={attempt} />
 
-          <p className="mt-2 text-xs text-white/85 leading-relaxed">
-            Check your inbox for the 6-digit code and enter it below.
-          </p>
-        </div>
+      <h1 className="font-serif text-xl font-bold tracking-tight text-[#20101B]">
+        {isSignUp ? "Stamp your passport" : channel === "phone" ? "Check your messages" : "Check your email"}
+      </h1>
+      <p className="mt-0.5 text-[11px] leading-snug text-[#5A4550]">
+        Enter the 6-digit code we sent to <span className="font-semibold text-[#20101B]">{maskedTarget}</span>.{" "}
+        <Link href="/sign-in" className="font-semibold text-amber-800 underline hover:text-amber-900">
+          Change
+        </Link>
+      </p>
 
-        {/* Notices and Alerts */}
-        <AnimatePresence>
-          {noticeMsg && (
-            <motion.div
-              initial={{ opacity: 0, y: -6 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0 }}
-              className="rounded-xl border border-emerald-500/30 bg-emerald-950/40 px-3.5 py-2.5 text-xs text-emerald-200"
-            >
-              {noticeMsg}
-            </motion.div>
-          )}
-
-          {errorMsg && (
-            <motion.div
-              initial={{ opacity: 0, y: -6 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0 }}
-              className="rounded-xl border border-rose-500/30 bg-rose-950/40 px-3.5 py-2.5 text-xs text-rose-200"
-            >
-              {errorMsg}
-            </motion.div>
-          )}
-        </AnimatePresence>
+      <div aria-live="polite">
+        {error && (
+          <Notice tone="error" role="alert" className="mt-2.5 px-2.5 py-1.5 text-[11px]">
+            {error}
+          </Notice>
+        )}
+        {notice && !error && (
+          <Notice tone="success" role="status" className="mt-2.5 px-2.5 py-1.5 text-[11px]">
+            {notice}
+          </Notice>
+        )}
       </div>
 
-      {/* ─────────────────────────────────────────────────────────────
-          Method B: 6-Digit Discrete OTP Boxes
-         ───────────────────────────────────────────────────────────── */}
-      <div className="mt-5">
-        <div className="flex items-center justify-between text-xs text-white/70 mb-2.5 px-0.5">
-          <span className="font-medium text-amber-100/90">Or enter 6-digit verification code:</span>
-          <span className="text-[10px] text-white/50 uppercase tracking-widest">Instant verify</span>
+      <form
+        ref={formRef}
+        action={verifyCode}
+        onSubmit={() => setChecking(true)}
+        className="mt-3"
+      >
+        <input type="hidden" name="code" value={code} />
+        <ActionSettled onSettled={handleRejected} />
+
+        <div className="flex gap-1.5" onPaste={handlePaste}>
+          {digits.map((digit, idx) => (
+            <input
+              key={idx}
+              ref={(el) => {
+                inputRefs.current[idx] = el;
+              }}
+              type="text"
+              inputMode="numeric"
+              autoComplete={idx === 0 ? "one-time-code" : "off"}
+              value={digit}
+              onChange={(e) => handleChange(idx, e.target.value)}
+              onKeyDown={(e) => handleKeyDown(idx, e)}
+              onFocus={(e) => e.target.select()}
+              disabled={checking}
+              aria-label={`Digit ${idx + 1}`}
+              className={`h-12 w-full min-w-0 flex-1 !rounded-full border bg-white text-center font-serif text-xl font-bold text-[#20101B] shadow-2xs outline-none transition-colors focus:border-amber-700 focus:ring-2 focus:ring-amber-600/25 disabled:opacity-60 ${
+                digit ? "border-amber-700/50" : "border-[#E9D5DF]"
+              }`}
+            />
+          ))}
         </div>
 
-        <form
-          ref={formRef}
-          action={verifyCode}
-          onSubmit={() => {
-            setStatus("verifying");
-            setIsSubmitting(true);
-          }}
-          className="space-y-4"
+        <button
+          type="submit"
+          disabled={code.length !== 6 || checking}
+          className="mt-3 flex h-10 w-full cursor-pointer items-center justify-center rounded-full bg-[#24131E] text-xs font-semibold text-white transition-colors hover:bg-[#381C2E] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-amber-700 disabled:cursor-not-allowed disabled:opacity-50"
         >
-          {/* Hidden complete code input for form submission to server action */}
-          <input type="hidden" name="code" value={fullCode} />
+          {checking ? "Checking your code…" : "Verify code"}
+        </button>
+      </form>
 
-          {/* 6 Individual Sculpted Digit Input Boxes */}
-          <div
-            className="flex items-center justify-between gap-2 sm:gap-2.5"
-            onPaste={handlePaste}
-          >
-            {digits.map((digit, idx) => (
-              <input
-                key={idx}
-                ref={(el) => {
-                  inputRefs.current[idx] = el;
-                }}
-                type="text"
-                inputMode="numeric"
-                autoComplete="one-time-code"
-                pattern="[0-9]*"
-                maxLength={1}
-                placeholder="·"
-                value={digit}
-                onChange={(e) => handleDigitChange(idx, e.target.value)}
-                onKeyDown={(e) => handleKeyDown(idx, e)}
-                disabled={status === "verified" || isSubmitting}
-                className="w-11 h-14 sm:w-13 sm:h-15 text-center rounded-xl border border-amber-500/40 bg-[#16231C]/90 font-mono text-2xl sm:text-3xl font-bold text-amber-300 placeholder:text-amber-500/30 shadow-[inset_0_2px_6px_rgba(0,0,0,0.6)] hover:border-amber-400/60 focus:border-amber-400 focus:bg-[#1C2C23] focus:outline-none focus:ring-4 focus:ring-amber-500/25 transition-all disabled:opacity-50"
-                aria-label={`Digit ${idx + 1}`}
-              />
-            ))}
-          </div>
-
-          {/* Verify & Continue Button */}
-          <button
-            type="submit"
-            disabled={fullCode.length !== 6 || isSubmitting || status === "verified"}
-            className="w-full h-11 rounded-xl bg-gradient-to-r from-amber-600 via-amber-500 to-amber-600 hover:from-amber-500 hover:to-amber-500 text-[#141E18] font-semibold text-sm shadow-[0_4px_16px_rgba(201,130,43,0.35)] transition-all cursor-pointer disabled:opacity-40 disabled:cursor-not-allowed flex items-center justify-center gap-2"
-          >
-            {status === "verifying" ? (
-              <>
-                <span className="size-4 animate-spin rounded-full border-2 border-[#141E18] border-t-transparent" />
-                <span>Verifying Passport...</span>
-              </>
-            ) : status === "verified" ? (
-              <span>✦ Passport Activated!</span>
-            ) : (
-              <span>Verify & Continue →</span>
-            )}
-          </button>
-        </form>
-      </div>
-
-      {/* ─────────────────────────────────────────────────────────────
-          Footer Controls: Resend & Troubleshoot
-         ───────────────────────────────────────────────────────────── */}
-      <div className="mt-5 border-t border-white/10 pt-4 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs">
-        {/* Resend Action */}
+      <div className="mt-3 flex items-center justify-between gap-3 text-[11px] text-[#5A4550]">
         <button
           type="button"
           onClick={handleResend}
-          disabled={cooldown > 0 || isPendingResend}
-          className={`cursor-pointer transition-colors ${
-            cooldown > 0
-              ? "text-white/40 cursor-not-allowed"
-              : "text-amber-300 hover:text-amber-200 underline underline-offset-2"
-          }`}
+          disabled={cooldown > 0 || isResending}
+          className={cooldown > 0 || isResending ? "cursor-not-allowed text-[#7E6674]" : "cursor-pointer font-semibold text-amber-800 underline hover:text-amber-900"}
         >
-          {isPendingResend
-            ? "Sending fresh email..."
-            : cooldown > 0
-            ? `Resend code in ${cooldown}s`
-            : "Didn't receive it? Resend now"}
+          {isResending ? "Sending…" : cooldown > 0 ? `Send a new code in ${cooldown}s` : "Send a new code"}
         </button>
-
-        {/* Change Account / Return */}
-        <Link
-          href="/sign-in"
-          className="text-white/60 hover:text-white transition-colors"
-        >
-          ← Use different account
-        </Link>
+        {mailbox && (
+          <a href={mailbox.url} target="_blank" rel="noopener noreferrer" className="font-semibold text-amber-800 underline hover:text-amber-900">
+            {mailbox.label}
+          </a>
+        )}
       </div>
-
-      {/* Troubleshooting hint */}
-      <p className="mt-3 text-[11px] text-white/40 text-center">
-        Tip: Check your spam or promotions folder if the email doesn&apos;t appear within 30 seconds.
-      </p>
+      {channel === "email" && <p className="mt-2 text-[10px] text-[#7E6674]">Not there? Check your spam or promotions folder.</p>}
     </div>
   );
 }
